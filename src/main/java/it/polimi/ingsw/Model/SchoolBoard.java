@@ -40,7 +40,7 @@ public class SchoolBoard {
 
     public void moveStudToDining(PawnColor pawnColor){
         if(studentsWaiting[pawnColor.ordinal()]==0){
-            System.out.println("ERRORE!NON CI SONO STUDENTI DI QUESTO COLORE NELLA WAITING");
+            System.out.println("ERRORE!NON CI SONO STUDENTI DI QUESTO COLORE NELLA WAITING!!!");
             //piu avanti andra sostituito con un eccezione magari
         }
         else{
@@ -51,7 +51,7 @@ public class SchoolBoard {
     }
     public void moveStudToIsland(PawnColor pawnColor,Island island){
         if(studentsWaiting[pawnColor.ordinal()]==0){
-            System.out.println("ERRORE!NON CI SONO STUDENTI DI QUESTO COLORE NELLA WAITING");
+            System.out.println("ERRORE!NON CI SONO STUDENTI DI QUESTO COLORE NELLA WAITING!!!");
             //piu avanti andra sostituito con un eccezione magari
         }
         else{
@@ -62,7 +62,7 @@ public class SchoolBoard {
     }
     public void addProfessor(PawnColor pawnColor){
         if(professors[pawnColor.ordinal()]){
-            System.out.println("ERRORE!IMPOSSIBILE RIMUOVERE PROFESSORE");
+            System.out.println("ERRORE!IMPOSSIBILE RIMUOVERE PROFESSORE!!!");
             //lancerà una exception
         }
         else {
@@ -71,7 +71,7 @@ public class SchoolBoard {
     }
     public void removeProfessor(PawnColor pawnColor){
         if(!professors[pawnColor.ordinal()]){
-            System.out.println("ERRORE!IMPOSSIBILE RIMUOVERE PROFESSORE");
+            System.out.println("ERRORE!IMPOSSIBILE RIMUOVERE PROFESSORE!!!");
             //lancerà una exception
         }
         else {
@@ -80,7 +80,7 @@ public class SchoolBoard {
     }
     public void addTower(){
         if(numTowers>=numMaxTowers){
-            System.out.println("ERRORE!IMPOSSIBILE AGGIUNGERE TORRE");
+            System.out.println("ERRORE!IMPOSSIBILE AGGIUNGERE TORRE!!!");
             //lancerà una exception
         }
         else {
@@ -89,7 +89,7 @@ public class SchoolBoard {
     }
     public void removeTower(){
         if(numTowers<=0){
-            System.out.println("ERRORE!IMPOSSIBILE RIMUOVERE TORRE");
+            System.out.println("ERRORE!IMPOSSIBILE RIMUOVERE TORRE!!!");
             //lancerà una exception
         }
         else {
