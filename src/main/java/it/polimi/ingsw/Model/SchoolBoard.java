@@ -5,11 +5,17 @@ public class SchoolBoard {
     private int[] studentsDining;
     private int[] studentsWaiting;
     private int numTowers;
-    private PawnColor pawnColor;
+    private final int numMaxTowers;
+    private int numStudentsWaiting; //it depends on the number of players
 
     //contructor
-    public SchoolBoard(){
-        //TODO
+    public SchoolBoard(int numTowers,int numStudentsWaiting){
+        this.numTowers=numTowers;
+        this.numMaxTowers=numTowers;
+        this.professors=new boolean[5];
+        this.studentsDining=new int[5];
+        this.studentsWaiting=new int[5];
+        this.numStudentsWaiting=numStudentsWaiting;
     }
 
     public boolean[] getProfessors() {
@@ -28,28 +34,70 @@ public class SchoolBoard {
         return studentsDining;
     }
 
-    public PawnColor getPawnColor() {
-        return pawnColor;
+    public int getNumStudentsWaiting() {
+        return numStudentsWaiting;
     }
-    public void moveStudToDining(int[] studentsWaiting,int[] studentsDining){
-        //TODO
+
+    public void moveStudToDining(PawnColor pawnColor){
+        if(studentsWaiting[pawnColor.ordinal()]==0){
+            System.out.println("ERRORE!NON CI SONO STUDENTI DI QUESTO COLORE NELLA WAITING");
+            //piu avanti andra sostituito con un eccezione magari
+        }
+        else{
+            studentsWaiting[pawnColor.ordinal()]--;
+            studentsDining[pawnColor.ordinal()]++;
+            numStudentsWaiting--;
+        }
     }
-    public void moveStudToWaiting(int[] studentsDining,int[] studentsWaiting){
-        //TODO
+    public void moveStudToIsland(PawnColor pawnColor,Island island){
+        if(studentsWaiting[pawnColor.ordinal()]==0){
+            System.out.println("ERRORE!NON CI SONO STUDENTI DI QUESTO COLORE NELLA WAITING");
+            //piu avanti andra sostituito con un eccezione magari
+        }
+        else{
+            studentsWaiting[pawnColor.ordinal()]--;
+            numStudentsWaiting--;
+            island.addStudent(pawnColor);
+        }
     }
-    public void addProfessor(){
-        //TODO
+    public void addProfessor(PawnColor pawnColor){
+        if(professors[pawnColor.ordinal()]){
+            System.out.println("ERRORE!IMPOSSIBILE RIMUOVERE PROFESSORE");
+            //lancerà una exception
+        }
+        else {
+            professors[pawnColor.ordinal()]=true;
+        }
     }
-    public void removeProfessor(){
-        //TODO
+    public void removeProfessor(PawnColor pawnColor){
+        if(!professors[pawnColor.ordinal()]){
+            System.out.println("ERRORE!IMPOSSIBILE RIMUOVERE PROFESSORE");
+            //lancerà una exception
+        }
+        else {
+            professors[pawnColor.ordinal()]=false;
+        }
     }
     public void addTower(){
-        //TODO
+        if(numTowers>=numMaxTowers){
+            System.out.println("ERRORE!IMPOSSIBILE AGGIUNGERE TORRE");
+            //lancerà una exception
+        }
+        else {
+            numTowers++;
+        }
     }
     public void removeTower(){
-        //TODO
+        if(numTowers<=0){
+            System.out.println("ERRORE!IMPOSSIBILE RIMUOVERE TORRE");
+            //lancerà una exception
+        }
+        else {
+            numTowers--;
+        }
     }
-    public void addStudToWaiting(){
-        //TODO
+    public void addStudToWaiting(PawnColor pawnColor){
+        studentsWaiting[pawnColor.ordinal()]++;
+        numStudentsWaiting++;
     }
 }

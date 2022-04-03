@@ -42,7 +42,7 @@ public class Island {
     public void removeTower(){
         //TODO
     }
-    public void addStudents(){
+    public void addStudent(PawnColor pawnColor){
         //TODO
     }
     public void computeInfluence(){
