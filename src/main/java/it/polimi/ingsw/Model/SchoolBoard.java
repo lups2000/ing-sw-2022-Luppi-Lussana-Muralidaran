@@ -1,14 +1,22 @@
 package it.polimi.ingsw.Model;
 
+/**
+ * Class SchoolBoard
+ * @author Matteo Luppi
+ */
 public class SchoolBoard {
     private boolean[] professors;
     private int[] studentsDining;
     private int[] studentsWaiting;
     private int numTowers;
     private final int numMaxTowers;
-    private int numStudentsWaiting; //it depends on the number of players
+    private int numStudentsWaiting;
 
-    //contructor
+    /**
+     * Constructor
+     * @param numTowers number of towers,it depends on the number of players
+     * @param numStudentsWaiting number of students in the Waiting Room, it depends on the number of players
+     */
     public SchoolBoard(int numTowers,int numStudentsWaiting){
         this.numTowers=numTowers;
         this.numMaxTowers=numTowers;
@@ -38,6 +46,11 @@ public class SchoolBoard {
         return numStudentsWaiting;
     }
 
+    /**
+     * Method to move a student from the Waiting Room(entrance) to the DiningRoom
+     *
+     * @param pawnColor corresponds to the Student
+     */
     public void moveStudToDining(PawnColor pawnColor){
         if(studentsWaiting[pawnColor.ordinal()]==0){
             System.out.println("ERRORE!NON CI SONO STUDENTI DI QUESTO COLORE NELLA WAITING!!!");
@@ -49,6 +62,12 @@ public class SchoolBoard {
             numStudentsWaiting--;
         }
     }
+
+    /**
+     * Method to move a student from the Waiting Room(entrance) to an Island
+     * @param pawnColor corresponds to the Student
+     * @param island corresponds to the Island the player want to move the student on
+     */
     public void moveStudToIsland(PawnColor pawnColor,Island island){
         if(studentsWaiting[pawnColor.ordinal()]==0){
             System.out.println("ERRORE!NON CI SONO STUDENTI DI QUESTO COLORE NELLA WAITING!!!");
@@ -60,6 +79,7 @@ public class SchoolBoard {
             island.addStudent(pawnColor);
         }
     }
+
     public void addProfessor(PawnColor pawnColor){
         if(professors[pawnColor.ordinal()]){
             System.out.println("ERRORE!IMPOSSIBILE RIMUOVERE PROFESSORE!!!");
@@ -96,6 +116,11 @@ public class SchoolBoard {
             numTowers--;
         }
     }
+
+    /**
+     * Method to add a Student to the Waiting Room (Entrance)
+     * @param pawnColor corresponds to the Student
+     */
     public void addStudToWaiting(PawnColor pawnColor){
         studentsWaiting[pawnColor.ordinal()]++;
         numStudentsWaiting++;
