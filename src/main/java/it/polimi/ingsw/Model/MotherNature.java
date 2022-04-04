@@ -21,5 +21,6 @@ public class MotherNature {
      */
     public void move(int steps){
         this.index = index+steps;
+        //exception if steps <0 (is it possible =0?)
     }
 }
