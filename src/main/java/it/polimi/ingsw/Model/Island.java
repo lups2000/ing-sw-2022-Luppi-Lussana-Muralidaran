@@ -1,16 +1,31 @@
 package it.polimi.ingsw.Model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Island {
     private int index;
-    private boolean EntryTiles;
+    private int entryTiles;
     private ColorTower tower;
     private int numTowers;
-    private int[] students;
+    private Map<PawnColor,Integer> students;
     private static int numIslands;
 
     //constructor
-    public Island(){
-        //TODO
+    public Island(int i){
+        this.index = i;
+        this.entryTiles = 0;
+        this.tower = null;
+        this.numTowers = 0;
+        this.students = new HashMap<>();
+
+        if(i == 0 || i == 6){
+            //this.students = new int[] {0,0,0,0,0};
+        }
+        else{
+            //funzione random per inserire uno studente di un colore random
+        }
+        //dove inizializzare l'attributo STATICO numIslands?!
     }
 
     public int getIndex() {
@@ -29,26 +44,31 @@ public class Island {
         return numIslands;
     }
 
-    public int[] getStudents() {
+    public Map<PawnColor, Integer> getStudents() {
         return students;
     }
 
-    public boolean isEntryTiles() {
-        return EntryTiles;
+    public void setEntryTiles() {
+        entryTiles++;
     }
-    public void addTower(){
-        //TODO
-        //
+
+    public int getEntryTiles() {
+        return entryTiles;
     }
-    public void removeTower(){
-        //TODO
+
+    public void changeTower(ColorTower t){
+        if(t == null) numTowers = 1;
+        tower = t;
     }
+
     public void addStudent(PawnColor pawnColor){
         //TODO
     }
+
     public void computeInfluence(){
         //TODO
     }
+
     public void merge(){
         //TODO
     }
