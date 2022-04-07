@@ -28,6 +28,11 @@ public class Player {
     public ColorTower getColorTower() {
         return colorTower;
     }
+
+    public SchoolBoard getSchoolBoard() {
+        return schoolBoard;
+    }
+
     public boolean isFirst(){
         //TODO
         return true;

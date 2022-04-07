@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.lang.Math;
 
+/**
+ * @author Paolo Lussana
+ */
 
 public class StudentBag {
     private int numStudents;
@@ -11,16 +14,16 @@ public class StudentBag {
 
     /**
      * constructor
-     * the studentBag at the start of the game contains all the students, 26 per color
+     * the studentBag at the start of the game contains 120 students, 24 per color, since 10 students are already placed on 10 islands (2 per color)
      */
     public StudentBag(){
-        this.numStudents = 130;
+        this.numStudents = 120;
         this.students = new HashMap<>();
-        students.put(PawnColor.RED,26);
-        students.put(PawnColor.BLUE,26);
-        students.put(PawnColor.YELLOW,26);
-        students.put(PawnColor.PINK,26);
-        students.put(PawnColor.GREEN,26);
+        students.put(PawnColor.RED,24);
+        students.put(PawnColor.BLUE,24);
+        students.put(PawnColor.YELLOW,24);
+        students.put(PawnColor.PINK,24);
+        students.put(PawnColor.GREEN,24);
     }
 
     public Map<PawnColor, Integer> getStudents() {
@@ -32,48 +35,42 @@ public class StudentBag {
     }
 
     /**
-     * method to add students to the bag
-     * @param added is the HashMap that counts, for each color, how many students need to be added to the studentBag
+     * method to add students to the bag, it can only be invoked by a specific CharacterCard
+     * @param toAdd is the chosen color of the students to add to the StudentBag
+     * @param num is the number of students (of the chosen color) to add to the StudentBag
      */
-    public void addStudents(Map<PawnColor,Integer> added){
-        added.forEach((k, v) -> students.merge(k, v, Integer::sum));
+    public void addStudents(PawnColor toAdd, int num){
+        students.put(toAdd, students.get(toAdd) + num);
+        numStudents = numStudents + num;
     }
 
     /**
-     * method to extract random students from the studentBag
-     * @param x is the number of students to extract
-     * @return the HashMap extracted which counts, for each color, how many students are extracted
+     * method to extract a random student from the studentBag
+     * @return the PawnColor of the student extracted
      */
-    public Map<PawnColor,Integer> drawStudent(int x){
-        if(numStudents<x){
-            System.out.println("è possibile estrarre solamente " + numStudents + " studenti");  //ECCEZIONE?
-            x = numStudents;
+    public PawnColor drawStudent(){
+        if(numStudents == 0){
+            System.out.println("studenti finiti");  //ECCEZIONE?
         }
-        Map<PawnColor,Integer> extracted = new HashMap<>();
-        extracted.put(PawnColor.RED,0);
-        extracted.put(PawnColor.BLUE,0);
-        extracted.put(PawnColor.YELLOW,0);
-        extracted.put(PawnColor.PINK,0);
-        extracted.put(PawnColor.GREEN,0);
-        numStudents = numStudents - x;
+        PawnColor drawn = null;
+        numStudents--;
+        boolean check = true;   //boolean to check if there is still a student of the drawn color
 
-        for(int i=0;i<x;i++){
-            int rand = (int)(Math.random() * 5);
-            PawnColor p = null;
+        while(check) {
+            int rand = (int) (Math.random() * 5);
 
-            for(PawnColor d : PawnColor.values()){
-                if(d.ordinal() == rand){
-                    p = d;
+            for (PawnColor d : PawnColor.values()) {
+                if (d.ordinal() == rand) {
+                    drawn = d;
                     break;
                 }
             }
 
-            if(students.get(p) >= 1) {
-                extracted.put(p, extracted.get(p) + 1);
-                students.put(p, students.get(p) - 1);
+            if (students.get(drawn) >= 1) {
+                students.put(drawn, students.get(drawn) - 1);
+                check = false;
             }
-            else i--;
         }
-        return extracted;
+        return drawn;
     }
 }

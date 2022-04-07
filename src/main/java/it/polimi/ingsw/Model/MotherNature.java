@@ -16,11 +16,9 @@ public class MotherNature {
     }
 
     /**
-     *
-     * @param steps indicates the steps MotherNature does each round
+     * @param index indicates the new island's index on which MotherNature lands
      */
-    public void move(int steps){
-        this.index = index+steps;
-        //exception if steps <0 (is it possible =0?)
+    public void move(int index){
+        this.index = index; //controlla che è compreso tra 0 e numIslands-1
     }
 }
