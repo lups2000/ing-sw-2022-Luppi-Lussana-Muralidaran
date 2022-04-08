@@ -48,9 +48,9 @@ public class StudentBag {
      * method to extract a random student from the studentBag
      * @return the PawnColor of the student extracted
      */
-    public PawnColor drawStudent(){
+    public PawnColor drawStudent() throws NoPawnPresentException {
         if(numStudents == 0){
-            System.out.println("studenti finiti");  //ECCEZIONE?
+            throw new NoPawnPresentException();
         }
         PawnColor drawn = null;
         numStudents--;

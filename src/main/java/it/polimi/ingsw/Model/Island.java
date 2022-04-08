@@ -94,12 +94,11 @@ public class Island {
             influence = numTowers;
         }
 
-        //commentate queste righe perché SchoolBoard ancora non aggiornata con professors come Map
-        //for (PawnColor d : PawnColor.values()){
-            //if(player.getSchoolBoard().getProfessors().get(d)){
-                //influence = influence + students.get(d);
-            //}
-        //}
+        for (PawnColor d : PawnColor.values()){
+            if(player.getSchoolBoard().getProfessors().get(d)){
+                influence = influence + students.get(d);
+            }
+        }
         return influence;
     }
 
