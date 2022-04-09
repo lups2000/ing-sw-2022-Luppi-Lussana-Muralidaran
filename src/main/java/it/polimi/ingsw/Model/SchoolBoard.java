@@ -13,33 +13,78 @@ public class SchoolBoard {
     private Map<PawnColor, Integer> studentsWaiting;
     private int numTowers;
     private final int numMaxTowers;
+    private int numCoins;
     private int numStudentsWaiting;
-    private int numMaxStudentsWaiting;
-    private Player player;
+    private final int numMaxStudentsWaiting;
 
-    /**
-     * Constructor
-     * @param numMaxTowers number of towers,it depends on the number of players
-     * @param numMaxStudentsWaiting number of students in the Waiting Room, it depends on the number of players
-     * @param player represents the owner of the schoolBoard
-     */
-    public SchoolBoard(int numMaxTowers,int numMaxStudentsWaiting,Player player){
-        this.numTowers=numMaxTowers;
-        this.numMaxTowers=numMaxTowers;
-        this.professors=new HashMap<>();
-        this.studentsDining=new HashMap<>();
-        this.studentsWaiting=new HashMap<>();
-        this.numStudentsWaiting=numMaxStudentsWaiting;
-        this.numMaxStudentsWaiting=numMaxStudentsWaiting;
-        this.player=player;
+
+    public SchoolBoard(){
+        this.professors = new HashMap<>();
+        professors.put(PawnColor.RED,false);
+        professors.put(PawnColor.BLUE,false);
+        professors.put(PawnColor.YELLOW,false);
+        professors.put(PawnColor.PINK,false);
+        professors.put(PawnColor.GREEN,false);
+
+        this.studentsDining = new HashMap<>();
+        studentsDining.put(PawnColor.RED,0);
+        studentsDining.put(PawnColor.BLUE,0);
+        studentsDining.put(PawnColor.YELLOW,0);
+        studentsDining.put(PawnColor.PINK,0);
+        studentsDining.put(PawnColor.GREEN,0);
+
+        this.studentsWaiting = new HashMap<>();
+        studentsWaiting.put(PawnColor.RED,0);
+        studentsWaiting.put(PawnColor.BLUE,0);
+        studentsWaiting.put(PawnColor.YELLOW,0);
+        studentsWaiting.put(PawnColor.PINK,0);
+        studentsWaiting.put(PawnColor.GREEN,0);
+
+        if(Game.getInstance().getMaxNumPlayers() == 2){
+            numTowers = 6;
+            numMaxTowers = 6;
+            numMaxStudentsWaiting = 7;
+        }
+        else{
+            numTowers = 8;
+            numMaxTowers = 8;
+            numMaxStudentsWaiting = 9;
+        }
+        if(Game.getInstance().getExpertsVariant()){
+            this.numCoins = 1;
+        }
+        else{
+            this.numCoins = 0;
+        }
     }
 
-    public Map<PawnColor, Boolean> getProfessors() {return professors;}
-    public int getNumTowers() {return numTowers;}
-    public Map<PawnColor, Integer> getStudentsDining() {return studentsDining;}
-    public Map<PawnColor, Integer> getStudentsWaiting() {return studentsWaiting;}
-    public int getNumStudentsWaiting() {return numStudentsWaiting;}
-    public Player getPlayer() {return player;}
+    public Map<PawnColor, Boolean> getProfessors() {
+        return professors;
+    }
+
+    public int getNumMaxStudentsWaiting() {
+        return numMaxStudentsWaiting;
+    }
+
+    public int getNumMaxTowers() {
+        return numMaxTowers;
+    }
+
+    public int getNumTowers() {
+        return numTowers;
+    }
+
+    public Map<PawnColor, Integer> getStudentsDining() {
+        return studentsDining;
+    }
+
+    public Map<PawnColor, Integer> getStudentsWaiting() {
+        return studentsWaiting;
+    }
+
+    public int getNumStudentsWaiting() {
+        return numStudentsWaiting;
+    }
 
     /**
      * Method to move a student from the Waiting Room(entrance) to the DiningRoom
@@ -57,8 +102,8 @@ public class SchoolBoard {
             studentsWaiting.put(pawnColor,studentsWaiting.get(pawnColor)-1);
             studentsDining.put(pawnColor,studentsDining.get(pawnColor)+1);
             numStudentsWaiting--;
-            if(studentsDining.get(pawnColor)%3 == 0){
-                this.player.addCoin(1);
+            if(studentsDining.get(pawnColor)%3 == 0 && Game.getInstance().getExpertsVariant()){
+                numCoins++;
             }
         }
     }

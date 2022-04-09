@@ -11,8 +11,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Matteo Luppi
  */
 class SchoolBoardTest {
-    Player player=new Player();
-    SchoolBoard schoolBoard=new SchoolBoard(8,7,player);
+    //Player player=new Player();
+    //SchoolBoard schoolBoard=new SchoolBoard(8,7,player);
 
     @BeforeEach
     void setup(){

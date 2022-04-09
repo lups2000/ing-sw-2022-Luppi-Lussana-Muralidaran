@@ -1,30 +1,55 @@
 package it.polimi.ingsw.Model;
 
+
 public class Player {
-    private String nickName;
     private int id;
+    private String nickname;
     private ColorTower colorTower;
-    private int numCoins;
     private PlayerStatus playerStatus;
     private SchoolBoard schoolBoard;
     private DeckAssistantCard deckAssistantCard;
 
-    //constructor
-    public Player(){
-        //TODO
+    /**
+     * constructor of the Player class
+     * @param id is the id given to every player (the first to register will be given id=0 and so on)
+     * @param nickname is the nickname the player chooses when he registers himself
+     * @param seed is the wizard selected by this player for the choice of the assistant cards' deck
+     */
+    public Player(int id,String nickname,AssistantSeed seed){
+        this.id = id;
+        this.nickname = nickname;
+        switch (id){
+            case 0:
+                this.colorTower = ColorTower.WHITE;
+            break;
+
+            case 1:
+                this.colorTower = ColorTower.BLACK;
+            break;
+
+            case 2:
+                this.colorTower = ColorTower.GRAY;
+            break;
+
+            default:
+        }
+        this.playerStatus = PlayerStatus.WAITING;
+        this.schoolBoard = new SchoolBoard();
+        this.deckAssistantCard = new DeckAssistantCard(seed);
     }
-    public String getNickName() {
-        return nickName;
+
+    public String getNickname() {
+        return nickname;
     }
+
     public int getId() {
         return id;
     }
+
     public PlayerStatus getPlayerStatus() {
         return playerStatus;
     }
-    public int getNumCoins() {
-        return numCoins;
-    }
+
     public ColorTower getColorTower() {
         return colorTower;
     }
@@ -37,15 +62,8 @@ public class Player {
         //TODO
         return true;
     }
-    public void addCoin(){
-        //TODO
-    }
+
     public void pickAssistant(){
         //TODO
     }
-    public void chooseDeck(){
-        //TODO
-    }
-
-
 }

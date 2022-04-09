@@ -13,7 +13,7 @@ public class Island {
     private ColorTower tower;
     private int numTowers;
     private Map<PawnColor,Integer> students;
-    public static int numIslands = 12;
+    private static int numIslands = 12;
 
     /**
      * constructor of the initial 12 islands
@@ -35,7 +35,9 @@ public class Island {
 
         //in Game a ogni isola dell'arrayList chiamo il metodo drawStudents() di studentBag, tranne per i=0 e per i=6 dove passo un PawnColor null
         //devo stare attento a distribuire 10 studenti iniziali, 2 per ogni colore all'inizio
-        students.put(drawn,students.get(drawn) + 1);
+        if(index != 0 && index != 6){
+            students.put(drawn,students.get(drawn) + 1);
+        }
     }
 
     public int getIndex() {
@@ -52,6 +54,10 @@ public class Island {
 
     public Map<PawnColor, Integer> getStudents() {
         return students;
+    }
+
+    public static int getNumIslands() {
+        return numIslands;
     }
 
     /**
