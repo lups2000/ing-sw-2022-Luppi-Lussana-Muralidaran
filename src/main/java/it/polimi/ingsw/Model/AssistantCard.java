@@ -7,7 +7,6 @@ package it.polimi.ingsw.Model;
 public class AssistantCard {
     private int value;
     private int maxStepsMotherNature;
-    private AssistantStatus assistantStatus;
 
     /**
      * Constructor
@@ -16,13 +15,11 @@ public class AssistantCard {
      */
     public AssistantCard(int value,int maxStepsMotherNature){
         if(value<1 || value>10 || maxStepsMotherNature<1 || maxStepsMotherNature>5){
-            System.out.println("ERRORE!!!");
-            //exception
+            throw new IllegalStateException("Error");
         }
         else{
             this.value=value;
             this.maxStepsMotherNature=maxStepsMotherNature;
-            this.assistantStatus=AssistantStatus.AVAILABLE;
         }
     }
     public int getValue() {
@@ -31,7 +28,5 @@ public class AssistantCard {
     public int getMaxStepsMotherNature() {
         return maxStepsMotherNature;
     }
-    public AssistantStatus getAssistantStatus() {
-        return assistantStatus;
-    }
+
 }

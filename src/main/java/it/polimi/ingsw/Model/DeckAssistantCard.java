@@ -9,7 +9,6 @@ import java.util.List;
 public class DeckAssistantCard {
     private List<AssistantCard> cards;
     private AssistantSeed seed;
-    private boolean used;
 
     /**
      * Constructor, creation of the Deck of Assistent Cards(10 cards in total)
@@ -28,18 +27,35 @@ public class DeckAssistantCard {
             }
         }
         this.seed = chosenSeed;
-        this.used=false;
     }
 
     public AssistantSeed getSeed() {
         return seed;
     }
-
     public List<AssistantCard> getCards() {
         return cards;
     }
 
-    public boolean isUsed() {
-        return used;
+    /**
+     * This method tells us if a card is contained or not in the deck
+     * @param assistantCard the card chosen
+     * @return true/false
+     */
+    public boolean isCardAvailable(AssistantCard assistantCard){
+        for(AssistantCard card: cards){
+            if (cards.contains(assistantCard)){
+                return true;
+            }
+        }
+        return false;
     }
+
+    /**
+     * This method removes the card from the deck
+     * @param assistantCard is the card that has to be removed from the player's deck after his turn
+     */
+    public void remove(AssistantCard assistantCard){
+        cards.remove(assistantCard);
+    }
+
 }

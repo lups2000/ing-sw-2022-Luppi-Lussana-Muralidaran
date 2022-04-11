@@ -17,7 +17,7 @@ public class Player {
      * constructor of the Player class
      * @param id is the id given to every player (the first to register will be given id=0 and so on)
      * @param nickname is the nickname the player chooses when he registers himself
-     //* @param seed is the wizard selected by this player for the choice of the assistant cards' deck
+     * @param seed is the wizard selected by this player for the choice of the assistant cards' deck
      */
     public Player(int id,String nickname,AssistantSeed seed){
         this.id = id;
@@ -30,10 +30,6 @@ public class Player {
         this.playerStatus = PlayerStatus.WAITING;
         this.schoolBoard = new SchoolBoard();
         this.deckAssistantCard = new DeckAssistantCard(seed);
-    }
-
-    public void createDeck(AssistantSeed seed){
-        this.deckAssistantCard=new DeckAssistantCard(seed);
     }
 
     public String getNickname() {
@@ -49,13 +45,14 @@ public class Player {
     public SchoolBoard getSchoolBoard() {
         return schoolBoard;
     }
+    public void createDeck(AssistantSeed seed){
+        this.deckAssistantCard=new DeckAssistantCard(seed);
+    }
+
     public boolean isFirst(){
         //TODO
         return true;
     }
 
-    public void pickAssistant(){
-        //TODO
-    }
 
 }
