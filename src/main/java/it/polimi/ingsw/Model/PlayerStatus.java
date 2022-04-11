@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Model;
 
+/**
+ * @author Matteo Luppi
+ */
 public enum PlayerStatus {
-    WAITING,PLAYING,WINNER;
+    WAITING,DISCONNECTED,PLAYING,WINNER;
 }

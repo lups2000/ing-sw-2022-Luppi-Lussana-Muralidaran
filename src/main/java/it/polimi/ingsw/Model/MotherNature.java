@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Model;
 
+/**
+ * @author Paolo Lussana
+ */
 public class MotherNature {
     private int index;
 

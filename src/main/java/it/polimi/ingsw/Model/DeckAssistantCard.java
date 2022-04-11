@@ -3,6 +3,9 @@ package it.polimi.ingsw.Model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Matteo Luppi
+ */
 public class DeckAssistantCard {
     private List<AssistantCard> cards;
     private AssistantSeed seed;

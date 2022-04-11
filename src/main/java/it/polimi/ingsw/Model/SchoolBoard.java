@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * Class SchoolBoard
- * @author Matteo Luppi
+ * @author Matteo Luppi,Paolo Lussana
  */
 public class SchoolBoard {
     private Map<PawnColor, Boolean> professors;
@@ -40,14 +40,15 @@ public class SchoolBoard {
         studentsWaiting.put(PawnColor.PINK,0);
         studentsWaiting.put(PawnColor.GREEN,0);
 
-        if(Game.getInstance().getMaxNumPlayers() == 2){
-            numTowers = 6;
-            numMaxTowers = 6;
+
+        if(Game.getInstance().getMaxNumPlayers() == 2 || Game.getInstance().getMaxNumPlayers() == 4){
+            numTowers = 8;
+            numMaxTowers = 8;
             numMaxStudentsWaiting = 7;
         }
         else{
-            numTowers = 8;
-            numMaxTowers = 8;
+            numTowers = 6;
+            numMaxTowers = 6;
             numMaxStudentsWaiting = 9;
         }
         if(Game.getInstance().getExpertsVariant()){

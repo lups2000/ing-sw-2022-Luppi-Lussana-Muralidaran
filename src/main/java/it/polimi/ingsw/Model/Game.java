@@ -1,12 +1,10 @@
 package it.polimi.ingsw.Model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * class Game is a Singleton class
+ * @author Paolo Lussana,Matteo Luppi
  */
 public class Game {
     private static Game single_instance = null;
@@ -15,20 +13,17 @@ public class Game {
     private boolean expertsVariant;
     //private List<CharacterCard> characterCards;
     private GameState status;
-    private List<DeckAssistantCard> decks; //4
+    private List<AssistantSeed> seedsAvailable; //4 seeds that can be chosen by the players
     private List<Island> islands; //initially 12
     private StudentBag studentBag;
     private MotherNature motherNature;
     private List<CloudTile> cloudTiles; //2-4
 
-    //devo controllare bene se è così il corretto funzionamento del Singleton
-    //leggevo che con il pattern Singleton non si possono fare costruttori con parametri
-    //quindi qui in Game() ho messo solo le operazioni che sono uguali a prescindere dal num.giocatori e dalla variante per esperti
-    //mentre ho lasciato in initGame() le cose che invece vi dipendono, metodo che andrà chiamato
+
     private Game(){
         this.players = new ArrayList<Player>();
         this.status = GameState.CREATING;
-        this.decks = new ArrayList<DeckAssistantCard>();
+        this.seedsAvailable=new ArrayList<>(Arrays.asList(AssistantSeed.KING,AssistantSeed.SAMURAI,AssistantSeed.WITCH,AssistantSeed.WIZARD));
         this.islands = new ArrayList<Island>();
         fillIslands();
         this.studentBag = new StudentBag();
@@ -50,7 +45,7 @@ public class Game {
         this.cloudTiles = new ArrayList<CloudTile>();
         for(int i=0;i<max;i++){
             CloudTile newCloud = new CloudTile(i);
-            cloudTiles.add(i,newCloud);
+            cloudTiles.add(i,new CloudTile(i));
             fillCloudTile(newCloud);
         }
     }
@@ -65,6 +60,7 @@ public class Game {
         return single_instance;
     }
 
+
     /**
      * method invoked every time a new player tries to connect with the server
      * @param nickname is the nickname the player chooses when he registers himself
@@ -75,11 +71,12 @@ public class Game {
             throw new IllegalStateException("Too many players");
         }
         Player newPlayer = new Player(players.size(),nickname,chosenSeed);
+        newPlayer.createDeck(chosenSeed);
         players.add(players.size(),newPlayer);
-        DeckAssistantCard newDeck = new DeckAssistantCard(chosenSeed);
-        decks.add(players.size()-1,newDeck);
+        seedsAvailable.remove(chosenSeed);
         fillBoard(newPlayer);
     }
+
 
     public GameState getStatus() {
         return status;
@@ -128,38 +125,37 @@ public class Game {
      * it's needed to distribute a total of 10 students, 2 per color, in 10 islands (n.0 and n.6 excluded)
      */
     public void fillIslands() {
-        Map<PawnColor, Integer> available = new HashMap<>();
-        available.put(PawnColor.RED, 2);
-        available.put(PawnColor.BLUE, 2);
-        available.put(PawnColor.YELLOW, 2);
-        available.put(PawnColor.PINK, 2);
-        available.put(PawnColor.GREEN, 2);
+        Map<PawnColor, Integer> availableStudents = new HashMap<>();
+        availableStudents.put(PawnColor.RED, 2);
+        availableStudents.put(PawnColor.BLUE, 2);
+        availableStudents.put(PawnColor.YELLOW, 2);
+        availableStudents.put(PawnColor.PINK, 2);
+        availableStudents.put(PawnColor.GREEN, 2);
 
         for (int i = 0; i < 12; i++) {
-            PawnColor drawn = null;
-            boolean check = true;   //boolean to check if there is still a student of the drawn color
-            if(i == 0 || i == 6){
-                //I pass the pawn color RED but it's irrelevant since in the Island constructor if index=0 or =6 no students will be placed on the island at the beginning
-                Island newIsland = new Island(i,PawnColor.RED);
-                islands.add(i,newIsland);
-                check = false;
-            }
-            while (check) {
-                int rand = (int) (Math.random() * 5);
+            PawnColor pawnColor=null;
+            Island newIsland=new Island(i);
+            if(i!=0 && i!=6){
+                for(int j=0;j<1;j++){
+                    int rand=(int) (Math.random() * 5);
 
-                for (PawnColor d : PawnColor.values()) {
-                    if (d.ordinal() == rand) {
-                        drawn = d;
-                        break;
+                    for(PawnColor p : PawnColor.values()){
+                        if(p.ordinal()==rand){
+                            pawnColor=p;
+                            break;
+                        }
+                    }
+                    if(availableStudents.get(pawnColor)>=1){
+                        availableStudents.put(pawnColor,availableStudents.get(pawnColor)-1);
+                        newIsland.addStudent(pawnColor);
+                    }
+                    else{
+                        //if there aren't students of color 'pawncolor'
+                        j--;
                     }
                 }
-                if (available.get(drawn) >= 1) {
-                    available.put(drawn, available.get(drawn) - 1);
-                    Island newIsland = new Island(i,drawn);
-                    islands.add(i,newIsland);
-                    check = false;
-                }
             }
+            islands.add(newIsland);
         }
     }
 }

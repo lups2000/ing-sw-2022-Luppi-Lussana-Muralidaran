@@ -7,7 +7,6 @@ import java.lang.Math;
 /**
  * @author Paolo Lussana
  */
-
 public class StudentBag {
     private int numStudents;
     private Map<PawnColor,Integer> students;

@@ -1,5 +1,9 @@
 package it.polimi.ingsw.Model;
 
+
+/**
+ * @author Matteo Luppi
+ */
 public class AssistantCard {
     private int value;
     private int maxStepsMotherNature;

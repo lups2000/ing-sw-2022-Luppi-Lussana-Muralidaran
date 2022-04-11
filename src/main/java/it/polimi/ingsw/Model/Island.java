@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Paolo Lussana
+ * @author Paolo Lussana,Matteo Luppi
  */
 
 public class Island {
@@ -18,10 +18,8 @@ public class Island {
     /**
      * constructor of the initial 12 islands
      * @param index is the initial index of the island, from 0 to 11
-     * @param drawn is the color result of the random extraction of a single student, done in method drawStudents() of StudentBag class
-     *                  if the index i is =0 or =6 extracted will be =null, since they are the islands without any student at the beginning of the game
      */
-    public Island(int index,PawnColor drawn){
+    public Island(int index){
         this.index = index;
         this.entryTiles = 0;
         this.tower = null;
@@ -32,13 +30,8 @@ public class Island {
         students.put(PawnColor.YELLOW,0);
         students.put(PawnColor.PINK,0);
         students.put(PawnColor.GREEN,0);
-
-        //in Game a ogni isola dell'arrayList chiamo il metodo drawStudents() di studentBag, tranne per i=0 e per i=6 dove passo un PawnColor null
-        //devo stare attento a distribuire 10 studenti iniziali, 2 per ogni colore all'inizio
-        if(index != 0 && index != 6){
-            students.put(drawn,students.get(drawn) + 1);
-        }
     }
+
 
     public int getIndex() {
         return index;
@@ -72,13 +65,15 @@ public class Island {
     }
 
     /**
-     * method to change the tower(s) on the island(s), if tower is null it means that there were no towers at all on the island and so we increment numTowers to 1
+     * method to change the tower(s) on the island(s), if tower is null it means that there were no towers at all on the island and so we set numTowers to 1
      * if tower is not null we don't add new towers, we simply replace them with another colorTower
-     * @param t is the new colorTower to build on the island(s)
+     * @param tower is the new colorTower to build on the island(s)
      */
-    public void changeTower(ColorTower t){
-        if(tower == null) numTowers = 1;
-        tower = t;
+    public void changeTower(ColorTower tower){
+        if(tower == null){
+            numTowers = 1;
+        }
+        this.tower=tower;
     }
 
     /**
