@@ -158,4 +158,127 @@ public class Game {
             islands.add(newIsland);
         }
     }
+
+    /**
+     * method to move mother nature
+     * @param newIndex is the island's index on which mother nature will stop
+     */
+    public void moveMotherNature(int newIndex) throws TooManyTowersException,NoTowersException{
+        this.motherNature.move(newIndex);
+        influence(newIndex);
+    }
+
+    /**
+     * method to compute which player has more influence on an island
+     * @param islandIndex is the island's index (or group of islands) on which we are computing the influence
+     */
+    public void influence(int islandIndex) throws TooManyTowersException,NoTowersException{
+        //if there is a no entry tile on the island the influence is not computed and one no entry tile will be removed
+        if(islands.get(islandIndex).getEntryTiles() == 0) {
+            int maxInfluence = 0;
+            Player winner = players.get(0);
+            //if it happens a draw between the influences of two (or more) players on an island no action is needed
+            boolean drawInfluence = false;
+            for (Player player : players) {
+                if(maxInfluence < islands.get(islandIndex).computeInfluence(player)) {
+                    maxInfluence = islands.get(islandIndex).computeInfluence(player);
+                    winner = player;
+                }
+                else if(maxInfluence != 0 && maxInfluence == islands.get(islandIndex).computeInfluence(player)){
+                    drawInfluence = true;
+                }
+            }
+
+            //if the winner is the same player who had already the towers on this island no action is needed
+            if(!drawInfluence && maxInfluence > 0 && !(winner.getColorTower()).equals(islands.get(islandIndex).getTower())){
+                //if there were already some towers present on the island it means that they are supposed to return
+                // to the school board of theirs owner
+                if(islands.get(islandIndex).getNumTowers() > 0){
+                    for(Player oldPlayer : players){
+                        if((oldPlayer.getColorTower()).equals(islands.get(islandIndex).getTower())){
+                            oldPlayer.getSchoolBoard().addTowers(islands.get(islandIndex).getNumTowers());
+                        }
+                    }
+                }
+                islands.get(islandIndex).changeTower(winner.getColorTower());
+                //we remove from the school board the towers that will be placed on the island
+                winner.getSchoolBoard().addTowers((islands.get(islandIndex).getNumTowers())*(-1));
+                checkArchipelago(islandIndex);
+            }
+        }
+        //da controllare se un giocatore nel costruire nuovi torri non finsce le sue presenti nella plancia
+        //in caso -> FINE PARTITA E VITTORIA DI QUEL PLAYER
+
+        else{
+            islands.get(islandIndex).setEntryTiles(-1);
+        }
+    }
+
+    /**
+     * method to check if there is a union between two islands (or two group of islands)
+     * this method is invoked each time a new tower(s) is placed on an island
+     * @param index is the island's index on which is placed the new tower(s)
+     */
+    public void checkArchipelago(int index){
+        if(islands.get(index).getTower().equals(islands.get((index+1)%(Island.getNumIslands())).getTower())){
+            islands.get(index).merge(islands.get((index+1)%(Island.getNumIslands())));
+            updateIndexes((index+1)%(Island.getNumIslands()));
+        }
+        else if(islands.get(index).getTower().equals(islands.get((index-1)%(Island.getNumIslands())).getTower())){
+            islands.get((index-1)%(Island.getNumIslands())).merge(islands.get(index));
+            updateIndexes(index);
+        }
+        //controlla se numIslands scende a 3 -> FINE PARTITA
+    }
+
+    /**
+     * method to update the indexes of the ArrayList islands, with a left shift of  indexes removing the island
+     * that will be merged within the next one
+     * this method is invoked each time there is the creation of a new archipelago
+     * @param removedIndex is the index of the island that need to be merged (and so removed from the ArrayList)
+     */
+    public void updateIndexes(int removedIndex){
+
+        for(int i=removedIndex;i<Island.getNumIslands();i++){
+            islands.set(i,islands.get(i+1));
+        }
+        islands.remove(Island.getNumIslands());
+    }
+
+    /**
+     * method invoked each time there are movements in the players' school boards
+     * it checks if a new player has gained some professors with his recent moves
+     */
+    public void allocateProfessors() throws NoPawnPresentException,TooManyPawnsPresent{
+        for(PawnColor color : PawnColor.values()) {
+            Player winner = players.get(0);
+            Player owner = null;
+            int maxStudents = 0;
+            boolean draw = false;
+            for (Player player : players) {
+                if(player.getSchoolBoard().getProfessors().get(color)){
+                    owner = player;
+                }
+                if(player.getSchoolBoard().getStudentsWaiting().get(color) > maxStudents){
+                    winner = player;
+                    maxStudents = player.getSchoolBoard().getStudentsWaiting().get(color);
+                }
+                else if(player.getSchoolBoard().getStudentsWaiting().get(color) == maxStudents){
+                    draw = true;
+                }
+            }
+            if(owner != null) {
+                if (!draw && maxStudents != 0 && !(winner.equals(owner))) {
+                    owner.getSchoolBoard().removeProfessor(color);
+                    winner.getSchoolBoard().addProfessor(color);
+                }
+            }
+            else {
+                if (maxStudents != 0) {
+                    winner.getSchoolBoard().addProfessor(color);
+                }
+            }
+        }
+    }
+    //METODO PER CALCOLARE IL PRIMO GIOCATORE AD OGNI TURNO TODO
 }

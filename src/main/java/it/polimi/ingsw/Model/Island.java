@@ -32,11 +32,6 @@ public class Island {
         students.put(PawnColor.GREEN,0);
     }
 
-
-    public int getIndex() {
-        return index;
-    }
-
     public int getNumTowers() {
         return numTowers;
     }

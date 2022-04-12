@@ -150,20 +150,20 @@ public class SchoolBoard {
             professors.put(pawnColor,false);
         }
     }
-    public void addTower() throws TooManyTowersException {
-        if(numTowers>=numMaxTowers){
+
+    /**
+     * method to add (or remove) towers from the school board
+     * @param num the number of towers to add (or remove if num is negative)
+     */
+    public void addTowers(int num) throws TooManyTowersException,NoTowersException{
+        if(numTowers+num >= numMaxTowers){
             throw new TooManyTowersException();
         }
-        else {
-            numTowers++;
-        }
-    }
-    public void removeTower() throws NoTowersException {
-        if(numTowers<=0){
+        else if(numTowers+num <= 0){
             throw new NoTowersException();
         }
         else {
-            numTowers--;
+            numTowers = numTowers + num;
         }
     }
 
