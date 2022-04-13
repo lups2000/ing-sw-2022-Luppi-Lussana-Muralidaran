@@ -87,6 +87,12 @@ public class SchoolBoard {
         return numStudentsWaiting;
     }
 
+    public int getNumCoins() {return numCoins;}
+
+    public void decreaseNumCoins(int numCoins){
+        this.numCoins=this.numCoins-numCoins;
+    }
+
     /**
      * Method to move a student from the Waiting Room(entrance) to the DiningRoom
      *

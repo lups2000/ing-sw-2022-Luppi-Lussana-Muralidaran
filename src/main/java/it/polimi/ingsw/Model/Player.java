@@ -48,11 +48,8 @@ public class Player {
     public void createDeck(AssistantSeed seed){
         this.deckAssistantCard=new DeckAssistantCard(seed);
     }
+    public DeckAssistantCard getDeckAssistantCard() {return deckAssistantCard;}
 
-    public boolean isFirst(){
-        //TODO
-        return true;
-    }
 
 
 }
