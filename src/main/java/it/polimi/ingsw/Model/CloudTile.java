@@ -32,17 +32,9 @@ public class CloudTile {
         students.put(PawnColor.GREEN,0);
     }
 
-    public int getMaxNumStudents() {
-        return maxNumStudents;
-    }
-
-    public Map<PawnColor, Integer> getStudents() {
-        return students;
-    }
-
-    public int getId() {
-        return id;
-    }
+    public int getMaxNumStudents() {return maxNumStudents;}
+    public Map<PawnColor, Integer> getStudents() {return students;}
+    public int getId() {return id;}
 
     /**
      * when a player chooses a cloud tile at the end of his round

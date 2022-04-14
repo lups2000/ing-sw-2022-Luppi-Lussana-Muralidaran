@@ -15,7 +15,7 @@ public class AssistantCard {
      */
     public AssistantCard(int value,int maxStepsMotherNature){
         if(value<1 || value>10 || maxStepsMotherNature<1 || maxStepsMotherNature>5){
-            throw new IllegalStateException("Error");
+            throw new IllegalStateException("Error"); //ha senso lanciare una eccezione?In realta il mazzo lo costruiamo noi come vogliamo
         }
         else{
             this.value=value;

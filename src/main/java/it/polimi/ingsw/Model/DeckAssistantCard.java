@@ -54,7 +54,7 @@ public class DeckAssistantCard {
      * This method removes the card from the deck
      * @param assistantCard is the card that has to be removed from the player's deck after his turn
      */
-    public void remove(AssistantCard assistantCard){
+    public void pick(AssistantCard assistantCard){
         cards.remove(assistantCard);
     }
 

@@ -40,29 +40,27 @@ public class Island {
         students.put(PawnColor.GREEN,0);
     }
 
+    public int getIndex() {return index;}
     public void setIndex(int newIndex){
         this.index = newIndex;
     }
-
     public int getNumTowers() {
         return numTowers;
     }
-
     public ColorTower getTower() {
         return tower;
     }
-
     public boolean isMotherNature(){
         return motherNature;
     }
-
     public Map<PawnColor, Integer> getStudents() {
         return students;
     }
-
     public static int getNumIslands() {
         return numIslands;
     }
+    public static void setNumIslands(int numIslands) {Island.numIslands = numIslands;}
+    public void setMotherNature(boolean motherNature) {this.motherNature = motherNature;}
 
     /**
      * @param num so it is possible both to add or to remove an EntryTile (num will respectively be +1 or -1)

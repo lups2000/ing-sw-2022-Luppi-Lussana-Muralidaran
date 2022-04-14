@@ -1,13 +1,19 @@
 package it.polimi.ingsw.Model.CharacterCards;
 
+import it.polimi.ingsw.Model.NoPawnPresentException;
+import it.polimi.ingsw.Model.TooManyPawnsPresent;
+
 public abstract class CharacterCard {
-    private int cost;
-    private boolean used;
+    protected int cost;
+    protected boolean used;
 
     public int getCost() {return cost;}
+
     public boolean isUsed() {return used;}
 
-    public void effect(){
+    public void setUsed(boolean used) {this.used = used;}
+
+    public void effect() throws NoPawnPresentException, TooManyPawnsPresent {
 
     }
 }

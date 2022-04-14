@@ -54,44 +54,21 @@ public class SchoolBoard {
         if(Game.getInstance().getExpertsVariant()){
             this.numCoins = 1;
         }
+        //questo else non si puo levare??
         else{
             this.numCoins = 0;
         }
     }
 
-    public Map<PawnColor, Boolean> getProfessors() {
-        return professors;
-    }
-
-    public int getNumMaxStudentsWaiting() {
-        return numMaxStudentsWaiting;
-    }
-
-    public int getNumMaxTowers() {
-        return numMaxTowers;
-    }
-
-    public int getNumTowers() {
-        return numTowers;
-    }
-
-    public Map<PawnColor, Integer> getStudentsDining() {
-        return studentsDining;
-    }
-
-    public Map<PawnColor, Integer> getStudentsWaiting() {
-        return studentsWaiting;
-    }
-
-    public int getNumStudentsWaiting() {
-        return numStudentsWaiting;
-    }
-
+    public Map<PawnColor, Boolean> getProfessors() {return professors;}
+    public int getNumMaxStudentsWaiting() {return numMaxStudentsWaiting;}
+    public int getNumMaxTowers() {return numMaxTowers;}
+    public int getNumTowers() {return numTowers;}
+    public Map<PawnColor, Integer> getStudentsDining() {return studentsDining;}
+    public Map<PawnColor, Integer> getStudentsWaiting() {return studentsWaiting;}
+    public int getNumStudentsWaiting() {return numStudentsWaiting;}
     public int getNumCoins() {return numCoins;}
-
-    public void decreaseNumCoins(int numCoins){
-        this.numCoins=this.numCoins-numCoins;
-    }
+    public void decreaseNumCoins(int numCoins){this.numCoins=this.numCoins-numCoins;}
 
     /**
      * Method to move a student from the Waiting Room(entrance) to the DiningRoom

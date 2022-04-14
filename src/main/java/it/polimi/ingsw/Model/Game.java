@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Model.CharacterCards.*;
+
 import java.util.*;
 
 /**
@@ -11,13 +13,14 @@ public class Game {
     private int maxNumPlayers;
     private List<Player> players; //2-4
     private boolean expertsVariant;
-    //private List<CharacterCard> characterCards;
+    private List<CharacterCard> characterCards; //list with the three random character cards
     private GameState status;
     private List<AssistantSeed> seedsAvailable; //4 seeds that can be chosen by the players
     private List<Island> islands; //initially 12
     private StudentBag studentBag;
     private int motherNature;
     private List<CloudTile> cloudTiles; //2-4
+    private DeckCharacterCard deckCharacterCard;
 
 
     private Game(){
@@ -28,6 +31,7 @@ public class Game {
         fillIslands();
         this.studentBag = new StudentBag();
         this.motherNature = 0;
+        this.deckCharacterCard=new DeckCharacterCard();
     }
 
     /**
@@ -39,7 +43,7 @@ public class Game {
         this.maxNumPlayers = max;
         this.expertsVariant = experts;
         if(expertsVariant){
-            //genera 3 carte personaggio TODO
+            characterCards=deckCharacterCard.pickThreeRandomCards();
         }
 
         this.cloudTiles = new ArrayList<>();
@@ -77,32 +81,18 @@ public class Game {
         fillBoard(newPlayer);
     }
 
-
-    public GameState getStatus() {
-        return status;
-    }
-
-    public List<Player> getPlayers() {
-        return players;
-    }
-
-    public int getMaxNumPlayers() {
-        return maxNumPlayers;
-    }
-
-    public boolean getExpertsVariant(){
-        return expertsVariant;
-    }
-
-    public void changeStatus(GameState status){
-        this.status = status;
-    }
+    public GameState getStatus() {return status;}
+    public List<Player> getPlayers() {return players;}
+    public int getMaxNumPlayers() {return maxNumPlayers;}
+    public boolean getExpertsVariant(){return expertsVariant;}
+    public void changeStatus(GameState status){this.status = status;}
+    public StudentBag getStudentBag() {return studentBag;}
 
     /**
      * method invoked one time for each player at the start of the game that fills his school board
      * @param player is the player who just entered the match, his school board will be filled
      */
-    public void fillBoard(Player player) throws NoPawnPresentException,TooManyPawnsPresent{
+    private void fillBoard(Player player) throws NoPawnPresentException,TooManyPawnsPresent{
         for(int i=0;i<player.getSchoolBoard().getNumMaxStudentsWaiting();i++){
             PawnColor sorted = studentBag.drawStudent();
             player.getSchoolBoard().addStudToWaiting(sorted);
@@ -124,7 +114,7 @@ public class Game {
      * method to fill the islands at the beginning of the game
      * it's needed to distribute a total of 10 students, 2 per color, in 10 islands (n.0 and n.6 excluded)
      */
-    public void fillIslands() {
+    private void fillIslands() {
         Map<PawnColor, Integer> availableStudents = new HashMap<>();
         availableStudents.put(PawnColor.RED, 2);
         availableStudents.put(PawnColor.BLUE, 2);
@@ -167,6 +157,16 @@ public class Game {
         this.motherNature = newIndex;
         influence(newIndex);
     }
+    //e se gli passassimo l'oggetto ???
+    /*
+    public void moveMotherNature(Island island) throws TooManyTowersException,NoTowersException{
+        this.motherNature = island.getIndex();
+        island.setMotherNature(true);
+        influence(newIndex);
+    }
+     */
+
+
 
     /**
      * method to compute which player has more influence on an island
@@ -217,6 +217,54 @@ public class Game {
             islands.get(islandIndex).setEntryTiles(-1);
         }
     }
+    /*
+    public void influence(Island island) throws TooManyTowersException,NoTowersException{
+        int islandIndex=island.getIndex();
+        //if there is a no entry tile on the island the influence is not computed and one no entry tile will be removed
+        if(islands.get(islandIndex).getEntryTiles() == 0) {
+            int maxInfluence = 0;
+            Player winner = players.get(0); //by default
+            //"previousOwner" is the player who previously had tower(s) on the island (if there is one)
+            Player previousOwner = null;
+            //if it happens a draw between the influences of two (or more) players on an island no action is needed
+            boolean drawInfluence = false;
+
+            for (Player player : players) {
+                if((islands.get(islandIndex).getTower()).equals(player.getColorTower())){
+                    previousOwner = player;
+                }
+                if(maxInfluence < islands.get(islandIndex).computeInfluence(player)) {
+                    maxInfluence = islands.get(islandIndex).computeInfluence(player);
+                    winner = player;
+                    drawInfluence = false;
+                }
+                else if(maxInfluence != 0 && maxInfluence == islands.get(islandIndex).computeInfluence(player)){
+                    drawInfluence = true;
+                }
+            }
+
+            //if the winner is the same player who had already the towers on this island no action is needed
+            if(!drawInfluence && maxInfluence > 0 && !(winner.equals(previousOwner))){
+                //if there were already some towers present on the island it means that they are supposed to return
+                // to the school board of theirs owner
+                if(previousOwner != null){
+                    previousOwner.getSchoolBoard().addTowers(islands.get(islandIndex).getNumTowers());
+                }
+                //whether or not there were already towers on the island these following instructions must be done
+                islands.get(islandIndex).changeTower(winner.getColorTower());
+                //we remove from the school board the towers that will be placed on the island
+                winner.getSchoolBoard().addTowers((islands.get(islandIndex).getNumTowers())*(-1));
+                checkArchipelago(islandIndex);
+            }
+        }
+        //da controllare se un giocatore nel costruire nuovi torri non finisce le sue presenti nella plancia
+        //in caso -> FINE PARTITA E VITTORIA DI QUEL PLAYER
+
+        else{
+            islands.get(islandIndex).setEntryTiles(-1);
+        }
+    }
+     */
 
     /**
      * method to check if there is a union between two islands (or two group of islands)
@@ -237,6 +285,22 @@ public class Game {
             checkWinner();
         }
     }
+    /* passare l'oggetto?
+    private void checkArchipelago(Island island){
+        int index=island.getIndex();
+        if(islands.get(index).getTower().equals(islands.get((index+1)%(Island.getNumIslands())).getTower())){
+            islands.get(index).merge(islands.get((index+1)%(Island.getNumIslands())));
+            updateIndexes((index+1)%(Island.getNumIslands()));
+        }
+        if(islands.get(index).getTower().equals(islands.get((index-1)%(Island.getNumIslands())).getTower())){
+            islands.get((index-1)%(Island.getNumIslands())).merge(islands.get(index));
+            updateIndexes(index);
+        }
+        if(Island.getNumIslands() <= 3){
+            checkWinner();
+        }
+    }
+    */
 
     /**
      * method to update the indexes of the ArrayList islands, with a left shift of  indexes removing the island
