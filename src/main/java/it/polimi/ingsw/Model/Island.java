@@ -12,7 +12,9 @@ public class Island {
     private int entryTiles;
     private ColorTower tower;
     private int numTowers;
+    private boolean motherNature;
     private Map<PawnColor,Integer> students;
+    //static attribute that represents how many islands are in the game (an archipelago counts as 1 island)
     private static int numIslands = 12;
 
     /**
@@ -24,6 +26,12 @@ public class Island {
         this.entryTiles = 0;
         this.tower = null;
         this.numTowers = 0;
+        if(this.index == 0){
+            this.motherNature = true;
+        }
+        else{
+            this.motherNature = false;
+        }
         this.students = new HashMap<>();
         students.put(PawnColor.RED,0);
         students.put(PawnColor.BLUE,0);
@@ -32,12 +40,20 @@ public class Island {
         students.put(PawnColor.GREEN,0);
     }
 
+    public void setIndex(int newIndex){
+        this.index = newIndex;
+    }
+
     public int getNumTowers() {
         return numTowers;
     }
 
     public ColorTower getTower() {
         return tower;
+    }
+
+    public boolean isMotherNature(){
+        return motherNature;
     }
 
     public Map<PawnColor, Integer> getStudents() {
@@ -107,6 +123,9 @@ public class Island {
     public void merge(Island toMerge){
         entryTiles = entryTiles + toMerge.entryTiles;
         numTowers = numTowers + toMerge.numTowers;
+        if(toMerge.isMotherNature()){
+            this.motherNature = true;
+        }
         toMerge.students.forEach((k, v) -> this.students.merge(k, v, Integer::sum));
         numIslands--;
     }

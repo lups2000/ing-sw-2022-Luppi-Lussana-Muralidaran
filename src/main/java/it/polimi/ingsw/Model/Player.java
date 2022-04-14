@@ -36,7 +36,7 @@ public class Player {
         return nickname;
     }
     public int getId() {return id;}
-    public PlayerStatus getPlayerStatus() {
+    public PlayerStatus getStatus() {
         return playerStatus;
     }
     public ColorTower getColorTower() {
@@ -49,7 +49,7 @@ public class Player {
         this.deckAssistantCard=new DeckAssistantCard(seed);
     }
     public DeckAssistantCard getDeckAssistantCard() {return deckAssistantCard;}
-
-
-
+    public void setStatus(PlayerStatus newStatus){
+        this.playerStatus = newStatus;
+    }
 }
