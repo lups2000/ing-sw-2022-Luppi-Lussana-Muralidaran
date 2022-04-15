@@ -21,8 +21,8 @@ public class OneStudentToIsland extends CharacterCard{
      * @throws NoPawnPresentException
      */
     public OneStudentToIsland() throws NoPawnPresentException {
-        cost=1;
-        used=false;
+        cost = 1;
+        used = false;
         this.students = new HashMap<>();
         students.put(PawnColor.RED,0);
         students.put(PawnColor.BLUE,0);
@@ -47,7 +47,6 @@ public class OneStudentToIsland extends CharacterCard{
 
     /**
      * Private method called only in the method 'effect(...)'
-     * @throws NoPawnPresentException
      */
     private void removeStudent(PawnColor pawnColor){
         students.put(pawnColor,students.get(pawnColor)-1);
@@ -68,5 +67,6 @@ public class OneStudentToIsland extends CharacterCard{
             removeStudent(pawnColorChosen); //remove the student from the card
             addStudent(); //put new student on the card
         }
+        used();
     }
 }

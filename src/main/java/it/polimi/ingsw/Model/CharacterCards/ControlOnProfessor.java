@@ -2,12 +2,16 @@ package it.polimi.ingsw.Model.CharacterCards;
 
 import it.polimi.ingsw.Model.*;
 
+//PRADEE TODO
+
+//EFF: durante questo turno, prendi il controllo dei professori anche se nella tua sala hai lo stesso numero
+//  di studenti del giocatore che li controlla in quel momento
+
 public class ControlOnProfessor extends CharacterCard{
 
-
     public ControlOnProfessor(){
-        cost=2;
-        used=false;
+        cost = 2;
+        used = false;
     }
 
     //da rivedere
@@ -45,5 +49,6 @@ public class ControlOnProfessor extends CharacterCard{
     @Override
     public void effect() throws NoPawnPresentException, TooManyPawnsPresent {
         allocateProfessors();
+        used();
     }
 }

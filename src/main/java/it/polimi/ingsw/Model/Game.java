@@ -21,6 +21,7 @@ public class Game {
     private int motherNature;
     private List<CloudTile> cloudTiles; //2-4
     private DeckCharacterCard deckCharacterCard;
+    private Player firstPlayer;
 
 
     private Game(){
@@ -79,6 +80,10 @@ public class Game {
         players.add(players.size(),newPlayer);
         seedsAvailable.remove(chosenSeed);
         fillBoard(newPlayer);
+        if(players.size() == 1){
+            //at the first round we decide by default that the first player will be the first to log in the game
+            firstPlayer = newPlayer;
+        }
     }
 
     public GameState getStatus() {return status;}
