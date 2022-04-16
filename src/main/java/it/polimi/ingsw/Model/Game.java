@@ -92,6 +92,7 @@ public class Game {
     public boolean getExpertsVariant(){return expertsVariant;}
     public void changeStatus(GameState status){this.status = status;}
     public StudentBag getStudentBag() {return studentBag;}
+    public List<CloudTile> getCloudTiles() {return cloudTiles;}
 
     /**
      * method invoked one time for each player at the start of the game that fills his school board

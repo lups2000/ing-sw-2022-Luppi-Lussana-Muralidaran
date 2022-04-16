@@ -11,17 +11,17 @@ public class DeckAssistantCard {
     private AssistantSeed seed;
 
     /**
-     * Constructor, creation of the Deck of Assistent Cards(10 cards in total)
+     * Constructor, creation of the Deck of Assistant Cards(10 cards in total)
      * i-->value
      * j-->maxStepsMotherNature(when i is even j is incremented by one)
      * @param chosenSeed is the AssistantSeed chosen by the player at the beginning of the game
      */
     public DeckAssistantCard(AssistantSeed chosenSeed){
         int j=1;
-        this.cards= new ArrayList<AssistantCard>();
+        this.cards= new ArrayList<>();
         for(int i=1;i<=10;i++){
             AssistantCard assistantCard = new AssistantCard(i,j);
-            cards.add(i,assistantCard);
+            cards.add(i-1,assistantCard);
             if(i%2==0){
                 j++;
             }
@@ -36,26 +36,22 @@ public class DeckAssistantCard {
         return cards;
     }
 
-    /**
-     * This method tells us if a card is contained or not in the deck
-     * @param assistantCard the card chosen
-     * @return true/false
-     */
-    public boolean isCardAvailable(AssistantCard assistantCard){
-        for(AssistantCard card: cards){
-            if (cards.contains(assistantCard)){
-                return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * This method removes the card from the deck
      * @param assistantCard is the card that has to be removed from the player's deck after his turn
      */
     public void pick(AssistantCard assistantCard){
-        cards.remove(assistantCard);
-    }
+        boolean flag=false;
+        for(int i = 0; i<cards.size() && !flag; i++){
+            if(cards.get(i).getValue()==assistantCard.getValue() && cards.get(i).getValue()==assistantCard.getMaxStepsMotherNature() && flag==false){
+                cards.remove(i);
+                flag=true;
+            }
+        }
+        if(!flag){
+            throw new IllegalStateException("Assistant Card not present!");
+        }
 
+    }
 }

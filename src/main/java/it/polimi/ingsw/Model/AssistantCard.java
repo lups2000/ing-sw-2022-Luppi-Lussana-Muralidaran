@@ -14,19 +14,29 @@ public class AssistantCard {
      * @param maxStepsMotherNature it is and integer value between 1 and 5
      */
     public AssistantCard(int value,int maxStepsMotherNature){
-        if(value<1 || value>10 || maxStepsMotherNature<1 || maxStepsMotherNature>5){
-            throw new IllegalStateException("Error"); //ha senso lanciare una eccezione?In realta il mazzo lo costruiamo noi come vogliamo
-        }
-        else{
-            this.value=value;
-            this.maxStepsMotherNature=maxStepsMotherNature;
-        }
+        this.value=value;
+        this.maxStepsMotherNature=maxStepsMotherNature;
     }
     public int getValue() {
         return value;
     }
     public int getMaxStepsMotherNature() {
         return maxStepsMotherNature;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AssistantCard)) {
+            return false;
+        }
+
+        AssistantCard c = (AssistantCard) o;
+        // Compare the data members and return accordingly
+        return Integer.compare(value, c.value) == 0
+                && Double.compare(value, c.value) == 0;
     }
 
 }
