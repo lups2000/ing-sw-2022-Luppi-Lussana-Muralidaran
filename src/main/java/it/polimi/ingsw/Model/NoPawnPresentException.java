@@ -4,6 +4,6 @@ public class NoPawnPresentException extends Exception{
 
     @Override
     public String getMessage() {
-        return ("Error: Pawn not present");
+        return ("Pawn not present!");
     }
 }

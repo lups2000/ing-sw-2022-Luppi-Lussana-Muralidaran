@@ -39,8 +39,13 @@ public class StudentBag {
      * @param num is the number of students (of the chosen color) to add to the StudentBag
      */
     public void addStudents(PawnColor toAdd, int num){
-        students.put(toAdd, students.get(toAdd) + num);
-        numStudents = numStudents + num;
+        if(num>=0){
+            students.put(toAdd, students.get(toAdd) + num);
+            numStudents = numStudents + num;
+        }
+        else{
+            throw new IllegalArgumentException("You cannot add a number of student which is negative!");
+        }
     }
 
     /**
