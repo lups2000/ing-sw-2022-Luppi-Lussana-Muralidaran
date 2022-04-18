@@ -4,6 +4,6 @@ public class NoTowersException extends Exception{
 
     @Override
     public String getMessage() {
-        return ("Error: No towers are present");
+        return ("No towers are present!");
     }
 }

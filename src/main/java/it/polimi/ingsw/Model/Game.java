@@ -40,7 +40,7 @@ public class Game {
      * @param max indicates the max number of players chosen at the very start by the first player when he creates the match
      * @param experts indicates if the first player chooses to play the game with the experts variant or not
      */
-    public void initGame(int max,boolean experts) throws NoPawnPresentException{
+    public void initGame(int max,boolean experts) throws NoPawnPresentException, TooManyPawnsPresent {
         this.maxNumPlayers = max;
         this.expertsVariant = experts;
         if(expertsVariant){
@@ -109,7 +109,7 @@ public class Game {
      * method invoked when the cloud tiles need to be refilled
      * @param cloud is the cloud tile to be filled
      */
-    public void fillCloudTile(CloudTile cloud) throws NoPawnPresentException{
+    public void fillCloudTile(CloudTile cloud) throws NoPawnPresentException, TooManyPawnsPresent {
         for(int i=0;i<cloud.getMaxNumStudents();i++){
             PawnColor sorted = studentBag.drawStudent();
             cloud.addStudent(sorted);

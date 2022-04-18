@@ -14,7 +14,7 @@ class StudentBagTest {
     @Test
     @DisplayName("test setup")
     void setup() {
-        //we simply test that the costructor works well
+        //we simply test that the constructor works well
         assertEquals(studentBag.getNumStudents(),120);
         assertEquals(studentBag.getStudents().get(PawnColor.RED),24);
         assertEquals(studentBag.getStudents().get(PawnColor.GREEN),24);

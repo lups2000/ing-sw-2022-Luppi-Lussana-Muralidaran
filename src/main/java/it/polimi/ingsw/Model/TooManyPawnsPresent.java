@@ -4,6 +4,6 @@ public class TooManyPawnsPresent extends Exception{
 
     @Override
     public String getMessage() {
-        return ("Error: Too many pawns are present");
+        return ("Too many pawns are present!");
     }
 }
