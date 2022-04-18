@@ -55,9 +55,9 @@ public class SchoolBoard {
             this.numCoins = 1;
         }
         //questo else non si puo levare??
-        else{
+        /*else{
             this.numCoins = 0;
-        }
+        }*/
     }
 
     public Map<PawnColor, Boolean> getProfessors() {return professors;}
@@ -112,22 +112,22 @@ public class SchoolBoard {
     }
 
     public void addProfessor(PawnColor pawnColor) throws TooManyPawnsPresent {
-        if(professors.get(pawnColor)){
-            throw new TooManyPawnsPresent();
+        if(pawnColor==null){
+            throw new NullPointerException("Parameter cannot be null!");
         }
-        else if(pawnColor==null){
-            throw new NullPointerException();
+        else if(professors.get(pawnColor)){
+            throw new TooManyPawnsPresent();
         }
         else {
             professors.put(pawnColor,true);
         }
     }
     public void removeProfessor(PawnColor pawnColor) throws NoPawnPresentException {
-        if(!professors.get(pawnColor)){
-            throw new NoPawnPresentException();
+        if(pawnColor==null){
+            throw new NullPointerException("Parameter cannot be null!");
         }
-        else if(pawnColor==null){
-            throw new NullPointerException();
+        else if(!professors.get(pawnColor)){
+            throw new NoPawnPresentException();
         }
         else {
             professors.put(pawnColor,false);
@@ -138,7 +138,7 @@ public class SchoolBoard {
      * method to add (or remove) towers from the school board
      * @param num the number of towers to add (or remove if num is negative)
      */
-    public void addTowers(int num) throws TooManyTowersException,NoTowersException{
+    public void updateNumberOfTowers(int num) throws TooManyTowersException,NoTowersException{
         if(numTowers+num >= numMaxTowers){
             throw new TooManyTowersException();
         }

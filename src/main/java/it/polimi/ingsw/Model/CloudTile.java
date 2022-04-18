@@ -35,7 +35,7 @@ public class CloudTile {
 
     public int getMaxNumStudents() {return maxNumStudents;}
     public Map<PawnColor, Integer> getStudents() {return students;}
-    //public int getId() {return id;} serve?
+    public int getId() {return id;}
     public int getNumStudents() {return numStudents;}
 
     /**

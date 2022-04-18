@@ -207,12 +207,12 @@ public class Game {
                 //if there were already some towers present on the island it means that they are supposed to return
                 // to the school board of theirs owner
                 if(previousOwner != null){
-                    previousOwner.getSchoolBoard().addTowers(islands.get(islandIndex).getNumTowers());
+                    previousOwner.getSchoolBoard().updateNumberOfTowers(islands.get(islandIndex).getNumTowers());
                 }
                 //whether or not there were already towers on the island these following instructions must be done
                 islands.get(islandIndex).changeTower(winner.getColorTower());
                 //we remove from the school board the towers that will be placed on the island
-                winner.getSchoolBoard().addTowers((islands.get(islandIndex).getNumTowers())*(-1));
+                winner.getSchoolBoard().updateNumberOfTowers((islands.get(islandIndex).getNumTowers())*(-1));
                 checkArchipelago(islandIndex);
             }
         }

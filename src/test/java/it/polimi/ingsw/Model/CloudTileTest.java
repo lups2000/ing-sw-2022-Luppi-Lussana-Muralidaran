@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -130,6 +131,15 @@ class CloudTileTest {
             cloudTile.addStudent(pawnColor1);
         });
         assertEquals("Too many pawns are present!", exception.getMessage());
+    }
+
+    //in general we don't have to test getter and setter
+    //I add this test to reach 100% line coverage
+    @Test
+    void getIdTest() throws NoPawnPresentException, TooManyPawnsPresent {
+        Game.getInstance().initGame(2,false);
+        CloudTile cloudTile=new CloudTile(1);
+        assertEquals(cloudTile.getId(),1);
     }
 
 }
