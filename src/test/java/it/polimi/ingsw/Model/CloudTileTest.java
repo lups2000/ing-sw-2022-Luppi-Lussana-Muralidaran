@@ -18,10 +18,8 @@ class CloudTileTest {
 
     @Test
     @DisplayName("test setup 2 players")
-    void setup2Players() throws NoPawnPresentException, TooManyPawnsPresent {
-        //in generale non ha piu senso che il metodo initGame ritorni un 'Game'.é lecito?
-        Game.getInstance().initGame(2,false);
-        CloudTile cloudTile=new CloudTile(1); //1 as Index
+    void setup2Players(){
+        CloudTile cloudTile=new CloudTile(1,2);
         assertEquals(cloudTile.getMaxNumStudents(),3);
         assertEquals(cloudTile.getStudents().get(PawnColor.RED),0);
         assertEquals(cloudTile.getStudents().get(PawnColor.GREEN),0);
@@ -32,10 +30,8 @@ class CloudTileTest {
 
     @Test
     @DisplayName("test setup 3 players")
-    void setup3Players() throws NoPawnPresentException, TooManyPawnsPresent {
-        //in generale non ha piu senso che il metodo initGame ritorni un 'Game'.é lecito?
-        Game.getInstance().initGame(3,false);
-        CloudTile cloudTile=new CloudTile(1); //1 as Index
+    void setup3Players() {
+        CloudTile cloudTile=new CloudTile(1,3);
         assertEquals(cloudTile.getMaxNumStudents(),4);
         assertEquals(cloudTile.getStudents().get(PawnColor.RED),0);
         assertEquals(cloudTile.getStudents().get(PawnColor.GREEN),0);
@@ -46,10 +42,8 @@ class CloudTileTest {
 
     @Test
     @DisplayName("test setup 4 players")
-    void setup4Players() throws NoPawnPresentException, TooManyPawnsPresent {
-        //in generale non ha piu senso che il metodo initGame ritorni un 'Game'.é lecito?
-        Game.getInstance().initGame(4,false);
-        CloudTile cloudTile=new CloudTile(1); //1 as Index
+    void setup4Players() {
+        CloudTile cloudTile=new CloudTile(1,4);
         assertEquals(cloudTile.getMaxNumStudents(),3);
         assertEquals(cloudTile.getStudents().get(PawnColor.RED),0);
         assertEquals(cloudTile.getStudents().get(PawnColor.GREEN),0);
@@ -61,9 +55,8 @@ class CloudTileTest {
 
     @Test
     @DisplayName("pickStudent")
-    void pickStudent() throws NoPawnPresentException, TooManyPawnsPresent {
-        Game.getInstance().initGame(2,false);
-        CloudTile cloudTile=new CloudTile(1);
+    void pickStudent() throws TooManyPawnsPresent {
+        CloudTile cloudTile=new CloudTile(1,3);
         PawnColor pawnColor1=PawnColor.RED;
         PawnColor pawnColor2=PawnColor.BLUE;
         cloudTile.addStudent(pawnColor1);
@@ -89,9 +82,8 @@ class CloudTileTest {
 
     @Test
     @DisplayName("addStudentNull")
-    void addStudentNull() throws NoPawnPresentException, TooManyPawnsPresent {
-        Game.getInstance().initGame(2,false);
-        CloudTile cloudTile=new CloudTile(1);
+    void addStudentNull(){
+        CloudTile cloudTile=new CloudTile(1,2);
         PawnColor pawnColor=null;
         Throwable exception = assertThrows(NullPointerException.class, () -> {
             cloudTile.addStudent(pawnColor);
@@ -101,9 +93,8 @@ class CloudTileTest {
 
     @Test
     @DisplayName("addStudent")
-    void addStudent() throws NoPawnPresentException, TooManyPawnsPresent {
-        Game.getInstance().initGame(2,false);
-        CloudTile cloudTile=new CloudTile(1);
+    void addStudent() throws TooManyPawnsPresent {
+        CloudTile cloudTile=new CloudTile(1,2);
         PawnColor pawnColor1=PawnColor.RED;
         PawnColor pawnColor2=PawnColor.BLUE;
 
@@ -136,9 +127,8 @@ class CloudTileTest {
     //in general we don't have to test getter and setter
     //I add this test to reach 100% line coverage
     @Test
-    void getIdTest() throws NoPawnPresentException, TooManyPawnsPresent {
-        Game.getInstance().initGame(2,false);
-        CloudTile cloudTile=new CloudTile(1);
+    void getIdTest(){
+        CloudTile cloudTile=new CloudTile(1,2);
         assertEquals(cloudTile.getId(),1);
     }
 

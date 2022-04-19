@@ -16,9 +16,8 @@ class SchoolBoardTest {
 
     @Test
     @DisplayName("setup2PlayersExpert")
-    void setup2PlayersExpert() throws NoPawnPresentException, TooManyPawnsPresent {
-        Game.getInstance().initGame(2,true);
-        SchoolBoard schoolBoard=new SchoolBoard();
+    void setup2PlayersExpert(){
+        SchoolBoard schoolBoard=new SchoolBoard(2,true);
 
         assertEquals(schoolBoard.getNumMaxTowers(),8);
         assertEquals(schoolBoard.getNumTowers(),8);
@@ -48,9 +47,8 @@ class SchoolBoardTest {
 
     @Test
     @DisplayName("setup3PlayersNoExpert")
-    void setup3PlayersNoExpert() throws NoPawnPresentException, TooManyPawnsPresent {
-        Game.getInstance().initGame(3,false);
-        SchoolBoard schoolBoard=new SchoolBoard();
+    void setup3PlayersNoExpert(){
+        SchoolBoard schoolBoard=new SchoolBoard(3,false);
 
         assertEquals(schoolBoard.getNumMaxTowers(),6);
         assertEquals(schoolBoard.getNumTowers(),6);
@@ -79,10 +77,71 @@ class SchoolBoardTest {
     }
 
     @Test
-    @DisplayName("moveStudToDining")
-    void moveStudToDining() {
-
+    @DisplayName("moveStudToDiningNull")
+    void moveStudToDiningNull(){
+        SchoolBoard schoolBoard=new SchoolBoard(3,true);
+        PawnColor pawnColor=null;
+        Throwable exception = assertThrows(NullPointerException.class, () -> {
+            schoolBoard.moveStudToDining(pawnColor);
+        });
+        assertEquals("Parameter cannot be null!", exception.getMessage());
     }
+
+    @Test
+    @DisplayName("moveStudToDiningNoStudWaiting")
+    void moveStudToDiningNoStudWaiting(){
+        SchoolBoard schoolBoard=new SchoolBoard(3,true);
+        PawnColor pawnColor=PawnColor.RED;
+
+        assertEquals(schoolBoard.getStudentsWaiting().get(pawnColor),0);
+        Throwable exception = assertThrows(NoPawnPresentException.class, () -> {
+            schoolBoard.moveStudToDining(pawnColor);
+        });
+        assertEquals("Pawn not present!", exception.getMessage());
+    }
+
+    /* Note: This Method covers also the general case */
+    @Test
+    @DisplayName("moveStudToDiningTooManyStudDining")
+    void moveStudToDiningTooManyStudDining() throws NoPawnPresentException, TooManyPawnsPresent {
+        SchoolBoard schoolBoard=new SchoolBoard(2,true);
+        PawnColor pawnColor=PawnColor.RED;
+
+        //adding 7 RED students to the Waiting Room
+        for(int i=0;i<7;i++){
+            schoolBoard.addStudToWaiting(pawnColor);
+        }
+        assertEquals(schoolBoard.getStudentsWaiting().get(pawnColor),7);
+        //moving the 7 RED students to the Dining Room
+        for(int i=0;i<7;i++){
+            schoolBoard.moveStudToDining(pawnColor);
+        }
+        assertEquals(schoolBoard.getStudentsWaiting().get(pawnColor),0);
+        assertEquals(schoolBoard.getStudentsDining().get(pawnColor),7);
+        assertEquals(schoolBoard.getNumStudentsWaiting(),0);
+        //adding another 4 RED students to the Waiting Room
+        for(int i=0;i<4;i++){
+            schoolBoard.addStudToWaiting(pawnColor);
+        }
+        assertEquals(schoolBoard.getStudentsWaiting().get(pawnColor),4);
+        assertEquals(schoolBoard.getNumStudentsWaiting(),4);
+        //moving the 3 RED students to the Dining Room
+        for(int i=0;i<3;i++){
+            schoolBoard.moveStudToDining(pawnColor);
+        }
+        assertEquals(schoolBoard.getStudentsWaiting().get(pawnColor),1);
+        assertEquals(schoolBoard.getStudentsDining().get(pawnColor),10);
+        assertEquals(schoolBoard.getNumStudentsWaiting(),1);
+
+        //I add 10 students and the ExpertVariant is 'true'
+        assertEquals(schoolBoard.getNumCoins(),4); //initially numCoins was 1
+
+        Throwable exception = assertThrows(TooManyPawnsPresent.class, () -> {
+            schoolBoard.moveStudToDining(pawnColor);
+        });
+        assertEquals("Too many pawns are present!", exception.getMessage());
+    }
+
 
     @Test
     @DisplayName("moveStudToIsland")
@@ -91,9 +150,8 @@ class SchoolBoardTest {
 
     @Test
     @DisplayName("addProfessorNull")
-    void addProfessorNull() throws NoPawnPresentException, TooManyPawnsPresent {
-        Game.getInstance().initGame(2,false);
-        SchoolBoard schoolBoard=new SchoolBoard();
+    void addProfessorNull(){
+        SchoolBoard schoolBoard=new SchoolBoard(2,false);
         PawnColor pawnColor=null;
 
         Throwable exception = assertThrows(NullPointerException.class, () -> {
@@ -104,9 +162,8 @@ class SchoolBoardTest {
 
     @Test
     @DisplayName("addProfessor")
-    void addProfessor() throws NoPawnPresentException, TooManyPawnsPresent {
-        Game.getInstance().initGame(2,false);
-        SchoolBoard schoolBoard=new SchoolBoard();
+    void addProfessor() throws TooManyPawnsPresent {
+        SchoolBoard schoolBoard=new SchoolBoard(2,false);
         PawnColor pawnColor=PawnColor.RED;
         assertFalse(schoolBoard.getProfessors().get(pawnColor));
         schoolBoard.addProfessor(pawnColor);
@@ -120,9 +177,8 @@ class SchoolBoardTest {
 
     @Test
     @DisplayName("removeProfessorNull")
-    void removeProfessorNull() throws NoPawnPresentException, TooManyPawnsPresent {
-        Game.getInstance().initGame(2,false);
-        SchoolBoard schoolBoard=new SchoolBoard();
+    void removeProfessorNull(){
+        SchoolBoard schoolBoard=new SchoolBoard(2,false);
         PawnColor pawnColor=null;
 
         Throwable exception = assertThrows(NullPointerException.class, () -> {
@@ -134,8 +190,7 @@ class SchoolBoardTest {
     @Test
     @DisplayName("removeProfessor")
     void removeProfessor() throws NoPawnPresentException, TooManyPawnsPresent {
-        Game.getInstance().initGame(2,false);
-        SchoolBoard schoolBoard=new SchoolBoard();
+        SchoolBoard schoolBoard=new SchoolBoard(2,false);
         PawnColor pawnColor=PawnColor.RED;
         assertFalse(schoolBoard.getProfessors().get(pawnColor));
         schoolBoard.addProfessor(pawnColor);
@@ -150,9 +205,8 @@ class SchoolBoardTest {
 
     @Test
     @DisplayName("updateNumberOfTowersTooMany")
-    void updateNumberOfTowersTooMany() throws NoPawnPresentException, TooManyPawnsPresent {
-        Game.getInstance().initGame(2,false);
-        SchoolBoard schoolBoard=new SchoolBoard();
+    void updateNumberOfTowersTooMany(){
+        SchoolBoard schoolBoard=new SchoolBoard(2,false);
 
         assertEquals(schoolBoard.getNumTowers(),8);
         Throwable exception = assertThrows(TooManyTowersException.class, () -> {
@@ -164,10 +218,8 @@ class SchoolBoardTest {
 
     @Test
     @DisplayName("updateNumberOfTowersNoTow")
-    void updateNumberOfTowersNoTow() throws NoPawnPresentException, TooManyPawnsPresent {
-        Game.getInstance().initGame(2,false);
-        SchoolBoard schoolBoard=new SchoolBoard();
-
+    void updateNumberOfTowersNoTow(){
+        SchoolBoard schoolBoard=new SchoolBoard(2,false);
         assertEquals(schoolBoard.getNumTowers(),8);
         Throwable exception = assertThrows(NoTowersException.class, () -> {
             schoolBoard.updateNumberOfTowers(-9);
@@ -178,9 +230,8 @@ class SchoolBoardTest {
 
     @Test
     @DisplayName("updateNumberOfTowers")
-    void updateNumberOfTowers() throws NoPawnPresentException, TooManyPawnsPresent, TooManyTowersException, NoTowersException {
-        Game.getInstance().initGame(2,false);
-        SchoolBoard schoolBoard=new SchoolBoard();
+    void updateNumberOfTowers() throws TooManyTowersException, NoTowersException {
+        SchoolBoard schoolBoard=new SchoolBoard(2,false);
 
         assertEquals(schoolBoard.getNumTowers(),8);
         schoolBoard.updateNumberOfTowers(-5);
@@ -192,5 +243,38 @@ class SchoolBoardTest {
     @Test
     @DisplayName("addStudToWaiting")
     void addStudToWaiting() {
+    }
+
+    @Test
+    @DisplayName("decreaseNumCoinsNeg")
+    void decreaseNumCoinsNeg(){
+        SchoolBoard schoolBoard=new SchoolBoard(2,true);
+        assertEquals(schoolBoard.getNumCoins(),1);
+        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
+            schoolBoard.decreaseNumCoins(-9);
+        });
+        assertEquals("Parameter cannot be negative!", exception.getMessage());
+        assertEquals(schoolBoard.getNumCoins(),1);
+    }
+
+    @Test
+    @DisplayName("decreaseNumCoinsNoCoins")
+    void decreaseNumCoinsNoCoins(){
+        SchoolBoard schoolBoard=new SchoolBoard(2,true);
+        assertEquals(schoolBoard.getNumCoins(),1);
+        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
+            schoolBoard.decreaseNumCoins(3);
+        });
+        assertEquals("Number of coins insufficient!", exception.getMessage());
+        assertEquals(schoolBoard.getNumCoins(),1);
+    }
+
+    @Test
+    @DisplayName("decreaseNumCoins")
+    void decreaseNumCoins(){
+        SchoolBoard schoolBoard=new SchoolBoard(2,true);
+        assertEquals(schoolBoard.getNumCoins(),1);
+        schoolBoard.decreaseNumCoins(1);
+        assertEquals(schoolBoard.getNumCoins(),0);
     }
 }

@@ -73,7 +73,15 @@ public class SchoolBoard {
     public Map<PawnColor, Integer> getStudentsWaiting() {return studentsWaiting;}
     public int getNumStudentsWaiting() {return numStudentsWaiting;}
     public int getNumCoins() {return numCoins;}
-    public void decreaseNumCoins(int numCoins){this.numCoins=this.numCoins-numCoins;}
+    public void decreaseNumCoins(int numCoins){
+        if(numCoins<=0){
+            throw new IllegalArgumentException("Parameter cannot be negative!");
+        }
+        else if(numCoins>this.numCoins){
+            throw new IllegalArgumentException("Number of coins insufficient!");
+        }
+        this.numCoins=this.numCoins-numCoins;
+    }
 
     /**
      * Method to move a student from the Waiting Room(entrance) to the DiningRoom

@@ -24,7 +24,7 @@ public class Game {
     private List<SchoolBoard> schoolBoards;
 
 
-    private Game() throws NoPawnPresentException{
+    public Game(){
         this.players = new ArrayList<>();
         this.status = GameState.CREATING;
         this.seedsAvailable=new ArrayList<>(Arrays.asList(AssistantSeed.KING,AssistantSeed.SAMURAI,AssistantSeed.WITCH,AssistantSeed.WIZARD));
@@ -49,7 +49,7 @@ public class Game {
                 //creating 'max' schoolBoards for the game with expert variant
                 schoolBoards.add(i,new SchoolBoard(max,true)); //a schoolboard passo il numero max di studenti e experts=true
             }
-            pickThreeRandomCards();
+            //pickThreeRandomCards();
         }
         else{
             for(int i=0;i<max;i++){
@@ -437,6 +437,7 @@ public class Game {
     /**
      * method to sort three random (and different) character cards if the expert variant is chosen
      */
+
     private void pickThreeRandomCards() throws NoPawnPresentException{
         int[] sorted = null;
         boolean duplicate = false;
