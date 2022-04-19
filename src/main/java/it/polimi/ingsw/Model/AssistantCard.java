@@ -35,8 +35,8 @@ public class AssistantCard {
 
         AssistantCard c = (AssistantCard) o;
         // Compare the data members and return accordingly
-        return Integer.compare(value, c.value) == 0
-                && Double.compare(value, c.value) == 0;
+        return value == c.value
+                && maxStepsMotherNature == c.maxStepsMotherNature;
     }
 
 }

@@ -16,10 +16,14 @@ public class SchoolBoard {
     private int numCoins;
     private int numStudentsWaiting;
     private final int numMaxStudentsWaiting;
+    private int numMaxPlayers; //forse non serve
+    private boolean experts;
 
 
-    public SchoolBoard(){
+    public SchoolBoard(int numMaxPlayers,boolean experts){
         this.professors = new HashMap<>();
+        this.numMaxPlayers=numMaxPlayers;
+        this.experts=experts;
         professors.put(PawnColor.RED,false);
         professors.put(PawnColor.BLUE,false);
         professors.put(PawnColor.YELLOW,false);
@@ -40,8 +44,9 @@ public class SchoolBoard {
         studentsWaiting.put(PawnColor.PINK,0);
         studentsWaiting.put(PawnColor.GREEN,0);
 
+        this.numStudentsWaiting=0;
 
-        if(Game.getInstance().getMaxNumPlayers() == 2 || Game.getInstance().getMaxNumPlayers() == 4){
+        if(numMaxPlayers == 2 || numMaxPlayers == 4){
             numTowers = 8;
             numMaxTowers = 8;
             numMaxStudentsWaiting = 7;
@@ -51,7 +56,7 @@ public class SchoolBoard {
             numMaxTowers = 6;
             numMaxStudentsWaiting = 9;
         }
-        if(Game.getInstance().getExpertsVariant()){
+        if(experts){
             this.numCoins = 1;
         }
         //questo else non si puo levare??
@@ -76,7 +81,10 @@ public class SchoolBoard {
      * @param pawnColor corresponds to a Student
      */
     public void moveStudToDining(PawnColor pawnColor) throws NoPawnPresentException, TooManyPawnsPresent {
-        if(studentsWaiting.get(pawnColor)<=0){
+        if(pawnColor==null){
+            throw new NullPointerException("Parameter cannot be null!");
+        }
+        else if(studentsWaiting.get(pawnColor)<=0){
             throw new NoPawnPresentException();
         }
         else if(studentsDining.get(pawnColor)>=10){
@@ -86,7 +94,7 @@ public class SchoolBoard {
             studentsWaiting.put(pawnColor,studentsWaiting.get(pawnColor)-1);
             studentsDining.put(pawnColor,studentsDining.get(pawnColor)+1);
             numStudentsWaiting--;
-            if(studentsDining.get(pawnColor)%3 == 0 && Game.getInstance().getExpertsVariant()){
+            if(studentsDining.get(pawnColor)%3 == 0 && experts){
                 numCoins++;
             }
         }
@@ -98,11 +106,11 @@ public class SchoolBoard {
      * @param island corresponds to the Island the player want to move the student on
      */
     public void moveStudToIsland(PawnColor pawnColor,Island island) throws NoPawnPresentException {
-        if(studentsWaiting.get(pawnColor)<=0){
-            throw new NoPawnPresentException();
+        if(pawnColor==null || island==null){
+            throw new NullPointerException("Parameters cannot be null!");
         }
-        else if(pawnColor==null || island==null){
-            throw new NullPointerException();
+        else if(studentsWaiting.get(pawnColor)<=0){
+            throw new NoPawnPresentException();
         }
         else{
             studentsWaiting.put(pawnColor,studentsWaiting.get(pawnColor)-1);

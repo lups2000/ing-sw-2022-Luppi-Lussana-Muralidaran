@@ -15,6 +15,7 @@ public class ControlOnProfessor extends CharacterCard{
     }
 
     //da rivedere
+    /*
     private void allocateProfessors() throws NoPawnPresentException, TooManyPawnsPresent {
         for(PawnColor color : PawnColor.values()) {
             Player winner=Game.getInstance().getPlayers().get(0);
@@ -51,4 +52,5 @@ public class ControlOnProfessor extends CharacterCard{
         allocateProfessors();
         used();
     }
+     */
 }

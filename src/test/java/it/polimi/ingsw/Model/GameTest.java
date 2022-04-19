@@ -12,39 +12,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
 
+
     @Test
     @DisplayName("initGame")
     void initGame() {
     }
 
     @Test
-    @DisplayName("getInstance")
-    void getInstance() {
-    }
-
-    @Test
     @DisplayName("addPlayer")
     void addPlayer() {
-    }
-
-    @Test
-    @DisplayName("getStatus")
-    void getStatus() {
-    }
-
-    @Test
-    @DisplayName("getPlayers")
-    void getPlayers() {
-    }
-
-    @Test
-    @DisplayName("getMaxNumPlayers")
-    void getMaxNumPlayers() {
-    }
-
-    @Test
-    @DisplayName("getExpertVariants")
-    void getExpertsVariant() {
     }
 
     @Test

@@ -11,15 +11,17 @@ public class CloudTile {
     private int numStudents;
     private int id;
     private Map<PawnColor,Integer> students;
+    private int numMaxPlayers;//forse non serve
 
     /**
      * constructor of the CloudTile class
      * @param id is the id given to every cloud tiles, to differentiate them one with each other
      */
-    public CloudTile(int id){
+    public CloudTile(int id,int numMaxPlayers){
         this.id = id;
+        this.numMaxPlayers=numMaxPlayers;
         this.numStudents=0;
-        if(Game.getInstance().getMaxNumPlayers() == 2 || Game.getInstance().getMaxNumPlayers() == 4){
+        if(numMaxPlayers == 2 || numMaxPlayers == 4){
             this.maxNumStudents = 3;
         }
         else{

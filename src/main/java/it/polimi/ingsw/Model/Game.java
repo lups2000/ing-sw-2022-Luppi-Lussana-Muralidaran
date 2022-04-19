@@ -9,7 +9,6 @@ import java.util.*;
  * @author Paolo Lussana,Matteo Luppi
  */
 public class Game {
-    private static Game single_instance = null;
     private int maxNumPlayers;
     private List<Player> players; //2-4
     private boolean expertsVariant;
@@ -22,6 +21,7 @@ public class Game {
     private List<CloudTile> cloudTiles; //2-4
     private DeckCharacterCard deckCharacterCard;
     private Player firstPlayer;
+    private List<SchoolBoard> schoolBoards;
 
 
     private Game(){
@@ -33,6 +33,7 @@ public class Game {
         this.studentBag = new StudentBag();
         this.motherNature = 0;
         this.deckCharacterCard=new DeckCharacterCard();
+        this.schoolBoards=new ArrayList<>();
     }
 
     /**
@@ -44,45 +45,49 @@ public class Game {
         this.maxNumPlayers = max;
         this.expertsVariant = experts;
         if(expertsVariant){
+            for(int i=0;i<max;i++){
+                //creating 'max' schoolBoards for the game with expert variant
+                schoolBoards.add(i,new SchoolBoard(max,true)); //a schoolboard passo il numero max di studenti e experts=true
+            }
             characterCards=deckCharacterCard.pickThreeRandomCards();
         }
-
+        else{
+            for(int i=0;i<max;i++){
+                //creating 'max' schoolBoards for the game with no expert variant
+                schoolBoards.add(i,new SchoolBoard(max,false)); //a schoolboard passo il numero max di studenti e experts=true
+            }
+        }
         this.cloudTiles = new ArrayList<>();
         for(int i=0;i<max;i++){
-            CloudTile newCloud = new CloudTile(i);
-            cloudTiles.add(i,new CloudTile(i));
+            CloudTile newCloud = new CloudTile(i,max);
+            cloudTiles.add(i,newCloud);
             fillCloudTile(newCloud);
         }
     }
-
-    /**
-     * method for the Singleton pattern
-     */
-    public static Game getInstance(){
-        if(single_instance == null){
-            single_instance = new Game();
-        }
-        return single_instance;
-    }
-
 
     /**
      * method invoked every time a new player tries to connect with the server
      * @param nickname is the nickname the player chooses when he registers himself
      * @param chosenSeed is the wizard selected by this player for the choice of the assistant cards' deck
      */
-    public void addPlayer(String nickname,AssistantSeed chosenSeed) throws NoPawnPresentException,TooManyPawnsPresent{
-        if(players.size() == maxNumPlayers){
-            throw new IllegalStateException("Too many players");
-        }
-        Player newPlayer = new Player(players.size(),nickname,chosenSeed);
-        newPlayer.createDeck(chosenSeed);
-        players.add(players.size(),newPlayer);
-        seedsAvailable.remove(chosenSeed);
-        fillBoard(newPlayer);
-        if(players.size() == 1){
-            //at the first round we decide by default that the first player will be the first to log in the game
-            firstPlayer = newPlayer;
+    public void addPlayer(String nickname,AssistantSeed chosenSeed){
+        try{
+            if(players.size() == maxNumPlayers){
+                throw new IllegalStateException("Too many players");
+            }
+            Player newPlayer = new Player(players.size(),nickname,chosenSeed,schoolBoards.get(players.size())); //gli passo la schoolBoard,index playersize()
+            newPlayer.createDeck(chosenSeed);
+            players.add(players.size(),newPlayer);
+            seedsAvailable.remove(chosenSeed);
+            fillBoard(newPlayer);
+            if(players.size() == 1){
+                //at the first round we decide by default that the first player will be the first to log in the game
+                firstPlayer = newPlayer;
+            }
+        }catch (NoPawnPresentException e1){
+            e1.getMessage();
+        }catch (TooManyPawnsPresent e2){
+            e2.getMessage();
         }
     }
 
@@ -98,7 +103,7 @@ public class Game {
      * method invoked one time for each player at the start of the game that fills his school board
      * @param player is the player who just entered the match, his school board will be filled
      */
-    private void fillBoard(Player player) throws NoPawnPresentException,TooManyPawnsPresent{
+    private void fillBoard(Player player) throws NoPawnPresentException, TooManyPawnsPresent {
         for(int i=0;i<player.getSchoolBoard().getNumMaxStudentsWaiting();i++){
             PawnColor sorted = studentBag.drawStudent();
             player.getSchoolBoard().addStudToWaiting(sorted);
@@ -110,10 +115,12 @@ public class Game {
      * @param cloud is the cloud tile to be filled
      */
     public void fillCloudTile(CloudTile cloud) throws NoPawnPresentException, TooManyPawnsPresent {
+
         for(int i=0;i<cloud.getMaxNumStudents();i++){
             PawnColor sorted = studentBag.drawStudent();
             cloud.addStudent(sorted);
         }
+
     }
 
     /**
@@ -155,29 +162,27 @@ public class Game {
         }
     }
 
-    /**
+    /*
      * method to move mother nature
      * @param newIndex is the island's index on which mother nature will stop
-     */
     public void moveMotherNature(int newIndex) throws TooManyTowersException,NoTowersException{
         this.motherNature = newIndex;
         influence(newIndex);
-    }
-    //e se gli passassimo l'oggetto ???
-    /*
-    public void moveMotherNature(Island island) throws TooManyTowersException,NoTowersException{
-        this.motherNature = island.getIndex();
-        island.setMotherNature(true);
-        influence(newIndex);
-    }
-     */
-
-
+    }*/
 
     /**
+     *
+     * @param island is the island where I want to move Mother Nature on
+     */
+    public void moveMotherNature(Island island) throws TooManyTowersException, NoTowersException {
+        this.motherNature = island.getIndex();
+        island.setMotherNature(true);
+        influence(island);
+    }
+
+    /*
      * method to compute which player has more influence on an island
      * @param islandIndex is the island's index (or group of islands) on which we are computing the influence
-     */
     public void influence(int islandIndex) throws TooManyTowersException,NoTowersException{
         //if there is a no entry tile on the island the influence is not computed and one no entry tile will be removed
         if(islands.get(islandIndex).getEntryTiles() == 0) {
@@ -223,7 +228,12 @@ public class Game {
             islands.get(islandIndex).setEntryTiles(-1);
         }
     }
-    /*
+     */
+
+    /** MAYBE HERE WE CAN SIMPLIFY SOMETHING!
+     * Method to compute which player has more influence on an island
+     * @param island
+     */
     public void influence(Island island) throws TooManyTowersException,NoTowersException{
         int islandIndex=island.getIndex();
         //if there is a no entry tile on the island the influence is not computed and one no entry tile will be removed
@@ -254,13 +264,13 @@ public class Game {
                 //if there were already some towers present on the island it means that they are supposed to return
                 // to the school board of theirs owner
                 if(previousOwner != null){
-                    previousOwner.getSchoolBoard().addTowers(islands.get(islandIndex).getNumTowers());
+                    previousOwner.getSchoolBoard().updateNumberOfTowers(islands.get(islandIndex).getNumTowers());
                 }
                 //whether or not there were already towers on the island these following instructions must be done
                 islands.get(islandIndex).changeTower(winner.getColorTower());
                 //we remove from the school board the towers that will be placed on the island
-                winner.getSchoolBoard().addTowers((islands.get(islandIndex).getNumTowers())*(-1));
-                checkArchipelago(islandIndex);
+                winner.getSchoolBoard().updateNumberOfTowers((islands.get(islandIndex).getNumTowers())*(-1));
+                checkArchipelago(island);
             }
         }
         //da controllare se un giocatore nel costruire nuovi torri non finisce le sue presenti nella plancia
@@ -270,13 +280,12 @@ public class Game {
             islands.get(islandIndex).setEntryTiles(-1);
         }
     }
-     */
 
-    /**
+    /*
      * method to check if there is a union between two islands (or two group of islands)
      * this method is invoked each time a new tower(s) is placed on an island
      * @param index is the island's index on which is placed the new tower(s)
-     */
+
     private void checkArchipelago(int index){
         if(islands.get(index).getTower().equals(islands.get((index+1)%(Island.getNumIslands())).getTower())){
             islands.get(index).merge(islands.get((index+1)%(Island.getNumIslands())));
@@ -291,7 +300,12 @@ public class Game {
             checkWinner();
         }
     }
-    /* passare l'oggetto?
+     */
+
+    /**
+     * method to check if there is a union between two islands (or two group of islands)
+     * @param island
+     */
     private void checkArchipelago(Island island){
         int index=island.getIndex();
         if(islands.get(index).getTower().equals(islands.get((index+1)%(Island.getNumIslands())).getTower())){
@@ -306,7 +320,7 @@ public class Game {
             checkWinner();
         }
     }
-    */
+
 
     /**
      * method to update the indexes of the ArrayList islands, with a left shift of  indexes removing the island

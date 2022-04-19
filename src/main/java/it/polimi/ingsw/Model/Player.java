@@ -19,7 +19,7 @@ public class Player {
      * @param nickname is the nickname the player chooses when he registers himself
      * @param seed is the wizard selected by this player for the choice of the assistant cards' deck
      */
-    public Player(int id,String nickname,AssistantSeed seed){
+    public Player(int id,String nickname,AssistantSeed seed,SchoolBoard schoolBoard){
         this.id = id;
         this.nickname = nickname;
         switch (id) {
@@ -28,7 +28,7 @@ public class Player {
             case 2 -> this.colorTower = ColorTower.GRAY;
         }
         this.playerStatus = PlayerStatus.WAITING;
-        this.schoolBoard = new SchoolBoard();
+        this.schoolBoard = schoolBoard;
         this.deckAssistantCard = new DeckAssistantCard(seed);
     }
 
