@@ -20,9 +20,10 @@ public class OneStudentToIsland extends CharacterCard{
      * set cost,set variable used and then draw randomly 4 students from studentBag
      * @throws NoPawnPresentException
      */
-    public OneStudentToIsland() throws NoPawnPresentException {
+    public OneStudentToIsland(Game game) throws NoPawnPresentException {
         cost = 1;
         used = false;
+        this.game = game;
         this.students = new HashMap<>();
         students.put(PawnColor.RED,0);
         students.put(PawnColor.BLUE,0);
@@ -31,7 +32,7 @@ public class OneStudentToIsland extends CharacterCard{
         students.put(PawnColor.GREEN,0);
 
         for(int i=0;i<4;i++){
-            PawnColor pawnColor=Game.getInstance().getStudentBag().drawStudent();
+            PawnColor pawnColor=game.getStudentBag().drawStudent();
             students.put(pawnColor,students.get(pawnColor)+1);
         }
     }
@@ -41,7 +42,7 @@ public class OneStudentToIsland extends CharacterCard{
      * @throws NoPawnPresentException
      */
     private void addStudent() throws NoPawnPresentException {
-        PawnColor pawnColor=Game.getInstance().getStudentBag().drawStudent();
+        PawnColor pawnColor=game.getStudentBag().drawStudent();
         students.put(pawnColor,students.get(pawnColor)+1);
     }
 

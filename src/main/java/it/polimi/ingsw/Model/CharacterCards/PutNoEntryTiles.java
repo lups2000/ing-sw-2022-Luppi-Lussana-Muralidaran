@@ -7,11 +7,14 @@ package it.polimi.ingsw.Model.CharacterCards;
 //  la prima volta che madre natura temina il suo movimento lì, rimettete la tessera divieto sulla carta
 //  SENZA calcolare l'influenza su quell'isola né piazzare torri
 
+import it.polimi.ingsw.Model.Game;
+
 public class PutNoEntryTiles extends CharacterCard {
 
-    public PutNoEntryTiles(){
+    public PutNoEntryTiles(Game game){
         cost = 2;
         used = false;
+        this.game = game;
     }
 
     public void effect(){

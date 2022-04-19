@@ -11,10 +11,11 @@ import it.polimi.ingsw.Model.TooManyPawnsPresent;
 public class MoveMoreMotherNature extends CharacterCard{
     private int maxSteps;
 
-    public MoveMoreMotherNature(){
+    public MoveMoreMotherNature(Game game){
         this.maxSteps = 2;
         cost = 1;
         used = false;
+        this.game = game;
     }
 
     @Override

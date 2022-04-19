@@ -19,12 +19,12 @@ public class Game {
     private StudentBag studentBag;
     private int motherNature;
     private List<CloudTile> cloudTiles; //2-4
-    private DeckCharacterCard deckCharacterCard;
+    //private DeckCharacterCard deckCharacterCard;
     private Player firstPlayer;
     private List<SchoolBoard> schoolBoards;
 
 
-    private Game(){
+    private Game() throws NoPawnPresentException{
         this.players = new ArrayList<>();
         this.status = GameState.CREATING;
         this.seedsAvailable=new ArrayList<>(Arrays.asList(AssistantSeed.KING,AssistantSeed.SAMURAI,AssistantSeed.WITCH,AssistantSeed.WIZARD));
@@ -32,7 +32,7 @@ public class Game {
         fillIslands();
         this.studentBag = new StudentBag();
         this.motherNature = 0;
-        this.deckCharacterCard=new DeckCharacterCard();
+        //this.deckCharacterCard=new DeckCharacterCard();
         this.schoolBoards=new ArrayList<>();
     }
 
@@ -49,7 +49,7 @@ public class Game {
                 //creating 'max' schoolBoards for the game with expert variant
                 schoolBoards.add(i,new SchoolBoard(max,true)); //a schoolboard passo il numero max di studenti e experts=true
             }
-            characterCards=deckCharacterCard.pickThreeRandomCards();
+            pickThreeRandomCards();
         }
         else{
             for(int i=0;i<max;i++){
@@ -432,6 +432,55 @@ public class Game {
         }
         winner.setStatus(PlayerStatus.WINNER);
         this.status = GameState.ENDED;
+    }
+
+    /**
+     * method to sort three random (and different) character cards if the expert variant is chosen
+     */
+    private void pickThreeRandomCards() throws NoPawnPresentException{
+        int[] sorted = null;
+        boolean duplicate = false;
+        for(int i=0;i<3;i++){
+            int rand=(int) (Math.random() * 12);
+            sorted[i] = rand;
+            //to check that there are 3 different character cards sorted
+            for(int j=0;j<i;j++){
+                if(rand == sorted[j]){
+                    duplicate = true;
+                }
+            }
+            if(duplicate){
+                i--;
+            }
+            else {
+                switch (rand) {
+                    case 0:
+                        this.characterCards.add(0, new OneStudentToIsland(this));
+                    case 1:
+                        this.characterCards.add(1, new ControlOnProfessor(this));
+                    case 2:
+                        this.characterCards.add(2, new ChooseIsland(this));
+                    case 3:
+                        this.characterCards.add(3, new MoveMoreMotherNature(this));
+                    case 4:
+                        this.characterCards.add(4, new PutNoEntryTiles(this));
+                    case 5:
+                        this.characterCards.add(5, new NoCountTower(this));
+                    case 6:
+                        this.characterCards.add(6, new SwitchStudents(this));
+                    case 7:
+                        this.characterCards.add(7, new TwoAdditionalPoints(this));
+                    case 8:
+                        this.characterCards.add(8, new ColorNoInfluence(this));
+                    case 9:
+                        this.characterCards.add(9, new SwitchDiningWaiting(this));
+                    case 10:
+                        this.characterCards.add(10, new StudentToDining(this));
+                    case 11:
+                        this.characterCards.add(11, new ColorToStudentBag(this));
+                }
+            }
+        }
     }
 
     //METODO PER CALCOLARE IL PRIMO GIOCATORE AD OGNI TURNO TODO

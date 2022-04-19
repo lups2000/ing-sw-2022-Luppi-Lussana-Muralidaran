@@ -9,9 +9,10 @@ import it.polimi.ingsw.Model.*;
 
 public class ControlOnProfessor extends CharacterCard{
 
-    public ControlOnProfessor(){
+    public ControlOnProfessor(Game game){
         cost = 2;
         used = false;
+        this.game = game;
     }
 
     //da rivedere

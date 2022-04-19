@@ -1,11 +1,13 @@
 package it.polimi.ingsw.Model.CharacterCards;
 
+import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.NoPawnPresentException;
 import it.polimi.ingsw.Model.TooManyPawnsPresent;
 
 public abstract class CharacterCard {
     protected int cost;
     protected boolean used;
+    protected Game game;
 
     public int getCost() {return cost;}
 

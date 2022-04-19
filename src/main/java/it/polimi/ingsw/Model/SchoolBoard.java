@@ -174,4 +174,34 @@ public class SchoolBoard {
             numStudentsWaiting++;
         }
     }
+
+    /**
+     * Method to add a Student to the Dining Room, invoked by the StudentToDining character card
+     * @param pawnColor corresponds to the Student
+     */
+    public void addStudToDining(PawnColor pawnColor) throws TooManyPawnsPresent {
+        if(pawnColor==null){
+            throw new NullPointerException();
+        }
+        else {
+            studentsDining.put(pawnColor,studentsDining.get(pawnColor)+1);
+        }
+    }
+
+    /**
+     * method to remove a maximum of 3 students of a certain color from the school board
+     * it's an effect of the ColorToStudentBag character card
+     * @param chosen is the pawn color to remove
+     * @return the students effectively removed
+     */
+    public int removeStudents(PawnColor chosen){
+        int removed = studentsDining.get(chosen);
+        if(removed >= 3){
+            return 3;
+        }
+        else{
+            studentsDining.put(chosen,0);
+            return removed;
+        }
+    }
 }
