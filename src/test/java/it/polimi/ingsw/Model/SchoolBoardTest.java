@@ -1,6 +1,9 @@
 package it.polimi.ingsw.Model;
 
-import org.junit.jupiter.api.BeforeEach;
+import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
+import it.polimi.ingsw.Model.Exceptions.NoTowersException;
+import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
+import it.polimi.ingsw.Model.Exceptions.TooManyTowersException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

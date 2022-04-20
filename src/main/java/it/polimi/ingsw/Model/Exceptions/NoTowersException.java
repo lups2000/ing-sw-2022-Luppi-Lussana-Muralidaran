@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Model;
+package it.polimi.ingsw.Model.Exceptions;
 
 public class NoTowersException extends Exception{
 

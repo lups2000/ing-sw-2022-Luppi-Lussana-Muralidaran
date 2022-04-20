@@ -42,7 +42,12 @@ public class Island {
 
     public int getIndex() {return index;}
     public void setIndex(int newIndex){
-        this.index = newIndex;
+        if(newIndex<0 || newIndex>12){
+            throw new IndexOutOfBoundsException("The index cannot be lower than 0 or greater than 12!");
+        }
+        else {
+            this.index = newIndex;
+        }
     }
     public int getNumTowers() {
         return numTowers;
@@ -66,7 +71,12 @@ public class Island {
      * @param num so it is possible both to add or to remove an EntryTile (num will respectively be +1 or -1)
      */
     public void setEntryTiles(int num) {
-        entryTiles = entryTiles + num;
+        if(num<-1 || num>1){
+            throw new IndexOutOfBoundsException("The parameter cannot be lower than -1 or greater than 1!");
+        }
+        else{
+            entryTiles = entryTiles + num;
+        }
     }
 
     public int getEntryTiles() {
@@ -79,7 +89,7 @@ public class Island {
      * @param tower is the new colorTower to build on the island(s)
      */
     public void changeTower(ColorTower tower){
-        if(tower == null){
+        if(this.tower == null){ // no tower on the Island
             numTowers = 1;
         }
         this.tower=tower;
@@ -90,7 +100,12 @@ public class Island {
      * @param toAdd is the color of the student to add
      */
     public void addStudent(PawnColor toAdd){
-        students.put(toAdd,students.get(toAdd) + 1);
+        if(toAdd==null){
+            throw new NullPointerException("Parameter cannot be null!");
+        }
+        else{
+            students.put(toAdd,students.get(toAdd) + 1);
+        }
     }
 
     /**
@@ -99,17 +114,21 @@ public class Island {
      * @return the value of the player's influence on this island
      */
     public int computeInfluence(Player player){
-        int influence = 0;
-        if(player.getColorTower().equals(tower)){
-            influence = numTowers;
+        if(player==null){
+            throw new NullPointerException("Parameter cannot be null!");
         }
-
-        for (PawnColor d : PawnColor.values()){
-            if(player.getSchoolBoard().getProfessors().get(d)){
-                influence = influence + students.get(d);
+        else{
+            int influence = 0;
+            if(player.getColorTower().equals(tower)){
+                influence = numTowers;
             }
+            for (PawnColor d : PawnColor.values()){
+                if(player.getSchoolBoard().getProfessors().get(d)){
+                    influence = influence + students.get(d);
+                }
+            }
+            return influence;
         }
-        return influence;
     }
 
     /**
@@ -119,12 +138,17 @@ public class Island {
      * @param toMerge is the island to merge with the current one
      */
     public void merge(Island toMerge){
-        entryTiles = entryTiles + toMerge.entryTiles;
-        numTowers = numTowers + toMerge.numTowers;
-        if(toMerge.isMotherNature()){
-            this.motherNature = true;
+        if(toMerge==null){
+            throw new NullPointerException("Parameter cannot be null!");
         }
-        toMerge.students.forEach((k, v) -> this.students.merge(k, v, Integer::sum));
-        numIslands--;
+        else{
+            entryTiles = entryTiles + toMerge.entryTiles;
+            numTowers = numTowers + toMerge.numTowers;
+            if(toMerge.isMotherNature()){
+                this.motherNature = true;
+            }
+            toMerge.students.forEach((k, v) -> this.students.merge(k, v, Integer::sum));
+            numIslands--;
+        }
     }
 }

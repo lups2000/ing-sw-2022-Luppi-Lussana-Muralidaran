@@ -1,6 +1,10 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Model.CharacterCards.*;
+import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
+import it.polimi.ingsw.Model.Exceptions.NoTowersException;
+import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
+import it.polimi.ingsw.Model.Exceptions.TooManyTowersException;
 
 import java.util.*;
 

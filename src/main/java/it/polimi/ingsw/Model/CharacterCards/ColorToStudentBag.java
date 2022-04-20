@@ -4,6 +4,8 @@ package it.polimi.ingsw.Model.CharacterCards;
 //chi avesse meno di 3 studenti di quel colore rimetterà tutti quelli che ha
 
 import it.polimi.ingsw.Model.*;
+import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
+import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 
 public class ColorToStudentBag extends CharacterCard{
 
@@ -13,7 +15,7 @@ public class ColorToStudentBag extends CharacterCard{
         this.game = game;
     }
 
-    public void effect(PawnColor chosen) throws TooManyPawnsPresent,NoPawnPresentException{
+    public void effect(PawnColor chosen) throws TooManyPawnsPresent, NoPawnPresentException {
         for(Player player : game.getPlayers()){
             int removed = player.getSchoolBoard().removeStudents(chosen);
             game.getStudentBag().addStudents(chosen,removed);

@@ -4,6 +4,8 @@ package it.polimi.ingsw.Model.CharacterCards;
 //EFF: prendi 1 studente da questa carta e piazzalo nella tua sala. poi pesca un nuovo studente dal sacchetto e posizionalo su questa carta
 
 import it.polimi.ingsw.Model.*;
+import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
+import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +31,7 @@ public class StudentToDining extends CharacterCard{
         }
     }
 
-    public void effect(PawnColor chosen) throws NoPawnPresentException,TooManyPawnsPresent{
+    public void effect(PawnColor chosen) throws NoPawnPresentException, TooManyPawnsPresent {
         if(students.get(chosen) == 0){
             throw new NoPawnPresentException();
         }

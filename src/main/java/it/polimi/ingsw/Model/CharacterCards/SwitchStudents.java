@@ -4,6 +4,8 @@ package it.polimi.ingsw.Model.CharacterCards;
 //EFF: puoi prendere fino a 3 studenti da questa carta e scambiarli con altrettanti studenti presenti nel tuo ingresso
 
 import it.polimi.ingsw.Model.*;
+import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
+import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +32,7 @@ public class SwitchStudents extends CharacterCard{
         }
     }
 
-    public void effect(Map<PawnColor,Integer> toPick, Map<PawnColor,Integer> toDeposit) throws TooManyPawnsPresent{
+    public void effect(Map<PawnColor,Integer> toPick, Map<PawnColor,Integer> toDeposit) throws TooManyPawnsPresent {
         for(Player player : game.getPlayers()){
             if((player.getStatus()).equals(PlayerStatus.PLAYING)){
                 for(PawnColor color : PawnColor.values()){
