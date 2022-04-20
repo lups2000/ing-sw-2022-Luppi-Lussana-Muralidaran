@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Paolo Lussana,Matteo Luppi
+ * @author Paolo Lussana,Matteo Luppi, Pradeeban Muralidaran
  */
 
 public class Island {
@@ -95,15 +95,28 @@ public class Island {
 
     /**
      * method to compute a player's influence on an island
+     * the method is divided in two sub-methods in order to differentiate the influence calculated by the towers and the students
      * @param player indicates which player's influence we are computing
      * @return the value of the player's influence on this island
      */
-    public int computeInfluence(Player player){
+
+    public int computeFullInfluence(Player player){
         int influence = 0;
-        if(player.getColorTower().equals(tower)){
+
+        computeTowerInfluence(player, influence);
+        computeStudentsInfluence(player, influence);
+
+        return influence;
+    }
+
+    public int computeTowerInfluence(Player player, int influence) {
+        if (player.getColorTower().equals(tower)) {
             influence = numTowers;
         }
+        return influence;
+    }
 
+    public int computeStudentsInfluence(Player player, int influence){
         for (PawnColor d : PawnColor.values()){
             if(player.getSchoolBoard().getProfessors().get(d)){
                 influence = influence + students.get(d);

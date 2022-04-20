@@ -3,8 +3,7 @@ package it.polimi.ingsw.Model.CharacterCards;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.NoPawnPresentException;
 import it.polimi.ingsw.Model.TooManyPawnsPresent;
-
-//PRADEE TODO
+import it.polimi.ingsw.Model.AssistantCard;
 
 //EFF: puoi muovere madre natura fino a 2 isole addizionali rispetto a quanto indicato sulla carta assistente che hai giocato
 
@@ -18,9 +17,10 @@ public class MoveMoreMotherNature extends CharacterCard{
         this.game = game;
     }
 
-    @Override
-    public void effect() throws NoPawnPresentException {
-
+    //This void imports the current active assistant card's maximum number of steps
+    //and returns it increased by two
+    public void effect(AssistantCard assistantCard) throws NoPawnPresentException, TooManyPawnsPresent {
+        assistantCard.updateMaxStepsMotherNature(assistantCard.getMaxStepsMotherNature()+maxSteps);
         used();
     }
 }

@@ -24,6 +24,12 @@ public class AssistantCard {
         return maxStepsMotherNature;
     }
 
+    /**
+     Void function which updates the number of steps Mother Nature
+     can do if the MoveMoreMotherNature CharacterCard is activated
+    */
+    public void updateMaxStepsMotherNature(int newStepsNumber) { this.maxStepsMotherNature=newStepsNumber; }
+
     @Override
     public boolean equals(Object o) {
         if (o == this) {

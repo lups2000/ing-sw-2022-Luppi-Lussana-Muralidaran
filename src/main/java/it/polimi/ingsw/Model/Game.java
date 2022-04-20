@@ -249,12 +249,12 @@ public class Game {
                 if((islands.get(islandIndex).getTower()).equals(player.getColorTower())){
                     previousOwner = player;
                 }
-                if(maxInfluence < islands.get(islandIndex).computeInfluence(player)) {
-                    maxInfluence = islands.get(islandIndex).computeInfluence(player);
+                if(maxInfluence < islands.get(islandIndex).computeFullInfluence(player)) {
+                    maxInfluence = islands.get(islandIndex).computeFullInfluence(player);
                     winner = player;
                     drawInfluence = false;
                 }
-                else if(maxInfluence != 0 && maxInfluence == islands.get(islandIndex).computeInfluence(player)){
+                else if(maxInfluence != 0 && maxInfluence == islands.get(islandIndex).computeFullInfluence(player)){
                     drawInfluence = true;
                 }
             }
