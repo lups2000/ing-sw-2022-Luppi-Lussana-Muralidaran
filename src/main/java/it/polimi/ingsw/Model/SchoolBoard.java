@@ -59,10 +59,6 @@ public class SchoolBoard {
         if(experts){
             this.numCoins = 1;
         }
-        //questo else non si puo levare??
-        /*else{
-            this.numCoins = 0;
-        }*/
     }
 
     public Map<PawnColor, Boolean> getProfessors() {return professors;}
@@ -171,11 +167,11 @@ public class SchoolBoard {
      * @param pawnColor corresponds to the Student
      */
     public void addStudToWaiting(PawnColor pawnColor) throws TooManyPawnsPresent {
-        if (numStudentsWaiting>=numMaxStudentsWaiting){
-            throw new TooManyPawnsPresent();
+        if(pawnColor==null) {
+            throw new NullPointerException("Parameter cannot be null!");
         }
-        else if(pawnColor==null){
-            throw new NullPointerException();
+        else if (numStudentsWaiting>=numMaxStudentsWaiting){
+            throw new TooManyPawnsPresent();
         }
         else {
             studentsWaiting.put(pawnColor,studentsWaiting.get(pawnColor)+1);
@@ -189,7 +185,10 @@ public class SchoolBoard {
      */
     public void addStudToDining(PawnColor pawnColor) throws TooManyPawnsPresent {
         if(pawnColor==null){
-            throw new NullPointerException();
+            throw new NullPointerException("Parameter cannot be null!");
+        }
+        else if(studentsDining.get(pawnColor)>=10){
+            throw new TooManyPawnsPresent();
         }
         else {
             studentsDining.put(pawnColor,studentsDining.get(pawnColor)+1);
@@ -203,13 +202,19 @@ public class SchoolBoard {
      * @return the students effectively removed
      */
     public int removeStudents(PawnColor chosen){
-        int removed = studentsDining.get(chosen);
-        if(removed >= 3){
-            return 3;
+        if(chosen==null){
+            throw new NullPointerException("Parameter cannot be null!");
         }
         else{
-            studentsDining.put(chosen,0);
-            return removed;
+            int removed = studentsDining.get(chosen);
+            if(removed >= 3){
+                studentsDining.put(chosen,studentsDining.get(chosen)-3);
+                return 3;
+            }
+            else{
+                studentsDining.put(chosen,0);
+                return removed;
+            }
         }
     }
 }
