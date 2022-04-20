@@ -2,7 +2,7 @@ package it.polimi.ingsw.Model.CharacterCards;
 
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Island;
-import it.polimi.ingsw.Model.NoPawnPresentException;
+import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.PawnColor;
 
 import java.util.HashMap;

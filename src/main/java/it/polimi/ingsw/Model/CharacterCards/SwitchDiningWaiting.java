@@ -3,6 +3,8 @@ package it.polimi.ingsw.Model.CharacterCards;
 //EFF: puoi scambiare fra loro fino a 2 studenti presenti nella tua sala e nel tuo ingresso
 
 import it.polimi.ingsw.Model.*;
+import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
+import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 
 import java.util.Map;
 
@@ -14,7 +16,7 @@ public class SwitchDiningWaiting extends CharacterCard{
         this.game = game;
     }
 
-    public void effect(Map<PawnColor,Integer> exWaiting, Map<PawnColor,Integer> exDining) throws TooManyPawnsPresent, NoPawnPresentException{
+    public void effect(Map<PawnColor,Integer> exWaiting, Map<PawnColor,Integer> exDining) throws TooManyPawnsPresent, NoPawnPresentException {
         for(Player player : game.getPlayers()){
             if((player.getStatus()).equals(PlayerStatus.PLAYING)){
                 for(PawnColor color : PawnColor.values()){

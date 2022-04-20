@@ -1,5 +1,10 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
+import it.polimi.ingsw.Model.Exceptions.NoTowersException;
+import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
+import it.polimi.ingsw.Model.Exceptions.TooManyTowersException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -150,7 +155,7 @@ public class SchoolBoard {
      * method to add (or remove) towers from the school board
      * @param num the number of towers to add (or remove if num is negative)
      */
-    public void updateNumberOfTowers(int num) throws TooManyTowersException,NoTowersException{
+    public void updateNumberOfTowers(int num) throws TooManyTowersException, NoTowersException {
         if(numTowers+num >= numMaxTowers){
             throw new TooManyTowersException();
         }

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
+
 import java.util.HashMap;
 import java.util.Map;
 
