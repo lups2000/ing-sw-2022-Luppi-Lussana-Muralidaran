@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Model.CharacterCards.*;
+import it.polimi.ingsw.Model.Exceptions.*;
 
 import java.util.*;
 

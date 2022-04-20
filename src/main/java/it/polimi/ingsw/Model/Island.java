@@ -100,7 +100,7 @@ public class Island {
      * @return the value of the player's influence on this island
      */
 
-    public int computeFullInfluence(Player player){
+    public int computeTotalInfluence(Player player){
         int influence = 0;
 
         computeTowerInfluence(player, influence);

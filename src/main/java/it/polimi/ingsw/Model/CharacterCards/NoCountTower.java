@@ -15,7 +15,7 @@ public class NoCountTower extends CharacterCard{
     }
 
     //This void calculates the influence of an island just by the students' number
-    public void effect(Island island, Player player) throws NoPawnPresentException, TooManyPawnsPresent {
+    public void effect(Island island, Player player) {
         int influence = 0;
         island.computeStudentsInfluence(player, influence);
         used();

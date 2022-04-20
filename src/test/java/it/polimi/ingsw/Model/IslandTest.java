@@ -58,7 +58,7 @@ class IslandTest {
 
     @Test
     @DisplayName("computeInfluence")
-    void computeInfluence() throws TooManyPawnsPresent, NoPawnPresentException {
+    void computeTotalInfluence() throws TooManyPawnsPresent, NoPawnPresentException {
         Player player1 = new Player(0, "matteo", AssistantSeed.KING, new SchoolBoard(2, false));
         Player player2 = new Player(1, "paolo", AssistantSeed.WITCH, new SchoolBoard(2, false));
 
@@ -71,21 +71,21 @@ class IslandTest {
         island.addStudent(PawnColor.RED);
         island.addStudent(PawnColor.BLUE);
 
-        assertEquals(island.computeInfluence(player1),2);
-        assertEquals(island.computeInfluence(player2),1);
+        assertEquals(island.computeTotalInfluence(player1),2);
+        assertEquals(island.computeTotalInfluence(player2),1);
 
         //now adding the WHITE tower(associated to player 1) to this Island
         island.changeTower(ColorTower.WHITE);
         //we compute another time the influence on this island
-        assertEquals(island.computeInfluence(player1),3);
-        assertEquals(island.computeInfluence(player2),1);
+        assertEquals(island.computeTotalInfluence(player1),3);
+        assertEquals(island.computeTotalInfluence(player2),1);
 
         //now the player 2 gets the RED professor
         player1.getSchoolBoard().removeProfessor(PawnColor.RED);
         player2.getSchoolBoard().addProfessor(PawnColor.RED);
 
-        assertEquals(island.computeInfluence(player1),1); //1 because there is the white tower on this Island
-        assertEquals(island.computeInfluence(player2),3);
+        assertEquals(island.computeTotalInfluence(player1),1); //1 because there is the white tower on this Island
+        assertEquals(island.computeTotalInfluence(player2),3);
     }
 
     @Test
@@ -93,7 +93,7 @@ class IslandTest {
     void computeInfluenceNull() {
         Player player=null;
         Throwable exception = assertThrows(NullPointerException.class, () -> {
-            island.computeInfluence(player);
+            island.computeTotalInfluence(player);
         });
         assertEquals("Parameter cannot be null!", exception.getMessage());
 

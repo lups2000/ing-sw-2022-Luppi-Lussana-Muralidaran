@@ -1,8 +1,7 @@
 package it.polimi.ingsw.Model.CharacterCards;
 
 import it.polimi.ingsw.Model.Game;
-import it.polimi.ingsw.Model.NoPawnPresentException;
-import it.polimi.ingsw.Model.TooManyPawnsPresent;
+import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.AssistantCard;
 
 //EFF: puoi muovere madre natura fino a 2 isole addizionali rispetto a quanto indicato sulla carta assistente che hai giocato
