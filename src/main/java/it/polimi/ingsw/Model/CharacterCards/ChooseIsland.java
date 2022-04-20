@@ -16,7 +16,7 @@ public class ChooseIsland extends CharacterCard{
 
     //Void function which calculates the influence on any island selected by the current player
     public void effect(Island island, Player player) {
-        island.computeFullInfluence(player);
+        island.computeTotalInfluence(player);
         used();
     }
 
