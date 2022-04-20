@@ -34,7 +34,7 @@ public class StudentBag {
     }
 
     /**
-     * method to add students to the bag, it can only be invoked by a specific CharacterCard
+     * method to add students to the bag, it can only be invoked by the ColorToStudentBag character card
      * @param toAdd is the chosen color of the students to add to the StudentBag
      * @param num is the number of students (of the chosen color) to add to the StudentBag
      */

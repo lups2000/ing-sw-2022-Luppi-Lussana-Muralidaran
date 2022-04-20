@@ -12,6 +12,7 @@ public class Player {
     private PlayerStatus playerStatus;
     private SchoolBoard schoolBoard;
     private DeckAssistantCard deckAssistantCard;
+    private boolean twoAdditionalPoints;  //for the character card TwoAdditionalPoints
 
     /**
      * constructor of the Player class
@@ -30,6 +31,7 @@ public class Player {
         this.playerStatus = PlayerStatus.WAITING;
         this.schoolBoard = schoolBoard;
         this.deckAssistantCard = new DeckAssistantCard(seed);
+        this.twoAdditionalPoints = false;
     }
 
     public String getNickname() {
@@ -42,4 +44,6 @@ public class Player {
     public void createDeck(AssistantSeed seed){this.deckAssistantCard=new DeckAssistantCard(seed);}
     public DeckAssistantCard getDeckAssistantCard() {return deckAssistantCard;}
     public void setStatus(PlayerStatus newStatus){this.playerStatus = newStatus;}
+    public void setTwoAdditionalPoints(boolean next){this.twoAdditionalPoints = next;}
+    public boolean isTwoAdditionalPoints(){return this.twoAdditionalPoints;}
 }
