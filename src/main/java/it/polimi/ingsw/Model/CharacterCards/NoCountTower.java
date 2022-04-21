@@ -3,6 +3,9 @@ import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Exceptions.NoTowersException;
 import it.polimi.ingsw.Model.Exceptions.TooManyTowersException;
 
+/**
+ * @author Pradeeban Muralidaran
+ */
 
 //EFF: durante il conteggio dell'influenza su un'isola (o su un gruppo di isole), le torri presenti non vengono calcolate
 
