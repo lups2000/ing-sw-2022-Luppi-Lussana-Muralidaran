@@ -11,10 +11,6 @@ public abstract class CharacterCard {
 
     public int getCost() {return cost;}
 
-    //public boolean isUsed() {return used;}
-
-    //public void setUsed(boolean used) {this.used = used;}
-
     public void effect() throws NoPawnPresentException, TooManyPawnsPresent {
 
     }

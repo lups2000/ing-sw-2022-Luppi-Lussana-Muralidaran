@@ -1,14 +1,13 @@
 package it.polimi.ingsw.Model.CharacterCards;
 
-import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.*;
-
-//EFF: durante questo turno, prendi il controllo dei professori anche se nella tua sala hai lo stesso numero
-//  di studenti del giocatore che li controlla in quel momento
 
 /**
  * @author Pradeeban Muralidaran
  */
+
+//EFFECT: during this turn, you take control of any number of professors even if you have the same number of students
+//  as the player who currently controls them
 
 public class ControlOnProfessor extends CharacterCard{
 

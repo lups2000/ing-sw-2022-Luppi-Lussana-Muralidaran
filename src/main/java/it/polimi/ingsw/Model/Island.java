@@ -114,7 +114,6 @@ public class Island {
      * @param player indicates which player's influence we are computing
      * @return the value of the player's influence on this island
      */
-
     public int computeTotalInfluence(Player player){
         if(player==null){
             throw new NullPointerException("Parameter cannot be null!");
@@ -138,6 +137,24 @@ public class Island {
         int influence = 0;
         for (PawnColor d : PawnColor.values()){
             if(player.getSchoolBoard().getProfessors().get(d)){
+                influence = influence + students.get(d);
+            }
+        }
+        return influence;
+    }
+
+    /**
+     * method to compute a player's influence on an island given by the only students
+     * it is invoked if the NoColorInfluence character card was activated
+     * @param player indicates which player's influence we are computing
+     * @param noColorInfluence is the color chosen whose students don't count in this round
+     * @return the value of the player's influence on this island
+     */
+    public int computeNoColorInfluence(Player player,PawnColor noColorInfluence){
+        int influence = 0;
+
+        for (PawnColor d : PawnColor.values()){
+            if(!(d.equals(noColorInfluence)) && player.getSchoolBoard().getProfessors().get(d)){
                 influence = influence + students.get(d);
             }
         }

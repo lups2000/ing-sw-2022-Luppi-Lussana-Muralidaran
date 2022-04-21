@@ -1,11 +1,11 @@
 package it.polimi.ingsw.Model.CharacterCards;
 
-//EFF: scegli un colore di studente, ogni giocatore (incluso te) deve rimettere nel sacchetto 3 studenti di quel colore presenti nella tua sala
-//chi avesse meno di 3 studenti di quel colore rimetterà tutti quelli che ha
-
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
+
+//EFFECT: choose a type of student: every player (including yourself) must return 3 students of that type from their dining room to the bag.
+//  If any player has fewer than 3 students of that type, return as many students as they have
 
 public class ColorToStudentBag extends CharacterCard{
 

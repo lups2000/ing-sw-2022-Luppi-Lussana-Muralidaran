@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Model.CharacterCards;
 
-//PRE: all'inizio della partita pescate 6 studenti e piazzateli su questa carta
-//EFF: puoi prendere fino a 3 studenti da questa carta e scambiarli con altrettanti studenti presenti nel tuo ingresso
+//In setup, draw 6 students and place them on this card.
+//EFFECT: you may take up to 3 students from this card and replace them with the same number of students from your entrance
 
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;

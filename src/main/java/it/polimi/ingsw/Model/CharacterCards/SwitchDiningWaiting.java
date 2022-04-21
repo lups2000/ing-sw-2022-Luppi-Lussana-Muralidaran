@@ -1,12 +1,12 @@
 package it.polimi.ingsw.Model.CharacterCards;
 
-//EFF: puoi scambiare fra loro fino a 2 studenti presenti nella tua sala e nel tuo ingresso
-
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 
 import java.util.Map;
+
+//EFFECT: you may exchange up to 2 students between your entrance and your dining room
 
 public class SwitchDiningWaiting extends CharacterCard{
 

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Model.CharacterCards;
 
-//EFF: in questo turno durante il calcolo dell'influenza hai 2 punti di influenza addizionali
+//EFFECT: during the influence calculation this turn, you count as having 2 more influence
 
 import it.polimi.ingsw.Model.*;
 

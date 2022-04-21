@@ -7,8 +7,9 @@ import java.util.*;
 
 /**
  * class Game
- * @author Paolo Lussana,Matteo Luppi, Pradeeban Muralidaran
+ * @author Paolo Lussana,Matteo Luppi,Pradeeban Muralidaran
  */
+
 public class Game {
     private int maxNumPlayers;
     private List<Player> players; //2-4
@@ -24,6 +25,7 @@ public class Game {
     private Player firstPlayer;
     private List<SchoolBoard> schoolBoards;
     private boolean noCountTower;   //flag used for the NoCountTower character card
+    private PawnColor noColorInfluence; //used for the NoColorInfluence character card
 
 
     public Game(){
@@ -37,6 +39,7 @@ public class Game {
         this.noEntryTilesCounter = 4; //maximum amount of "No Entry Tiles" not in use
         this.schoolBoards=new ArrayList<>();
         this.noCountTower = false;
+        this.noColorInfluence = null;
     }
 
     /**
@@ -102,6 +105,7 @@ public class Game {
     public StudentBag getStudentBag() {return studentBag;}
     public List<CloudTile> getCloudTiles() {return cloudTiles;}
     public void setNoCountTower(){this.noCountTower = true;}
+    public void setNoColorInfluence(PawnColor picked){this.noColorInfluence = picked;}
     public int getNoEntryTilesCounter(){return noEntryTilesCounter;}
     public void setNoEntryTilesCounter(int newNoEntryTilesNumber){this.noEntryTilesCounter = newNoEntryTilesNumber;}
 
@@ -186,14 +190,14 @@ public class Game {
         influence(island);
     }
 
-    /** MAYBE HERE WE CAN SIMPLIFY SOMETHING!
+    /**
      * Method to compute which player has more influence on an island
-     * @param island
+     * @param island is the one we are calculating the influence on
      */
     public void influence(Island island) throws TooManyTowersException,NoTowersException{
         int islandIndex=island.getIndex();
         //if there is a no entry tile on the island the influence is not computed and one no entry tile will be removed
-        if(islands.get(islandIndex).getNoEntryTiles() == 0) {
+        if(island.getNoEntryTiles() == 0) {
             int maxInfluence = 0;
             Player winner = players.get(0); //by default
             //"previousOwner" is the player who previously had tower(s) on the island (if there is one)
@@ -202,7 +206,7 @@ public class Game {
             boolean drawInfluence = false;
 
             for (Player player : players) {
-                if((islands.get(islandIndex).getTower()).equals(player.getColorTower())){
+                if((island.getTower()).equals(player.getColorTower())){
                     previousOwner = player;
                 }
 
@@ -214,11 +218,24 @@ public class Game {
                 }
 
                 if(!noCountTower) {
-                    playerInfluence = playerInfluence + islands.get(islandIndex).computeTotalInfluence(player);
+                    if (noColorInfluence == null) {
+                        playerInfluence = playerInfluence + island.computeTotalInfluence(player);
+                    }
+                    else{
+                        playerInfluence = playerInfluence + island.computeNoColorInfluence(player,noColorInfluence);
+                        playerInfluence = playerInfluence + island.computeTowerInfluence(player);
+                        noColorInfluence = null;
+                    }
                 }
                 //if the flag noCountTower is true it means that in the computation of the influence we don't have to calculate the towers
                 else{
-                    playerInfluence = playerInfluence + islands.get(islandIndex).computeStudentsInfluence(player);
+                    if(noColorInfluence == null) {
+                        playerInfluence = playerInfluence + island.computeStudentsInfluence(player);
+                    }
+                    else{
+                        playerInfluence = playerInfluence + island.computeNoColorInfluence(player,noColorInfluence);
+                        noColorInfluence = null;
+                    }
                 }
                 if(maxInfluence < playerInfluence) {
                     maxInfluence = playerInfluence;
@@ -236,14 +253,14 @@ public class Game {
                 //if there were already some towers present on the island it means that they are supposed to return
                 // to the school board of theirs owner
                 if(previousOwner != null){
-                    previousOwner.getSchoolBoard().updateNumberOfTowers(islands.get(islandIndex).getNumTowers());
+                    previousOwner.getSchoolBoard().updateNumberOfTowers(island.getNumTowers());
                 }
 
                 //whether or not there were already towers on the island these following instructions must be done
-                islands.get(islandIndex).changeTower(winner.getColorTower());
+                island.changeTower(winner.getColorTower());
                 //we remove from the school board the towers that will be placed on the island
                 try {
-                    winner.getSchoolBoard().updateNumberOfTowers((islands.get(islandIndex).getNumTowers()) * (-1));
+                    winner.getSchoolBoard().updateNumberOfTowers((island.getNumTowers()) * (-1));
                 } catch(NoTowersException e) {
                     //if this exception is thrown it means that the player "winner" has finished his towers, so he has won the game
                     winner.setStatus(PlayerStatus.WINNER);
@@ -261,7 +278,7 @@ public class Game {
 
     /**
      * method to check if there is a union between two islands (or two group of islands)
-     * @param island
+     * @param island is the one where a new tower has just been built
      */
     private void checkArchipelago(Island island){
         int index=island.getIndex();
@@ -307,6 +324,8 @@ public class Game {
             int maxStudents = 0;
             //if there is a draw the previous owner keeps his professor, so no action is needed
             boolean draw = false;
+            //flag to see if the current winner in the for is the player who has played the ControlOnProfessor character card
+            boolean winningControlOnProfessor = false;
 
             for (Player player : players) {
                 if(player.getSchoolBoard().getProfessors().get(color)){
@@ -316,13 +335,21 @@ public class Game {
                     winner = player;
                     maxStudents = player.getSchoolBoard().getStudentsDining().get(color);
                     draw = false;
+                    if(player.getControlOnProfessor()){
+                        winningControlOnProfessor = true;
+                    }
+                    else{
+                        winningControlOnProfessor = false;
+                    }
                 }
-                else if(maxStudents != 0 && player.getSchoolBoard().getStudentsDining().get(color) == maxStudents){
+                //this "else if" branch expresses a draw but NOT in the case if the current winner is the player who has played the ControlOnProfessor character card
+                //because if this was the case the winner must remain that player
+                else if(maxStudents != 0 && player.getSchoolBoard().getStudentsDining().get(color) == maxStudents && !winningControlOnProfessor){
                     if (!player.getControlOnProfessor()){
                         draw = true;
                     }
                     else {
-                        //if the character card ControlOnProfessor is activated, with a draw the professor is taken by the other player
+                        //if the character card ControlOnProfessor is activated, with a draw the professor is taken by the player who played it
                         winner = player;
                         draw = false;
                     }
@@ -406,7 +433,6 @@ public class Game {
     /**
      * method to sort three random (and different) character cards if the expert variant is chosen
      */
-
     private void pickThreeRandomCards() throws NoPawnPresentException{
         int[] sorted = new int[3];
         boolean duplicate = false;

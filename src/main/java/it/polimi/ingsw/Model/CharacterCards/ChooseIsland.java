@@ -8,9 +8,8 @@ import it.polimi.ingsw.Model.Exceptions.TooManyTowersException;
  * @author Pradeeban Muralidaran
  */
 
-//EFF: scegli un'isola e calcola la maggioranza come se madre natura avesse terminato il suo movimento lì
-//  in questo turno madre natura si muoverà come di consueto e nell'isola dove terminerà il suo movimento
-//  la maggioranza verrà normalmente calcolata
+//EFF: choose an island and resolve the island as if mother nature had ended her movement there.
+//  Mother nature will still move and the island where she ends her movement will also be resolved
 
 public class ChooseIsland extends CharacterCard{
 

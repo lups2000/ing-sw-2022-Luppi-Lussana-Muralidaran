@@ -1,14 +1,14 @@
 package it.polimi.ingsw.Model.CharacterCards;
 
-//PRE: all'inizio della partita, pescate 4 studenti e piazzateli su questa carta
-//EFF: prendi 1 studente da questa carta e piazzalo nella tua sala. poi pesca un nuovo studente dal sacchetto e posizionalo su questa carta
-
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
-
 import java.util.HashMap;
 import java.util.Map;
+
+//In setup, draw 4 students and place them on this card.
+//EFFECT: take 1 student from this card and place it in your dining room.
+//  Then, draw a new student from the bag and place it on this card
 
 public class StudentToDining extends CharacterCard{
 

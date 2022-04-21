@@ -8,11 +8,10 @@ import it.polimi.ingsw.Model.Exceptions.NoNoEntryTilesException;
  * @author Pradeeban Muralidaran
  */
 
-//PRE: all'inizio della partita, mettete le 4 tessere divieto su questa carta
-//EFF: piazza una tessera divieto su un'isola a tua scelta.
-//  la prima volta che madre natura termina il suo movimento lì, rimettete la tessera divieto sulla carta
-//  SENZA calcolare l'influenza su quell'isola né piazzare torri
-
+//In setup, put the 4 no entry tiles on this card.
+//EFF: place a no entry tile on an island of your choice.
+//  The first time mother nature ends her movement there, put the no entry tile back onto this card
+//  DO NOT calculate influence on that island, or place any towers
 
 public class PutNoEntryTiles extends CharacterCard {
 

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Model.CharacterCards;
 
-//EFF: scegli un colore di studente, in questo turno, durante il calcolo dell'influenza quel colore non fornisce influenza
+//EFFECT: choose a color of student: during the influence calculation this turn, that color adds no influence
 
 import it.polimi.ingsw.Model.*;
 
@@ -13,8 +13,7 @@ public class ColorNoInfluence extends CharacterCard{
     }
 
     public void effect(PawnColor chosen) {
-
+        game.setNoColorInfluence(chosen);
         used();
     }
 }
-
