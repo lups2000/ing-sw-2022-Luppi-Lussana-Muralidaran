@@ -6,7 +6,7 @@ import it.polimi.ingsw.Model.Exceptions.*;
 import java.util.*;
 
 /**
- * class Game is a Singleton class
+ * class Game
  * @author Paolo Lussana,Matteo Luppi
  */
 public class Game {
@@ -20,7 +20,6 @@ public class Game {
     private StudentBag studentBag;
     private int motherNature;
     private List<CloudTile> cloudTiles; //2-4
-    //private DeckCharacterCard deckCharacterCard;
     private Player firstPlayer;
     private List<SchoolBoard> schoolBoards;
 
@@ -33,7 +32,6 @@ public class Game {
         fillIslands();
         this.studentBag = new StudentBag();
         this.motherNature = 0;
-        //this.deckCharacterCard=new DeckCharacterCard();
         this.schoolBoards=new ArrayList<>();
     }
 
@@ -50,7 +48,7 @@ public class Game {
                 //creating 'max' schoolBoards for the game with expert variant
                 schoolBoards.add(i,new SchoolBoard(max,true)); //a schoolboard passo il numero max di studenti e experts=true
             }
-            //pickThreeRandomCards();
+            //pickThreeRandomCards(); come mai commentato?
         }
         else{
             for(int i=0;i<max;i++){
@@ -163,16 +161,8 @@ public class Game {
         }
     }
 
-    /*
-     * method to move mother nature
-     * @param newIndex is the island's index on which mother nature will stop
-    public void moveMotherNature(int newIndex) throws TooManyTowersException,NoTowersException{
-        this.motherNature = newIndex;
-        influence(newIndex);
-    }*/
-
     /**
-     *
+     * Method to move MotherNature to an Island
      * @param island is the island where I want to move Mother Nature on
      */
     public void moveMotherNature(Island island) throws TooManyTowersException, NoTowersException {
@@ -180,56 +170,6 @@ public class Game {
         island.setMotherNature(true);
         influence(island);
     }
-
-    /*
-     * method to compute which player has more influence on an island
-     * @param islandIndex is the island's index (or group of islands) on which we are computing the influence
-    public void influence(int islandIndex) throws TooManyTowersException,NoTowersException{
-        //if there is a no entry tile on the island the influence is not computed and one no entry tile will be removed
-        if(islands.get(islandIndex).getEntryTiles() == 0) {
-            int maxInfluence = 0;
-            Player winner = players.get(0); //by default
-            //"previousOwner" is the player who previously had tower(s) on the island (if there is one)
-            Player previousOwner = null;
-            //if it happens a draw between the influences of two (or more) players on an island no action is needed
-            boolean drawInfluence = false;
-
-            for (Player player : players) {
-                if((islands.get(islandIndex).getTower()).equals(player.getColorTower())){
-                    previousOwner = player;
-                }
-                if(maxInfluence < islands.get(islandIndex).computeInfluence(player)) {
-                    maxInfluence = islands.get(islandIndex).computeInfluence(player);
-                    winner = player;
-                    drawInfluence = false;
-                }
-                else if(maxInfluence != 0 && maxInfluence == islands.get(islandIndex).computeInfluence(player)){
-                    drawInfluence = true;
-                }
-            }
-
-            //if the winner is the same player who had already the towers on this island no action is needed
-            if(!drawInfluence && maxInfluence > 0 && !(winner.equals(previousOwner))){
-                //if there were already some towers present on the island it means that they are supposed to return
-                // to the school board of theirs owner
-                if(previousOwner != null){
-                    previousOwner.getSchoolBoard().updateNumberOfTowers(islands.get(islandIndex).getNumTowers());
-                }
-                //whether or not there were already towers on the island these following instructions must be done
-                islands.get(islandIndex).changeTower(winner.getColorTower());
-                //we remove from the school board the towers that will be placed on the island
-                winner.getSchoolBoard().updateNumberOfTowers((islands.get(islandIndex).getNumTowers())*(-1));
-                checkArchipelago(islandIndex);
-            }
-        }
-        //da controllare se un giocatore nel costruire nuovi torri non finisce le sue presenti nella plancia
-        //in caso -> FINE PARTITA E VITTORIA DI QUEL PLAYER
-
-        else{
-            islands.get(islandIndex).setEntryTiles(-1);
-        }
-    }
-     */
 
     /** MAYBE HERE WE CAN SIMPLIFY SOMETHING!
      * Method to compute which player has more influence on an island
@@ -250,12 +190,12 @@ public class Game {
                 if((islands.get(islandIndex).getTower()).equals(player.getColorTower())){
                     previousOwner = player;
                 }
-                if(maxInfluence < islands.get(islandIndex).computeFullInfluence(player)) {
-                    maxInfluence = islands.get(islandIndex).computeFullInfluence(player);
+                if(maxInfluence < islands.get(islandIndex).computeTotalInfluence(player)) {
+                    maxInfluence = islands.get(islandIndex).computeTotalInfluence(player);
                     winner = player;
                     drawInfluence = false;
                 }
-                else if(maxInfluence != 0 && maxInfluence == islands.get(islandIndex).computeFullInfluence(player)){
+                else if(maxInfluence != 0 && maxInfluence == islands.get(islandIndex).computeTotalInfluence(player)){
                     drawInfluence = true;
                 }
             }
@@ -281,27 +221,6 @@ public class Game {
             islands.get(islandIndex).setEntryTiles(-1);
         }
     }
-
-    /*
-     * method to check if there is a union between two islands (or two group of islands)
-     * this method is invoked each time a new tower(s) is placed on an island
-     * @param index is the island's index on which is placed the new tower(s)
-
-    private void checkArchipelago(int index){
-        if(islands.get(index).getTower().equals(islands.get((index+1)%(Island.getNumIslands())).getTower())){
-            islands.get(index).merge(islands.get((index+1)%(Island.getNumIslands())));
-            updateIndexes((index+1)%(Island.getNumIslands()));
-        }
-        if(islands.get(index).getTower().equals(islands.get((index-1)%(Island.getNumIslands())).getTower())){
-            islands.get((index-1)%(Island.getNumIslands())).merge(islands.get(index));
-            updateIndexes(index);
-        }
-
-        if(Island.getNumIslands() <= 3){
-            checkWinner();
-        }
-    }
-     */
 
     /**
      * method to check if there is a union between two islands (or two group of islands)
@@ -440,7 +359,7 @@ public class Game {
      */
 
     private void pickThreeRandomCards() throws NoPawnPresentException{
-        int[] sorted = null;
+        int[] sorted = new int[3];
         boolean duplicate = false;
         for(int i=0;i<3;i++){
             int rand=(int) (Math.random() * 12);
@@ -453,6 +372,7 @@ public class Game {
             }
             if(duplicate){
                 i--;
+                duplicate=false;
             }
             else {
                 switch (rand) {
