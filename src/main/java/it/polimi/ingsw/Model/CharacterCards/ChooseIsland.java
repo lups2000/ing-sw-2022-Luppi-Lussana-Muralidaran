@@ -2,6 +2,10 @@ package it.polimi.ingsw.Model.CharacterCards;
 
 import it.polimi.ingsw.Model.*;
 
+/**
+ * @author Pradeeban Muralidaran
+ */
+
 //EFF: scegli un'isola e calcola la maggioranza come se madre natura avesse terminato il suo movimento lì
 //  in questo turno madre natura si muoverà come di consueto e nell'isola dove terminerà il suo movimento
 //  la maggioranza verrà normalmente calcolata

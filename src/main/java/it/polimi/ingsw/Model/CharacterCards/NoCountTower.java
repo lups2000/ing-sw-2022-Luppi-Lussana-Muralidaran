@@ -1,6 +1,9 @@
 package it.polimi.ingsw.Model.CharacterCards;
 import it.polimi.ingsw.Model.*;
 
+/**
+ * @author Pradeeban Muralidaran
+ */
 
 //EFF: durante il conteggio dell'influenza su un'isola (o su un gruppo di isole), le torri presenti non vengono calcolate
 
