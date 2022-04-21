@@ -3,7 +3,7 @@ package it.polimi.ingsw.Model;
 import java.util.List;
 
 /**
- * @author Matteo Luppi,Paolo Lussana
+ * @author Matteo Luppi, Paolo Lussana, Pradeeban Muralidaran
  */
 public class Player {
     private int id;
@@ -12,7 +12,8 @@ public class Player {
     private PlayerStatus playerStatus;
     private SchoolBoard schoolBoard;
     private DeckAssistantCard deckAssistantCard;
-    private boolean twoAdditionalPoints;  //for the character card TwoAdditionalPoints
+    private boolean twoAdditionalPoints; //for the character card TwoAdditionalPoints
+    private boolean controlOnProfessor = false; //flag used for ControlOnProfessor character card
 
     /**
      * constructor of the Player class
@@ -32,6 +33,7 @@ public class Player {
         this.schoolBoard = schoolBoard;
         this.deckAssistantCard = new DeckAssistantCard(seed);
         this.twoAdditionalPoints = false;
+        this.controlOnProfessor = false;
     }
 
     public String getNickname() {
@@ -46,4 +48,6 @@ public class Player {
     public void setStatus(PlayerStatus newStatus){this.playerStatus = newStatus;}
     public void setTwoAdditionalPoints(boolean next){this.twoAdditionalPoints = next;}
     public boolean isTwoAdditionalPoints(){return this.twoAdditionalPoints;}
+    public boolean getControlOnProfessor(){return this.controlOnProfessor;}
+    public void setControlOnProfessor (boolean controlSwitch){this.controlOnProfessor = controlSwitch;}
 }

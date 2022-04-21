@@ -173,20 +173,20 @@ class IslandTest {
     @Test
     @DisplayName("getEntryTiles")
     void getEntryTiles(){
-        assertEquals(island.getEntryTiles(),0);
+        assertEquals(island.getNoEntryTiles(),0);
     }
     @Test
     @DisplayName("setEntryTiles")
     void setEntryTiles(){
-        assertEquals(island.getEntryTiles(),0);
+        assertEquals(island.getNoEntryTiles(),0);
         Throwable exception1 = assertThrows(IndexOutOfBoundsException.class, () -> {
-            island.setEntryTiles(3);
+            island.setNoEntryTiles(3);
         });
         assertEquals("The parameter cannot be lower than -1 or greater than 1!", exception1.getMessage());
-        island.setEntryTiles(1);
-        assertEquals(island.getEntryTiles(),1);
-        island.setEntryTiles(-1);
-        assertEquals(island.getEntryTiles(),0);
+        island.setNoEntryTiles(1);
+        assertEquals(island.getNoEntryTiles(),1);
+        island.setNoEntryTiles(-1);
+        assertEquals(island.getNoEntryTiles(),0);
     }
 
 }

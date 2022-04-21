@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class Island {
     private int index;
-    private int entryTiles;
+    private int noEntryTiles;
     private ColorTower tower;
     private int numTowers;
     private boolean motherNature;
@@ -23,7 +23,7 @@ public class Island {
      */
     public Island(int index){
         this.index = index;
-        this.entryTiles = 0;
+        this.noEntryTiles = 0;
         this.tower = null;
         this.numTowers = 0;
         if(index == 0){
@@ -70,17 +70,17 @@ public class Island {
     /**
      * @param num so it is possible both to add or to remove an EntryTile (num will respectively be +1 or -1)
      */
-    public void setEntryTiles(int num) {
+    public void setNoEntryTiles(int num) {
         if(num<-1 || num>1){
             throw new IndexOutOfBoundsException("The parameter cannot be lower than -1 or greater than 1!");
         }
         else{
-            entryTiles = entryTiles + num;
+            noEntryTiles = noEntryTiles + num;
         }
     }
 
-    public int getEntryTiles() {
-        return entryTiles;
+    public int getNoEntryTiles() {
+        return noEntryTiles;
     }
 
     /**
@@ -155,7 +155,7 @@ public class Island {
             throw new NullPointerException("Parameter cannot be null!");
         }
         else{
-            entryTiles = entryTiles + toMerge.entryTiles;
+            noEntryTiles = noEntryTiles + toMerge.noEntryTiles;
             numTowers = numTowers + toMerge.numTowers;
             if(toMerge.isMotherNature()){
                 this.motherNature = true;

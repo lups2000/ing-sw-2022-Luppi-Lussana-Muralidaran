@@ -7,7 +7,7 @@ import java.util.*;
 
 /**
  * class Game
- * @author Paolo Lussana,Matteo Luppi
+ * @author Paolo Lussana,Matteo Luppi, Pradeeban Muralidaran
  */
 public class Game {
     private int maxNumPlayers;
@@ -19,6 +19,7 @@ public class Game {
     private List<Island> islands; //initially 12
     private StudentBag studentBag;
     private int motherNature;
+    private int noEntryTilesCounter; //counter used in the PutNoEntryTiles character card
     private List<CloudTile> cloudTiles; //2-4
     private Player firstPlayer;
     private List<SchoolBoard> schoolBoards;
@@ -33,6 +34,7 @@ public class Game {
         fillIslands();
         this.studentBag = new StudentBag();
         this.motherNature = 0;
+        this.noEntryTilesCounter = 4; //maximum amount of "No Entry Tiles" not in use
         this.schoolBoards=new ArrayList<>();
         this.noCountTower = false;
     }
@@ -100,6 +102,8 @@ public class Game {
     public StudentBag getStudentBag() {return studentBag;}
     public List<CloudTile> getCloudTiles() {return cloudTiles;}
     public void setNoCountTower(){this.noCountTower = true;}
+    public int getNoEntryTilesCounter(){return noEntryTilesCounter;}
+    public void setNoEntryTilesCounter(int newNoEntryTilesNumber){this.noEntryTilesCounter = newNoEntryTilesNumber;}
 
     /**
      * method invoked one time for each player at the start of the game that fills his school board
@@ -189,7 +193,7 @@ public class Game {
     public void influence(Island island) throws TooManyTowersException,NoTowersException{
         int islandIndex=island.getIndex();
         //if there is a no entry tile on the island the influence is not computed and one no entry tile will be removed
-        if(islands.get(islandIndex).getEntryTiles() == 0) {
+        if(islands.get(islandIndex).getNoEntryTiles() == 0) {
             int maxInfluence = 0;
             Player winner = players.get(0); //by default
             //"previousOwner" is the player who previously had tower(s) on the island (if there is one)
@@ -250,7 +254,8 @@ public class Game {
         }
 
         else{
-            islands.get(islandIndex).setEntryTiles(-1);
+            islands.get(islandIndex).setNoEntryTiles(-1);
+            setNoEntryTilesCounter(getNoEntryTilesCounter()+1);
         }
     }
 
@@ -313,7 +318,14 @@ public class Game {
                     draw = false;
                 }
                 else if(maxStudents != 0 && player.getSchoolBoard().getStudentsDining().get(color) == maxStudents){
-                    draw = true;
+                    if (!player.getControlOnProfessor()){
+                        draw = true;
+                    }
+                    else {
+                        //if the character card ControlOnProfessor is activated, with a draw the professor is taken by the other player
+                        winner = player;
+                        draw = false;
+                    }
                 }
             }
             if(previousOwner != null) {
@@ -328,6 +340,11 @@ public class Game {
                 if (maxStudents != 0) {
                     winner.getSchoolBoard().addProfessor(color);
                 }
+            }
+        }
+        for (Player player : players){
+            if (player.getControlOnProfessor()){
+                player.setControlOnProfessor(false);
             }
         }
     }
