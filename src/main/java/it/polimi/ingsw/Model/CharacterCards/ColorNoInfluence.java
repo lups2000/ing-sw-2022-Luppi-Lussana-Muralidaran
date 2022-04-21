@@ -2,8 +2,7 @@ package it.polimi.ingsw.Model.CharacterCards;
 
 //EFF: scegli un colore di studente, in questo turno, durante il calcolo dell'influenza quel colore non fornisce influenza
 
-import it.polimi.ingsw.Model.Game;
-import it.polimi.ingsw.Model.PawnColor;
+import it.polimi.ingsw.Model.*;
 
 public class ColorNoInfluence extends CharacterCard{
 

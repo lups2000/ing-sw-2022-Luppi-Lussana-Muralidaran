@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model.CharacterCards;
 import it.polimi.ingsw.Model.*;
+import it.polimi.ingsw.Model.Exceptions.NoTowersException;
+import it.polimi.ingsw.Model.Exceptions.TooManyTowersException;
 
 
 //EFF: durante il conteggio dell'influenza su un'isola (o su un gruppo di isole), le torri presenti non vengono calcolate
@@ -13,10 +15,8 @@ public class NoCountTower extends CharacterCard{
         this.game = game;
     }
 
-    //This void calculates the influence of an island just by the students' number
-    public void effect(Island island, Player player) {
-        int influence = 0;
-        island.computeStudentsInfluence(player, influence);
+    public void effect(){
+        game.setNoCountTower();
         used();
     }
 }

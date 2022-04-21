@@ -22,6 +22,7 @@ public class Game {
     private List<CloudTile> cloudTiles; //2-4
     private Player firstPlayer;
     private List<SchoolBoard> schoolBoards;
+    private boolean noCountTower;   //flag used for the NoCountTower character card
 
 
     public Game(){
@@ -33,6 +34,7 @@ public class Game {
         this.studentBag = new StudentBag();
         this.motherNature = 0;
         this.schoolBoards=new ArrayList<>();
+        this.noCountTower = false;
     }
 
     /**
@@ -40,7 +42,7 @@ public class Game {
      * @param max indicates the max number of players chosen at the very start by the first player when he creates the match
      * @param experts indicates if the first player chooses to play the game with the experts variant or not
      */
-    public void initGame(int max,boolean experts) throws NoPawnPresentException, TooManyPawnsPresent {
+    public void initGame(int max,boolean experts) throws TooManyPawnsPresent {
         this.maxNumPlayers = max;
         this.expertsVariant = experts;
         if(expertsVariant){
@@ -97,6 +99,7 @@ public class Game {
     public void changeStatus(GameState status){this.status = status;}
     public StudentBag getStudentBag() {return studentBag;}
     public List<CloudTile> getCloudTiles() {return cloudTiles;}
+    public void setNoCountTower(){this.noCountTower = true;}
 
     /**
      * method invoked one time for each player at the start of the game that fills his school board
@@ -104,8 +107,12 @@ public class Game {
      */
     private void fillBoard(Player player) throws NoPawnPresentException, TooManyPawnsPresent {
         for(int i=0;i<player.getSchoolBoard().getNumMaxStudentsWaiting();i++){
-            PawnColor sorted = studentBag.drawStudent();
-            player.getSchoolBoard().addStudToWaiting(sorted);
+            try {
+                PawnColor sorted = studentBag.drawStudent();
+                player.getSchoolBoard().addStudToWaiting(sorted);
+            } catch(NoPawnPresentException e){
+                checkWinner();
+            }
         }
     }
 
@@ -113,13 +120,17 @@ public class Game {
      * method invoked when the cloud tiles need to be refilled
      * @param cloud is the cloud tile to be filled
      */
-    public void fillCloudTile(CloudTile cloud) throws NoPawnPresentException, TooManyPawnsPresent {
+    public void fillCloudTile(CloudTile cloud) throws TooManyPawnsPresent {
 
         for(int i=0;i<cloud.getMaxNumStudents();i++){
-            PawnColor sorted = studentBag.drawStudent();
-            cloud.addStudent(sorted);
+            try {
+                PawnColor sorted = studentBag.drawStudent();
+                cloud.addStudent(sorted);
+            } catch(NoPawnPresentException e){
+                //if there are no students remaining in the student bag the game is ended and we have to check who is the winner
+                checkWinner();
+            }
         }
-
     }
 
     /**
@@ -190,15 +201,31 @@ public class Game {
                 if((islands.get(islandIndex).getTower()).equals(player.getColorTower())){
                     previousOwner = player;
                 }
-                if(maxInfluence < islands.get(islandIndex).computeTotalInfluence(player)) {
-                    maxInfluence = islands.get(islandIndex).computeTotalInfluence(player);
+
+                int playerInfluence = 0;
+                //if the flag TwoAdditionalPoints is true it means that this player has two more points
+                if(player.isTwoAdditionalPoints()){
+                    playerInfluence = 2;
+                    player.setTwoAdditionalPoints(false);
+                }
+
+                if(!noCountTower) {
+                    playerInfluence = playerInfluence + islands.get(islandIndex).computeTotalInfluence(player);
+                }
+                //if the flag noCountTower is true it means that in the computation of the influence we don't have to calculate the towers
+                else{
+                    playerInfluence = playerInfluence + islands.get(islandIndex).computeStudentsInfluence(player);
+                }
+                if(maxInfluence < playerInfluence) {
+                    maxInfluence = playerInfluence;
                     winner = player;
                     drawInfluence = false;
                 }
-                else if(maxInfluence != 0 && maxInfluence == islands.get(islandIndex).computeTotalInfluence(player)){
+                else if(maxInfluence != 0 && maxInfluence == playerInfluence){
                     drawInfluence = true;
                 }
             }
+            this.noCountTower = false;
 
             //if the winner is the same player who had already the towers on this island no action is needed
             if(!drawInfluence && maxInfluence > 0 && !(winner.equals(previousOwner))){
@@ -207,15 +234,20 @@ public class Game {
                 if(previousOwner != null){
                     previousOwner.getSchoolBoard().updateNumberOfTowers(islands.get(islandIndex).getNumTowers());
                 }
+
                 //whether or not there were already towers on the island these following instructions must be done
                 islands.get(islandIndex).changeTower(winner.getColorTower());
                 //we remove from the school board the towers that will be placed on the island
-                winner.getSchoolBoard().updateNumberOfTowers((islands.get(islandIndex).getNumTowers())*(-1));
+                try {
+                    winner.getSchoolBoard().updateNumberOfTowers((islands.get(islandIndex).getNumTowers()) * (-1));
+                } catch(NoTowersException e) {
+                    //if this exception is thrown it means that the player "winner" has finished his towers, so he has won the game
+                    winner.setStatus(PlayerStatus.WINNER);
+                    this.status = GameState.ENDED;
+                }
                 checkArchipelago(island);
             }
         }
-        //da controllare se un giocatore nel costruire nuovi torri non finisce le sue presenti nella plancia
-        //in caso -> FINE PARTITA E VITTORIA DI QUEL PLAYER
 
         else{
             islands.get(islandIndex).setEntryTiles(-1);
@@ -232,8 +264,8 @@ public class Game {
             islands.get(index).merge(islands.get((index+1)%(Island.getNumIslands())));
             updateIndexes((index+1)%(Island.getNumIslands()));
         }
-        if(islands.get(index).getTower().equals(islands.get((index-1)%(Island.getNumIslands())).getTower())){
-            islands.get((index-1)%(Island.getNumIslands())).merge(islands.get(index));
+        if(islands.get(index).getTower().equals(islands.get((index-1+Island.getNumIslands())%(Island.getNumIslands())).getTower())){
+            islands.get((index-1+Island.getNumIslands())%(Island.getNumIslands())).merge(islands.get(index));
             updateIndexes(index);
         }
         if(Island.getNumIslands() <= 3){
@@ -368,6 +400,7 @@ public class Game {
             for(int j=0;j<i;j++){
                 if(rand == sorted[j]){
                     duplicate = true;
+                    break;
                 }
             }
             if(duplicate){

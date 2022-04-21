@@ -26,7 +26,7 @@ public class Island {
         this.entryTiles = 0;
         this.tower = null;
         this.numTowers = 0;
-        if(this.index == 0){
+        if(index == 0){
             this.motherNature = true;
         }
         else{
@@ -120,21 +120,22 @@ public class Island {
             throw new NullPointerException("Parameter cannot be null!");
         }
         else{
-            int influence = 0;
-            influence=computeTowerInfluence(player, influence);
-            influence=computeStudentsInfluence(player, influence);
+            int influence = computeTowerInfluence(player);
+            influence = influence + computeStudentsInfluence(player);
             return influence;
         }
     }
 
-    public int computeTowerInfluence(Player player, int influence) {
+    public int computeTowerInfluence(Player player) {
+        int influence = 0;
         if (player.getColorTower().equals(tower)) {
             influence = numTowers;
         }
         return influence;
     }
 
-    public int computeStudentsInfluence(Player player, int influence){
+    public int computeStudentsInfluence(Player player){
+        int influence = 0;
         for (PawnColor d : PawnColor.values()){
             if(player.getSchoolBoard().getProfessors().get(d)){
                 influence = influence + students.get(d);

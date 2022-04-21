@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Model.CharacterCards;
 
 import it.polimi.ingsw.Model.*;
+import it.polimi.ingsw.Model.Exceptions.NoTowersException;
+import it.polimi.ingsw.Model.Exceptions.TooManyTowersException;
 
 //EFF: scegli un'isola e calcola la maggioranza come se madre natura avesse terminato il suo movimento lì
 //  in questo turno madre natura si muoverà come di consueto e nell'isola dove terminerà il suo movimento
@@ -14,9 +16,8 @@ public class ChooseIsland extends CharacterCard{
         this.game = game;
     }
 
-    //Void function which calculates the influence on any island selected by the current player
-    public void effect(Island island, Player player) {
-        island.computeTotalInfluence(player);
+    public void effect(Island island) throws NoTowersException, TooManyTowersException {
+        game.influence(island);
         used();
     }
 
