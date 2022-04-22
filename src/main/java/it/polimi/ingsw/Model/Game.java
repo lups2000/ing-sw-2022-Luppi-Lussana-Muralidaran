@@ -480,8 +480,8 @@ public class Game {
 
     private void pickCurrentTurnFirstPlayer(Player player){
         /*
-        L'idea sarebbe fare un for each per ogni player e confrontare i valori delle carte, mettendone in ordine
-        crescente i giocatori a secondo quel numero
+        L'idea sarebbe fare un for each per ogni player e confrontare i valori delle carte, mettendo in ordine
+        crescente i giocatori a seconda di quel numero
          */
     }
 }
