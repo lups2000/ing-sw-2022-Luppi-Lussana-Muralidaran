@@ -43,7 +43,6 @@ public class Player {
     public PlayerStatus getStatus() {return playerStatus;}
     public ColorTower getColorTower() {return colorTower;}
     public SchoolBoard getSchoolBoard() {return schoolBoard;}
-    public void createDeck(AssistantSeed seed){this.deckAssistantCard=new DeckAssistantCard(seed);}
     public DeckAssistantCard getDeckAssistantCard() {return deckAssistantCard;}
     public void setStatus(PlayerStatus newStatus){this.playerStatus = newStatus;}
     public void setTwoAdditionalPoints(boolean next){this.twoAdditionalPoints = next;}

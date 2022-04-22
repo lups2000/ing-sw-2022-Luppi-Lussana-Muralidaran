@@ -47,7 +47,7 @@ public class Game {
      * @param max indicates the max number of players chosen at the very start by the first player when he creates the match
      * @param experts indicates if the first player chooses to play the game with the experts variant or not
      */
-    public void initGame(int max,boolean experts) throws TooManyPawnsPresent {
+    public void initGame(int max,boolean experts) throws TooManyPawnsPresent, NoPawnPresentException {
         this.maxNumPlayers = max;
         this.expertsVariant = experts;
         if(expertsVariant){
@@ -55,7 +55,7 @@ public class Game {
                 //creating 'max' schoolBoards for the game with expert variant
                 schoolBoards.add(i,new SchoolBoard(max,true)); //a schoolboard passo il numero max di studenti e experts=true
             }
-            //pickThreeRandomCards(); come mai commentato?
+            pickThreeRandomCards();
         }
         else{
             for(int i=0;i<max;i++){
@@ -82,7 +82,6 @@ public class Game {
                 throw new IllegalStateException("Too many players");
             }
             Player newPlayer = new Player(players.size(),nickname,chosenSeed,schoolBoards.get(players.size())); //gli passo la schoolBoard,index playersize()
-            newPlayer.createDeck(chosenSeed);
             players.add(players.size(),newPlayer);
             seedsAvailable.remove(chosenSeed);
             fillBoard(newPlayer);

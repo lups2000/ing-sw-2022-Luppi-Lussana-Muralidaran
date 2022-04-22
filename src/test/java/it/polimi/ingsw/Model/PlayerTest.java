@@ -7,43 +7,69 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Island class is tested by IslandTest
- * @author Pradeeban Muralidaran
+ * @author Matteo Luppi
  */
 
 class PlayerTest {
+    SchoolBoard schoolBoard=new SchoolBoard(3,false);
+    Player player=new Player(2,"Teo",AssistantSeed.KING,schoolBoard);
 
     @Test
     @DisplayName("getNickname")
     void getNickname() {
+        assertEquals(player.getNickname(),"Teo");
     }
 
     @Test
     @DisplayName("getId")
     void getId() {
+        assertEquals(player.getId(),2);
+
     }
 
     @Test
     @DisplayName("getPlayerStatus")
     void getPlayerStatus() {
+        assertEquals(player.getStatus(),PlayerStatus.WAITING);
     }
 
     @Test
     @DisplayName("getColorTower")
     void getColorTower() {
+        assertEquals(player.getColorTower(),ColorTower.GRAY);
     }
 
     @Test
     @DisplayName("getSchoolBoard")
     void getSchoolBoard() {
+        assertEquals(player.getSchoolBoard(),schoolBoard);
     }
 
     @Test
-    @DisplayName("createDeck")
-    void createDeck() {
+    @DisplayName("setPlayerStatus")
+    void setPlayerStatus() {
+        player.setStatus(PlayerStatus.PLAYING);
+        assertEquals(player.getStatus(),PlayerStatus.PLAYING);
     }
 
     @Test
-    @DisplayName("isFirst")
-    void isFirst() {
+    @DisplayName("getTwoAdditionalPoints")
+    void getTwoAdditionalPoints(){
+        assertFalse(player.isTwoAdditionalPoints());
     }
+
+    @Test
+    @DisplayName("setTwoAdditionalPoints")
+    void setTwoAdditionalPoints(){
+        assertFalse(player.isTwoAdditionalPoints());
+        player.setTwoAdditionalPoints(true);
+        assertTrue(player.isTwoAdditionalPoints());
+    }
+
+    @Test
+    @DisplayName("getAssistantDeck")
+    void getAssistantDeck(){
+        assertEquals(player.getDeckAssistantCard().getSeed(),AssistantSeed.KING);
+    }
+
 }
