@@ -478,5 +478,10 @@ public class Game {
         }
     }
 
-    //METODO PER CALCOLARE IL PRIMO GIOCATORE AD OGNI TURNO TODO
+    private void pickCurrentTurnFirstPlayer(Player player){
+        /*
+        L'idea sarebbe fare un for each per ogni player e confrontare i valori delle carte, mettendone in ordine
+        crescente i giocatori a secondo quel numero
+         */
+    }
 }
