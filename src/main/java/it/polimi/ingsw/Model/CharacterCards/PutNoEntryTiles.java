@@ -2,7 +2,7 @@ package it.polimi.ingsw.Model.CharacterCards;
 
 import it.polimi.ingsw.Model.Island;
 import it.polimi.ingsw.Model.Game;
-import it.polimi.ingsw.Model.Exceptions.NoNoEntryTilesException;
+import it.polimi.ingsw.Model.Exceptions.NoNoEntryTilesAvailableException;
 
 /**
  * @author Pradeeban Muralidaran
@@ -21,12 +21,12 @@ public class PutNoEntryTiles extends CharacterCard {
         this.game = game;
     }
 
-    public void effect(Island island) throws NoNoEntryTilesException {
+    public void effect(Island island) throws NoNoEntryTilesAvailableException{
         if (game.getNoEntryTilesCounter() > 0){
             island.setNoEntryTiles(1);
             game.setNoEntryTilesCounter(game.getNoEntryTilesCounter()-1);
             used();
         }
-        else {throw new NoNoEntryTilesException();}
+        else {throw new NoNoEntryTilesAvailableException();}
     }
 }

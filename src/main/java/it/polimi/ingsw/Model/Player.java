@@ -13,7 +13,7 @@ public class Player {
     private SchoolBoard schoolBoard;
     private DeckAssistantCard deckAssistantCard;
     private boolean twoAdditionalPoints; //for the character card TwoAdditionalPoints
-    private boolean controlOnProfessor = false; //flag used for ControlOnProfessor character card
+    private boolean controlOnProfessor; //flag used for ControlOnProfessor character card
 
     /**
      * constructor of the Player class
