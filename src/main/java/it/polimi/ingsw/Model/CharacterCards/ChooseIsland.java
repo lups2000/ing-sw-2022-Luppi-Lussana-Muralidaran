@@ -8,8 +8,10 @@ import it.polimi.ingsw.Model.Exceptions.TooManyTowersException;
  * @author Pradeeban Muralidaran
  */
 
-//EFF: choose an island and resolve the island as if mother nature had ended her movement there.
-//  Mother nature will still move and the island where she ends her movement will also be resolved
+/*
+EFFECT: choose an island and resolve the island as if mother nature had ended her movement there.
+Mother nature will still move and the island where she ends her movement will also be resolved
+ */
 
 public class ChooseIsland extends CharacterCard{
 

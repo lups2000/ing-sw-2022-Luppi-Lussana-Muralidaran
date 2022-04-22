@@ -8,7 +8,9 @@ import it.polimi.ingsw.Model.AssistantCard;
  * @author Pradeeban Muralidaran
  */
 
-//EFF: you may move mother nature up to 2 additional islands than is indicated by the assistant card you've played
+/*
+EFFECT: you may move mother nature up to 2 additional islands than is indicated by the assistant card you've played
+ */
 
 public class MoveMoreMotherNature extends CharacterCard{
     private int maxSteps;

@@ -5,7 +5,9 @@ import it.polimi.ingsw.Model.*;
  * @author Pradeeban Muralidaran
  */
 
-//EFFECT: when resolving a conquering on an island, towers do not count towards influence
+/*
+EFFECT: when resolving a conquering on an island, towers do not count towards influence
+*/
 
 public class NoCountTower extends CharacterCard{
 

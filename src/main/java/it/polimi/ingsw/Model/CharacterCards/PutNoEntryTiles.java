@@ -9,8 +9,8 @@ import it.polimi.ingsw.Model.Exceptions.NoNoEntryTilesException;
  */
 
 /*
-In setup, put the 4 no entry tiles on this card.
-EFF: place a no entry tile on an island of your choice.
+BEFORE THE MATCH STARTS: In setup phase, put the 4 no entry tiles on this card.
+EFFECT: place a no entry tile on an island of your choice.
 The first time mother nature ends her movement there, put the no entry tile back onto this card
 DO NOT calculate influence on that island, or place any towers
 */
