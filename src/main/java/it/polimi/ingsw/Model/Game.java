@@ -40,6 +40,7 @@ public class Game {
         this.schoolBoards=new ArrayList<>();
         this.noCountTower = false;
         this.noColorInfluence = null;
+        this.characterCards=new ArrayList<>();
     }
 
     /**
@@ -48,26 +49,31 @@ public class Game {
      * @param experts indicates if the first player chooses to play the game with the experts variant or not
      */
     public void initGame(int max,boolean experts) throws TooManyPawnsPresent, NoPawnPresentException {
-        this.maxNumPlayers = max;
-        this.expertsVariant = experts;
-        if(expertsVariant){
-            for(int i=0;i<max;i++){
-                //creating 'max' schoolBoards for the game with expert variant
-                schoolBoards.add(i,new SchoolBoard(max,true)); //a schoolboard passo il numero max di studenti e experts=true
-            }
-            pickThreeRandomCards();
+        if(max<2 || max>4){
+            throw new IllegalArgumentException("The number of players must be between 2 and 4!");
         }
         else{
-            for(int i=0;i<max;i++){
-                //creating 'max' schoolBoards for the game with no expert variant
-                schoolBoards.add(i,new SchoolBoard(max,false)); //a schoolboard passo il numero max di studenti e experts=true
+            this.maxNumPlayers = max;
+            this.expertsVariant = experts;
+            if(expertsVariant){
+                for(int i=0;i<max;i++){
+                    //creating 'max' schoolBoards for the game with expert variant
+                    schoolBoards.add(i,new SchoolBoard(max,true)); //a schoolboard passo il numero max di studenti e experts=true
+                }
+                pickThreeRandomCards();
             }
-        }
-        this.cloudTiles = new ArrayList<>();
-        for(int i=0;i<max;i++){
-            CloudTile newCloud = new CloudTile(i,max);
-            cloudTiles.add(i,newCloud);
-            fillCloudTile(newCloud);
+            else{
+                for(int i=0;i<max;i++){
+                    //creating 'max' schoolBoards for the game with no expert variant
+                    schoolBoards.add(i,new SchoolBoard(max,false)); //a schoolboard passo il numero max di studenti e experts=true
+                }
+            }
+            this.cloudTiles = new ArrayList<>();
+            for(int i=0;i<max;i++){
+                CloudTile newCloud = new CloudTile(i,max);
+                fillCloudTile(newCloud);
+                cloudTiles.add(i,newCloud);
+            }
         }
     }
 
@@ -102,11 +108,15 @@ public class Game {
     public boolean getExpertsVariant(){return expertsVariant;}
     public void changeStatus(GameState status){this.status = status;}
     public StudentBag getStudentBag() {return studentBag;}
+    public List<SchoolBoard> getSchoolBoards() {return schoolBoards;}
     public List<CloudTile> getCloudTiles() {return cloudTiles;}
     public void setNoCountTower(){this.noCountTower = true;}
     public void setNoColorInfluence(PawnColor picked){this.noColorInfluence = picked;}
     public int getNoEntryTilesCounter(){return noEntryTilesCounter;}
     public void setNoEntryTilesCounter(int newNoEntryTilesNumber){this.noEntryTilesCounter = newNoEntryTilesNumber;}
+    public List<CharacterCard> getCharacterCards() {return characterCards;}
+    public List<AssistantSeed> getSeedsAvailable() {return seedsAvailable;}
+    public List<Island> getIslands() {return islands;}
 
     /**
      * method invoked one time for each player at the start of the game that fills his school board
@@ -451,30 +461,18 @@ public class Game {
             }
             else {
                 switch (rand) {
-                    case 0:
-                        this.characterCards.add(0, new OneStudentToIsland(this));
-                    case 1:
-                        this.characterCards.add(1, new ControlOnProfessor(this));
-                    case 2:
-                        this.characterCards.add(2, new ChooseIsland(this));
-                    case 3:
-                        this.characterCards.add(3, new MoveMoreMotherNature(this));
-                    case 4:
-                        this.characterCards.add(4, new PutNoEntryTiles(this));
-                    case 5:
-                        this.characterCards.add(5, new NoCountTower(this));
-                    case 6:
-                        this.characterCards.add(6, new SwitchStudents(this));
-                    case 7:
-                        this.characterCards.add(7, new TwoAdditionalPoints(this));
-                    case 8:
-                        this.characterCards.add(8, new ColorNoInfluence(this));
-                    case 9:
-                        this.characterCards.add(9, new SwitchDiningWaiting(this));
-                    case 10:
-                        this.characterCards.add(10, new StudentToDining(this));
-                    case 11:
-                        this.characterCards.add(11, new ColorToStudentBag(this));
+                    case 0 -> this.characterCards.add(i, new OneStudentToIsland(this));
+                    case 1 -> this.characterCards.add(i, new ControlOnProfessor(this));
+                    case 2 -> this.characterCards.add(i, new ChooseIsland(this));
+                    case 3 -> this.characterCards.add(i, new MoveMoreMotherNature(this));
+                    case 4 -> this.characterCards.add(i, new PutNoEntryTiles(this));
+                    case 5 -> this.characterCards.add(i, new NoCountTower(this));
+                    case 6 -> this.characterCards.add(i, new SwitchStudents(this));
+                    case 7 -> this.characterCards.add(i, new TwoAdditionalPoints(this));
+                    case 8 -> this.characterCards.add(i, new ColorNoInfluence(this));
+                    case 9 -> this.characterCards.add(i, new SwitchDiningWaiting(this));
+                    case 10 -> this.characterCards.add(i, new StudentToDining(this));
+                    case 11 -> this.characterCards.add(i, new ColorToStudentBag(this));
                 }
             }
         }

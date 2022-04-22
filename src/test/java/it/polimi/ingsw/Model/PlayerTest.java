@@ -72,4 +72,18 @@ class PlayerTest {
         assertEquals(player.getDeckAssistantCard().getSeed(),AssistantSeed.KING);
     }
 
+    @Test
+    @DisplayName("getControlOnProfessor")
+    void getControlOnProfessor(){
+        assertFalse(player.getControlOnProfessor());
+    }
+
+    @Test
+    @DisplayName("setControlOnProfessor")
+    void setControlOnProfessor(){
+        assertFalse(player.getControlOnProfessor());
+        player.setControlOnProfessor(true);
+        assertTrue(player.getControlOnProfessor());
+    }
+
 }

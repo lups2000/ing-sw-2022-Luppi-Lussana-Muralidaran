@@ -73,6 +73,8 @@ public class SchoolBoard {
     public Map<PawnColor, Integer> getStudentsDining() {return studentsDining;}
     public Map<PawnColor, Integer> getStudentsWaiting() {return studentsWaiting;}
     public int getNumStudentsWaiting() {return numStudentsWaiting;}
+    public int getNumMaxPlayers() {return numMaxPlayers;}
+    public boolean isExperts() {return experts;}
     public int getNumCoins() {return numCoins;}
     public void decreaseNumCoins(int numCoins){
         if(numCoins<=0){
