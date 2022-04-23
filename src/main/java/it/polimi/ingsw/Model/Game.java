@@ -82,11 +82,14 @@ public class Game {
      * @param nickname is the nickname the player chooses when he registers himself
      * @param chosenSeed is the wizard selected by this player for the choice of the assistant cards' deck
      */
-    public void addPlayer(String nickname,AssistantSeed chosenSeed){
-        try{
-            if(players.size() == maxNumPlayers){
-                throw new IllegalStateException("Too many players");
-            }
+    public void addPlayer(String nickname,AssistantSeed chosenSeed) throws TooManyPawnsPresent {
+        if(!seedsAvailable.contains(chosenSeed)){
+            throw new IllegalArgumentException("The seed has already been chosen!");
+        }
+        else if(players.size() == maxNumPlayers){
+            throw new IllegalStateException("Too many players!");
+        }
+        else{
             Player newPlayer = new Player(players.size(),nickname,chosenSeed,schoolBoards.get(players.size())); //gli passo la schoolBoard,index playersize()
             players.add(players.size(),newPlayer);
             seedsAvailable.remove(chosenSeed);
@@ -95,10 +98,6 @@ public class Game {
                 //at the first round we decide by default that the first player will be the first to log in the game
                 firstPlayer = newPlayer;
             }
-        }catch (NoPawnPresentException e1){
-            e1.getMessage();
-        }catch (TooManyPawnsPresent e2){
-            e2.getMessage();
         }
     }
 
@@ -117,12 +116,14 @@ public class Game {
     public List<CharacterCard> getCharacterCards() {return characterCards;}
     public List<AssistantSeed> getSeedsAvailable() {return seedsAvailable;}
     public List<Island> getIslands() {return islands;}
+    public Player getFirstPlayer() {return firstPlayer;}
+    public int getMotherNature() {return motherNature;}
 
     /**
      * method invoked one time for each player at the start of the game that fills his school board
      * @param player is the player who just entered the match, his school board will be filled
      */
-    private void fillBoard(Player player) throws NoPawnPresentException, TooManyPawnsPresent {
+    private void fillBoard(Player player) throws TooManyPawnsPresent {
         for(int i=0;i<player.getSchoolBoard().getNumMaxStudentsWaiting();i++){
             try {
                 PawnColor sorted = studentBag.drawStudent();
@@ -194,9 +195,14 @@ public class Game {
      * @param island is the island where I want to move Mother Nature on
      */
     public void moveMotherNature(Island island) throws TooManyTowersException, NoTowersException {
-        this.motherNature = island.getIndex();
-        island.setMotherNature(true);
-        influence(island);
+        if(island==null){
+            throw new NullPointerException("Parameter cannot be null!");
+        }
+        else{
+            this.motherNature = island.getIndex();
+            island.setMotherNature(true);
+            influence(island);
+        }
     }
 
     /**
@@ -215,7 +221,7 @@ public class Game {
             boolean drawInfluence = false;
 
             for (Player player : players) {
-                if((island.getTower()).equals(player.getColorTower())){
+                if((player.getColorTower()).equals(island.getTower())){
                     previousOwner = player;
                 }
 
@@ -278,7 +284,6 @@ public class Game {
                 checkArchipelago(island);
             }
         }
-
         else{
             islands.get(islandIndex).setNoEntryTiles(-1);
             setNoEntryTilesCounter(getNoEntryTilesCounter()+1);
@@ -312,13 +317,18 @@ public class Game {
      * @param removedIndex is the index of the island that need to be merged (and so removed from the ArrayList)
      */
     private void updateIndexes(int removedIndex){
-        for(int i=removedIndex;i<Island.getNumIslands();i++){
-            //to update "index", attribute of the object Island
-            islands.get(i+1).setIndex(i);
-            //to update the index of the ArrayList "islands"
-            islands.set(i,islands.get(i+1));
+        if(removedIndex<0 || removedIndex>Island.getNumIslands()-1){
+            throw new IllegalArgumentException("The index must be between 0 and the ('NumIsland'-1)!");
         }
-        islands.remove(Island.getNumIslands());
+        else{
+            for(int i=removedIndex;i<Island.getNumIslands();i++){
+                //to update "index", attribute of the object Island
+                islands.get(i+1).setIndex(i);
+                //to update the index of the ArrayList "islands"
+                islands.set(i,islands.get(i+1));
+            }
+            islands.remove(Island.getNumIslands());
+        }
     }
 
     /**

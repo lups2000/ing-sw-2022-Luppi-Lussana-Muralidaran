@@ -2,7 +2,9 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
+import it.polimi.ingsw.Model.Exceptions.NoTowersException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
+import it.polimi.ingsw.Model.Exceptions.TooManyTowersException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 
@@ -118,26 +120,95 @@ class GameTest {
 
     @Test
     @DisplayName("addPlayer")
-    void addPlayer() {
+    void addPlayer() throws NoPawnPresentException, TooManyPawnsPresent {
+        game2.initGame(2,false);
+        game2.addPlayer("Teo",AssistantSeed.KING);
+
+        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
+            game2.addPlayer("Paolo",AssistantSeed.KING);
+        });
+        assertEquals("The seed has already been chosen!", exception.getMessage());
+
+        game2.addPlayer("Paolo",AssistantSeed.WITCH);
+
+        assertEquals(game2.getPlayers().size(),2);
+        assertEquals(game2.getPlayers().get(0).getId(),0);
+        assertEquals(game2.getPlayers().get(1).getId(),1);
+        assertEquals(game2.getPlayers().get(0).getNickname(),"Teo");
+        assertEquals(game2.getPlayers().get(1).getNickname(),"Paolo");
+        assertEquals(game2.getPlayers().get(0).getColorTower(),ColorTower.WHITE);
+        assertEquals(game2.getPlayers().get(1).getColorTower(),ColorTower.BLACK);
+        assertEquals(game2.getSeedsAvailable().size(),2);
+        assertEquals(game2.getFirstPlayer(),game2.getPlayers().get(0));
+        assertFalse(game2.getSeedsAvailable().contains(AssistantSeed.KING) && game2.getSeedsAvailable().contains(AssistantSeed.WITCH));
+        assertTrue(game2.getSeedsAvailable().contains(AssistantSeed.WIZARD) && game2.getSeedsAvailable().contains(AssistantSeed.SAMURAI));
+
+        //now some tests to test fillBoard() method
+        assertFalse(game2.getPlayers().get(0).getSchoolBoard().isExperts());
+        assertFalse(game2.getPlayers().get(1).getSchoolBoard().isExperts());
+        assertEquals(game2.getPlayers().get(0).getSchoolBoard().getNumStudentsWaiting(),7);
+        assertEquals(game2.getPlayers().get(1).getSchoolBoard().getNumStudentsWaiting(),7);
+
+        /* Just to verify
+        System.out.println(game2.getPlayers().get(0).getSchoolBoard().getStudentsWaiting());
+        System.out.println("------------");
+        System.out.println(game2.getPlayers().get(1).getSchoolBoard().getStudentsWaiting());
+         */
+
+        Throwable exception1 = assertThrows(IllegalStateException.class, () -> {
+            game2.addPlayer("Pradee",AssistantSeed.WIZARD);
+        });
+        assertEquals("Too many players!", exception1.getMessage());
+
     }
 
     @Test
     @DisplayName("changeStatus")
     void changeStatus() {
+        game2.changeStatus(GameState.ENDED);
+        assertEquals(game2.getStatus(),GameState.ENDED);
+        game2.changeStatus(GameState.CREATING);
+        assertEquals(game2.getStatus(),GameState.CREATING);
     }
 
     @Test
-    @DisplayName("fillBoard")
-    void fillBoard() {
+    @DisplayName("moveMotherNature")
+    void moveMotherNature() throws TooManyTowersException, NoTowersException, NoPawnPresentException, TooManyPawnsPresent {
+        game2.initGame(2,false);
+        game2.addPlayer("Teo",AssistantSeed.KING);
+        game2.addPlayer("Paolo",AssistantSeed.WIZARD);
+        game2.moveMotherNature(game2.getIslands().get(5));
+        assertTrue(game2.getIslands().get(5).isMotherNature());
+        assertEquals(game2.getMotherNature(),game2.getIslands().get(5).getIndex());
     }
 
     @Test
-    @DisplayName("fillCloudTile")
-    void fillCloudTile() {
+    @DisplayName("moveMotherNatureNull")
+    void moveMotherNatureNull() {
+
+        Throwable exception1 = assertThrows(NullPointerException.class, () -> {
+            game2.moveMotherNature(null);
+        });
+        assertEquals("Parameter cannot be null!", exception1.getMessage());
     }
 
     @Test
-    @DisplayName("fillIslands")
-    void fillIslands() {
+    @DisplayName("influence")
+    void influence(){
+
     }
+
+
+
+
+
+
+
+    @Test
+    @DisplayName("fillCloudTileWithExc")
+    void fillCloudTileWithExc() {
+
+    }
+
+
 }
