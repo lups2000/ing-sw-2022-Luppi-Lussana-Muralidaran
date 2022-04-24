@@ -38,6 +38,7 @@ class GameTest {
                 assertFalse(island.isMotherNature());
                 assertNull(island.getTower());
                 assertTrue(island.getStudents().get(PawnColor.RED)!=0 || island.getStudents().get(PawnColor.YELLOW)!=0 || island.getStudents().get(PawnColor.BLUE)!=0 || island.getStudents().get(PawnColor.GREEN)!=0 || island.getStudents().get(PawnColor.PINK)!=0);
+                // System.out.println(island.getStudents()); just to verify
             }
             else {
                 assertNull(island.getTower());
@@ -193,21 +194,279 @@ class GameTest {
     }
 
     @Test
-    @DisplayName("influence")
-    void influence(){
+    @DisplayName("influenceWithNoEntryTiles")
+    void influenceWithNoEntryTiles() throws NoPawnPresentException, TooManyPawnsPresent, TooManyTowersException, NoTowersException {
+        Game game=new Game();
+        game.initGame(2,true);
+        game.addPlayer("Teo",AssistantSeed.KING);
+        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+        game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.RED); //Teo has control on the RED
+        game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.BLUE); //Paolo has control on the BLUE
+        //2 RED and 1 BLUE students on the island 0
+        game.getIslands().get(0).addStudent(PawnColor.RED);
+        game.getIslands().get(0).addStudent(PawnColor.RED);
+        game.getIslands().get(0).addStudent(PawnColor.BLUE);
+        //island 1 has 1 NoEntryTile
+        game.getIslands().get(0).setNoEntryTiles(1);
+        assertEquals(game.getIslands().get(0).getNoEntryTiles(),1);
+        game.moveMotherNature(game.getIslands().get(0)); //this method calls influence indirectly
+
+        assertEquals(game.getNoEntryTilesCounter(),5);
+        assertEquals(game.getIslands().get(0).getNoEntryTiles(),0);
+        assertNull(game.getIslands().get(0).getTower());
+        //System.out.println(game.getIslands().get(0).getStudents()); just to verify
+    }
+
+    @Test
+    @DisplayName("influenceGeneral")
+    void influenceGeneral() throws NoPawnPresentException, TooManyPawnsPresent, TooManyTowersException, NoTowersException {
+        Game game=new Game();
+        game.initGame(2,true);
+        game.addPlayer("Teo",AssistantSeed.KING);
+        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+        game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.RED); //Teo has control on the RED
+        game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.BLUE); //Paolo has control on the BLUE
+        game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.PINK); //Paolo has control on the PINK
+        //2 RED and 1 BLUE students on the island 0
+        game.getIslands().get(0).addStudent(PawnColor.RED);
+        game.getIslands().get(0).addStudent(PawnColor.RED);
+        game.getIslands().get(0).addStudent(PawnColor.BLUE);
+
+        game.moveMotherNature(game.getIslands().get(0)); //this method calls influence indirectly
+
+        assertNotNull(game.getIslands().get(0).getTower());
+        assertEquals(game.getIslands().get(0).getTower(),game.getPlayers().get(0).getColorTower());
+        assertEquals(game.getPlayers().get(0).getSchoolBoard().getNumTowers(),7);
+
+        //now Paolo add 2 more students on the Island 0
+        game.getIslands().get(0).addStudent(PawnColor.BLUE);
+        game.getIslands().get(0).addStudent(PawnColor.PINK);
+
+        game.moveMotherNature(game.getIslands().get(0)); //this method calls influence indirectly
+
+        //no change because the Paolo's influence is equal to Teo's one
+        assertNotNull(game.getIslands().get(0).getTower());
+        assertEquals(game.getIslands().get(0).getTower(),game.getPlayers().get(0).getColorTower());
+        assertEquals(game.getPlayers().get(0).getSchoolBoard().getNumTowers(),7);
+        assertEquals(game.getPlayers().get(1).getSchoolBoard().getNumTowers(),8);
+
+        //now Paolo add 1 more student to Island 0
+        game.getIslands().get(0).addStudent(PawnColor.PINK);
+
+        game.moveMotherNature(game.getIslands().get(0)); //this method calls influence indirectly
+
+        //Paolo now becomes the owner of Island 0
+        assertNotNull(game.getIslands().get(0).getTower());
+        assertEquals(game.getIslands().get(0).getTower(),game.getPlayers().get(1).getColorTower());
+        assertEquals(game.getPlayers().get(0).getSchoolBoard().getNumTowers(),8);
+        assertEquals(game.getPlayers().get(1).getSchoolBoard().getNumTowers(),7);
+    }
+
+    @Test
+    @DisplayName("influenceDrawNoTowersOnIsland")
+    void influenceDrawNoTowersOnIsland() throws NoPawnPresentException, TooManyPawnsPresent, TooManyTowersException, NoTowersException {
+        Game game=new Game();
+        game.initGame(2,true);
+        game.addPlayer("Teo",AssistantSeed.KING);
+        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+        game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.RED); //Teo has control on the RED
+        game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.BLUE); //Paolo has control on the BLUE
+        game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.PINK); //Paolo has control on the PINK
+        //2 RED and 1 BLUE students on the island 0
+        game.getIslands().get(0).addStudent(PawnColor.RED);
+        game.getIslands().get(0).addStudent(PawnColor.RED);
+        game.getIslands().get(0).addStudent(PawnColor.BLUE);
+        game.getIslands().get(0).addStudent(PawnColor.PINK);
+
+        game.moveMotherNature(game.getIslands().get(0)); //this method calls influence indirectly
+
+        assertNull(game.getIslands().get(0).getTower());
+    }
+
+    @Test
+    @DisplayName("influence2MorePoints")
+    void influence2MorePoints() throws NoPawnPresentException, TooManyPawnsPresent, TooManyTowersException, NoTowersException {
+        Game game=new Game();
+        game.initGame(2,true);
+        game.addPlayer("Teo",AssistantSeed.KING);
+        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+        game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.RED); //Teo has control on the RED
+        game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.BLUE); //Paolo has control on the BLUE
+        //2 RED and 1 BLUE students on the island 0
+        game.getIslands().get(0).addStudent(PawnColor.RED);
+        game.getIslands().get(0).addStudent(PawnColor.RED);
+        game.getIslands().get(0).addStudent(PawnColor.BLUE);
+        game.getIslands().get(0).addStudent(PawnColor.PINK);
+
+        assertNull(game.getIslands().get(0).getTower());
+        game.moveMotherNature(game.getIslands().get(0)); //this method calls influence indirectly
+
+        assertNotNull(game.getIslands().get(0).getTower());
+        assertEquals(game.getIslands().get(0).getTower(),game.getPlayers().get(0).getColorTower());
+        assertEquals(game.getPlayers().get(0).getSchoolBoard().getNumTowers(),7);
+
+        game.getIslands().get(0).addStudent(PawnColor.BLUE);
+        //effect
+        game.getPlayers().get(1).setTwoAdditionalPoints(true);
+
+        game.moveMotherNature(game.getIslands().get(0)); //this method calls influence indirectly
+
+        assertNotNull(game.getIslands().get(0).getTower());
+        assertEquals(game.getIslands().get(0).getTower(),game.getPlayers().get(1).getColorTower());
+        assertEquals(game.getPlayers().get(0).getSchoolBoard().getNumTowers(),8);
+        assertEquals(game.getPlayers().get(1).getSchoolBoard().getNumTowers(),7);
 
     }
 
+    @Test
+    @DisplayName("influenceNoCountTower")
+    void influenceNoCountTower() throws NoPawnPresentException, TooManyPawnsPresent, TooManyTowersException, NoTowersException {
+        Game game=new Game();
+        game.initGame(2,true);
+        game.addPlayer("Teo",AssistantSeed.KING);
+        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+        game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.RED); //Teo has control on the RED
+        game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.BLUE); //Paolo has control on the BLUE
+        game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.PINK); //Paolo has control on the PINK
+        //2 RED and 1 BLUE students on the island 0
+        game.getIslands().get(0).addStudent(PawnColor.RED);
+        game.getIslands().get(0).addStudent(PawnColor.RED);
+        game.getIslands().get(0).addStudent(PawnColor.BLUE);
 
+        assertNull(game.getIslands().get(0).getTower());
+        game.moveMotherNature(game.getIslands().get(0)); //this method calls influence indirectly
 
+        assertNotNull(game.getIslands().get(0).getTower());
+        assertEquals(game.getIslands().get(0).getTower(),game.getPlayers().get(0).getColorTower());
+        assertEquals(game.getPlayers().get(0).getSchoolBoard().getNumTowers(),7);
 
+        game.getIslands().get(0).addStudent(PawnColor.PINK);
+        game.getIslands().get(0).addStudent(PawnColor.BLUE);
+        //effect
+        game.setNoCountTower();
 
+        game.moveMotherNature(game.getIslands().get(0)); //this method calls influence indirectly
 
+        assertNotNull(game.getIslands().get(0).getTower());
+        assertEquals(game.getIslands().get(0).getTower(),game.getPlayers().get(1).getColorTower());
+        assertEquals(game.getPlayers().get(0).getSchoolBoard().getNumTowers(),8);
+        assertEquals(game.getPlayers().get(1).getSchoolBoard().getNumTowers(),7);
+
+    }
 
     @Test
-    @DisplayName("fillCloudTileWithExc")
-    void fillCloudTileWithExc() {
+    @DisplayName("influenceNoColor")
+    void influenceNoColor() throws NoPawnPresentException, TooManyPawnsPresent, TooManyTowersException, NoTowersException {
+        Game game=new Game();
+        game.initGame(2,true);
+        game.addPlayer("Teo",AssistantSeed.KING);
+        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+        game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.RED); //Teo has control on the RED
+        game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.BLUE); //Paolo has control on the BLUE
+        //2 RED and 1 BLUE students on the island 0
+        game.getIslands().get(0).addStudent(PawnColor.RED);
+        game.getIslands().get(0).addStudent(PawnColor.RED);
+        game.getIslands().get(0).addStudent(PawnColor.BLUE);
 
+        assertNull(game.getIslands().get(0).getTower());
+        game.moveMotherNature(game.getIslands().get(0)); //this method calls influence indirectly
+
+        assertNotNull(game.getIslands().get(0).getTower());
+        assertEquals(game.getIslands().get(0).getTower(),game.getPlayers().get(0).getColorTower());
+        assertEquals(game.getPlayers().get(0).getSchoolBoard().getNumTowers(),7);
+
+        game.getIslands().get(0).addStudent(PawnColor.BLUE);
+        //effect
+        game.setNoColorInfluence(PawnColor.RED);
+
+        game.moveMotherNature(game.getIslands().get(0)); //this method calls influence indirectly
+
+        assertNotNull(game.getIslands().get(0).getTower());
+        assertEquals(game.getIslands().get(0).getTower(),game.getPlayers().get(1).getColorTower());
+        assertEquals(game.getPlayers().get(0).getSchoolBoard().getNumTowers(),8);
+        assertEquals(game.getPlayers().get(1).getSchoolBoard().getNumTowers(),7);
+
+    }
+
+    @Test
+    @DisplayName("influenceNoColorNoTower")
+    void influenceNoColorNoTower() throws NoPawnPresentException, TooManyPawnsPresent, TooManyTowersException, NoTowersException {
+        Game game=new Game();
+        game.initGame(2,true);
+        game.addPlayer("Teo",AssistantSeed.KING);
+        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+        game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.RED); //Teo has control on the RED
+        game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.BLUE); //Paolo has control on the BLUE
+        //2 RED and 1 BLUE students on the island 0
+        game.getIslands().get(0).addStudent(PawnColor.RED);
+        game.getIslands().get(0).addStudent(PawnColor.RED);
+        game.getIslands().get(0).addStudent(PawnColor.BLUE);
+
+        assertNull(game.getIslands().get(0).getTower());
+        game.moveMotherNature(game.getIslands().get(0)); //this method calls influence indirectly
+
+        assertNotNull(game.getIslands().get(0).getTower());
+        assertEquals(game.getIslands().get(0).getTower(),game.getPlayers().get(0).getColorTower());
+        assertEquals(game.getPlayers().get(0).getSchoolBoard().getNumTowers(),7);
+
+        //effect
+        game.setNoColorInfluence(PawnColor.RED);
+        game.setNoCountTower();
+        game.moveMotherNature(game.getIslands().get(0)); //this method calls influence indirectly
+
+        assertNotNull(game.getIslands().get(0).getTower());
+        assertEquals(game.getIslands().get(0).getTower(),game.getPlayers().get(1).getColorTower());
+        assertEquals(game.getPlayers().get(0).getSchoolBoard().getNumTowers(),8);
+        assertEquals(game.getPlayers().get(1).getSchoolBoard().getNumTowers(),7);
+
+    }
+
+    @Test
+    @DisplayName("checkArchipelagoWithUpdateIndexes")
+    void checkArchipelagoWithUpdateIndexes() throws NoPawnPresentException, TooManyPawnsPresent, TooManyTowersException, NoTowersException {
+        Game game=new Game();
+        game.initGame(2,true);
+        game.addPlayer("Teo",AssistantSeed.KING);
+        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+        game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.RED); //Teo has control on the RED
+
+        /* just to verify
+        for(Player player:game.getPlayers()){
+            System.out.println(player.getSchoolBoard().getProfessors());
+        }*/
+
+        game.getIslands().get(0).addStudent(PawnColor.RED);
+        game.getIslands().get(1).addStudent(PawnColor.RED);
+        game.getIslands().get(11).addStudent(PawnColor.RED);
+        /* just to verify
+        for(Island island: game.getIslands()){
+            System.out.println(island.getStudents());
+        }*/
+
+        game.moveMotherNature(game.getIslands().get(1));
+        assertEquals(game.getIslands().get(1).getTower(),ColorTower.WHITE);
+        assertEquals(game.getPlayers().get(0).getSchoolBoard().getNumTowers(),7);
+
+        game.moveMotherNature(game.getIslands().get(11));
+        assertEquals(game.getIslands().get(11).getTower(),ColorTower.WHITE);
+        assertEquals(game.getPlayers().get(0).getSchoolBoard().getNumTowers(),6);
+
+        game.moveMotherNature(game.getIslands().get(0));
+        assertEquals(game.getIslands().get(9).getTower(),ColorTower.WHITE);
+        assertEquals(game.getPlayers().get(0).getSchoolBoard().getNumTowers(),5);
+        //now there is an archipelago-->merge among island 0,island 1 and island 11
+        assertEquals(Island.getNumIslands(),10);
+        assertEquals(game.getIslands().get(9).getNumTowers(),3);
+
+        //now Paolo has the control on the RED professor
+        game.getPlayers().get(0).getSchoolBoard().removeProfessor(PawnColor.RED);
+        game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.RED);
+        game.getIslands().get(9).addStudent(PawnColor.RED);
+        game.moveMotherNature(game.getIslands().get(9));
+        assertEquals(game.getIslands().get(9).getTower(),ColorTower.BLACK);
+        assertEquals(game.getPlayers().get(0).getSchoolBoard().getNumTowers(),8);
+        assertEquals(game.getPlayers().get(1).getSchoolBoard().getNumTowers(),5);
+        assertEquals(game.getIslands().get(9).getNumTowers(),3);
     }
 
 

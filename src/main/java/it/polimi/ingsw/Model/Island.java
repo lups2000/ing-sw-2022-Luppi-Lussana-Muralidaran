@@ -119,8 +119,7 @@ public class Island {
             throw new NullPointerException("Parameter cannot be null!");
         }
         else{
-            int influence = computeTowerInfluence(player);
-            influence = influence + computeStudentsInfluence(player);
+            int influence = computeTowerInfluence(player) + computeStudentsInfluence(player);
             return influence;
         }
     }

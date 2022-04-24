@@ -36,10 +36,7 @@ public class Game {
         fillIslands();
         this.studentBag = new StudentBag();
         this.motherNature = 0;
-        this.noEntryTilesCounter = 4; //maximum amount of "No Entry Tiles" not in use
         this.schoolBoards=new ArrayList<>();
-        this.noCountTower = false;
-        this.noColorInfluence = null;
         this.characterCards=new ArrayList<>();
     }
 
@@ -56,6 +53,9 @@ public class Game {
             this.maxNumPlayers = max;
             this.expertsVariant = experts;
             if(expertsVariant){
+                this.noEntryTilesCounter = 4; //maximum amount of "No Entry Tiles" not in use
+                this.noCountTower = false;
+                this.noColorInfluence = null;
                 for(int i=0;i<max;i++){
                     //creating 'max' schoolBoards for the game with expert variant
                     schoolBoards.add(i,new SchoolBoard(max,true)); //a schoolboard passo il numero max di studenti e experts=true
@@ -201,6 +201,11 @@ public class Game {
         else{
             this.motherNature = island.getIndex();
             island.setMotherNature(true);
+            for(Island island1 :islands){
+                if(island1.getIndex()!=island.getIndex()){
+                    island1.setMotherNature(false);
+                }
+            }
             influence(island);
         }
     }
@@ -214,7 +219,7 @@ public class Game {
         //if there is a no entry tile on the island the influence is not computed and one no entry tile will be removed
         if(island.getNoEntryTiles() == 0) {
             int maxInfluence = 0;
-            Player winner = players.get(0); //by default
+            Player winner = players.get(0); //by default the first player
             //"previousOwner" is the player who previously had tower(s) on the island (if there is one)
             Player previousOwner = null;
             //if it happens a draw between the influences of two (or more) players on an island no action is needed
@@ -285,7 +290,7 @@ public class Game {
             }
         }
         else{
-            islands.get(islandIndex).setNoEntryTiles(-1);
+            island.setNoEntryTiles(-1);
             setNoEntryTilesCounter(getNoEntryTilesCounter()+1);
         }
     }

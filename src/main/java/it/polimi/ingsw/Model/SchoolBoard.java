@@ -158,7 +158,7 @@ public class SchoolBoard {
      * @param num the number of towers to add (or remove if num is negative)
      */
     public void updateNumberOfTowers(int num) throws TooManyTowersException, NoTowersException {
-        if(numTowers+num >= numMaxTowers){
+        if(numTowers+num > numMaxTowers){
             throw new TooManyTowersException();
         }
         else if(numTowers+num <= 0){
