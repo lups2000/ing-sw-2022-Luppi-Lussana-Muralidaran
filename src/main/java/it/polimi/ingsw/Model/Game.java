@@ -103,7 +103,7 @@ public class Game {
 
     public GameState getStatus() {return status;}
     public List<Player> getPlayers() {return players;}
-    public int getMaxNumPlayers() {return maxNumPlayers;}
+    //public int getMaxNumPlayers() {return maxNumPlayers;} forse non serve
     public boolean getExpertsVariant(){return expertsVariant;}
     public void changeStatus(GameState status){this.status = status;}
     public StudentBag getStudentBag() {return studentBag;}
@@ -342,7 +342,7 @@ public class Game {
      */
     public void allocateProfessors() throws NoPawnPresentException,TooManyPawnsPresent{
         for(PawnColor color : PawnColor.values()) {
-            Player winner = players.get(0); //by default
+            Player winner = players.get(0); //by default the first one
             //"previousOwner" is the player who previously had a certain professor (if there is one)
             Player previousOwner = null;
             int maxStudents = 0;
@@ -354,6 +354,7 @@ public class Game {
             for (Player player : players) {
                 if(player.getSchoolBoard().getProfessors().get(color)){
                     previousOwner = player;
+                    maxStudents=player.getSchoolBoard().getStudentsDining().get(color); //aggiunto
                 }
                 if(player.getSchoolBoard().getStudentsDining().get(color) > maxStudents){
                     winner = player;
@@ -408,7 +409,7 @@ public class Game {
     public void checkWinner(){
         //if there is a draw in the number of towers we have to check the number of professors owned
         boolean draw = false;
-        Player winner = players.get(0); //by default
+        Player winner = players.get(0); //by default the first
         int maxTowers = 0;
         //list of players who has the same (and higher) number of towers built on the islands
         List<Player> drawPlayers = new ArrayList<>();
@@ -417,7 +418,7 @@ public class Game {
         for(Player player : players) {
             int sum = 0;
             for (Island island : islands) {
-                if((island.getTower()).equals(player.getColorTower())){
+                if((player.getColorTower()).equals(island.getTower())){
                     sum = sum + island.getNumTowers();
                 }
             }

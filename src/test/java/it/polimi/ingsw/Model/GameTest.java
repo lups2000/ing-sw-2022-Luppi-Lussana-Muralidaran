@@ -469,5 +469,168 @@ class GameTest {
         assertEquals(game.getIslands().get(9).getNumTowers(),3);
     }
 
+    @Test
+    @DisplayName("allocateProfessorGeneral")
+    void allocateProfessorGeneral() throws NoPawnPresentException, TooManyPawnsPresent {
+        Game game=new Game();
+        game.initGame(2,true);
+        game.addPlayer("Teo",AssistantSeed.KING);
+        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+
+        game.getPlayers().get(0).getSchoolBoard().addStudToDining(PawnColor.RED);
+        game.allocateProfessors(); //Teo has the RED professor
+
+        assertTrue(game.getPlayers().get(0).getSchoolBoard().getProfessors().get(PawnColor.RED));
+        assertFalse(game.getPlayers().get(1).getSchoolBoard().getProfessors().get(PawnColor.RED));
+
+        game.getPlayers().get(1).getSchoolBoard().addStudToDining(PawnColor.RED);
+        game.allocateProfessors(); //Teo still has the RED professor
+
+        assertTrue(game.getPlayers().get(0).getSchoolBoard().getProfessors().get(PawnColor.RED));
+        assertFalse(game.getPlayers().get(1).getSchoolBoard().getProfessors().get(PawnColor.RED));
+
+        game.getPlayers().get(1).getSchoolBoard().addStudToDining(PawnColor.RED);
+        game.allocateProfessors(); //Poalo now has the RED professor
+
+        assertFalse(game.getPlayers().get(0).getSchoolBoard().getProfessors().get(PawnColor.RED));
+        assertTrue(game.getPlayers().get(1).getSchoolBoard().getProfessors().get(PawnColor.RED));
+
+        game.getPlayers().get(1).getSchoolBoard().addStudToDining(PawnColor.RED);
+        game.allocateProfessors(); //no change,Paolo has the RED professor
+        assertFalse(game.getPlayers().get(0).getSchoolBoard().getProfessors().get(PawnColor.RED));
+        assertTrue(game.getPlayers().get(1).getSchoolBoard().getProfessors().get(PawnColor.RED));
+
+        game.getPlayers().get(1).getSchoolBoard().addStudToDining(PawnColor.PINK);
+        game.allocateProfessors(); //Paolo has the RED and PINK professors
+        assertFalse(game.getPlayers().get(0).getSchoolBoard().getProfessors().get(PawnColor.RED));
+        assertTrue(game.getPlayers().get(1).getSchoolBoard().getProfessors().get(PawnColor.RED));
+        assertTrue(game.getPlayers().get(1).getSchoolBoard().getProfessors().get(PawnColor.PINK));
+
+        game.getPlayers().get(1).getSchoolBoard().addStudToDining(PawnColor.BLUE);
+        game.allocateProfessors(); //Paolo has RED,BLUE and PINK professor
+        assertFalse(game.getPlayers().get(0).getSchoolBoard().getProfessors().get(PawnColor.RED));
+        assertTrue(game.getPlayers().get(1).getSchoolBoard().getProfessors().get(PawnColor.RED));
+        assertTrue(game.getPlayers().get(1).getSchoolBoard().getProfessors().get(PawnColor.PINK));
+        assertTrue(game.getPlayers().get(1).getSchoolBoard().getProfessors().get(PawnColor.BLUE));
+
+        game.getPlayers().get(0).getSchoolBoard().addStudToDining(PawnColor.BLUE);
+        game.allocateProfessors(); //no change
+        game.allocateProfessors();
+        assertFalse(game.getPlayers().get(0).getSchoolBoard().getProfessors().get(PawnColor.RED));
+        assertTrue(game.getPlayers().get(1).getSchoolBoard().getProfessors().get(PawnColor.RED));
+        assertTrue(game.getPlayers().get(1).getSchoolBoard().getProfessors().get(PawnColor.PINK));
+        assertTrue(game.getPlayers().get(1).getSchoolBoard().getProfessors().get(PawnColor.BLUE));
+        /* just to verify
+        for(Player player: game.getPlayers()){
+            System.out.println(player.getSchoolBoard().getProfessors());
+        }*/
+    }
+
+    @Test
+    @DisplayName("allocateProfessorWithEffect")
+    void allocateProfessorWithEffect() throws NoPawnPresentException, TooManyPawnsPresent {
+        Game game=new Game();
+        game.initGame(2,true);
+        game.addPlayer("Teo",AssistantSeed.KING);
+        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+
+        game.getPlayers().get(0).getSchoolBoard().addStudToDining(PawnColor.RED);
+        game.allocateProfessors(); //Teo has the RED professor
+
+        assertTrue(game.getPlayers().get(0).getSchoolBoard().getProfessors().get(PawnColor.RED));
+        assertFalse(game.getPlayers().get(1).getSchoolBoard().getProfessors().get(PawnColor.RED));
+
+        game.getPlayers().get(1).setControlOnProfessor(true); //Paolo plays this character card
+        game.getPlayers().get(1).getSchoolBoard().addStudToDining(PawnColor.RED);
+        game.allocateProfessors(); //Paolo thanks to this card has the RED professor
+        assertFalse(game.getPlayers().get(0).getSchoolBoard().getProfessors().get(PawnColor.RED));
+        assertTrue(game.getPlayers().get(1).getSchoolBoard().getProfessors().get(PawnColor.RED));
+        /* just to verify
+        for(Player player: game.getPlayers()){
+            System.out.println(player.getSchoolBoard().getStudentsDining());
+        }
+        for(Player player: game.getPlayers()){
+            System.out.println(player.getSchoolBoard().getProfessors());
+        }*/
+        game.getPlayers().get(0).setControlOnProfessor(true); //Teo plays this character card
+        game.getPlayers().get(0).getSchoolBoard().addStudToDining(PawnColor.PINK);
+        game.allocateProfessors();//Teo has PINK and RED professors now
+        assertTrue(game.getPlayers().get(0).getSchoolBoard().getProfessors().get(PawnColor.RED));
+        assertTrue(game.getPlayers().get(0).getSchoolBoard().getProfessors().get(PawnColor.PINK));
+        assertFalse(game.getPlayers().get(1).getSchoolBoard().getProfessors().get(PawnColor.RED));
+
+        /* just to verify
+        for(Player player: game.getPlayers()){
+            System.out.println(player.getSchoolBoard().getStudentsDining());
+        }
+        for(Player player: game.getPlayers()){
+            System.out.println(player.getSchoolBoard().getProfessors());
+        }*/
+    }
+
+    @Test
+    @DisplayName("checkWinnerNoDraw")
+    void checkWinner() throws NoPawnPresentException, TooManyPawnsPresent, TooManyTowersException, NoTowersException {
+        Game game=new Game();
+        game.initGame(2,true);
+        game.addPlayer("Teo",AssistantSeed.KING); //WHITE
+        game.addPlayer("Paolo",AssistantSeed.WIZARD); //BLACK
+
+        game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.RED); //Teo has the RED professor
+        game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.BLUE); //Paolo has the BLUE professor
+
+        game.getIslands().get(0).addStudent(PawnColor.RED);
+        game.getIslands().get(0).addStudent(PawnColor.RED);
+        game.moveMotherNature(game.getIslands().get(0));
+        game.getIslands().get(2).addStudent(PawnColor.RED);
+        game.getIslands().get(2).addStudent(PawnColor.RED);
+        game.moveMotherNature(game.getIslands().get(2));
+        game.getIslands().get(4).addStudent(PawnColor.RED);
+        game.getIslands().get(4).addStudent(PawnColor.RED);
+        game.moveMotherNature(game.getIslands().get(4));
+        game.getIslands().get(1).addStudent(PawnColor.BLUE);
+        game.getIslands().get(1).addStudent(PawnColor.BLUE);
+        game.moveMotherNature(game.getIslands().get(1));
+        game.getIslands().get(3).addStudent(PawnColor.BLUE);
+        game.getIslands().get(3).addStudent(PawnColor.BLUE);
+        game.moveMotherNature(game.getIslands().get(3));
+
+        assertEquals(game.getPlayers().get(0).getSchoolBoard().getNumTowers(),5); //Teo wins
+        assertEquals(game.getPlayers().get(1).getSchoolBoard().getNumTowers(),6);
+
+        game.checkWinner();
+
+        assertEquals(game.getPlayers().get(0).getStatus(),PlayerStatus.WINNER);
+        assertEquals(game.getPlayers().get(1).getStatus(),PlayerStatus.WAITING);
+    }
+
+    @Test
+    @DisplayName("checkWinnerDraw")
+    void checkWinnerDraw() throws NoPawnPresentException, TooManyPawnsPresent, TooManyTowersException, NoTowersException {
+        Game game=new Game();
+        game.initGame(2,true);
+        game.addPlayer("Teo",AssistantSeed.KING); //WHITE
+        game.addPlayer("Paolo",AssistantSeed.WIZARD); //BLACK
+
+        game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.RED); //Teo has the RED professor
+        game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.PINK); //Teo has the PINK professor
+        game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.BLUE); //Paolo has the BLUE professor
+
+        game.getIslands().get(0).addStudent(PawnColor.RED);
+        game.getIslands().get(0).addStudent(PawnColor.RED);
+        game.moveMotherNature(game.getIslands().get(0));
+        game.getIslands().get(1).addStudent(PawnColor.BLUE);
+        game.getIslands().get(1).addStudent(PawnColor.BLUE);
+        game.moveMotherNature(game.getIslands().get(1));
+        //same number of towers built-->draw
+        assertEquals(game.getPlayers().get(0).getSchoolBoard().getNumTowers(),7);
+        assertEquals(game.getPlayers().get(1).getSchoolBoard().getNumTowers(),7);
+
+        game.checkWinner();
+
+        assertEquals(game.getPlayers().get(0).getStatus(),PlayerStatus.WINNER); //Teo wins because has more professors
+        assertEquals(game.getPlayers().get(1).getStatus(),PlayerStatus.WAITING);
+
+    }
 
 }
