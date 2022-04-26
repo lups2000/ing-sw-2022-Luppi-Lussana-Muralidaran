@@ -14,6 +14,7 @@ public class Player {
     private DeckAssistantCard deckAssistantCard;
     private boolean twoAdditionalPoints; //for the character card TwoAdditionalPoints
     private boolean controlOnProfessor; //flag used for ControlOnProfessor character card
+    private AssistantCard currentAssistant; //current Assistant card
 
     /**
      * constructor of the Player class
@@ -49,4 +50,6 @@ public class Player {
     public boolean isTwoAdditionalPoints(){return this.twoAdditionalPoints;}
     public boolean getControlOnProfessor(){return this.controlOnProfessor;}
     public void setControlOnProfessor (boolean controlSwitch){this.controlOnProfessor = controlSwitch;}
+    public AssistantCard getCurrentAssistant(){return this.currentAssistant;}
+    public void pickCurrentAssistant(AssistantCard picked){currentAssistant = deckAssistantCard.pick(picked);}
 }

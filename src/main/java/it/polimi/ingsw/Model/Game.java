@@ -4,6 +4,7 @@ import it.polimi.ingsw.Model.CharacterCards.*;
 import it.polimi.ingsw.Model.Exceptions.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * class Game
@@ -26,6 +27,7 @@ public class Game {
     private List<SchoolBoard> schoolBoards;
     private boolean noCountTower;   //flag used for the NoCountTower character card
     private PawnColor noColorInfluence; //used for the NoColorInfluence character card
+    private Map<Player,AssistantCard> currentHand;    //list for the assistant cards chosen in this turn
 
 
     public Game(){
@@ -38,6 +40,7 @@ public class Game {
         this.motherNature = 0;
         this.schoolBoards=new ArrayList<>();
         this.characterCards=new ArrayList<>();
+        this.currentHand = new HashMap();
     }
 
     /**
@@ -494,10 +497,35 @@ public class Game {
         }
     }
 
-    private void pickCurrentTurnFirstPlayer(Player player){
-        /*
-        L'idea sarebbe fare un for each per ogni player e confrontare i valori delle carte, mettendo in ordine
-        crescente i giocatori a seconda di quel numero
-         */
+
+    /**
+     * method invoked after each player chooses his assistant card at the start of every round
+     * it creates the map with all the assistant cards chosen by the players
+     */
+    public void pickAssistants(){
+        currentHand.clear();
+        for(Player player : players){
+            currentHand.put(player,player.getCurrentAssistant());
+        }
+    }
+
+    /**
+     * method to select the next player to play
+     * @return the next player who is meant to play
+     */
+    public Player pickNextPlayer(){
+         Player first = null;
+         int lower = 11;
+         for(Map.Entry<Player,AssistantCard> entry : currentHand.entrySet()){
+             if(entry.getValue().getValue() < lower){
+                 lower = entry.getValue().getValue();
+                 first = entry.getKey();
+             }
+         }
+        if(currentHand.size() == this.maxNumPlayers){
+            this.firstPlayer = first;
+        }
+        currentHand.remove(first);
+        return first;
     }
 }

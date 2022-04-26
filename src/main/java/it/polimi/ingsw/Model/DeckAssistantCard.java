@@ -41,17 +41,20 @@ public class DeckAssistantCard {
      * This method removes the card from the deck
      * @param assistantCard is the card that has to be removed from the player's deck after his turn
      */
-    public void pick(AssistantCard assistantCard){
-        boolean flag=false;
-        for(int i = 0; i<cards.size() && !flag; i++){
-            if(cards.get(i).getValue()==assistantCard.getValue() && cards.get(i).getValue()==assistantCard.getMaxStepsMotherNature() && flag==false){
+    public AssistantCard pick(AssistantCard assistantCard){
+        boolean found=false;
+        AssistantCard picked = null;
+        for(int i = 0; i<cards.size(); i++){
+            if(cards.get(i).getValue()==assistantCard.getValue() && cards.get(i).getValue()==assistantCard.getMaxStepsMotherNature()){
+                picked = cards.get(i);
                 cards.remove(i);
-                flag=true;
+                found=true;
+                break;
             }
         }
-        if(!flag){
+        if(!found){
             throw new IllegalStateException("Assistant Card not present!");
         }
-
+        return picked;
     }
 }
