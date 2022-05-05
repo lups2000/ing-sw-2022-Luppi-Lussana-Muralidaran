@@ -38,7 +38,7 @@ public class StudentToDining extends CharacterCard{
         else{
             students.put(chosen,students.get(chosen)-1);
             for(Player player : game.getPlayers()){
-                if((player.getStatus()).equals(PlayerStatus.PLAYING)){
+                if((player.getStatus()).equals(PlayerStatus.PLAYING_ACTION)){
                     player.getSchoolBoard().addStudToDining(chosen);
                 }
             }

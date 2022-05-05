@@ -41,7 +41,7 @@ public class DeckAssistantCard {
      * This method removes the card from the deck
      * @param assistantCard is the card that has to be removed from the player's deck after his turn
      */
-    public AssistantCard pick(AssistantCard assistantCard){
+    public AssistantCard pick(AssistantCard assistantCard) throws IllegalArgumentException{
         boolean found=false;
         AssistantCard picked = null;
         for(int i = 0; i<cards.size(); i++){
@@ -53,7 +53,7 @@ public class DeckAssistantCard {
             }
         }
         if(!found){
-            throw new IllegalStateException("Assistant Card not present!");
+            throw new IllegalArgumentException("Assistant Card not present!");
         }
         return picked;
     }

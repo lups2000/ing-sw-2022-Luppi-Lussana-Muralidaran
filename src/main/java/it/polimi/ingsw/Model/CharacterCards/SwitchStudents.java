@@ -34,7 +34,7 @@ public class SwitchStudents extends CharacterCard{
 
     public void effect(Map<PawnColor,Integer> toPick, Map<PawnColor,Integer> toDeposit) throws TooManyPawnsPresent {
         for(Player player : game.getPlayers()){
-            if((player.getStatus()).equals(PlayerStatus.PLAYING)){
+            if((player.getStatus()).equals(PlayerStatus.PLAYING_ACTION)){
                 for(PawnColor color : PawnColor.values()){
                     if(toPick.get(color) > 0){
                         for(int i=0;i<toPick.get(color);i++){

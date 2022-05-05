@@ -51,5 +51,5 @@ public class Player {
     public boolean getControlOnProfessor(){return this.controlOnProfessor;}
     public void setControlOnProfessor (boolean controlSwitch){this.controlOnProfessor = controlSwitch;}
     public AssistantCard getCurrentAssistant(){return this.currentAssistant;}
-    public void pickCurrentAssistant(AssistantCard picked){currentAssistant = deckAssistantCard.pick(picked);}
+    public void pickAssistantCard(AssistantCard picked)throws IllegalArgumentException{currentAssistant = deckAssistantCard.pick(picked);}
 }

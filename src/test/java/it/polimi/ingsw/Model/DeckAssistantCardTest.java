@@ -70,7 +70,7 @@ class DeckAssistantCardTest {
         assertTrue(!deckAssistantCard.getCards().contains(assistantCard));
 
         //pick a non-existing card from the deck-->exception
-        Throwable exception = assertThrows(IllegalStateException.class, () -> {
+        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
             deckAssistantCard.pick(assistantCard);
         });
         assertEquals("Assistant Card not present!", exception.getMessage());

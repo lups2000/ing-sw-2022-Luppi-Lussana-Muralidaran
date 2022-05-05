@@ -14,7 +14,7 @@ public class TwoAdditionalPoints extends CharacterCard{
 
     public void effect() {
         for(Player player : game.getPlayers()){
-            if((player.getStatus()).equals(PlayerStatus.PLAYING)){
+            if((player.getStatus()).equals(PlayerStatus.PLAYING_ACTION)){
                 player.setTwoAdditionalPoints(true);
             }
         }

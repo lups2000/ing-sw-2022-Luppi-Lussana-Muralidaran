@@ -18,7 +18,7 @@ public class SwitchDiningWaiting extends CharacterCard{
 
     public void effect(Map<PawnColor,Integer> exWaiting, Map<PawnColor,Integer> exDining) throws TooManyPawnsPresent, NoPawnPresentException {
         for(Player player : game.getPlayers()){
-            if((player.getStatus()).equals(PlayerStatus.PLAYING)){
+            if((player.getStatus()).equals(PlayerStatus.PLAYING_ACTION)){
                 for(PawnColor color : PawnColor.values()){
                     if(exWaiting.get(color) == 1){
                         player.getSchoolBoard().moveStudToDining(color);

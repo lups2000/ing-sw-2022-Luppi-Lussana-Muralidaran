@@ -48,8 +48,8 @@ class PlayerTest {
     @Test
     @DisplayName("setPlayerStatus")
     void setPlayerStatus() {
-        player.setStatus(PlayerStatus.PLAYING);
-        assertEquals(player.getStatus(),PlayerStatus.PLAYING);
+        player.setStatus(PlayerStatus.PLAYING_ACTION);
+        assertEquals(player.getStatus(),PlayerStatus.PLAYING_ACTION);
     }
 
     @Test

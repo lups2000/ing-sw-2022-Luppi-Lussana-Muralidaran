@@ -121,6 +121,8 @@ public class Game {
     public List<Island> getIslands() {return islands;}
     public Player getFirstPlayer() {return firstPlayer;}
     public int getMotherNature() {return motherNature;}
+    public Map<Player, AssistantCard> getCurrentHand() {return currentHand;}
+    public int getMaxNumPlayers() {return maxNumPlayers;}
 
     /**
      * method invoked one time for each player at the start of the game that fills his school board
@@ -497,11 +499,8 @@ public class Game {
         }
     }
 
-
-    /**
-     * method invoked after each player chooses his assistant card at the start of every round
-     * it creates the map with all the assistant cards chosen by the players
-     */
+    /*
+    
     public void pickAssistants(){
         currentHand.clear();
         for(Player player : players){
@@ -509,10 +508,7 @@ public class Game {
         }
     }
 
-    /**
-     * method to select the next player to play
-     * @return the next player who is meant to play
-     */
+
     public Player pickNextPlayer(){
          Player first = null;
          int lower = 11;
@@ -528,4 +524,5 @@ public class Game {
         currentHand.remove(first);
         return first;
     }
+    */
 }
