@@ -1,6 +1,9 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
+
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Matteo Luppi, Paolo Lussana, Pradeeban Muralidaran
@@ -52,4 +55,14 @@ public class Player {
     public void setControlOnProfessor (boolean controlSwitch){this.controlOnProfessor = controlSwitch;}
     public AssistantCard getCurrentAssistant(){return this.currentAssistant;}
     public void pickAssistantCard(AssistantCard picked)throws IllegalArgumentException{currentAssistant = deckAssistantCard.pick(picked);}
+    public void pickCloudTile(CloudTile cloudTile) throws TooManyPawnsPresent {
+        Map<PawnColor,Integer> picked=cloudTile.pickStudent();
+
+        for(PawnColor pawnColor : PawnColor.values()){
+            while(picked.get(pawnColor)>0){
+                this.getSchoolBoard().addStudToWaiting(pawnColor);
+                picked.put(pawnColor,picked.get(pawnColor)-1);
+            }
+        }
+    }
 }

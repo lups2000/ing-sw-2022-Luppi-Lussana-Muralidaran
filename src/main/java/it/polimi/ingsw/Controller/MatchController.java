@@ -3,19 +3,17 @@ package it.polimi.ingsw.Controller;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Map;
 
-/**
+/** This class represents the Controller according to the MVC pattern
  * @author Matteo Luppi
  */
 public class MatchController {
 
     private Game model;
-    private Player currentPlayerTurn;
+    private Player firstPlayerToPlayAssistant;
     private MatchPhase matchPhase;
-    private List<Player> orderActionPhase;
 
     /**
      * Constructor
@@ -24,8 +22,17 @@ public class MatchController {
     public MatchController(Game model){
         this.model=model;
         this.matchPhase=MatchPhase.START;
-        this.currentPlayerTurn=model.getFirstPlayer(); //initially he is the first one who joins the game
-        this.orderActionPhase=new ArrayList<>();
+        this.firstPlayerToPlayAssistant=model.getFirstPlayer(); //initially he is the first one who joins the game
+    }
+
+    /**
+     * This method calls planningPhase1(),planningPhase2(),choosePlayerToPlayAction(),action1(),action2(),action3() respectively!
+     * After each player's turn we check if there is a winner;otherwise we call another time the method roundManager
+     */
+    public void roundManager(){
+
+        //TODO
+
     }
 
     /**
@@ -43,7 +50,7 @@ public class MatchController {
             matchPhase=MatchPhase.PLANNING1;
         }
         else{
-            //non ha senso invocarlo
+            //non ha senso invocarlo-->messaggio errore mandato dalla view?
         }
     }
 
@@ -53,26 +60,32 @@ public class MatchController {
     public void planningPhase2(){
         if(matchPhase==MatchPhase.PLANNING1){
             model.getCurrentHand().clear();
-            for(int i= currentPlayerTurn.getId()%(model.getPlayers().size());i<model.getPlayers().size();i++){
+            for(int i= firstPlayerToPlayAssistant.getId()%(model.getPlayers().size());i<model.getPlayers().size();i++){
                 if(model.getPlayers().get(i).getStatus()==PlayerStatus.WAITING){
                     //every player must choose an assistant card-->NB: different from the others
+                    //we must control that the Assistant chosen is not present in the currentHand!!!
                     //model.getPlayers().get(i).pickAssistantCard(); surrounded by tray catch block
                     model.getPlayers().get(i).setStatus(PlayerStatus.PLAYING_ASSISTANT);
                     model.getCurrentHand().put(model.getPlayers().get(i),model.getPlayers().get(i).getCurrentAssistant());
                     matchPhase=MatchPhase.PLANNING2;
+
                 }
                 else{
                     break; //exit from the loop
                 }
             }
+            //each player has played his assistant card,now everybody waits for his turn in the action phase
+            for(Player player : model.getCurrentHand().keySet()){
+                player.setStatus(PlayerStatus.WAITING_ACTION);
+            }
         }
         else{
-            //non ha senso invocarlo
+            //non ha senso invocarlo-->messaggio errore mandato dalla view?
         }
     }
 
     /**
-     * This method chooses who is the player who plays the action phase
+     * This method chooses who is the player who plays the current action phase
      * @return the player
      */
     public Player choosePlayerToPlayAction(){
@@ -86,7 +99,7 @@ public class MatchController {
             }
         }
         if(model.getCurrentHand().size() == this.model.getPlayers().size()){
-            this.currentPlayerTurn = first;
+            this.firstPlayerToPlayAssistant = first;
         }
         model.getCurrentHand().remove(first);
         first.setStatus(PlayerStatus.PLAYING_ACTION);
@@ -98,20 +111,126 @@ public class MatchController {
      * @param player current player chosen by the method ChoosePlayerToAction()
      */
     public void actionPhase1(Player player){
-        if(matchPhase==MatchPhase.PLANNING2){
+        if(matchPhase==MatchPhase.PLANNING2 && player.getStatus()==PlayerStatus.PLAYING_ACTION){
             if(model.getExpertsVariant()){
                 //we could ask if the player wants to play a character card
+                //the player must choose between the three random character cards of the Game
             }
             if(model.getMaxNumPlayers()==2){
                 //the player must choose if he wants to move the students(3) to an island or to the dining
+                for(int i=0;i<3;i++){
+                    //we ask the player if he wants to move to his dining room or to an island
+
+                    /*
+                    if("ToSchoolboard"){
+                        //we ask the player which PawnColor he wants to move
+                        try {
+                            player.getSchoolBoard().moveStudToDining(PawnColorChosen);
+                        } catch (NoPawnPresentException e) {
+                            e.printStackTrace();
+                        } catch (TooManyPawnsPresent e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+                            model.allocateProfessors(); //method we call each time there is a movement in the player's schoolboard
+                        } catch (NoPawnPresentException e) {
+                            e.printStackTrace();
+                        } catch (TooManyPawnsPresent e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if("ToIsland"){
+                        //we ask the player where he wants to move the student
+                        try {
+                            player.getSchoolBoard().moveStudToIsland(PawnColorChosen,IslandChosen);
+                        } catch (NoPawnPresentException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        //messaggio di errore tramite la view
+                        i--; //cosi da rifare ancora la mossa
+                    }
+                     */
+                }
+                //action phase 1 of the player finished,now move to the 2 action phase
             }
             else if(model.getMaxNumPlayers()==3){
                 //the player must choose if he wants to move the students(4) to an island or to the dining
+                for(int i=0;i<4;i++){
+                    //we ask the player if he wants to move to his dining room or to an island
+
+                    /*
+                    if("ToSchoolboard"){
+                        //we ask the player which PawnColor he wants to move
+                        try {
+                            player.getSchoolBoard().moveStudToDining(PawnColorChosen);
+                        } catch (NoPawnPresentException e) {
+                            e.printStackTrace();
+                        } catch (TooManyPawnsPresent e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+                            model.allocateProfessors(); //method we call each time there is a movement in the player's schoolboard
+                        } catch (NoPawnPresentException e) {
+                            e.printStackTrace();
+                        } catch (TooManyPawnsPresent e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if("ToIsland"){
+                        //we ask the player where he wants to move the student
+                        try {
+                            player.getSchoolBoard().moveStudToIsland(PawnColorChosen,IslandChosen);
+                        } catch (NoPawnPresentException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        //messaggio di errore tramite la view
+                        i--; //cosi da rifare ancora la mossa
+                    }
+                     */
+                }
             }
             matchPhase=MatchPhase.ACTION1;
         }
         else{
-            //non ha senso invocarlo
+            //non ha senso invocarlo-->messaggio errore mandato dalla view?
+        }
+    }
+
+    /**
+     * This is the method which represents the second step of the action phase where the player must move mother nature to an Island
+     * @param player current player chosen by the method ChoosePlayerToAction()
+     */
+    public void actionPhase2(Player player){
+        if(matchPhase==MatchPhase.ACTION1 && player.getStatus()==PlayerStatus.PLAYING_ACTION){
+            //we ask the player where on which island he wants to move mother nature
+            //we must control that the player can move mother nature there according to the assistant card played!!!
+            //model.moveMotherNature(IslandChosen);
+            matchPhase=MatchPhase.ACTION2;
+        }
+        else{
+            //non ha senso invocarlo-->messaggio errore mandato dalla view?
+        }
+    }
+
+    /**
+     * This is the method which represents the third step of the action phase where the player must pick a CloudTile
+     * @param player current player chosen by the method ChoosePlayerToAction()
+     */
+    public void actionPhase3(Player player){
+        if(matchPhase==MatchPhase.ACTION2 && player.getStatus()==PlayerStatus.PLAYING_ACTION){
+            //we ask the player which CloudTile he wants to pick
+            //player.pickCloudTile(CloudTileChosen);
+            player.setStatus(PlayerStatus.WAITING);
+            matchPhase=MatchPhase.ACTION3;
+        }
+        else{
+            //non ha senso invocarlo-->messaggio di errore mandato dalla view?
         }
     }
 

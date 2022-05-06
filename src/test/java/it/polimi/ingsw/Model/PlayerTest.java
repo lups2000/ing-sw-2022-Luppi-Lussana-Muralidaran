@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
+import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 
@@ -84,6 +86,30 @@ class PlayerTest {
         assertFalse(player.getControlOnProfessor());
         player.setControlOnProfessor(true);
         assertTrue(player.getControlOnProfessor());
+    }
+
+    @Test
+    @DisplayName("pickCloudTile")
+    void pickCloudTile() throws TooManyPawnsPresent, NoPawnPresentException {
+        Game game = new Game();
+        game.initGame(2,true);
+        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+
+        for(PawnColor pawnColor: PawnColor.values()){
+            while(game.getPlayers().get(0).getSchoolBoard().getStudentsWaiting().get(pawnColor)>0){
+                game.getPlayers().get(0).getSchoolBoard().moveStudToDining(pawnColor);
+            }
+        }
+        //now the player's waiting room is empty
+        assertEquals(game.getPlayers().get(0).getSchoolBoard().getNumStudentsWaiting(),0);
+        for(PawnColor pawnColor: PawnColor.values()){
+            assertEquals(game.getPlayers().get(0).getSchoolBoard().getStudentsWaiting().get(pawnColor),0);
+        }
+        //the cloud with index 0 contains 3 students
+        game.getPlayers().get(0).pickCloudTile(game.getCloudTiles().get(0));
+
+        assertEquals(game.getPlayers().get(0).getSchoolBoard().getNumStudentsWaiting(),3);
+        assertEquals(game.getCloudTiles().get(0).getNumStudents(),0);
     }
 
 }

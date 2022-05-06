@@ -21,7 +21,7 @@ public class SchoolBoard {
     private int numCoins;
     private int numStudentsWaiting;
     private final int numMaxStudentsWaiting;
-    private int numMaxPlayers; //forse non serve
+    private int numMaxPlayers;
     private boolean experts;
 
 
