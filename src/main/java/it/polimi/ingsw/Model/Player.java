@@ -54,7 +54,7 @@ public class Player {
     public boolean getControlOnProfessor(){return this.controlOnProfessor;}
     public void setControlOnProfessor (boolean controlSwitch){this.controlOnProfessor = controlSwitch;}
     public AssistantCard getCurrentAssistant(){return this.currentAssistant;}
-    public void pickAssistantCard(AssistantCard picked)throws IllegalArgumentException{currentAssistant = deckAssistantCard.pick(picked);}
+    public void pickAssistantCard(AssistantCard picked)throws IllegalArgumentException,IllegalStateException{currentAssistant = deckAssistantCard.pick(picked);}
     public void pickCloudTile(CloudTile cloudTile) throws TooManyPawnsPresent {
         Map<PawnColor,Integer> picked=cloudTile.pickStudent();
 

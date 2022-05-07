@@ -31,14 +31,31 @@ public class MatchController {
      */
     public void roundManager(){
 
-        //TODO
+        while(matchPhase!=MatchPhase.END){
+            planningPhase1();
+            planningPhase2();
+
+            //I put the players.size() because if a player is disconnected the round continues
+            for(int i=0;i<model.getPlayers().size();i++){
+                Player currentActionPlayer=choosePlayerToPlayAction();
+                actionPhase1(currentActionPlayer);
+                actionPhase2(currentActionPlayer);
+                if(checkWinner()){
+                    matchPhase=MatchPhase.END;
+                    break;
+                }
+                else{
+                    actionPhase3(currentActionPlayer);
+                }
+            }
+        }
 
     }
 
     /**
      * This method represents the first part of the planning phase, where the cloud tiles are filled
      */
-    public void planningPhase1(){ //attenzione perche ora in game riempiamo le cloud al primo giro
+    private void planningPhase1(){ //attenzione perche ora in game riempiamo le cloud al primo giro
         if(matchPhase==MatchPhase.START){
             for(CloudTile cloudTile : model.getCloudTiles()){
                 try {
@@ -57,14 +74,15 @@ public class MatchController {
     /**
      * This method represents the second part of the planning phase, where each player plays an Assistant Card
      */
-    public void planningPhase2(){
+    private void planningPhase2(){
         if(matchPhase==MatchPhase.PLANNING1){
             model.getCurrentHand().clear();
             for(int i= firstPlayerToPlayAssistant.getId()%(model.getPlayers().size());i<model.getPlayers().size();i++){
                 if(model.getPlayers().get(i).getStatus()==PlayerStatus.WAITING){
                     //every player must choose an assistant card-->NB: different from the others
                     //we must control that the Assistant chosen is not present in the currentHand!!!
-                    //model.getPlayers().get(i).pickAssistantCard(); surrounded by tray catch block
+                    //model.getPlayers().get(i).pickAssistantCard(); surrounded by try catch block
+                    //if the assistant cards of the current player are finished I could call model.checkWinner() (the one written by Paolo)
                     model.getPlayers().get(i).setStatus(PlayerStatus.PLAYING_ASSISTANT);
                     model.getCurrentHand().put(model.getPlayers().get(i),model.getPlayers().get(i).getCurrentAssistant());
                     matchPhase=MatchPhase.PLANNING2;
@@ -88,7 +106,7 @@ public class MatchController {
      * This method chooses who is the player who plays the current action phase
      * @return the player
      */
-    public Player choosePlayerToPlayAction(){
+    private Player choosePlayerToPlayAction(){
         //now we must choose who plays the action phase
         Player first = null;
         int lower = 11;
@@ -110,7 +128,7 @@ public class MatchController {
      * This is the method which represents the first step of the action phase where the player must move X students
      * @param player current player chosen by the method ChoosePlayerToAction()
      */
-    public void actionPhase1(Player player){
+    private void actionPhase1(Player player){
         if(matchPhase==MatchPhase.PLANNING2 && player.getStatus()==PlayerStatus.PLAYING_ACTION){
             if(model.getExpertsVariant()){
                 //we could ask if the player wants to play a character card
@@ -206,9 +224,9 @@ public class MatchController {
      * This is the method which represents the second step of the action phase where the player must move mother nature to an Island
      * @param player current player chosen by the method ChoosePlayerToAction()
      */
-    public void actionPhase2(Player player){
+    private void actionPhase2(Player player){
         if(matchPhase==MatchPhase.ACTION1 && player.getStatus()==PlayerStatus.PLAYING_ACTION){
-            //we ask the player where on which island he wants to move mother nature
+            //we ask the player on which island he wants to move mother nature
             //we must control that the player can move mother nature there according to the assistant card played!!!
             //model.moveMotherNature(IslandChosen);
             matchPhase=MatchPhase.ACTION2;
@@ -222,17 +240,25 @@ public class MatchController {
      * This is the method which represents the third step of the action phase where the player must pick a CloudTile
      * @param player current player chosen by the method ChoosePlayerToAction()
      */
-    public void actionPhase3(Player player){
+    private void actionPhase3(Player player){
         if(matchPhase==MatchPhase.ACTION2 && player.getStatus()==PlayerStatus.PLAYING_ACTION){
             //we ask the player which CloudTile he wants to pick
             //player.pickCloudTile(CloudTileChosen);
             player.setStatus(PlayerStatus.WAITING);
-            matchPhase=MatchPhase.ACTION3;
+            matchPhase=MatchPhase.START;//in order to come back to the Planning phase 1
         }
         else{
             //non ha senso invocarlo-->messaggio di errore mandato dalla view?
         }
     }
 
-
+    private boolean checkWinner(){
+        //we check if there is a winner at the end of the action phase 2
+        for(Player player : model.getPlayers()){
+            if(player.getStatus()==PlayerStatus.WINNER){
+                return true;
+            }
+        }
+        return false;
+    }
 }
