@@ -9,7 +9,7 @@ public class Colors {
     //Reset
     public static final String RESET = "\u001b[0m";
 
-    //Colors for students ad professors
+    //Colors for students and professors
     public static final String PINK_PAWN = "\033[38;2;255;255;255;48;2;255;0;255m";
     public static final String RED_PAWN = "\033[38;2;255;255;255;48;2;255;0;0m";
     public static final String BLUE_PAWN = "\033[38;2;255;255;255;48;2;0;0;255m";
