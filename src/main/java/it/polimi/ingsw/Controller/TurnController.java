@@ -1,28 +1,36 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Model.*;
+import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
+import it.polimi.ingsw.View.VirtualView;
 
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /** This class represents the Controller according to the MVC pattern
  * @author Matteo Luppi
  */
-public class MatchController {
+public class TurnController implements Serializable {
 
+    private static final long serialVersionUID=-5987205913389392005L;
     private Game model;
     private Player firstPlayerToPlayAssistant;
-    private MatchPhase matchPhase;
+    private TurnPhase turnPhase;
+    private transient Map<Player, VirtualView> virtualViewMap;
 
     /**
      * Constructor
      * @param model it is the Model according to the MVC pattern
      */
-    public MatchController(Game model){
+    public TurnController(Game model,Map<Player, VirtualView> virtualViewMap){
         this.model=model;
-        this.matchPhase=MatchPhase.START;
+        this.turnPhase = TurnPhase.START;
         this.firstPlayerToPlayAssistant=model.getFirstPlayer(); //initially he is the first one who joins the game
+        this.virtualViewMap=virtualViewMap;
     }
 
     /**
@@ -31,7 +39,7 @@ public class MatchController {
      */
     public void roundManager(){
 
-        while(matchPhase!=MatchPhase.END){
+        while(turnPhase != TurnPhase.END){
             planningPhase1();
             planningPhase2();
 
@@ -41,13 +49,14 @@ public class MatchController {
                 actionPhase1(currentActionPlayer);
                 actionPhase2(currentActionPlayer);
                 if(checkWinner()){
-                    matchPhase=MatchPhase.END;
+                    turnPhase = TurnPhase.END;
                     break;
                 }
                 else{
                     actionPhase3(currentActionPlayer);
                 }
             }
+            turnPhase = TurnPhase.START;
         }
 
     }
@@ -56,7 +65,7 @@ public class MatchController {
      * This method represents the first part of the planning phase, where the cloud tiles are filled
      */
     private void planningPhase1(){ //attenzione perche ora in game riempiamo le cloud al primo giro
-        if(matchPhase==MatchPhase.START){
+        if(turnPhase == TurnPhase.START){
             for(CloudTile cloudTile : model.getCloudTiles()){
                 try {
                     model.fillCloudTile(cloudTile);
@@ -64,7 +73,7 @@ public class MatchController {
                     e.printStackTrace();
                 }
             }
-            matchPhase=MatchPhase.PLANNING1;
+            turnPhase = TurnPhase.PLANNING1;
         }
         else{
             //non ha senso invocarlo-->messaggio errore mandato dalla view?
@@ -75,21 +84,30 @@ public class MatchController {
      * This method represents the second part of the planning phase, where each player plays an Assistant Card
      */
     private void planningPhase2(){
-        if(matchPhase==MatchPhase.PLANNING1){
+        if(turnPhase == TurnPhase.PLANNING1){
             model.getCurrentHand().clear();
-            for(int i= firstPlayerToPlayAssistant.getId()%(model.getPlayers().size());i<model.getPlayers().size();i++){
+
+            for(int i= firstPlayerToPlayAssistant.getId();i<model.getPlayers().size();i++){
                 if(model.getPlayers().get(i).getStatus()==PlayerStatus.WAITING){
-                    //every player must choose an assistant card-->NB: different from the others
+                    List<AssistantCard> assistantCardsAvailable=new ArrayList<>(model.getPlayers().get(i).getDeckAssistantCard().getCards());
+                    VirtualView virtualViewCurrentPlayer=virtualViewMap.get(model.getPlayers().get(i)); //getting the virtual view of the current player
+                    virtualViewCurrentPlayer.showGenericMessage("Hey "+ model.getPlayers().get(i).getNickname() +", now it's your turn!");
+                    //ask to the current player which Assistant Card he wants to move
+                    virtualViewCurrentPlayer.askPlayAssistantCard(assistantCardsAvailable); //this must be contained in a loop
+
+                    //every player must choose an assistant card-->NB: different from the others-->we must call the method checkAssistant()
                     //we must control that the Assistant chosen is not present in the currentHand!!!
-                    //model.getPlayers().get(i).pickAssistantCard(); surrounded by try catch block
+                    //model.getPlayers().get(i).pickAssistantCard(AssistantCard picked); surrounded by try catch block
                     //if the assistant cards of the current player are finished I could call model.checkWinner() (the one written by Paolo)
                     model.getPlayers().get(i).setStatus(PlayerStatus.PLAYING_ASSISTANT);
                     model.getCurrentHand().put(model.getPlayers().get(i),model.getPlayers().get(i).getCurrentAssistant());
-                    matchPhase=MatchPhase.PLANNING2;
-
+                    turnPhase = TurnPhase.PLANNING2;
                 }
                 else{
                     break; //exit from the loop
+                }
+                if(i>=model.getPlayers().size()-1){
+                    i=-1;
                 }
             }
             //each player has played his assistant card,now everybody waits for his turn in the action phase
@@ -99,6 +117,29 @@ public class MatchController {
         }
         else{
             //non ha senso invocarlo-->messaggio errore mandato dalla view?
+        }
+    }
+
+    /**
+     * This method check if the assistant card played by the current player is
+     * valid or not. If an Assistant card has already been played by a player, the next players
+     * cannot play it in the current turn. They could play the same card only if they have only this card
+     * @param assistantCard that has been just played by the player
+     * @return true/false
+     */
+    private boolean checkAssistantCard(AssistantCard assistantCard){
+        Player firstPlayerEverToPlayAssistant=model.getPlayers().get(0);
+        //if the player '0' has more Assistant Cards than the number of players of the Game - 1,the Assistant card must be different by the other ones in the current hand
+        if(firstPlayerEverToPlayAssistant.getDeckAssistantCard().getCards().size() > model.getPlayers().size()-1){
+            for(AssistantCard card : model.getCurrentHand().values()){
+                if(card.equals(assistantCard)){
+                    return false;
+                }
+            }
+            return true;
+        }
+        else{
+            return true;
         }
     }
 
@@ -121,6 +162,7 @@ public class MatchController {
         }
         model.getCurrentHand().remove(first);
         first.setStatus(PlayerStatus.PLAYING_ACTION);
+
         return first;
     }
 
@@ -129,10 +171,14 @@ public class MatchController {
      * @param player current player chosen by the method ChoosePlayerToAction()
      */
     private void actionPhase1(Player player){
-        if(matchPhase==MatchPhase.PLANNING2 && player.getStatus()==PlayerStatus.PLAYING_ACTION){
+        if(turnPhase == TurnPhase.PLANNING2 && player.getStatus()==PlayerStatus.PLAYING_ACTION){
             if(model.getExpertsVariant()){
+                List<CharacterCard> characterCardsGame=model.getCharacterCards();
+                VirtualView virtualViewCurrentPlayer=virtualViewMap.get(player);
+                virtualViewCurrentPlayer.showGenericMessage("You are playing the ExpertVariant! Do you want to play a Character Card?");
                 //we could ask if the player wants to play a character card
                 //the player must choose between the three random character cards of the Game
+                virtualViewCurrentPlayer.askPlayCharacterCard(characterCardsGame);
             }
             if(model.getMaxNumPlayers()==2){
                 //the player must choose if he wants to move the students(3) to an island or to the dining
@@ -213,7 +259,7 @@ public class MatchController {
                      */
                 }
             }
-            matchPhase=MatchPhase.ACTION1;
+            turnPhase = TurnPhase.ACTION1;
         }
         else{
             //non ha senso invocarlo-->messaggio errore mandato dalla view?
@@ -225,11 +271,11 @@ public class MatchController {
      * @param player current player chosen by the method ChoosePlayerToAction()
      */
     private void actionPhase2(Player player){
-        if(matchPhase==MatchPhase.ACTION1 && player.getStatus()==PlayerStatus.PLAYING_ACTION){
+        if(turnPhase == TurnPhase.ACTION1 && player.getStatus()==PlayerStatus.PLAYING_ACTION){
             //we ask the player on which island he wants to move mother nature
             //we must control that the player can move mother nature there according to the assistant card played!!!
             //model.moveMotherNature(IslandChosen);
-            matchPhase=MatchPhase.ACTION2;
+            turnPhase = TurnPhase.ACTION2;
         }
         else{
             //non ha senso invocarlo-->messaggio errore mandato dalla view?
@@ -241,11 +287,11 @@ public class MatchController {
      * @param player current player chosen by the method ChoosePlayerToAction()
      */
     private void actionPhase3(Player player){
-        if(matchPhase==MatchPhase.ACTION2 && player.getStatus()==PlayerStatus.PLAYING_ACTION){
+        if(turnPhase == TurnPhase.ACTION2 && player.getStatus()==PlayerStatus.PLAYING_ACTION){
             //we ask the player which CloudTile he wants to pick
             //player.pickCloudTile(CloudTileChosen);
             player.setStatus(PlayerStatus.WAITING);
-            matchPhase=MatchPhase.START;//in order to come back to the Planning phase 1
+            turnPhase = TurnPhase.PLANNING2;//in order to come back to the next player's action
         }
         else{
             //non ha senso invocarlo-->messaggio di errore mandato dalla view?
