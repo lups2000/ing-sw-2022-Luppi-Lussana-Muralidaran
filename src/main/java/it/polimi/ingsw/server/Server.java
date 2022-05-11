@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.Controller.MatchController;
+import it.polimi.ingsw.Controller.*;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.Model.Game;
@@ -103,7 +103,7 @@ public class Server {
         for(String key : waitingConnection.keySet()){
             game.addPlayer(key,waitingConnection.get(key).getChosenWizard());
         }
-        MatchController controller = new MatchController(game);
+        //MatchController controller = new MatchController(game);
     }
 
 
