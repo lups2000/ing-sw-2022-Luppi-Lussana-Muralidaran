@@ -90,8 +90,13 @@ public class TurnController implements Serializable {
             for(int i= firstPlayerToPlayAssistant.getId();i<model.getPlayers().size();i++){
                 if(model.getPlayers().get(i).getStatus()==PlayerStatus.WAITING){
                     List<AssistantCard> assistantCardsAvailable=new ArrayList<>(model.getPlayers().get(i).getDeckAssistantCard().getCards());
-                    VirtualView virtualViewCurrentPlayer=virtualViewMap.get(model.getPlayers().get(i)); //getting the virtual view of the current player
-                    virtualViewCurrentPlayer.showGenericMessage("Hey "+ model.getPlayers().get(i).getNickname() +", now it's your turn!");
+                    Player currentPlayer=model.getPlayers().get(i);
+
+                    //notify to other players that it's the turn of the current player
+                    this.notifyOtherPlayers("Now it's the Turn of "+currentPlayer.getNickname()+" who plays the Assistant Card!",currentPlayer);
+
+                    VirtualView virtualViewCurrentPlayer=virtualViewMap.get(currentPlayer); //getting the virtual view of the current player
+                    virtualViewCurrentPlayer.showGenericMessage("Hey "+ currentPlayer.getNickname() +", now it's your turn!");
                     //ask to the current player which Assistant Card he wants to move
                     virtualViewCurrentPlayer.askPlayAssistantCard(assistantCardsAvailable); //this must be contained in a loop
 
@@ -306,5 +311,18 @@ public class TurnController implements Serializable {
             }
         }
         return false;
+    }
+
+    /**
+     * Method to send a message to all the players except the current one
+     * @param message to send
+     * @param currentPlayer who is playing
+     */
+    public void notifyOtherPlayers(String message,Player currentPlayer){
+        for(Player player : virtualViewMap.keySet()){
+            if(player.getId()!= currentPlayer.getId()){
+                virtualViewMap.get(player).showGenericMessage(message);
+            }
+        }
     }
 }

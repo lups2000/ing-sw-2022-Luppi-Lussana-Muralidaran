@@ -2,7 +2,7 @@ package it.polimi.ingsw.Messages;
 
 public abstract class Message {
 
-    private static final long serialVersionUID = 6589184250663958343L;
+    private static final long serialVersionUID = 6589184250663958343L; //da cambiare
 
     private String nickName;
     private MessageType messageType;
