@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.Model.AssistantSeed;
 import it.polimi.ingsw.observer.Observer;
 
 public interface ClientConnection{
@@ -9,4 +10,6 @@ public interface ClientConnection{
     void addObserver(Observer<String> observer);
 
     void asyncSend(Object message);
+
+    AssistantSeed getChosenWizard();
 }

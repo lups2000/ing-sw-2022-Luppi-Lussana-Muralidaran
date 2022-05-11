@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.Model.AssistantSeed;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
@@ -17,6 +19,7 @@ public class Client {
         this.ip = ip;
         this.port = port;
     }
+
 
     private boolean active = true;
 

@@ -33,7 +33,7 @@ public class Game {
     public Game(){
         this.players = new ArrayList<>();
         this.status = GameState.CREATING;
-        this.seedsAvailable=new ArrayList<>(Arrays.asList(AssistantSeed.KING,AssistantSeed.SAMURAI,AssistantSeed.WITCH,AssistantSeed.WIZARD));
+        this.seedsAvailable=new ArrayList<>(Arrays.asList(AssistantSeed.KING,AssistantSeed.SAMURAI,AssistantSeed.WITCH,AssistantSeed.MAGICIAN));
         this.islands = new ArrayList<>();
         fillIslands();
         this.studentBag = new StudentBag();

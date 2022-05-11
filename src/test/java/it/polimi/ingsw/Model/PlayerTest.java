@@ -93,7 +93,7 @@ class PlayerTest {
     void pickCloudTile() throws TooManyPawnsPresent, NoPawnPresentException {
         Game game = new Game();
         game.initGame(2,true);
-        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+        game.addPlayer("Paolo",AssistantSeed.MAGICIAN);
 
         for(PawnColor pawnColor: PawnColor.values()){
             while(game.getPlayers().get(0).getSchoolBoard().getStudentsWaiting().get(pawnColor)>0){

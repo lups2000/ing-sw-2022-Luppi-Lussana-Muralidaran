@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.Model.AssistantSeed;
+import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
+import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.observer.Observable;
 
 import java.io.IOException;
@@ -13,12 +16,18 @@ public class SocketClientConnection extends Observable<String> implements Client
     private Socket socket;
     private ObjectOutputStream out;
     private Server server;
+    private AssistantSeed chosenWizard;
 
     private boolean active = true;
 
     public SocketClientConnection(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
+    }
+
+    @Override
+    public AssistantSeed getChosenWizard() {
+        return chosenWizard;
     }
 
     private synchronized boolean isActive(){
@@ -71,6 +80,7 @@ public class SocketClientConnection extends Observable<String> implements Client
         try{
             in = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
+
             send("Welcome!\nWhat is your name?");
             String read = in.nextLine();
             name = read;
@@ -97,8 +107,9 @@ public class SocketClientConnection extends Observable<String> implements Client
 
             server.lobby(this, name);
 
+
             //the first player to enter his nickname chooses the initial settings of the game
-            if(server.getNumConnections() == 1){
+            if(server.getRegisteredNicknames().size() == 1){
                 send("2 or 3 players? ");
                 int numPlayers = in.nextInt();
                 in.nextLine();
@@ -132,15 +143,44 @@ public class SocketClientConnection extends Observable<String> implements Client
                 else {
                     send("You chose to NOT activate the experts variant!");
                 }
+
+                server.setExpertsVariant(read);
             }
 
+            send("Please select your wizard, press S for for SAMURAI, W for WITCH, K for KING, M for MAGICIAN: ");
+            read = in.nextLine();
 
+
+            while(!read.equals("S") && !read.equals("W") && !read.equals("K") && !read.equals("M")){
+                send("Input non valid, please retry: ");
+                read = in.nextLine();
+            }
+
+            //controllare che non sia già scelto da altri
+
+            switch (read){
+                case "S": this.chosenWizard = AssistantSeed.SAMURAI;
+                    break;
+                case "W": this.chosenWizard = AssistantSeed.WITCH;
+                    break;
+                case "K": this.chosenWizard = AssistantSeed.KING;
+                    break;
+                case "M": this.chosenWizard = AssistantSeed.MAGICIAN;
+                    break;
+            }
+
+            server.addNumConnections();
+            send("fin qui tutto bene!");
+
+            if(server.getNumConnections() == server.getNumPlayers()){
+                server.initializeGame();
+            }
 
             while(isActive()){
                 read = in.nextLine();
                 notify(read);
             }
-        } catch (IOException | NoSuchElementException e) {
+        } catch (IOException | NoSuchElementException | NoPawnPresentException | TooManyPawnsPresent e) {
             System.err.println("Error! " + e.getMessage());
         }finally{
             close();

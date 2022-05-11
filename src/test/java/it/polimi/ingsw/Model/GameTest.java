@@ -31,7 +31,7 @@ class GameTest {
         assertEquals(game2.getSeedsAvailable().get(0),AssistantSeed.KING);
         assertEquals(game2.getSeedsAvailable().get(1),AssistantSeed.SAMURAI);
         assertEquals(game2.getSeedsAvailable().get(2),AssistantSeed.WITCH);
-        assertEquals(game2.getSeedsAvailable().get(3),AssistantSeed.WIZARD);
+        assertEquals(game2.getSeedsAvailable().get(3),AssistantSeed.MAGICIAN);
         assertEquals(game2.getIslands().size(),12);
         for(Island island : game2.getIslands()){
             if(island.getIndex()!=0 && island.getIndex()!=6){
@@ -142,7 +142,7 @@ class GameTest {
         assertEquals(game2.getSeedsAvailable().size(),2);
         assertEquals(game2.getFirstPlayer(),game2.getPlayers().get(0));
         assertFalse(game2.getSeedsAvailable().contains(AssistantSeed.KING) && game2.getSeedsAvailable().contains(AssistantSeed.WITCH));
-        assertTrue(game2.getSeedsAvailable().contains(AssistantSeed.WIZARD) && game2.getSeedsAvailable().contains(AssistantSeed.SAMURAI));
+        assertTrue(game2.getSeedsAvailable().contains(AssistantSeed.MAGICIAN) && game2.getSeedsAvailable().contains(AssistantSeed.SAMURAI));
 
         //now some tests to test fillBoard() method
         assertFalse(game2.getPlayers().get(0).getSchoolBoard().isExperts());
@@ -157,7 +157,7 @@ class GameTest {
          */
 
         Throwable exception1 = assertThrows(IllegalStateException.class, () -> {
-            game2.addPlayer("Pradee",AssistantSeed.WIZARD);
+            game2.addPlayer("Pradee",AssistantSeed.MAGICIAN);
         });
         assertEquals("Too many players!", exception1.getMessage());
 
@@ -177,7 +177,7 @@ class GameTest {
     void moveMotherNature() throws TooManyTowersException, NoTowersException, NoPawnPresentException, TooManyPawnsPresent {
         game2.initGame(2,false);
         game2.addPlayer("Teo",AssistantSeed.KING);
-        game2.addPlayer("Paolo",AssistantSeed.WIZARD);
+        game2.addPlayer("Paolo",AssistantSeed.MAGICIAN);
         game2.moveMotherNature(game2.getIslands().get(5));
         assertTrue(game2.getIslands().get(5).isMotherNature());
         assertEquals(game2.getMotherNature(),game2.getIslands().get(5).getIndex());
@@ -199,7 +199,7 @@ class GameTest {
         Game game=new Game();
         game.initGame(2,true);
         game.addPlayer("Teo",AssistantSeed.KING);
-        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+        game.addPlayer("Paolo",AssistantSeed.MAGICIAN   );
         game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.RED); //Teo has control on the RED
         game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.BLUE); //Paolo has control on the BLUE
         //2 RED and 1 BLUE students on the island 0
@@ -223,7 +223,7 @@ class GameTest {
         Game game=new Game();
         game.initGame(2,true);
         game.addPlayer("Teo",AssistantSeed.KING);
-        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+        game.addPlayer("Paolo",AssistantSeed.MAGICIAN);
         game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.RED); //Teo has control on the RED
         game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.BLUE); //Paolo has control on the BLUE
         game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.PINK); //Paolo has control on the PINK
@@ -268,7 +268,7 @@ class GameTest {
         Game game=new Game();
         game.initGame(2,true);
         game.addPlayer("Teo",AssistantSeed.KING);
-        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+        game.addPlayer("Paolo",AssistantSeed.MAGICIAN);
         game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.RED); //Teo has control on the RED
         game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.BLUE); //Paolo has control on the BLUE
         game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.PINK); //Paolo has control on the PINK
@@ -289,7 +289,7 @@ class GameTest {
         Game game=new Game();
         game.initGame(2,true);
         game.addPlayer("Teo",AssistantSeed.KING);
-        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+        game.addPlayer("Paolo",AssistantSeed.MAGICIAN);
         game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.RED); //Teo has control on the RED
         game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.BLUE); //Paolo has control on the BLUE
         //2 RED and 1 BLUE students on the island 0
@@ -324,7 +324,7 @@ class GameTest {
         Game game=new Game();
         game.initGame(2,true);
         game.addPlayer("Teo",AssistantSeed.KING);
-        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+        game.addPlayer("Paolo",AssistantSeed.MAGICIAN);
         game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.RED); //Teo has control on the RED
         game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.BLUE); //Paolo has control on the BLUE
         game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.PINK); //Paolo has control on the PINK
@@ -360,7 +360,7 @@ class GameTest {
         Game game=new Game();
         game.initGame(2,true);
         game.addPlayer("Teo",AssistantSeed.KING);
-        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+        game.addPlayer("Paolo",AssistantSeed.MAGICIAN);
         game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.RED); //Teo has control on the RED
         game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.BLUE); //Paolo has control on the BLUE
         //2 RED and 1 BLUE students on the island 0
@@ -394,7 +394,7 @@ class GameTest {
         Game game=new Game();
         game.initGame(2,true);
         game.addPlayer("Teo",AssistantSeed.KING);
-        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+        game.addPlayer("Paolo",AssistantSeed.MAGICIAN);
         game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.RED); //Teo has control on the RED
         game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.BLUE); //Paolo has control on the BLUE
         //2 RED and 1 BLUE students on the island 0
@@ -427,7 +427,7 @@ class GameTest {
         Game game=new Game();
         game.initGame(2,true);
         game.addPlayer("Teo",AssistantSeed.KING);
-        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+        game.addPlayer("Paolo",AssistantSeed.MAGICIAN);
         game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.RED); //Teo has control on the RED
 
         /* just to verify
@@ -475,7 +475,7 @@ class GameTest {
         Game game=new Game();
         game.initGame(2,true);
         game.addPlayer("Teo",AssistantSeed.KING);
-        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+        game.addPlayer("Paolo",AssistantSeed.MAGICIAN);
 
         game.getPlayers().get(0).getSchoolBoard().addStudToDining(PawnColor.RED);
         game.allocateProfessors(); //Teo has the RED professor
@@ -532,7 +532,7 @@ class GameTest {
         Game game=new Game();
         game.initGame(2,true);
         game.addPlayer("Teo",AssistantSeed.KING);
-        game.addPlayer("Paolo",AssistantSeed.WIZARD);
+        game.addPlayer("Paolo",AssistantSeed.MAGICIAN);
 
         game.getPlayers().get(0).getSchoolBoard().addStudToDining(PawnColor.RED);
         game.allocateProfessors(); //Teo has the RED professor
@@ -574,7 +574,7 @@ class GameTest {
         Game game=new Game();
         game.initGame(2,true);
         game.addPlayer("Teo",AssistantSeed.KING); //WHITE
-        game.addPlayer("Paolo",AssistantSeed.WIZARD); //BLACK
+        game.addPlayer("Paolo",AssistantSeed.MAGICIAN); //BLACK
 
         game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.RED); //Teo has the RED professor
         game.getPlayers().get(1).getSchoolBoard().addProfessor(PawnColor.BLUE); //Paolo has the BLUE professor
@@ -610,7 +610,7 @@ class GameTest {
         Game game=new Game();
         game.initGame(2,true);
         game.addPlayer("Teo",AssistantSeed.KING); //WHITE
-        game.addPlayer("Paolo",AssistantSeed.WIZARD); //BLACK
+        game.addPlayer("Paolo",AssistantSeed.MAGICIAN); //BLACK
 
         game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.RED); //Teo has the RED professor
         game.getPlayers().get(0).getSchoolBoard().addProfessor(PawnColor.PINK); //Teo has the PINK professor
