@@ -1,14 +1,20 @@
-package it.polimi.ingsw.Messages;
+package it.polimi.ingsw.Messages.ServerSide;
 
-public class ReplyLogin extends Message{
+import it.polimi.ingsw.Messages.Message;
+import it.polimi.ingsw.Messages.MessageType;
 
-    private static final long serialVersionUID = -1423312065079102467L;
+/**
+ * This message is used by the server and it is sent to the client
+ */
+public class LoginReply extends Message {
+
+    private static final long serialVersionUID = -1423312065079102467L; //da cambiare
     private boolean isNickAccepted;
     private boolean isConnAccepted;
 
 
-    public ReplyLogin(boolean isNickAccepted,boolean isConnAccepted){
-        super("nickServer",MessageType.REPLY_LOGIN);
+    public LoginReply(boolean isNickAccepted, boolean isConnAccepted){
+        super("SERVER", MessageType.REPLY_LOGIN);
         this.isNickAccepted=isNickAccepted;
         this.isConnAccepted=isConnAccepted;
     }
@@ -23,7 +29,7 @@ public class ReplyLogin extends Message{
 
     @Override
     public String toString() {
-        return "ReplyLogin{" +
+        return "LoginReply{" +
                 "NickName="+getNickName()+
                 "isNickAccepted=" + isNickAccepted +
                 ", isConnAccepted=" + isConnAccepted +
