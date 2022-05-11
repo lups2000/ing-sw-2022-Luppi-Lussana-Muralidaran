@@ -30,6 +30,7 @@ public class Game {
     private Map<Player,AssistantCard> currentHand;    //list for the assistant cards chosen in this turn
     public static String serverNickName="server";
 
+
     public Game(){
         this.players = new ArrayList<>();
         this.status = GameState.CREATING;
