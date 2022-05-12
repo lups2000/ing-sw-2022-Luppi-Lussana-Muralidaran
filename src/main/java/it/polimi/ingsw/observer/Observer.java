@@ -1,7 +1,10 @@
 package it.polimi.ingsw.observer;
 
-public interface Observer<T> {
+import it.polimi.ingsw.network.Messages.Message;
 
-    void update(T message);
-
+/**
+ * Observer interface. It supports a generic method of update.
+ */
+public interface Observer {
+    void update(Message message);
 }

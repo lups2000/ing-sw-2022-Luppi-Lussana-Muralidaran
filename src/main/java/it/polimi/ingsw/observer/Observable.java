@@ -1,30 +1,43 @@
 package it.polimi.ingsw.observer;
 
+import it.polimi.ingsw.network.Messages.Message;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Observable<T> {
+/**
+ * Observable class that can be observed by implementing the {@link Observer} interface and registering as listener.
+ */
+public class Observable {
 
-    private final List<Observer<T>> observers = new ArrayList<>();
+    private final List<Observer> observers = new ArrayList<>();
 
-    public void addObserver(Observer<T> observer){
-        synchronized (observers) {
-            observers.add(observer);
-        }
+    /**
+     * Adds an observer.
+     *
+     * @param obs the observer to be added.
+     */
+    public void addObserver(Observer obs) {
+        observers.add(obs);
     }
 
-    public void removeObserver(Observer<T> observer){
-        synchronized (observers) {
-            observers.remove(observer);
-        }
+    /**
+     * Removes an observer.
+     *
+     * @param obs the observer to be removed.
+     */
+    public void removeObserver(Observer obs) {
+        observers.remove(obs);
     }
 
-    protected void notify(T message){
-        synchronized (observers) {
-            for(Observer<T> observer : observers){
-                observer.update(message);
-            }
+    /**
+     * Notifies all the current observers through the update method and passes to them a {@link Message}.
+     *
+     * @param message the message to be passed to the observers.
+     */
+    protected void notifyObserver(Message message) {
+        for (Observer observer : observers) {
+            observer.update(message);
         }
     }
-
 }
