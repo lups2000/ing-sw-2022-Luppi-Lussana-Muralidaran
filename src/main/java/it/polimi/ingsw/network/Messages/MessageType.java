@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Messages;
+package it.polimi.ingsw.network.Messages;
 
 /**
  * This enum defines all the messages that are used by the server and the clients

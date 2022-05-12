@@ -1,7 +1,7 @@
-package it.polimi.ingsw.Messages.ServerSide;
+package it.polimi.ingsw.network.Messages.ServerSide;
 
-import it.polimi.ingsw.Messages.Message;
-import it.polimi.ingsw.Messages.MessageType;
+import it.polimi.ingsw.network.Messages.Message;
+import it.polimi.ingsw.network.Messages.MessageType;
 
 /**
  * This message is used by the server and it is sent to the client

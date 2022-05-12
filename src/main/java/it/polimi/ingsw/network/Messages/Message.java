@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Messages;
+package it.polimi.ingsw.network.Messages;
 
 public abstract class Message {
 

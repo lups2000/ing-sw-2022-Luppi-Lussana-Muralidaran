@@ -1,6 +1,4 @@
-package it.polimi.ingsw.client;
-
-import it.polimi.ingsw.Model.AssistantSeed;
+package it.polimi.ingsw.network.client;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

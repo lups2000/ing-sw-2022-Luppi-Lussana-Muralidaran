@@ -1,6 +1,5 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.network.server;
 
-import it.polimi.ingsw.Controller.*;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.Model.Game;

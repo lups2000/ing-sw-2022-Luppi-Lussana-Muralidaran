@@ -2,7 +2,7 @@ package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
-import it.polimi.ingsw.server.ClientConnection;
+import it.polimi.ingsw.network.server.ClientConnection;
 
 import java.util.List;
 
