@@ -106,7 +106,6 @@ public class Game {
 
     public GameState getStatus() {return status;}
     public List<Player> getPlayers() {return players;}
-    //public int getMaxNumPlayers() {return maxNumPlayers;} forse non serve
     public boolean getExpertsVariant(){return expertsVariant;}
     public void changeStatus(GameState status){this.status = status;}
     public StudentBag getStudentBag() {return studentBag;}
@@ -499,30 +498,21 @@ public class Game {
         }
     }
 
-    /*
-    
-    public void pickAssistants(){
-        currentHand.clear();
+    public boolean isNickNameAvailable(String nickName){
         for(Player player : players){
-            currentHand.put(player,player.getCurrentAssistant());
+            if(player.getNickname().equals(nickName)){
+                return false;
+            }
         }
+        return true;
     }
 
-
-    public Player pickNextPlayer(){
-         Player first = null;
-         int lower = 11;
-         for(Map.Entry<Player,AssistantCard> entry : currentHand.entrySet()){
-             if(entry.getValue().getValue() < lower){
-                 lower = entry.getValue().getValue();
-                 first = entry.getKey();
-             }
-         }
-        if(currentHand.size() == this.maxNumPlayers){
-            this.firstPlayer = first;
+    public Player getPlayerByNickName(String nickName){
+        for(Player player : players){
+            if(player.getNickname().equals(nickName)){
+                return player;
+            }
         }
-        currentHand.remove(first);
-        return first;
+        return null;
     }
-    */
 }

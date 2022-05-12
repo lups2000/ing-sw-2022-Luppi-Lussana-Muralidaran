@@ -75,9 +75,6 @@ public class TurnController implements Serializable {
             }
             turnPhase = TurnPhase.PLANNING1;
         }
-        else{
-            //non ha senso invocarlo-->messaggio errore mandato dalla view?
-        }
     }
 
     /**
@@ -98,7 +95,7 @@ public class TurnController implements Serializable {
                     VirtualView virtualViewCurrentPlayer=virtualViewMap.get(currentPlayer); //getting the virtual view of the current player
                     virtualViewCurrentPlayer.showGenericMessage("Hey "+ currentPlayer.getNickname() +", now it's your turn!");
                     //ask to the current player which Assistant Card he wants to move
-                    virtualViewCurrentPlayer.askPlayAssistantCard(assistantCardsAvailable); //this must be contained in a loop
+                    virtualViewCurrentPlayer.askAssistantCard(assistantCardsAvailable); //this must be contained in a loop
 
                     //every player must choose an assistant card-->NB: different from the others-->we must call the method checkAssistant()
                     //we must control that the Assistant chosen is not present in the currentHand!!!
@@ -119,9 +116,6 @@ public class TurnController implements Serializable {
             for(Player player : model.getCurrentHand().keySet()){
                 player.setStatus(PlayerStatus.WAITING_ACTION);
             }
-        }
-        else{
-            //non ha senso invocarlo-->messaggio errore mandato dalla view?
         }
     }
 
@@ -266,9 +260,6 @@ public class TurnController implements Serializable {
             }
             turnPhase = TurnPhase.ACTION1;
         }
-        else{
-            //non ha senso invocarlo-->messaggio errore mandato dalla view?
-        }
     }
 
     /**
@@ -282,9 +273,6 @@ public class TurnController implements Serializable {
             //model.moveMotherNature(IslandChosen);
             turnPhase = TurnPhase.ACTION2;
         }
-        else{
-            //non ha senso invocarlo-->messaggio errore mandato dalla view?
-        }
     }
 
     /**
@@ -297,9 +285,6 @@ public class TurnController implements Serializable {
             //player.pickCloudTile(CloudTileChosen);
             player.setStatus(PlayerStatus.WAITING);
             turnPhase = TurnPhase.PLANNING2;//in order to come back to the next player's action
-        }
-        else{
-            //non ha senso invocarlo-->messaggio di errore mandato dalla view?
         }
     }
 

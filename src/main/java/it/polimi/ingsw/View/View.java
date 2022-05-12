@@ -20,9 +20,9 @@ public interface View {
     /**
      * Method to ask the assistant seed to each player
      */
-    void askPlayAssistantSeed(List<AssistantSeed> assistantSeedAvailable);
+    void askAssistantSeed(List<AssistantSeed> assistantSeedAvailable);
 
-    void askPlayAssistantCard(List<AssistantCard> assistantCards);
+    void askAssistantCard(List<AssistantCard> assistantCards);
 
     void askMoveStudToDining(PawnColor pawnColor,SchoolBoard schoolBoard);
 
@@ -31,6 +31,8 @@ public interface View {
     void askMoveMotherNature(Island island);
 
     void askChooseCloudTile(CloudTile cloudTile);
+
+    void askExpertVariant();
 
     void askPlayCharacterCard(List<CharacterCard> characterCards);
 
@@ -43,5 +45,7 @@ public interface View {
     void showVictoryMessage(String victoryMessage);
 
     void showLoseMessage(String loseMessage);
+
+    void showLoginPlayers(String nickName,boolean nickNameOk,boolean connectionOk);
 
 }

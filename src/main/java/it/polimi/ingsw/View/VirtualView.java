@@ -33,12 +33,12 @@ public class VirtualView implements View{
     }
 
     @Override
-    public void askPlayAssistantSeed(List<AssistantSeed> assistantSeedAvailable) {
+    public void askAssistantSeed(List<AssistantSeed> assistantSeedAvailable) {
 
     }
 
     @Override
-    public void askPlayAssistantCard(List<AssistantCard> assistantCards) {
+    public void askAssistantCard(List<AssistantCard> assistantCards) {
 
     }
 
@@ -90,6 +90,16 @@ public class VirtualView implements View{
 
     @Override
     public void showLoseMessage(String loseMessage) {
+
+    }
+
+    @Override
+    public void showLoginPlayers(String nickName, boolean nickNameOk, boolean connectionOk) {
+
+    }
+
+    @Override
+    public void askExpertVariant() {
 
     }
 }
