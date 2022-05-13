@@ -47,7 +47,7 @@ public interface View {
 
     void showLobby(List<Player> players,int numPlayers);
 
-    void showVictoryMessage(Player winner);
+    void showWinMessage(Player winner);
 
     void showLoseMessage(Player looser);
 

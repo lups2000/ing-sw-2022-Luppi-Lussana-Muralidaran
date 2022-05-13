@@ -10,18 +10,22 @@ import it.polimi.ingsw.Model.Player;
 public class Lose extends Message {
 
     //id serialization
-    private Player looser;
+    private Player loser;
 
-    public Lose(Player looser){
+    public Lose(Player loser){
         super("SERVER", MessageType.LOSE);
-        this.looser=looser;
+        this.loser=loser;
+    }
+
+    public Player getLoser() {
+        return loser;
     }
 
     @Override
     public String toString() {
         return "Lose{" +
                 "nickName="+getNickName()+", "+
-                "looser=" + looser.getNickname() +
+                "looser=" + loser.getNickname() +
                 '}';
     }
 }

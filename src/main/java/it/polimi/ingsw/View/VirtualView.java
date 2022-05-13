@@ -38,12 +38,12 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void askAssistantSeed(List<AssistantSeed> assistantSeedAvailable) {
-        clientConnection.sendMessageToClient(new AssistantSeedRequest());
+        clientConnection.sendMessageToClient(new AssistantSeedRequest(assistantSeedAvailable));
     }
 
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards) {
-        clientConnection.sendMessageToClient(new AssistantCardRequest());
+        clientConnection.sendMessageToClient(new AssistantCardRequest(assistantCards));
     }
 
     @Override
@@ -87,13 +87,13 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void showVictoryMessage(Player winner) {
+    public void showWinMessage(Player winner) {
         clientConnection.sendMessageToClient(new Win(winner));
     }
 
     @Override
-    public void showLoseMessage(Player looser) {
-        clientConnection.sendMessageToClient(new Lose(looser));
+    public void showLoseMessage(Player loser) {
+        clientConnection.sendMessageToClient(new Lose(loser));
     }
 
     @Override
