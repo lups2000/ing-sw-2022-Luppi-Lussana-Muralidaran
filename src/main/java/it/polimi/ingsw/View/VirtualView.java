@@ -54,7 +54,7 @@ public class VirtualView implements View{
     }
 
     @Override
-    public void askMoveMotherNature(Island island) {
+    public void askMoveMotherNature(List<Island> islands) {
 
     }
 

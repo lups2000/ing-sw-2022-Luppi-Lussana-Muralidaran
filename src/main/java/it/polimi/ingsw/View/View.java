@@ -28,7 +28,7 @@ public interface View {
 
     void askMoveStudToIsland(PawnColor pawnColor,SchoolBoard schoolBoard);
 
-    void askMoveMotherNature(Island island);
+    void askMoveMotherNature(List<Island> islands);
 
     void askChooseCloudTile(CloudTile cloudTile);
 

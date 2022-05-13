@@ -1,13 +1,9 @@
 package it.polimi.ingsw.Controller;
 
-import it.polimi.ingsw.Model.AssistantSeed;
-import it.polimi.ingsw.Model.Game;
-import it.polimi.ingsw.Model.Player;
+import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.View.VirtualView;
-import it.polimi.ingsw.network.Messages.ClientSide.AssistantSeedReply;
-import it.polimi.ingsw.network.Messages.ClientSide.ExpertVariantReply;
-import it.polimi.ingsw.network.Messages.ClientSide.NumPlayersReply;
+import it.polimi.ingsw.network.Messages.ClientSide.*;
 import it.polimi.ingsw.network.Messages.Message;
 
 import java.io.Serializable;
@@ -81,6 +77,35 @@ public class MessageController implements Serializable {
         VirtualView virtualView=virtualViewMap.get(model.getPlayerByNickName(message.getNickName()));
         virtualView.showGenericMessage("You didn't provide a valid AssistantSeed!");
         virtualView.askAssistantSeed(model.getSeedsAvailable());
+        return false;
+    }
+
+    public boolean checkMotherNature(Message message){
+        MotherNatureMoveReply motherNatureMoveReply=(MotherNatureMoveReply) message;
+
+        for(Island island : motherNatureMoveReply.getIslands()){
+            if(island.getIndex()>=0 && island.getIndex()<model.getIslands().size() && motherNatureMoveReply.getIslands().size()==model.getIslands().size()){
+                return true;
+            }
+        }
+        VirtualView virtualView=virtualViewMap.get(model.getPlayerByNickName(message.getNickName()));
+        virtualView.showGenericMessage("You didn't provide a valid island!The island index must be between 0 and "+(model.getIslands().size()-1));
+        virtualView.askMoveMotherNature(model.getIslands());
+        return false;
+    }
+
+    public boolean checkAssistantCard(Message message){
+        AssistantCardReply assistantCardReply=(AssistantCardReply) message;
+
+        for(AssistantCard assistantCard : assistantCardReply.getAssistantCards()){
+            if(assistantCard.getValue()>=1 && assistantCard.getValue()<=10 && assistantCard.getMaxStepsMotherNature()>=1 && assistantCard.getMaxStepsMotherNature()<=5
+                && model.getPlayerByNickName(message.getNickName()).getDeckAssistantCard().getCards().contains(assistantCard)){
+                return true;
+            }
+        }
+        VirtualView virtualView=virtualViewMap.get(model.getPlayerByNickName(message.getNickName()));
+        virtualView.showGenericMessage("You didn't provide a valid AssistantCard!");
+        virtualView.askAssistantCard(model.getPlayerByNickName(message.getNickName()).getDeckAssistantCard().getCards());
         return false;
     }
 
