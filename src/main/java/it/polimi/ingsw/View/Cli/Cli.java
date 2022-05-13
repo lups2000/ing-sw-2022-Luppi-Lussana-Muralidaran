@@ -1,5 +1,7 @@
 package it.polimi.ingsw.View.Cli;
 
+import it.polimi.ingsw.Controller.ClientController;
+
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,9 +44,41 @@ public class Cli /*extends observable ecc....*/{
         out.println("The value between the brackets if the default value");
 
         do {
-            out.print("Enter the server address [" + defaultAddress + "]: ");
-            //da finire
+            out.print("Please enter the server address (Default address: " + defaultAddress + "): ");
+            String inputAddress = readLine.next();
+
+            if (inputAddress.equals("")){
+                serverDetails.put("address", defaultAddress);
+                validInput = true;
+            }
+            //else if (inputAddress.equals(INSERIRE CONTROLLO DEL CONTROLLER)){serverDetails.put("address", inputAddress);validInput = true;}
+            else {
+                out.println("Invalid input address!");
+                clearCli();
+                validInput = false;
+            }
         } while (!validInput);
 
+        do {
+            out.println("Please enter the server port (Default Port: " + defaultPort + "): ");
+            String inputPort = readLine.next();
+
+            if (inputPort.equals("")){
+                serverDetails.put("port", defaultPort);
+                validInput = true;
+            }
+            //else if (INSERIRE CONTROLLO DEL CONTROLLER){serverDetails.put("port", inputPort);validInput = false}
+            else {
+                out.println("Invalid input address!");
+                clearCli();
+                validInput = false;
+            }
+        } while (!validInput);
     }
+
+    public void clearCli(){
+        out.flush();
+    }
+
+
 }
