@@ -5,6 +5,11 @@ import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 
 import java.util.List;
 
+/**
+ * This interface defines the methods that will be implemented in the CLI and in the GUI
+ * This is the View according to the MVC pattern
+ * @author Matteo Luppi
+ */
 public interface View {
 
     /**
@@ -24,13 +29,13 @@ public interface View {
 
     void askAssistantCard(List<AssistantCard> assistantCards);
 
-    void askMoveStudToDining(PawnColor pawnColor,SchoolBoard schoolBoard);
+    void askMoveStudToDining(PawnColor pawnColor);
 
-    void askMoveStudToIsland(PawnColor pawnColor,SchoolBoard schoolBoard);
+    void askMoveStudToIsland(PawnColor pawnColor,List<Island> islands);
 
     void askMoveMotherNature(List<Island> islands);
 
-    void askChooseCloudTile(CloudTile cloudTile);
+    void askChooseCloudTile(List<CloudTile> cloudTiles);
 
     void askExpertVariant();
 
@@ -40,11 +45,11 @@ public interface View {
 
     void showError(String error);
 
-    void showLobby(List<String> players,int numPlayers);
+    void showLobby(List<Player> players,int numPlayers);
 
-    void showVictoryMessage(String victoryMessage);
+    void showVictoryMessage(Player winner);
 
-    void showLoseMessage(String loseMessage);
+    void showLoseMessage(Player looser);
 
     void showLoginPlayers(String nickName,boolean nickNameOk,boolean connectionOk);
 

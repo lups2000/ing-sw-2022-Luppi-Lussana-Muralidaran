@@ -1,5 +1,8 @@
 package it.polimi.ingsw.network.Messages;
 
+/**
+ * @author Matteo Luppi
+ */
 public abstract class Message {
 
     private static final long serialVersionUID = 6589184250663958343L; //da cambiare

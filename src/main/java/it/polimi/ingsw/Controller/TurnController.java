@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/** This class represents the Controller according to the MVC pattern
+/** This class represents the Turn manager
  * @author Matteo Luppi
  */
 public class TurnController implements Serializable {
@@ -171,6 +171,7 @@ public class TurnController implements Serializable {
      */
     private void actionPhase1(Player player){
         if(turnPhase == TurnPhase.PLANNING2 && player.getStatus()==PlayerStatus.PLAYING_ACTION){
+            notifyOtherPlayers(player.getNickname()+" is playing the action phase!", player);
             if(model.getExpertsVariant()){
                 List<CharacterCard> characterCardsGame=model.getCharacterCards();
                 VirtualView virtualViewCurrentPlayer=virtualViewMap.get(player);

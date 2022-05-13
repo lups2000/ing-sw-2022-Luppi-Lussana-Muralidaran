@@ -2,7 +2,11 @@ package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
+import it.polimi.ingsw.network.Messages.ClientSide.Error;
+import it.polimi.ingsw.network.Messages.Message;
+import it.polimi.ingsw.network.Messages.ServerSide.*;
 import it.polimi.ingsw.network.server.ClientConnection;
+import it.polimi.ingsw.observer.Observer;
 
 import java.util.List;
 
@@ -10,7 +14,7 @@ import java.util.List;
  * of the network to the Controller
  * @author Matteo Luppi
  */
-public class VirtualView implements View{
+public class VirtualView implements View, Observer {
 
     private ClientConnection clientConnection;
 
@@ -24,43 +28,42 @@ public class VirtualView implements View{
 
     @Override
     public void askNickName() {
-
+        clientConnection.sendMessageToClient(new LoginReply(false,true));
     }
 
     @Override
     public void askNumPlayers() {
-
+        clientConnection.sendMessageToClient(new NumPlayersRequest());
     }
 
     @Override
     public void askAssistantSeed(List<AssistantSeed> assistantSeedAvailable) {
-
+        clientConnection.sendMessageToClient(new AssistantSeedRequest());
     }
 
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards) {
-
-    }
-
-
-    @Override
-    public void askMoveStudToDining(PawnColor pawnColor, SchoolBoard schoolBoard) {
-
+        clientConnection.sendMessageToClient(new AssistantCardRequest());
     }
 
     @Override
-    public void askMoveStudToIsland(PawnColor pawnColor, SchoolBoard schoolBoard) {
+    public void askMoveStudToDining(PawnColor pawnColor) {
+        clientConnection.sendMessageToClient(new StudentToDiningRequest(pawnColor));
+    }
 
+    @Override
+    public void askMoveStudToIsland(PawnColor pawnColor,List<Island> islands) {
+        clientConnection.sendMessageToClient(new StudentToIslandRequest(pawnColor, islands));
     }
 
     @Override
     public void askMoveMotherNature(List<Island> islands) {
-
+        clientConnection.sendMessageToClient(new MotherNatureMoveRequest(islands));
     }
 
     @Override
-    public void askChooseCloudTile(CloudTile cloudTile) {
-
+    public void askChooseCloudTile(List<CloudTile> cloudTiles) {
+        clientConnection.sendMessageToClient(new CloudTileRequest(cloudTiles));
     }
 
     @Override
@@ -70,36 +73,41 @@ public class VirtualView implements View{
 
     @Override
     public void showGenericMessage(String genericMessage) {
-
+        clientConnection.sendMessageToClient(new Generic(genericMessage));
     }
 
     @Override
-    public void showError(String error) {
-
+    public void showError(String errorMessage) {
+        clientConnection.sendMessageToClient(new Error("SERVER",errorMessage));
     }
 
     @Override
-    public void showLobby(List<String> players, int numPlayers) {
-
+    public void showLobby(List<Player> players, int numPlayers) {
+        clientConnection.sendMessageToClient(new Lobby(players,numPlayers));
     }
 
     @Override
-    public void showVictoryMessage(String victoryMessage) {
-
+    public void showVictoryMessage(Player winner) {
+        clientConnection.sendMessageToClient(new Win(winner));
     }
 
     @Override
-    public void showLoseMessage(String loseMessage) {
-
+    public void showLoseMessage(Player looser) {
+        clientConnection.sendMessageToClient(new Lose(looser));
     }
 
     @Override
     public void showLoginPlayers(String nickName, boolean nickNameOk, boolean connectionOk) {
-
+        clientConnection.sendMessageToClient(new LoginReply(nickNameOk,connectionOk));
     }
 
     @Override
     public void askExpertVariant() {
+        clientConnection.sendMessageToClient(new ExpertVariantRequest());
+    }
 
+    @Override
+    public void update(Message message) {
+        clientConnection.sendMessageToClient(message);
     }
 }

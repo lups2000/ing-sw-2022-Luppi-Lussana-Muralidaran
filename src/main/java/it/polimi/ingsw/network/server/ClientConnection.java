@@ -23,22 +23,21 @@ public interface ClientConnection{
  */
 public interface ClientConnection {
 
+
     /**
-     * Returns the connection status.
-     *
-     * @return {@code true} if the client is still connected and reachable, {@code false} otherwise.
+     * Method to verify if a client is connected or not
+     * @return true/false
      */
     boolean isConnected();
 
     /**
-     * Disconnects from the client.
+     * Method to diconnects the client
      */
     void disconnect();
 
     /**
-     * Sends a message to the client.
-     *
+     * Method to send a mesage to the client
      * @param message the message to be sent.
      */
-    void sendMessage(Message message);
+    void sendMessageToClient(Message message);
 }
