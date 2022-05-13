@@ -84,11 +84,10 @@ public class MessageController implements Serializable {
     public boolean checkMotherNature(Message message){
         MotherNatureMoveReply motherNatureMoveReply=(MotherNatureMoveReply) message;
 
-        for(Island island : motherNatureMoveReply.getIslands()){
-            if(island.getIndex()>=0 && island.getIndex()<model.getIslands().size() && motherNatureMoveReply.getIslands().size()==model.getIslands().size()){
-                return true;
-            }
+        if(motherNatureMoveReply.getIsland().getIndex()>=0 && motherNatureMoveReply.getIsland().getIndex()<model.getIslands().size()){
+            return true;
         }
+
         VirtualView virtualView=virtualViewMap.get(model.getPlayerByNickName(message.getNickName()));
         virtualView.showGenericMessage("You didn't provide a valid island!The island index must be between 0 and "+(model.getIslands().size()-1));
         virtualView.askMoveMotherNature(model.getIslands());

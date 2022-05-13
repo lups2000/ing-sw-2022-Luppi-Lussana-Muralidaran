@@ -13,7 +13,7 @@ public class AssistantCardRequest extends Message {
 
     //id serialization
 
-    private List<AssistantCard> assistantCards;
+    private final List<AssistantCard> assistantCards;
 
     public AssistantCardRequest(List<AssistantCard> assistantCards){
         super("SERVER", MessageType.REQUEST_ASSISTANT_CARD);

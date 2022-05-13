@@ -5,28 +5,27 @@ import it.polimi.ingsw.Model.PawnColor;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.MessageType;
 
-import java.util.List;
 
 public class StudentToIslandReply extends Message {
 
     //id serialization
-    private List<Island> islands;
-    private PawnColor pawnColor;
+    private final Island island;
+    private final PawnColor pawnColor;
 
-    public StudentToIslandReply(String nickNameClient,PawnColor pawnColor,List<Island> islands){
+    public StudentToIslandReply(String nickNameClient,PawnColor pawnColor,Island island){
         super(nickNameClient, MessageType.REPLY_MOVE_STUD_ISLAND);
         this.pawnColor=pawnColor;
-        this.islands=islands;
+        this.island=island;
     }
 
-    public List<Island> getIslands() {return islands;}
+    public Island getIsland() {return island;}
     public PawnColor getPawnColor() {return pawnColor;}
 
     @Override
     public String toString() {
         return "StudentToIslandReply{" +
                 "nickName="+getNickName()+", "+
-                "islands=" + islands +
+                "islands=" + island +
                 ", pawnColor=" + pawnColor +
                 '}';
     }

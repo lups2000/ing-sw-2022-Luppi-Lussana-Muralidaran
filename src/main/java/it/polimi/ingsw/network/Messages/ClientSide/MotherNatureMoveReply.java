@@ -4,28 +4,26 @@ import it.polimi.ingsw.Model.Island;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.MessageType;
 
-import java.util.List;
-
 /**
  * This message is used by the client and it's sent to the server
  */
 public class MotherNatureMoveReply extends Message {
 
     //id serialization
-    private List<Island> islands;
+    private final Island island;
 
-    public MotherNatureMoveReply(String nickNameClient, List<Island> islands){
+    public MotherNatureMoveReply(String nickNameClient, Island island){
         super(nickNameClient, MessageType.REPLY_MOVE_MOTHER_NATURE);
-        this.islands=islands;
+        this.island = island;
     }
 
-    public List<Island> getIslands() {return islands;}
+    public Island getIsland() {return island;}
 
     @Override
     public String toString() {
         return "MotherNatureMoveReply{" +
                 "nickName="+getNickName()+", "+
-                "islands=" + islands +
+                "islands=" + island +
                 '}';
     }
 }

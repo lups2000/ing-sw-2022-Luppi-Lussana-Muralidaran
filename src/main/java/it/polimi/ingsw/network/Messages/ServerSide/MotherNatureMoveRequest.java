@@ -12,7 +12,7 @@ import java.util.List;
 public class MotherNatureMoveRequest extends Message {
 
     //id serialization
-    private List<Island> islands;
+    private final List<Island> islands;
 
     public MotherNatureMoveRequest(List<Island> islands){
         super("SERVER", MessageType.REQUEST_MOVE_MOTHER_NATURE);
