@@ -300,11 +300,25 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         }
     }
 
-    /**
+    @Override
+    public void sendMessageToClient(Message message) {
+        try {
+            synchronized (outputLock) {
+                output.writeObject(message);
+                output.reset();
+                Server.LOGGER.info(() -> "Sent: " + message);
+            }
+        } catch (IOException e) {
+            Server.LOGGER.severe(e.getMessage());
+            disconnect();
+        }
+    }
+
+    /*
      * Sends a message to the client via socket.
      *
      * @param message the message to be sent.
-     */
+
     @Override
     public void sendMessage(Message message) {
         try {
@@ -318,4 +332,6 @@ public class SocketClientConnection implements ClientConnection, Runnable {
             disconnect();
         }
     }
+
+     */
 }
