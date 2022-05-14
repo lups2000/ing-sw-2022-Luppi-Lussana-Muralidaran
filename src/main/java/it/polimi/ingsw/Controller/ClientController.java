@@ -17,9 +17,9 @@ import java.util.concurrent.Executors;
 
 
 /**
- * This class is part of the client side.
- * It is an interpreter between the network and a generic view (which in this case can be CLI or GUI).
- * It receives the messages, wraps/unwraps and pass them to the network/view.
+ * This class handles all type of messages:
+ * - it forwards to the server the ones sent by the client side
+ * - it receives the ones arriving from the server side and it forwards them to the client's view
  */
 public class ClientController implements Observer4View, Observer {
 
@@ -45,152 +45,89 @@ public class ClientController implements Observer4View, Observer {
      */
     @Override
     public void update(Message message) {
-        switch(message.getMessageType()) {
-            case REPLY_LOGIN:
+        switch (message.getMessageType()) {
+            case REPLY_LOGIN -> {
                 LoginReply loginReply = (LoginReply) message;
-                taskQueue.execute(new Runnable() {
-                    public void run() {
-                        view.showLoginPlayers(nickname,loginReply.isNickAccepted(),loginReply.isConnAccepted());
-                    }
-                });
-                //taskQueue.execute(() -> view.showLoginPlayers(this.nickname,loginReply.isNickAccepted(),loginReply.isConnAccepted()));
-                break;
+                taskQueue.execute(() -> view.showLoginPlayers(nickname, loginReply.isNickAccepted(), loginReply.isConnAccepted()));
+            }
 
-            case REQUEST_PLAYER_NUM:
-                taskQueue.execute(new Runnable() {
-                    public void run() {
-                        view.askNumPlayers();
-                    }
-                });
-                //taskQueue.execute(view::askNumPlayers);
-                break;
+            case REQUEST_PLAYER_NUM -> taskQueue.execute(view::askNumPlayers);
 
-            case LOBBY:
+
+            case LOBBY -> {
                 Lobby lobbyMessage = (Lobby) message;
-                taskQueue.execute(new Runnable() {
-                    public void run() {
-                        view.showLobby(lobbyMessage.getPlayersLobby(), lobbyMessage.getNumMaxPlayersLobby());
-                    }
-                });
-                //taskQueue.execute(() -> view.showLobby(lobbyMessage.getPlayersLobby(), lobbyMessage.getNumMaxPlayersLobby()));
-                break;
+                taskQueue.execute(() -> view.showLobby(lobbyMessage.getPlayersLobby(), lobbyMessage.getNumMaxPlayersLobby()));
+            }
 
-            case REQUEST_EXPERT_VARIANT:
-                taskQueue.execute(new Runnable() {
-                    public void run() {
-                        view.askExpertVariant();
-                    }
-                });
-                //taskQueue.execute(view::askExpertVariant);
-                break;
+            case REQUEST_EXPERT_VARIANT -> taskQueue.execute(view::askExpertVariant);
 
-            case REQUEST_ASSISTANT_SEED:
+            case REQUEST_ASSISTANT_SEED -> {
                 AssistantSeedRequest assistantSeedRequest = (AssistantSeedRequest) message;
-                taskQueue.execute(new Runnable() {
-                    public void run() {
-                        view.askAssistantSeed(assistantSeedRequest.getAssistantSeedAvailable());
-                    }
-                });
-                //taskQueue.execute(() -> view.askAssistantSeed(assistantSeedRequest.getAssistantSeedAvailable()));
-                break;
+                taskQueue.execute(() -> view.askAssistantSeed(assistantSeedRequest.getAssistantSeedAvailable()));
+            }
 
-            case REQUEST_ASSISTANT_CARD:
+            case REQUEST_ASSISTANT_CARD -> {
                 AssistantCardRequest assistantCardRequest = (AssistantCardRequest) message;
-                taskQueue.execute(new Runnable() {
-                    public void run() {
-                        view.askAssistantCard(assistantCardRequest.getAssistantCards());
-                    }
-                });
-                //taskQueue.execute(() -> view.askAssistantCard(assistantCardRequest.getAssistantCards()));
-                break;
+                taskQueue.execute(() -> view.askAssistantCard(assistantCardRequest.getAssistantCards()));
+            }
 
-            case REQUEST_MOVE_MOTHER_NATURE:
+            case REQUEST_MOVE_MOTHER_NATURE -> {
                 MotherNatureMoveRequest motherNatureMoveRequest = (MotherNatureMoveRequest) message;
-                taskQueue.execute(new Runnable() {
-                    public void run() {
-                        view.askMoveMotherNature(motherNatureMoveRequest.getAvailableIslands());
-                    }
-                });
-                //taskQueue.execute(() -> view.askMoveMotherNature(motherNatureMoveRequest.getIslands()));
-                break;
+                taskQueue.execute(() -> view.askMoveMotherNature(motherNatureMoveRequest.getAvailableIslands()));
+            }
 
-            case ERROR:
+            case ERROR -> {
                 Error errorMessage = (Error) message;
-                taskQueue.execute(new Runnable() {
-                    public void run() {
-                        view.showError(errorMessage.getMessageError());
-                    }
-                });
-                break;
-
-            case GENERIC_MESSAGE:
+                taskQueue.execute(() -> view.showError(errorMessage.getMessageError()));
+            }
+            case GENERIC_MESSAGE -> {
                 Generic genericMessage = (Generic) message;
-                taskQueue.execute(new Runnable() {
-                    public void run() {
-                        view.showGenericMessage(genericMessage.getMessage());
-                    }
-                });
-                //taskQueue.execute(() -> view.showGenericMessage(genericMessage.getMessage()));
-                break;
+                taskQueue.execute(() -> view.showGenericMessage(genericMessage.getMessage()));
+            }
 
-            case WIN:
+            case WIN -> {
                 Win winMessage = (Win) message;
                 client.disconnect();
-                taskQueue.execute(new Runnable() {
-                    public void run() {
-                        view.showWinMessage(winMessage.getWinner());
-                    }
-                });
-                //taskQueue.execute(() -> view.showWinMessage(winMessage.getWinner()));
-                break;
+                taskQueue.execute(() -> view.showWinMessage(winMessage.getWinner()));
+            }
 
-            case LOSE:
+            case LOSE -> {
                 Lose loseMessage = (Lose) message;
                 client.disconnect();
-                taskQueue.execute(new Runnable() {
-                    public void run() {
-                        view.showLoseMessage(loseMessage.getLoser());
-                    }
-                });
-                //taskQueue.execute(() -> view.showLoseMessage(loseMessage.getLoser()));
-                break;
+                taskQueue.execute(() -> view.showLoseMessage(loseMessage.getLoser()));
+            }
 
             //il PING non penso sia da mettere qui (?), devo controllare TODO
 
-            case REQUEST_CLOUD_TILE:
+            case REQUEST_CLOUD_TILE -> {
                 CloudTileRequest cloudTileRequest = (CloudTileRequest) message;
-                taskQueue.execute(new Runnable() {
-                    public void run() {
-                        view.askChooseCloudTile(cloudTileRequest.getCloudTiles());
-                    }
-                });
-                //taskQueue.execute(() -> view.askChooseCloudTile(cloudTileRequest.getCloudTiles()));
-                break;
+                taskQueue.execute(() -> view.askChooseCloudTile(cloudTileRequest.getCloudTiles()));
+            }
 
-            case REQUEST_MOVE_STUD_DINING:
+            case REQUEST_MOVE_STUD_DINING -> {
                 StudentToDiningRequest studentToDiningRequest = (StudentToDiningRequest) message;
-                taskQueue.execute(new Runnable() {
-                    public void run() {
-                        view.askMoveStudToDining(studentToDiningRequest.getPawnColor());
-                    }
-                });
-                //taskQueue.execute(() -> view.askMoveStudToDining(studentToDiningRequest.getPawnColor()));
-                break;
+                taskQueue.execute(() -> view.askMoveStudToDining(studentToDiningRequest.getPawnColor()));
+            }
 
-            case REQUEST_MOVE_STUD_ISLAND:
+            case REQUEST_MOVE_STUD_ISLAND -> {
                 StudentToIslandRequest studentToIslandRequest = (StudentToIslandRequest) message;
-                taskQueue.execute(new Runnable() {
-                    public void run() {
-                        view.askMoveStudToIsland(studentToIslandRequest.getPawnColor(),studentToIslandRequest.getIslands());
-                    }
-                });
-                //taskQueue.execute(() -> view.askMoveStudToIsland(studentToIslandRequest.getPawnColor(),studentToIslandRequest.getIslands()));
-                break;
+                taskQueue.execute(() -> view.askMoveStudToIsland(studentToIslandRequest.getPawnColor(), studentToIslandRequest.getIslands()));
+            }
+
+            case INFO_MATCH -> {
+                InfoMatch infoMatch = (InfoMatch) message;
+                taskQueue.execute(() -> view.showMatchInfo(infoMatch.getPlayersNicknames(), infoMatch.isExperts(), infoMatch.getNumPlayers()));
+            }
         }
     }
 
+    /**
+     * Method to create a connection with the ip address and the port number communicated by the client
+     *
+     * @param serverAddressAndPort map address-port
+     */
     @Override
-    public void createConnection(Map<String, String> serverAddressAndPort) throws IOException {
+    public void createConnection(Map<String, String> serverAddressAndPort) {
         try {
             client = new Client(serverAddressAndPort.get("address"), Integer.parseInt(serverAddressAndPort.get("port")));
             client.addObserver(this);
@@ -238,11 +175,7 @@ public class ClientController implements Observer4View, Observer {
     public boolean okPortNumber(String port){
         try {
             int portNumber = Integer.parseInt(port);
-            if (portNumber >= 1 && portNumber <= 65535) {
-                return true;
-            } else {
-                return false;
-            }
+            return portNumber >= 1 && portNumber <= 65535;
         } catch (NumberFormatException e){
             return false;
         }

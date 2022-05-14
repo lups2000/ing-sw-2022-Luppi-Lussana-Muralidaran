@@ -122,9 +122,9 @@ public class Client extends Observable {
 
     private static final int SOCKET_TIMEOUT = 10000;
 
-    public Client(String address, int port) throws IOException {
+    public Client(String ipAddress, int port) throws IOException {
         this.socket = new Socket();
-        this.socket.connect(new InetSocketAddress(address, port), SOCKET_TIMEOUT);
+        this.socket.connect(new InetSocketAddress(ipAddress, port), SOCKET_TIMEOUT);
         this.outputStm = new ObjectOutputStream(socket.getOutputStream());
         this.inputStm = new ObjectInputStream(socket.getInputStream());
         this.readExecutionQueue = Executors.newSingleThreadExecutor();

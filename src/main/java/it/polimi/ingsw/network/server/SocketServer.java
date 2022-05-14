@@ -8,16 +8,17 @@ import java.net.Socket;
 
 
 /**
- * Socket server that handles all the new socket connection.
+ * Socket server that handles all the new socket connection
  */
 public class SocketServer implements Runnable {
     private final Server server;
-    private final int port = 12345;
+    private final int port = 12345; //by default
     ServerSocket serverSocket;
 
     public SocketServer(Server server) {
         this.server = server;
     }
+
 
     @Override
     public void run() {
@@ -45,28 +46,28 @@ public class SocketServer implements Runnable {
     }
 
     /**
-     * Handles the addition of a new client.
+     * Handles the addition of a new client
      *
-     * @param nickname      the nickname of the new client.
-     * @param clientConnection the ClientConnection of the new client.
+     * @param nickname the nickname of the new client
+     * @param clientConnection the ClientConnection of the new client
      */
     public void addClient(String nickname, ClientConnection clientConnection) {
         server.addClient(nickname, clientConnection);
     }
 
     /**
-     * Forwards a received message from the client to the Server.
+     * Forwards a received message from the client to the Server
      *
-     * @param message the message to be forwarded.
+     * @param message the message to be forwarded
      */
-    public void onMessageReceived(Message message) {
-        server.onMessageReceived(message);
+    public void forwardsMessage(Message message) {
+        server.forwardsMessage(message);
     }
 
     /**
-     * Handles a client disconnection.
+     * Handles a client disconnection
      *
-     * @param clientConnection the ClientConnection of the disconnecting client.
+     * @param clientConnection the ClientConnection of the disconnecting client
      */
     public void onDisconnect(ClientConnection clientConnection) {
         server.onDisconnect(clientConnection);

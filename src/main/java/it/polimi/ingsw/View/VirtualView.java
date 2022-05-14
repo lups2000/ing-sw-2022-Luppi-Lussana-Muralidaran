@@ -8,6 +8,7 @@ import it.polimi.ingsw.network.Messages.ServerSide.*;
 import it.polimi.ingsw.network.server.ClientConnection;
 import it.polimi.ingsw.observer.Observer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /** This class represents the 'real' view to the Controller. It hides the implementation
@@ -99,6 +100,11 @@ public class VirtualView implements View, Observer {
     @Override
     public void showLoginPlayers(String nickName, boolean nickNameOk, boolean connectionOk) {
         clientConnection.sendMessageToClient(new LoginReply(nickNameOk,connectionOk));
+    }
+
+    @Override
+    public void showMatchInfo(ArrayList<String> playersNicknames, boolean experts, int numPlayers) {
+        clientConnection.sendMessageToClient(new InfoMatch(playersNicknames,experts,numPlayers));
     }
 
     @Override

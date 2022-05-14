@@ -1,37 +1,21 @@
 package it.polimi.ingsw.network.server;
 
-import it.polimi.ingsw.Model.AssistantSeed;
 import it.polimi.ingsw.network.Messages.Message;
-import it.polimi.ingsw.observer.Observer;
-
-/*
-public interface ClientConnection{
-
-    void closeConnection();
-
-    void addObserver(Observer<String> observer);
-
-    void asyncSend(Object message);
-
-    AssistantSeed getChosenWizard();
-}
-*/
 
 
 /**
- * Interface to handle clients. Every type of connection must implement this interface.
+ * Interface to handle clients
  */
 public interface ClientConnection {
 
-
     /**
-     * Method to verify if a client is connected or not
-     * @return true/false
+     * Method to verify if a client is currently connected or not
+     * @return true or false
      */
     boolean isConnected();
 
     /**
-     * Method to disconnects the client
+     * Method to disconnect the client
      */
     void disconnect();
 

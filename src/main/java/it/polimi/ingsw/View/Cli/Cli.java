@@ -1,6 +1,7 @@
 package it.polimi.ingsw.View.Cli;
 
 import it.polimi.ingsw.Controller.ClientController;
+import it.polimi.ingsw.View.View;
 
 import java.io.PrintStream;
 import java.util.HashMap;
@@ -9,7 +10,7 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-public class Cli /*extends observable ecc....*/{
+public class Cli /*extends observable ecc....*/ {
     private final PrintStream out;
     private String welcomeMessage = "\n\n\033[38;2;255;255;0m Hey there! Welcome to Eriantys! ";
 

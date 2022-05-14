@@ -3,6 +3,7 @@ package it.polimi.ingsw.View;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,5 +53,7 @@ public interface View {
     void showLoseMessage(Player looser);
 
     void showLoginPlayers(String nickName,boolean nickNameOk,boolean connectionOk);
+
+    void showMatchInfo(ArrayList<String> playersNicknames,boolean experts,int numPlayers);
 
 }

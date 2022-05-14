@@ -4,7 +4,6 @@ import it.polimi.ingsw.Model.CharacterCards.*;
 import it.polimi.ingsw.Model.Exceptions.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * class Game
@@ -130,8 +129,8 @@ public class Game {
     private void fillBoard(Player player) throws TooManyPawnsPresent {
         for(int i=0;i<player.getSchoolBoard().getNumMaxStudentsWaiting();i++){
             try {
-                PawnColor sorted = studentBag.drawStudent();
-                player.getSchoolBoard().addStudToWaiting(sorted);
+                PawnColor extracted = studentBag.drawStudent();
+                player.getSchoolBoard().addStudToWaiting(extracted);
             } catch(NoPawnPresentException e){
                 checkWinner();
             }
@@ -146,8 +145,8 @@ public class Game {
 
         for(int i=0;i<cloud.getMaxNumStudents();i++){
             try {
-                PawnColor sorted = studentBag.drawStudent();
-                cloud.addStudent(sorted);
+                PawnColor extracted = studentBag.drawStudent();
+                cloud.addStudent(extracted);
             } catch(NoPawnPresentException e){
                 //if there are no students remaining in the student bag the game is ended and we have to check who is the winner
                 checkWinner();
@@ -364,12 +363,9 @@ public class Game {
                     winner = player;
                     maxStudents = player.getSchoolBoard().getStudentsDining().get(color);
                     draw = false;
-                    if(player.getControlOnProfessor()){
-                        winningControlOnProfessor = true;
-                    }
-                    else{
-                        winningControlOnProfessor = false;
-                    }
+
+                    winningControlOnProfessor = player.getControlOnProfessor();
+
                 }
                 //this "else if" branch expresses a draw but NOT in the case if the current winner is the player who has played the ControlOnProfessor character card
                 //because if this was the case the winner must remain that player
@@ -460,17 +456,17 @@ public class Game {
     }
 
     /**
-     * method to sort three random (and different) character cards if the expert variant is chosen
+     * method to extract three random (and different) character cards if the expert variant is chosen
      */
     private void pickThreeRandomCards() throws NoPawnPresentException{
-        int[] sorted = new int[3];
+        int[] extracted = new int[3];
         boolean duplicate = false;
         for(int i=0;i<3;i++){
             int rand=(int) (Math.random() * 12);
-            sorted[i] = rand;
-            //to check that there are 3 different character cards sorted
+            extracted[i] = rand;
+            //to check that there are 3 different character cards extracted
             for(int j=0;j<i;j++){
-                if(rand == sorted[j]){
+                if(rand == extracted[j]){
                     duplicate = true;
                     break;
                 }
@@ -515,4 +511,5 @@ public class Game {
         }
         return null;
     }
+
 }

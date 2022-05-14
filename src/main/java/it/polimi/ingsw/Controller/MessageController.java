@@ -17,12 +17,14 @@ public class MessageController implements Serializable {
 
     //id serialization
 
-    private Game model;
-    private transient Map<Player, VirtualView> virtualViewMap;
+    private final MainController mainController;
+    private transient Map<String, VirtualView> virtualViewsMap;
+    private final Game model;
 
-    public MessageController(Game model, Map<Player,VirtualView> virtualViewMap){
-        this.model=model;
-        this.virtualViewMap=virtualViewMap;
+    public MessageController(MainController mainController, Map<String,VirtualView> virtualViewMap){
+        this.mainController = mainController;
+        this.virtualViewsMap = virtualViewMap;
+        this.model = mainController.getGame();
     }
 
     public boolean checkNickName(String nickName, View view){
@@ -48,7 +50,7 @@ public class MessageController implements Serializable {
             return true;
         }
         else {
-            VirtualView virtualView=virtualViewMap.get(model.getPlayerByNickName(message.getNickName()));
+            VirtualView virtualView=virtualViewsMap.get(message.getNickName());
             virtualView.askNumPlayers();
             return false;
         }
@@ -61,7 +63,7 @@ public class MessageController implements Serializable {
             return true;
         }
         else{
-            VirtualView virtualView=virtualViewMap.get(model.getPlayerByNickName(message.getNickName()));
+            VirtualView virtualView=virtualViewsMap.get(message.getNickName());
             virtualView.askExpertVariant();
             return false;
         }
@@ -75,7 +77,7 @@ public class MessageController implements Serializable {
                 return true;
             }
         }
-        VirtualView virtualView=virtualViewMap.get(model.getPlayerByNickName(message.getNickName()));
+        VirtualView virtualView=virtualViewsMap.get(message.getNickName());
         virtualView.showGenericMessage("You didn't provide a valid AssistantSeed!");
         virtualView.askAssistantSeed(model.getSeedsAvailable());
         return false;
@@ -88,7 +90,7 @@ public class MessageController implements Serializable {
             return true;
         }
 
-        VirtualView virtualView=virtualViewMap.get(model.getPlayerByNickName(message.getNickName()));
+        VirtualView virtualView=virtualViewsMap.get(message.getNickName());
         virtualView.showGenericMessage("You didn't provide a valid island!The island index must be between 0 and "+(model.getIslands().size()-1));
         virtualView.askMoveMotherNature(model.getIslands());
         return false;
@@ -97,21 +99,16 @@ public class MessageController implements Serializable {
     public boolean checkAssistantCard(Message message){
         AssistantCardReply assistantCardReply=(AssistantCardReply) message;
 
-        for(AssistantCard assistantCard : assistantCardReply.getAssistantCards()){
-            if(assistantCard.getValue()>=1 && assistantCard.getValue()<=10 && assistantCard.getMaxStepsMotherNature()>=1 && assistantCard.getMaxStepsMotherNature()<=5
+        AssistantCard assistantCard = assistantCardReply.getAssistantCard();
+        if(assistantCard.getValue()>=1 && assistantCard.getValue()<=10 && assistantCard.getMaxStepsMotherNature()>=1 && assistantCard.getMaxStepsMotherNature()<=5
                 && model.getPlayerByNickName(message.getNickName()).getDeckAssistantCard().getCards().contains(assistantCard)){
-                return true;
-            }
+            return true;
         }
-        VirtualView virtualView=virtualViewMap.get(model.getPlayerByNickName(message.getNickName()));
+
+        VirtualView virtualView=virtualViewsMap.get(message.getNickName());
         virtualView.showGenericMessage("You didn't provide a valid AssistantCard!");
         virtualView.askAssistantCard(model.getPlayerByNickName(message.getNickName()).getDeckAssistantCard().getCards());
         return false;
     }
-
-
-
-
-
 
 }
