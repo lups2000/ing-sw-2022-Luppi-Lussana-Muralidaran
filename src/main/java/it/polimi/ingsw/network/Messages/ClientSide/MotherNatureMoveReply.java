@@ -23,7 +23,7 @@ public class MotherNatureMoveReply extends Message {
     public String toString() {
         return "MotherNatureMoveReply{" +
                 "nickName="+getNickName()+", "+
-                "islands=" + island +
+                "island=" + island +
                 '}';
     }
 }

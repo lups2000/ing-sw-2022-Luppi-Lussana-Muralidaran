@@ -115,22 +115,17 @@ public class ClientController implements Observer4View, Observer {
     }
 
     @Override
-    public void onUpdateServerInfo(Map<String, String> serverInfo) {
+    public void createConnection(Map<String, String> serverAddressAndPort) {
 
     }
 
     @Override
-    public void onUpdateNickname(String nickname) {
+    public void sendNickname(String nickName) {
 
     }
 
     @Override
-    public void onUpdatePlayersNumber(int playersNumber) {
-
-    }
-
-    @Override
-    public void onDisconnection() {
+    public void sendNumPlayers(int numPlayers) {
 
     }
 }

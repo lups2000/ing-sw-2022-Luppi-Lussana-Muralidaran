@@ -35,7 +35,7 @@ public class SocketServer implements Runnable {
 
                 client.setSoTimeout(5000);
 
-                SocketClientConnection clientConnection = new SocketClientConnection(this, client);
+                SocketClientConnection clientConnection = new SocketClientConnection(client,this);
                 Thread thread = new Thread(clientConnection, "ss_handler" + client.getInetAddress());
                 thread.start();
             } catch (IOException e) {

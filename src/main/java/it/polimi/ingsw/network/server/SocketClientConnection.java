@@ -193,32 +193,25 @@ public class SocketClientConnection extends Observable<String> implements Client
 }
 */
 
-/**
- * Socket implementation of the {@link ClientConnection} interface.
- */
-
 public class SocketClientConnection implements ClientConnection, Runnable {
+
     private final Socket client;
     private final SocketServer socketServer;
-
-    private boolean connected;
-
+    private boolean isConnected;
     private final Object inputLock;
     private final Object outputLock;
-
     private ObjectOutputStream output;
     private ObjectInputStream input;
 
     /**
-     * Default constructor.
-     *
-     * @param socketServer the socket of the server.
-     * @param client       the client connecting.
+     * Constructor
+     * @param socketServer
+     * @param client
      */
-    public SocketClientConnection(SocketServer socketServer, Socket client) {
+    public SocketClientConnection(Socket client,SocketServer socketServer) {
         this.socketServer = socketServer;
         this.client = client;
-        this.connected = true;
+        this.isConnected = true;
 
         this.inputLock = new Object();
         this.outputLock = new Object();
@@ -270,22 +263,17 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         client.close();
     }
 
-    /**
-     * Returns the current status of the connection.
-     *
-     * @return {@code true} if the connection is still active, {@code false} otherwise.
-     */
     @Override
     public boolean isConnected() {
-        return connected;
+        return isConnected;
     }
 
     /**
-     * Disconnect the socket.
+     * This method disconnects the socket.
      */
     @Override
     public void disconnect() {
-        if (connected) {
+        if (isConnected) {
             try {
                 if (!client.isClosed()) {
                     client.close();
@@ -293,13 +281,17 @@ public class SocketClientConnection implements ClientConnection, Runnable {
             } catch (IOException e) {
                 Server.LOGGER.severe(e.getMessage());
             }
-            connected = false;
+            isConnected = false;
             Thread.currentThread().interrupt();
 
             socketServer.onDisconnect(this);
         }
     }
 
+     /**
+     * This method sends a message to a client
+     * @param message the message to be sent.
+      */
     @Override
     public void sendMessageToClient(Message message) {
         try {
@@ -313,25 +305,4 @@ public class SocketClientConnection implements ClientConnection, Runnable {
             disconnect();
         }
     }
-
-    /*
-     * Sends a message to the client via socket.
-     *
-     * @param message the message to be sent.
-
-    @Override
-    public void sendMessage(Message message) {
-        try {
-            synchronized (outputLock) {
-                output.writeObject(message);
-                output.reset();
-                Server.LOGGER.info(() -> "Sent: " + message);
-            }
-        } catch (IOException e) {
-            Server.LOGGER.severe(e.getMessage());
-            disconnect();
-        }
-    }
-
-     */
 }

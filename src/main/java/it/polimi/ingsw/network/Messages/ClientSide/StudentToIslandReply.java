@@ -25,7 +25,7 @@ public class StudentToIslandReply extends Message {
     public String toString() {
         return "StudentToIslandReply{" +
                 "nickName="+getNickName()+", "+
-                "islands=" + island +
+                "island=" + island +
                 ", pawnColor=" + pawnColor +
                 '}';
     }

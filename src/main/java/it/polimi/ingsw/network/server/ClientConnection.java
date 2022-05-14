@@ -31,12 +31,12 @@ public interface ClientConnection {
     boolean isConnected();
 
     /**
-     * Method to diconnects the client
+     * Method to disconnects the client
      */
     void disconnect();
 
     /**
-     * Method to send a mesage to the client
+     * Method to send a message to the client
      * @param message the message to be sent.
      */
     void sendMessageToClient(Message message);
