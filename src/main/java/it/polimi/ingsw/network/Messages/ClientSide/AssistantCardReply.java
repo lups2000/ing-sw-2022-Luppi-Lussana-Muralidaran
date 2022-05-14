@@ -13,20 +13,20 @@ import java.util.List;
 public class AssistantCardReply extends Message {
 
     //id serialization
-    private List<AssistantCard> assistantCards;
+    private AssistantCard assistantCard;
 
-    public AssistantCardReply(String nickNameClient, List<AssistantCard> assistantCards){
+    public AssistantCardReply(String nickNameClient, AssistantCard assistantCard){
         super(nickNameClient, MessageType.REPLY_ASSISTANT_CARD);
-        this.assistantCards=assistantCards;
+        this.assistantCard=assistantCard;
     }
 
-    public List<AssistantCard> getAssistantCards() {return assistantCards;}
+    public AssistantCard getAssistantCard() {return assistantCard;}
 
     @Override
     public String toString() {
         return "AssistantCardReply{" +
                 "nickName="+getNickName()+", "+
-                "assistantCards=" + assistantCards +
+                "assistantCards=" + assistantCard +
                 '}';
     }
 }

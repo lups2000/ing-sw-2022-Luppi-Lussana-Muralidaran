@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network.Messages.ClientSide;
+package it.polimi.ingsw.network.Messages.ServerSide;
 
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.MessageType;

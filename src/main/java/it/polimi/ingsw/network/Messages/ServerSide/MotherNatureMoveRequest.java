@@ -12,20 +12,20 @@ import java.util.List;
 public class MotherNatureMoveRequest extends Message {
 
     //id serialization
-    private final List<Island> islands;
+    private final List<Island> availableIslands;
 
     public MotherNatureMoveRequest(List<Island> islands){
         super("SERVER", MessageType.REQUEST_MOVE_MOTHER_NATURE);
-        this.islands=islands;
+        this.availableIslands=islands;
     }
 
-    public List<Island> getIslands() {return islands;}
+    public List<Island> getAvailableIslands() {return availableIslands;}
 
     @Override
     public String toString() {
         return "MotherNatureMoveRequest{" +
                 "nickName="+getNickName()+", "+
-                "islands=" + islands +
+                "islands=" + availableIslands +
                 '}';
     }
 }

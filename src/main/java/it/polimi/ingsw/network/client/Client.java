@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.client;
 
-import it.polimi.ingsw.network.Messages.ClientSide.Error;
+import it.polimi.ingsw.network.Messages.ServerSide.Error;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.ServerSide.Ping;
 import it.polimi.ingsw.observer.Observable;
@@ -8,11 +8,8 @@ import it.polimi.ingsw.observer.Observable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -177,7 +174,7 @@ public class Client extends Observable {
         try {
             if (!socket.isClosed()) {
                 readExecutionQueue.shutdownNow();
-                enablePinger(false);
+                activatePing(false);
                 socket.close();
             }
         } catch (IOException e) {
@@ -188,11 +185,11 @@ public class Client extends Observable {
     /**
      * Enable a heartbeat (ping messages) between client and server sockets to keep the connection alive.
      *
-     * @param enabled set this argument to {@code true} to enable the heartbeat.
+     * @param isActive set this argument to {@code true} to enable the heartbeat.
      *                set to {@code false} to kill the heartbeat.
      */
-    public void enablePinger(boolean enabled) {
-        if (enabled) {
+    public void activatePing(boolean isActive) {
+        if (isActive) {
             pinger.scheduleAtFixedRate(() -> sendMessage(new Ping()), 0, 1000, TimeUnit.MILLISECONDS);
         } else {
             pinger.shutdownNow();

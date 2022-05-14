@@ -10,20 +10,20 @@ public class CloudTileReply extends Message {
 
     //id serialization
 
-    private List<CloudTile> cloudTiles;
+    private CloudTile cloudTile;
 
-    public CloudTileReply(String nickNameClient,List<CloudTile> cloudTiles){
+    public CloudTileReply(String nickNameClient,CloudTile cloudTile){
         super(nickNameClient, MessageType.REPLY_CLOUD_TILE);
-        this.cloudTiles=cloudTiles;
+        this.cloudTile=cloudTile;
     }
 
-    public List<CloudTile> getCloudTiles() {return cloudTiles;}
+    public CloudTile getCloudTile() {return cloudTile;}
 
     @Override
     public String toString() {
         return "CloudTileReply{" +
                 "nickName="+getNickName()+", "+
-                "cloudTiles=" + cloudTiles +
+                "cloudTiles=" + cloudTile +
                 '}';
     }
 }

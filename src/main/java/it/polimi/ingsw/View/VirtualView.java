@@ -2,7 +2,7 @@ package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
-import it.polimi.ingsw.network.Messages.ClientSide.Error;
+import it.polimi.ingsw.network.Messages.ServerSide.Error;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.ServerSide.*;
 import it.polimi.ingsw.network.server.ClientConnection;
