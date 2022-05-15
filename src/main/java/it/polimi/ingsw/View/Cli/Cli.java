@@ -167,14 +167,14 @@ public class Cli implements View/*extends observable ecc....*/ {
 
             do {
                 out.println("Please type the corresponding id to select one of the AssistantCards: ");
-                System.out.print("( ");
+                out.print("( ");
                 for(int i=0;i<assistantCards.size();i++){
-                    System.out.print((i+1)+": "+assistantCards.get(i));
+                    out.print((i+1)+": "+assistantCards.get(i));
                     if(i< assistantCards.size()-1){
-                        System.out.print(", ");
+                        out.print(", ");
                     }
                 }
-                System.out.println(" )");
+                out.println(" )");
                 id= readLine.nextInt();
 
                 if(id<=0 || id>assistantCards.size()){
@@ -219,7 +219,7 @@ public class Cli implements View/*extends observable ecc....*/ {
 
             do{
                 out.println("Please type the corresponding id to select one of the CloudTiles: ");
-                System.out.print("( ");
+                out.print("( ");
                 for(int i=0;i<cloudTiles.size();i++){
                     System.out.print((i+1)+": "+cloudTiles.get(i));
                     if(i< cloudTiles.size()-1){
@@ -265,7 +265,47 @@ public class Cli implements View/*extends observable ecc....*/ {
 
     @Override
     public void askPlayCharacterCard(List<CharacterCard> characterCards) {
+        boolean validInput = false;
+        out.println("Do you want to use a Character Card?");
+        String characterCardAnswer = readLine.next();
+        do {
+            if (characterCardAnswer.equals("Y")) {
+                //Manda risposta a server e scegli carta da utilizzare e attivane l'effetto
+                out.println("Select one of the three cards (type index):");
+                //Scegli carta e manda la risposta al server
+            }
+            else if (characterCardAnswer.equals("N")) {
+                validInput = true;
+            }
+            else {
+                out.println(INVALID_INPUT);
+                clearCli();
+                validInput = false;
+            }
+        } while (!validInput);
+    }
 
+    @Override
+    public void showSchoolBoard(SchoolBoard schoolBoard){;
+        out.println("CURRENT SCHOOL BOARD\n\nDining Room:\n\n");
+        for (PawnColor pawnColor: PawnColor.values()){
+            out.print(pawnColor+" students: ");
+            for (int i=0; i<schoolBoard.getStudentsDining().get(pawnColor); i++) {
+                out.print("X");
+                if (schoolBoard.getProfessors().get(pawnColor) == true) {
+                    out.print("\nYou have this color professor");
+                }
+            }
+            out.println("");
+        }
+        out.println("\nStudents waiting outside");
+        for (PawnColor pawnColor: PawnColor.values()){
+            for (int i=0; i<schoolBoard.getStudentsWaiting().get(pawnColor); i++){
+                out.println("X");
+            }
+        }
+        out.println("Number of coins: "+ schoolBoard.getNumCoins());
+        out.println("Number of available towers: "+schoolBoard.getNumTowers());
     }
 
     @Override

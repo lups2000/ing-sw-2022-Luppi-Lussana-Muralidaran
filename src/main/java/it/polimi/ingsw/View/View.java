@@ -42,6 +42,8 @@ public interface View {
 
     void askPlayCharacterCard(List<CharacterCard> characterCards);
 
+    void showSchoolBoard(SchoolBoard schoolBoard);
+
     void showGenericMessage(String genericMessage);
 
     void showError(String error);
