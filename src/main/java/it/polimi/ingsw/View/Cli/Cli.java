@@ -40,6 +40,7 @@ public class Cli implements View/*extends observable ecc....*/ {
                 "\033[38;2;127;0;255m               ███    ███                                                                \n");
         welcomeMessage += new String(Character.toChars(0x1F604));
         out.println(welcomeMessage);
+        connectToServer();
     }
 
     public void connectToServer(){
@@ -67,7 +68,7 @@ public class Cli implements View/*extends observable ecc....*/ {
         } while (!validInput);
 
         do {
-            out.println("Please enter the server port (Default Port: " + defaultPort + "): ");
+            out.print("Please enter the server port (Default Port: " + defaultPort + "): ");
             String inputPort = readLine.next();
 
             if (inputPort.equals("")){
@@ -90,7 +91,7 @@ public class Cli implements View/*extends observable ecc....*/ {
     @Override
     public void askNickName() {
         boolean validInput = false;
-        out.println("Enter your nickname:");
+        out.print("Enter your nickname: ");
         String nickname = readLine.next();
         do {
             if (nickname.equals("") /*|| ERRORE*/){
@@ -109,7 +110,7 @@ public class Cli implements View/*extends observable ecc....*/ {
     @Override
     public void askNumPlayers() {
         boolean validInput = false;
-        out.println("Insert number of players:");
+        out.print("Insert number of players: ");
         int playersNumber = readLine.nextInt();
         do {
             if (playersNumber == 2 || playersNumber == 3)  {
@@ -127,48 +128,31 @@ public class Cli implements View/*extends observable ecc....*/ {
     @Override
     public void askAssistantSeed(List<AssistantSeed> assistantSeedAvailable) {
         AssistantSeed assistantSeedChosen;
-        String stringSeed;
+        Integer id;
         boolean validInput=false;
         if(assistantSeedAvailable.size()>=1){
             do{
-                out.println("Select one of the Assistant seeds available:");
-                out.print("(  ");
-                for(AssistantSeed assistantSeed :assistantSeedAvailable){
-                    out.print(assistantSeed);
-                    out.print("  ");
+                out.println("Please type the corresponding id to select one of the AssistantSeeds: ");
+                System.out.print("( ");
+                for(int i=0;i<assistantSeedAvailable.size();i++){
+                    System.out.print((i+1)+": "+assistantSeedAvailable.get(i));
+                    if(i< assistantSeedAvailable.size()-1){
+                        System.out.print(", ");
+                    }
                 }
-                out.println(")");
-                stringSeed= readLine.next();
+                System.out.println(" )");
+                id= readLine.nextInt();
 
-                if(stringSeed.equals("")){
-                    out.println(INVALID_INPUT);
+                if(id<=0 || id>assistantSeedAvailable.size()){
+                    out.println("INVALID_INPUT");
                     validInput = false;
                 }
                 else{
-                    switch (stringSeed.toUpperCase()){
-                        case "SAMURAI":
-                            assistantSeedChosen=AssistantSeed.SAMURAI;
-                            validInput=true;
-                            break;
-                        case "WITCH":
-                            assistantSeedChosen=AssistantSeed.WITCH;
-                            validInput=true;
-                            break;
-                        case "KING":
-                            assistantSeedChosen=AssistantSeed.KING;
-                            validInput=true;
-                            break;
-                        case "MAGICIAN":
-                            assistantSeedChosen=AssistantSeed.MAGICIAN;
-                            validInput=true;
-                            break;
-                        default:
-                            validInput=false;
-                            break;
-                    }
+                    assistantSeedChosen=assistantSeedAvailable.get(id-1);
+                    validInput=true;
+                    //send the seed to the server
                 }
             }while (!validInput);
-            //send the seed to the server
         }
         else{
             showError("No seeds available!");
@@ -177,7 +161,38 @@ public class Cli implements View/*extends observable ecc....*/ {
 
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards) {
+        AssistantCard assistantCardChosen;
+        boolean validInput=false;
+        Integer id;
 
+        if(assistantCards.size()>=1){
+
+            do {
+                out.println("Please type the corresponding id to select one of the AssistantCards: ");
+                System.out.print("( ");
+                for(int i=0;i<assistantCards.size();i++){
+                    System.out.print((i+1)+": "+assistantCards.get(i));
+                    if(i< assistantCards.size()-1){
+                        System.out.print(", ");
+                    }
+                }
+                System.out.println(" )");
+                id= readLine.nextInt();
+
+                if(id<=0 || id>assistantCards.size()){
+                    out.println("INVALID_INPUT");
+                    validInput = false;
+                }
+                else{
+                    assistantCardChosen=assistantCards.get(id-1);
+                    validInput=true;
+                    //send the card to the server
+                }
+            }while (!validInput);
+        }
+        else {
+            showError("No assistantCards available!");
+        }
     }
 
     @Override
@@ -235,7 +250,15 @@ public class Cli implements View/*extends observable ecc....*/ {
 
     @Override
     public void showLobby(List<Player> players, int numPlayers) {
-
+        out.println("At the moment there are the the following players in the Lobby: "+players.size()+" / "+numPlayers);
+        out.print("( ");
+        for(int i=0;i<players.size();i++){
+            out.print(players.get(i).getNickname());
+            if(i<players.size()-1){
+                out.print(", ");
+            }
+        }
+        out.println(" )");
     }
 
     @Override
@@ -252,11 +275,36 @@ public class Cli implements View/*extends observable ecc....*/ {
 
     @Override
     public void showLoginPlayers(String nickName, boolean nickNameOk, boolean connectionOk) {
+        clearCli();
+
+        if(nickNameOk && connectionOk){
+            out.println("Nice to meet you "+nickName+", now you are connected!");
+        }
+        else if(nickNameOk){
+            out.println("We are sorry but the connection has been refused!Try later!");
+            System.exit(1);
+        }
+        else if(connectionOk){
+            askNickName();
+        }
+        else{
+            showError("Error reaching the Server!");
+        }
 
     }
 
     @Override
-    public void showMatchInfo(ArrayList<String> playersNicknames, boolean experts, int numPlayers) {
+    public void showMatchInfo(ArrayList<Player> players, boolean experts, int numPlayers) {
 
+        out.println("MATCH INFO: ");
+        out.print("#Players connected: ( ");
+        for(int i=0;i<players.size();i++){
+            out.print(players.get(i).getNickname());
+            if(i<players.size()-1){
+                out.println(", ");
+            }
+        }
+        out.println(" ) "+players.size()+" / "+numPlayers);
+        out.println("#Expert Variant: "+experts);
     }
 }

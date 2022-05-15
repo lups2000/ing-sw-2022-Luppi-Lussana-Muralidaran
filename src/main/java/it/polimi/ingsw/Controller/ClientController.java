@@ -116,7 +116,7 @@ public class ClientController implements Observer4View, Observer {
 
             case INFO_MATCH -> {
                 InfoMatch infoMatch = (InfoMatch) message;
-                taskQueue.execute(() -> view.showMatchInfo(infoMatch.getPlayersNicknames(), infoMatch.isExperts(), infoMatch.getNumPlayers()));
+                taskQueue.execute(() -> view.showMatchInfo(infoMatch.getPlayers(), infoMatch.isExperts(), infoMatch.getNumPlayers()));
             }
         }
     }

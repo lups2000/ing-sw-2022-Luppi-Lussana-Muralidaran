@@ -54,6 +54,6 @@ public interface View {
 
     void showLoginPlayers(String nickName,boolean nickNameOk,boolean connectionOk);
 
-    void showMatchInfo(ArrayList<String> playersNicknames,boolean experts,int numPlayers);
+    void showMatchInfo(ArrayList<Player> players,boolean experts,int numPlayers);
 
 }

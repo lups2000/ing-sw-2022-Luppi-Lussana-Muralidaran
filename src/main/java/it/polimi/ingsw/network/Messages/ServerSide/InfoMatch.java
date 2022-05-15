@@ -8,13 +8,13 @@ import java.util.ArrayList;
 
 public class InfoMatch extends Message {
 
-    private ArrayList<String> playersNicknames;
+    private ArrayList<Player> players;
     private boolean experts;
     private int numPlayers;
 
-    public InfoMatch(ArrayList<String> playersNicknames,boolean experts,int numPlayers){
+    public InfoMatch(ArrayList<Player> players,boolean experts,int numPlayers){
         super("SERVER", MessageType.INFO_MATCH);
-        this.playersNicknames = playersNicknames;
+        this.players = players;
         this.experts = experts;
         this.numPlayers = numPlayers;
     }
@@ -23,9 +23,7 @@ public class InfoMatch extends Message {
         return numPlayers;
     }
 
-    public ArrayList<String> getPlayersNicknames() {
-        return playersNicknames;
-    }
+    public ArrayList<Player> getPlayers() {return players;}
 
     public boolean isExperts() {
         return experts;
@@ -35,7 +33,7 @@ public class InfoMatch extends Message {
     public String toString() {
         return "InfoMatch{" +
                 "NickName="+getNickName()+
-                "playersNicknames=" + playersNicknames +
+                "players=" + players +
                 ", expertsVariant=" + experts +
                 ", numPlayers=" + numPlayers +
                 '}';

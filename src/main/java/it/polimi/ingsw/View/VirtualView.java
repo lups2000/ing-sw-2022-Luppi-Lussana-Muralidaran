@@ -103,8 +103,8 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void showMatchInfo(ArrayList<String> playersNicknames, boolean experts, int numPlayers) {
-        clientConnection.sendMessageToClient(new InfoMatch(playersNicknames,experts,numPlayers));
+    public void showMatchInfo(ArrayList<Player> players, boolean experts, int numPlayers) {
+        clientConnection.sendMessageToClient(new InfoMatch(players,experts,numPlayers));
     }
 
     @Override
