@@ -143,7 +143,7 @@ public class Client extends Observable {
                     message = (Message) inputStm.readObject();
                     Client.LOGGER.info("Received: " + message);
                 } catch (IOException | ClassNotFoundException e) {
-                    message = new Error(null, "Connection lost with the server.");
+                    message = new Error( "Connection lost with the server.");
                     disconnect();
                     readExecutionQueue.shutdownNow();
                 }
@@ -163,7 +163,7 @@ public class Client extends Observable {
             outputStm.reset();
         } catch (IOException e) {
             disconnect();
-            notifyObserver(new Error(null, "Could not send message."));
+            notifyObserver(new Error( "Could not send message."));
         }
     }
 
@@ -178,7 +178,7 @@ public class Client extends Observable {
                 socket.close();
             }
         } catch (IOException e) {
-            notifyObserver(new Error(null, "Could not disconnect."));
+            notifyObserver(new Error("Could not disconnect."));
         }
     }
 

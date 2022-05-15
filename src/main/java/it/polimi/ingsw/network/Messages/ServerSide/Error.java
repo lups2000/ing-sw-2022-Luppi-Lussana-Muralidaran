@@ -8,8 +8,8 @@ public class Error extends Message {
     //id serialization
     private String messageError;
 
-    public Error(String nickNameClient,String messageError){
-        super(nickNameClient, MessageType.ERROR);
+    public Error(String messageError){
+        super("SERVER", MessageType.ERROR);
         this.messageError=messageError;
     }
 

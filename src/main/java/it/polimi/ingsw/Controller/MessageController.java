@@ -5,8 +5,6 @@ import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.View.VirtualView;
 import it.polimi.ingsw.network.Messages.ClientSide.*;
 import it.polimi.ingsw.network.Messages.Message;
-
-import java.awt.*;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Map;

@@ -79,7 +79,7 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void showError(String errorMessage) {
-        clientConnection.sendMessageToClient(new Error("SERVER",errorMessage));
+        clientConnection.sendMessageToClient(new Error(errorMessage));
     }
 
     @Override
