@@ -6,7 +6,9 @@ import it.polimi.ingsw.View.VirtualView;
 import it.polimi.ingsw.network.Messages.ClientSide.*;
 import it.polimi.ingsw.network.Messages.Message;
 
+import java.awt.*;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -109,6 +111,51 @@ public class MessageController implements Serializable {
         virtualView.showGenericMessage("You didn't provide a valid AssistantCard!");
         virtualView.askAssistantCard(model.getPlayerByNickName(message.getNickName()).getDeckAssistantCard().getCards());
         return false;
+    }
+
+    public boolean checkCloudTile(Message message){
+        CloudTileReply cloudTileReply=(CloudTileReply) message;
+
+        CloudTile cloudTile=cloudTileReply.getCloudTile();
+        if(cloudTile.getId()>=0 && cloudTile.getId()<model.getCloudTiles().size()){
+            return true;
+        }
+        else{
+            VirtualView virtualView=virtualViewsMap.get(message.getNickName());
+            virtualView.showGenericMessage("You didn't provide a valid CloudTile!");
+            virtualView.askChooseCloudTile(model.getCloudTiles());
+            return false;
+        }
+    }
+
+    public boolean checkStudentToDining(Message message){
+        StudentToDiningReply studentToDiningReply=(StudentToDiningReply) message;
+
+        if(studentToDiningReply.getPawnColor()==PawnColor.BLUE || studentToDiningReply.getPawnColor()==PawnColor.RED ||
+             studentToDiningReply.getPawnColor()==PawnColor.YELLOW || studentToDiningReply.getPawnColor()==PawnColor.GREEN || studentToDiningReply.getPawnColor()==PawnColor.PINK){
+            return true;
+        }
+        else{
+            VirtualView virtualView=virtualViewsMap.get(message.getNickName());
+            virtualView.showGenericMessage("You didn't provide a valid Student!");
+            virtualView.askMoveStudToDining(Arrays.asList(PawnColor.values()));
+            return false;
+        }
+    }
+
+    public boolean checkStudentToIsland(Message message){
+        StudentToIslandReply studentToIslandReply=(StudentToIslandReply)message;
+        Island islandChosen=studentToIslandReply.getIsland();
+
+        if(islandChosen.getIndex()>=0 && islandChosen.getIndex()<model.getIslands().size()){
+            return true;
+        }
+        else{
+            VirtualView virtualView=virtualViewsMap.get(message.getNickName());
+            virtualView.showGenericMessage("You didn't provide a valid Island!");
+            virtualView.askMoveStudToIsland(model.getIslands());
+            return false;
+        }
     }
 
 }

@@ -4,23 +4,25 @@ import it.polimi.ingsw.Model.PawnColor;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.MessageType;
 
+import java.util.List;
+
 public class StudentToDiningRequest extends Message {
 
     // id serialization
-    private PawnColor pawnColor;
+    private List<PawnColor> pawnColors;
 
-    public StudentToDiningRequest(PawnColor pawnColor){
+    public StudentToDiningRequest(List<PawnColor> pawnColors){
         super("SERVER", MessageType.REQUEST_MOVE_STUD_DINING);
-        this.pawnColor=pawnColor;
+        this.pawnColors=pawnColors;
     }
 
-    public PawnColor getPawnColor() {return pawnColor;}
+    public List<PawnColor> getPawnColors() {return pawnColors;}
 
     @Override
     public String toString() {
         return "StudentToDiningRequest{" +
                 "nickName="+getNickName()+", "+
-                "pawnColor=" + pawnColor +
+                "pawnColors=" + pawnColors +
                 '}';
     }
 }

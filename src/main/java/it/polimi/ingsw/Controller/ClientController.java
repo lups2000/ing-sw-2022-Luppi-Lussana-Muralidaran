@@ -106,12 +106,12 @@ public class ClientController implements Observer4View, Observer {
 
             case REQUEST_MOVE_STUD_DINING -> {
                 StudentToDiningRequest studentToDiningRequest = (StudentToDiningRequest) message;
-                taskQueue.execute(() -> view.askMoveStudToDining(studentToDiningRequest.getPawnColor()));
+                taskQueue.execute(() -> view.askMoveStudToDining(studentToDiningRequest.getPawnColors()));
             }
 
             case REQUEST_MOVE_STUD_ISLAND -> {
                 StudentToIslandRequest studentToIslandRequest = (StudentToIslandRequest) message;
-                taskQueue.execute(() -> view.askMoveStudToIsland(studentToIslandRequest.getPawnColor(), studentToIslandRequest.getIslands()));
+                taskQueue.execute(() -> view.askMoveStudToIsland(studentToIslandRequest.getIslands()));
             }
 
             case INFO_MATCH -> {

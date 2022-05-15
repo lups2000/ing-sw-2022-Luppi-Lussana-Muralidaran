@@ -11,15 +11,13 @@ public class StudentToIslandRequest extends Message {
 
     //id serialization
     private List<Island> islands;
-    private PawnColor pawnColor;
 
-    public StudentToIslandRequest(PawnColor pawnColor,List<Island> islands){
+
+    public StudentToIslandRequest(List<Island> islands){
         super("SERVER", MessageType.REQUEST_MOVE_STUD_ISLAND);
-        this.pawnColor=pawnColor;
         this.islands=islands;
     }
 
-    public PawnColor getPawnColor() {return pawnColor;}
     public List<Island> getIslands() {return islands;}
 
     @Override
@@ -27,7 +25,6 @@ public class StudentToIslandRequest extends Message {
         return "StudentToIslandRequest{" +
                 "nickName="+getNickName()+", "+
                 "islands=" + islands +
-                ", pawnColor=" + pawnColor +
                 '}';
     }
 }

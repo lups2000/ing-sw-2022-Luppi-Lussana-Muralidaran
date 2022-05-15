@@ -194,12 +194,12 @@ public class Cli implements View/*extends observable ecc....*/ {
     }
 
     @Override
-    public void askMoveStudToDining(PawnColor pawnColor) {
+    public void askMoveStudToDining(List<PawnColor> pawnColors) {
 
     }
 
     @Override
-    public void askMoveStudToIsland(PawnColor pawnColor, List<Island> islands) {
+    public void askMoveStudToIsland(List<Island> islands) {
 
     }
 

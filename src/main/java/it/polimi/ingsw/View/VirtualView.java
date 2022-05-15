@@ -48,13 +48,13 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void askMoveStudToDining(PawnColor pawnColor) {
-        clientConnection.sendMessageToClient(new StudentToDiningRequest(pawnColor));
+    public void askMoveStudToDining(List<PawnColor> pawnColors) {
+        clientConnection.sendMessageToClient(new StudentToDiningRequest(pawnColors));
     }
 
     @Override
-    public void askMoveStudToIsland(PawnColor pawnColor,List<Island> islands) {
-        clientConnection.sendMessageToClient(new StudentToIslandRequest(pawnColor, islands));
+    public void askMoveStudToIsland(List<Island> islands) {
+        clientConnection.sendMessageToClient(new StudentToIslandRequest(islands));
     }
 
     @Override
