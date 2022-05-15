@@ -1,17 +1,14 @@
 package it.polimi.ingsw.View.Cli;
 
-import it.polimi.ingsw.Controller.ClientController;
+
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 import it.polimi.ingsw.View.View;
-
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-import it.polimi.ingsw.Model.Exceptions.*;
+
 
 public class Cli implements View/*extends observable ecc....*/ {
     private final PrintStream out;
@@ -41,6 +38,10 @@ public class Cli implements View/*extends observable ecc....*/ {
         welcomeMessage += new String(Character.toChars(0x1F604));
         out.println(welcomeMessage);
         connectToServer();
+    }
+
+    public void clearCli(){
+        out.flush();
     }
 
     public void connectToServer(){
@@ -84,9 +85,6 @@ public class Cli implements View/*extends observable ecc....*/ {
         } while (!validInput);
     }
 
-    public void clearCli(){
-        out.flush();
-    }
 
     @Override
     public void askNickName() {
@@ -144,7 +142,7 @@ public class Cli implements View/*extends observable ecc....*/ {
                 id= readLine.nextInt();
 
                 if(id<=0 || id>assistantSeedAvailable.size()){
-                    out.println("INVALID_INPUT");
+                    out.println(INVALID_INPUT);
                     validInput = false;
                 }
                 else{
@@ -180,7 +178,7 @@ public class Cli implements View/*extends observable ecc....*/ {
                 id= readLine.nextInt();
 
                 if(id<=0 || id>assistantCards.size()){
-                    out.println("INVALID_INPUT");
+                    out.println(INVALID_INPUT);
                     validInput = false;
                 }
                 else{
@@ -213,6 +211,38 @@ public class Cli implements View/*extends observable ecc....*/ {
     @Override
     public void askChooseCloudTile(List<CloudTile> cloudTiles) {
 
+        CloudTile cloudTileChosen;
+        boolean validInput=false;
+        Integer id;
+
+        if(cloudTiles.size()>=1){
+
+            do{
+                out.println("Please type the corresponding id to select one of the CloudTiles: ");
+                System.out.print("( ");
+                for(int i=0;i<cloudTiles.size();i++){
+                    System.out.print((i+1)+": "+cloudTiles.get(i));
+                    if(i< cloudTiles.size()-1){
+                        System.out.print(", ");
+                    }
+                }
+                System.out.println(" )");
+                id= readLine.nextInt();
+
+                if(id<=0 || id>cloudTiles.size()){
+                    out.println(INVALID_INPUT);
+                    validInput = false;
+                }
+                else{
+                    cloudTileChosen=cloudTiles.get(id-1);
+                    validInput=true;
+                    //send the cloudTile to the server
+                }
+            }while(!validInput);
+        }
+        else{
+            showError("No cloudTiles available!");
+        }
     }
 
     @Override
