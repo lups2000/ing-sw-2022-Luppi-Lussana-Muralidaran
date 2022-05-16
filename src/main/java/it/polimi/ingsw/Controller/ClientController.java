@@ -194,7 +194,7 @@ public class ClientController implements Observer4View, Observer {
     @Override
     public void connectClientToServer(String ip, String port){
         try {
-            client = new Client(ip, Integer.parseInt(port)); //no NumberFormatException checks needed beacuse we already did them
+            client = new Client(ip, Integer.parseInt(port)); //no NumberFormatException checks needed because we already did them
             client.addObserver(this);
             client.readMessage();
             client.activatePing(true);

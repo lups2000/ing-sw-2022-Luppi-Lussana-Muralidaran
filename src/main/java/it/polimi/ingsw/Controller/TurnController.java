@@ -92,7 +92,7 @@ public class TurnController implements Serializable {
                     //notify to other players that it's the turn of the current player
                     this.notifyOtherPlayers("Now it's the Turn of "+currentPlayer.getNickname()+" who plays the Assistant Card!",currentPlayer);
 
-                    VirtualView virtualViewCurrentPlayer=virtualViewMap.get(currentPlayer); //getting the virtual view of the current player
+                    VirtualView virtualViewCurrentPlayer=virtualViewMap.get(currentPlayer.getNickname()); //getting the virtual view of the current player
                     virtualViewCurrentPlayer.showGenericMessage("Hey "+ currentPlayer.getNickname() +", now it's your turn!");
                     //ask to the current player which Assistant Card he wants to move
                     virtualViewCurrentPlayer.askAssistantCard(assistantCardsAvailable); //this must be contained in a loop
@@ -174,7 +174,7 @@ public class TurnController implements Serializable {
             notifyOtherPlayers(player.getNickname()+" is playing the action phase!", player);
             if(model.getExpertsVariant()){
                 List<CharacterCard> characterCardsGame=model.getCharacterCards();
-                VirtualView virtualViewCurrentPlayer=virtualViewMap.get(player);
+                VirtualView virtualViewCurrentPlayer=virtualViewMap.get(player.getNickname());
                 virtualViewCurrentPlayer.showGenericMessage("You are playing the ExpertVariant! Do you want to play a Character Card?");
                 //we could ask if the player wants to play a character card
                 //the player must choose between the three random character cards of the Game

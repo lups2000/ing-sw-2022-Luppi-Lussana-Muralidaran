@@ -1,8 +1,12 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
+import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.GameState;
 import it.polimi.ingsw.View.VirtualView;
+import it.polimi.ingsw.network.Messages.ClientSide.ExpertVariantReply;
+import it.polimi.ingsw.network.Messages.ClientSide.NumPlayersReply;
 import it.polimi.ingsw.network.Messages.Message;
 
 import java.util.Collections;
@@ -20,6 +24,7 @@ public class MainController {
     private final MessageController messageController;
     private TurnController turnController;
     private GameState gameState;
+    private int maxNumPlayers;
 
     public MainController(){
         this.game = new Game();
@@ -45,30 +50,75 @@ public class MainController {
      *
      * @param message the message received from the server
      */
-    public void messageFromServer(Message message){
+    public void messageFromServer(Message message) {
 
         VirtualView virtualView = virtualViewsMap.get(message.getNickName());
 
         switch (game.getStatus()){
 
-            case CREATING:
+            case LOGGING:
+                messageWhileLogging(message);
                 break;
 
             case PLAYING:
+                messageWhilePlaying(message);
                 break;
 
-            //case DISCONNECTED se vorremo implementare la funzionalità aggiuntiva, altrimenti ha senso?
 
             case ENDED:
                 break;
         }
     }
 
-    //macchina a stati qui? TODO
-    //i 3 stati qui sono LOGIN, (INIT), INGAME
+    //macchina a stati qui
 
 
-    //nei 3 sopracitati stati fai le chiamate ai vari effetti
+    /**
+     * Messages received while still creating the game and waiting for all the players to log
+     *
+     * @param message the message received
+     */
+    private void messageWhileLogging(Message message) {
+        switch(message.getMessageType()){
+            case REPLY_PLAYER_NUM -> {
+                if(messageController.checkNumPlayers(message)){
+                    NumPlayersReply numPlayersReply = (NumPlayersReply) message;
+                    maxNumPlayers = numPlayersReply.getNumPlayers();
+                    //mostra a tutti un waiting ... (broadcast)
+                }
+            }
+
+            case REPLY_EXPERT_VARIANT -> {
+                if(messageController.checkExpertVariant(message)){
+                    ExpertVariantReply expertVariantReply = (ExpertVariantReply) message;
+                    try {
+                        game.initGame(maxNumPlayers,expertVariantReply.isExpertVariant());
+                    } catch (TooManyPawnsPresent e) {
+                        e.printStackTrace();
+                    } catch (NoPawnPresentException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            case REQUEST_ASSISTANT_SEED -> {
+                //game.addplayer();
+            }
+        }
+    }
+
+    /**
+     * Messages received while the game is currently playing
+     *
+     * @param message the message received
+     */
+    private void messageWhilePlaying(Message message){
+
+        switch(message.getMessageType()){
+            //TODO
+        }
+    }
+
 
     /**
      * Method to handle the login to the game of a new client
@@ -86,7 +136,7 @@ public class MainController {
             //        game.addObserver(virtualView);
             //        game.getBoard().addObserver(virtualView);
             virtualView.showLoginPlayers(nickname,true,true);   //passare il nickname del player ?
-            //game.addPlayer(nickname,);    sistemare qualcosa nel model qui TODO
+
             virtualView.askNumPlayers();
             virtualView.askExpertVariant();
             virtualView.askAssistantSeed(game.getSeedsAvailable());
@@ -96,14 +146,14 @@ public class MainController {
             virtualViewsMap.put(nickname,virtualView);
             //        game.addObserver(virtualView);
             //        game.getBoard().addObserver(virtualView);
-            //game.addplayer(nickname, );
+
             virtualView.showLoginPlayers(nickname,true,true);
             virtualView.askAssistantSeed(game.getSeedsAvailable());
 
             if(game.getPlayers().size() == game.getMaxNumPlayers()){    //all the required players logged and the game can start
                 this.gameState = GameState.CREATING;
                 //o forse direttamente PLAYING, però c'è da mostrare a tutti i player i giocatori registrati nella lobby
-                // e il risultato dell'inizializzazione (scelta dei seed, tavolo da gioco imbandito doppo initGame() del model)
+                // e il risultato dell'inizializzazione (scelta dei seed, tavolo da gioco imbandito dopo initGame() del model)
 
                 turnController = new TurnController(this.game,virtualViewsMap);
             }

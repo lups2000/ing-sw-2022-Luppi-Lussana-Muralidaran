@@ -24,9 +24,9 @@ public class SocketServer implements Runnable {
     public void run() {
         try {
             serverSocket = new ServerSocket(port);
-            //Server.LOGGER.info(() -> "Socket server started on port " + port + ".");
+            Server.LOGGER.info(() -> "Socket server started on port " + port + ".");
         } catch (IOException e) {
-            //Server.LOGGER.severe("Server could not start!");
+            Server.LOGGER.severe("Server could not start!");
             return;
         }
 

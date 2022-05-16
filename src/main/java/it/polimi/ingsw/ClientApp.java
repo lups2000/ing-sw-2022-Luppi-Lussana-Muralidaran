@@ -16,6 +16,5 @@ public class ClientApp {
             ClientController clientcontroller = new ClientController(view);
             view.addObserver(clientcontroller);
             view.matchStart();
-
     }
 }

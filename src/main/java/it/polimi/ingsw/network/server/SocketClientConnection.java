@@ -56,10 +56,20 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     private void handleClientConnection() throws IOException {
         Server.LOGGER.info("Client connected from " + client.getInetAddress());
 
+
         try {
             while (!Thread.currentThread().isInterrupted()) {
                 synchronized (inputLock) {
+
+                    Server.LOGGER.info("fin qui tutto bene");
+
                     Message message = (Message) input.readObject();
+
+                    Server.LOGGER.info("qui non ci arriva invece");
+
+
+                    //qui c'è un errore, lancia una IO Exception perché poi nella ServerApp esce "client 127.0.0.1 disconnected" TODO
+
 
                     if (message != null && message.getMessageType() != MessageType.PING) {
                         if (message.getMessageType() == MessageType.REQUEST_LOGIN) {
