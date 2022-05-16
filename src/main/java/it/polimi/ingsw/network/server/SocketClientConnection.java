@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
- * Implementation of the {@link ClientConnection} interface
+ * Implementation ClientConnection Interface
  */
 public class SocketClientConnection implements ClientConnection, Runnable {
 
@@ -27,13 +27,14 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         this.client = client;
         this.isConnected = true;
 
-        this.inputLock = new Object();
-        this.outputLock = new Object();
+        this.inputLock = new Object(); // serve?
+        this.outputLock = new Object(); // serve?
 
         try {
             this.output = new ObjectOutputStream(client.getOutputStream());
             this.input = new ObjectInputStream(client.getInputStream());
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             Server.LOGGER.severe(e.getMessage());
         }
     }
@@ -41,11 +42,13 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     @Override
     public void run() {
         try {
+
             handleClientConnection();
+
         } catch (IOException e) {
-            //Server.LOGGER.severe("The connection of the Client " + client.getInetAddress() + " has dropped.");
-            //disconnect();
-            e.printStackTrace();
+            Server.LOGGER.severe("The connection of the Client " + client.getInetAddress() + " has dropped.");
+            disconnect();
+            //e.printStackTrace();
         }
     }
 
@@ -58,34 +61,24 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
         Server.LOGGER.info("Client's address is: " + client.getInetAddress());
 
-
         try {
             while (!Thread.currentThread().isInterrupted()) {
 
+                //a che serve il lock?
                 synchronized (inputLock) {
 
-                    Server.LOGGER.info("fin qui tutto bene");
-
                     //readObject method is used to deserialize the message
+                    //this message is received from the client-->method askNickName() in the CLI/GUI
                     Message message = (Message) input.readObject();
 
-                    //Server.LOGGER.info("qui non ci arriva invece");
-
-
-                    //qui c'è un errore, lancia una IO Exception perché poi nella ServerApp esce "client 127.0.0.1 disconnected" TODO
-
-                    if (message != null /*&& message.getMessageType() != MessageType.PING*/) {
+                    if (message != null && message.getMessageType() != MessageType.PING) {
                         if (message.getMessageType() == MessageType.REQUEST_LOGIN) {
-                            //Server.LOGGER.info("OK");
                             socketServer.addClient(message.getNickName(), this);
                         }
                         else {
-                            Server.LOGGER.info(() -> "Received: " + message);
+                            Server.LOGGER.info(() -> "Message Received: " + message);
                             socketServer.forwardsMessage(message);
                         }
-                    }
-                    else{
-                        Server.LOGGER.info("loop infinito :)");
                     }
                 }
             }
@@ -132,9 +125,10 @@ public class SocketClientConnection implements ClientConnection, Runnable {
             synchronized (outputLock) {
                 output.writeObject(message);
                 output.reset();
-                Server.LOGGER.info(() -> "Sent: " + message);
+                Server.LOGGER.info(() -> "Message Sent: " + message);
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             Server.LOGGER.severe(e.getMessage());
             disconnect();
         }

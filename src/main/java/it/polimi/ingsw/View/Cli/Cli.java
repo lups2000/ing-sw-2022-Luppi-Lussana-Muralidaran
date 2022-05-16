@@ -65,16 +65,14 @@ public class Cli extends Observable4View implements View {
 
         do {
             out.print("Please enter the server address (Default address: " + defaultAddress + "): ");
-            inputAddress = readLine.next();
+            inputAddress = readLine.nextLine();
 
-            if (inputAddress.equals("")){
+            if (inputAddress.isEmpty()){ //empty string-->default value
                 validInput = true;
             }
-
-            else if(ClientController.okIpAddress(inputAddress)){
+            else if(ClientController.okIpAddress(inputAddress)){ //input ok
                 validInput = true;
             }
-
             else {
                 out.println(INVALID_INPUT);
                 clearCli();
@@ -82,17 +80,22 @@ public class Cli extends Observable4View implements View {
             }
         } while (!validInput);
 
-        correctIp = inputAddress;
+        if(inputAddress.isEmpty()){
+            correctIp=defaultAddress;
+        }
+        else {
+            correctIp = inputAddress;
+        }
 
         do {
             out.print("Please enter the server port (Default Port: " + defaultPort + "): ");
-            inputPort = readLine.next();
+            inputPort = readLine.nextLine();
 
-            if (inputPort.equals("")){
-                validInput = true;
+            if (inputPort.isEmpty()){ //empty string-->default value
+                validInput =true;
             }
 
-            else if(ClientController.okPortNumber(inputPort)){
+            else if(ClientController.okPortNumber(inputPort)){ //input ok
                 validInput = true;
             }
 
@@ -103,7 +106,12 @@ public class Cli extends Observable4View implements View {
             }
         } while (!validInput);
 
-        correctPort = inputPort;
+        if(inputPort.isEmpty()){
+            correctPort=defaultPort;
+        }
+        else{
+            correctPort = inputPort;
+        }
 
         notifyObserver(obs -> obs.connectClientToServer(correctIp,correctPort));
     }
@@ -113,7 +121,7 @@ public class Cli extends Observable4View implements View {
     public void askNickName() {
         boolean validInput;
         out.print("Enter your nickname: ");
-        String nickname = readLine.next();
+        String nickname = readLine.nextLine();
         do {
             if (nickname.equals("") /*|| ERRORE*/){
                 out.println(INVALID_INPUT);
