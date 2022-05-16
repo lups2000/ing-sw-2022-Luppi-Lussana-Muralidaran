@@ -11,8 +11,7 @@ import java.util.List;
  */
 public class AssistantCardRequest extends Message {
 
-    //id serialization
-
+    private static final long serialVersionUID = 4763799646364791381L;
     private final List<AssistantCard> assistantCards;
 
     public AssistantCardRequest(List<AssistantCard> assistantCards){

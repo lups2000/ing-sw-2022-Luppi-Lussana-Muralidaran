@@ -85,7 +85,7 @@ public class Client extends Observable {
         try {
             if (!socket.isClosed()) {
                 readExecutionQueue.shutdownNow();
-                activatePing(false);
+                //activatePing(false);
                 socket.close();
             }
         } catch (IOException e) {
@@ -98,12 +98,12 @@ public class Client extends Observable {
      *
      * @param isActive set this argument to {@code true} to enable the heartbeat.
      *                set to {@code false} to kill the heartbeat.
-     */
+
     public void activatePing(boolean isActive) {
         if (isActive) {
             pinger.scheduleAtFixedRate(() -> sendMessage(new Ping()), 0, 1000, TimeUnit.MILLISECONDS);
         } else {
             pinger.shutdownNow();
         }
-    }
+    }*/
 }

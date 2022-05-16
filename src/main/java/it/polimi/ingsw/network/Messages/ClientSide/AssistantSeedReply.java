@@ -9,7 +9,7 @@ import it.polimi.ingsw.Model.AssistantSeed;
  */
 public class AssistantSeedReply extends Message {
 
-    //id inizialization
+    private static final long serialVersionUID = 2906646364797413651L;
     private AssistantSeed assistantSeed;
 
     public AssistantSeedReply(String nickNameClient,AssistantSeed assistantSeed){

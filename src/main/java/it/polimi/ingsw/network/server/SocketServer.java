@@ -5,6 +5,7 @@ import it.polimi.ingsw.network.Messages.Message;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 
 /**
@@ -12,10 +13,11 @@ import java.net.Socket;
  */
 public class SocketServer implements Runnable {
     private final Server server;
-    private final int port = 12345; //by default
+    private final int port;
     ServerSocket serverSocket;
 
-    public SocketServer(Server server) {
+    public SocketServer(Server server,int port) {
+        this.port=port;
         this.server = server;
     }
 
@@ -24,7 +26,7 @@ public class SocketServer implements Runnable {
     public void run() {
         try {
             serverSocket = new ServerSocket(port);
-            Server.LOGGER.info(() -> "Socket server started on port " + port + ".");
+            Server.LOGGER.info(() -> "The socket of the server started on port " + port + ".");
         } catch (IOException e) {
             Server.LOGGER.severe("Server could not start!");
             return;
@@ -32,15 +34,18 @@ public class SocketServer implements Runnable {
 
         while (!Thread.currentThread().isInterrupted()) {
             try {
+                //to get a connection from the client
                 Socket client = serverSocket.accept();
 
-                client.setSoTimeout(5000);
+                //if data do not arrive from the client, SocketTimeoutException will be thrown
+                client.setSoTimeout(8000);
 
-                SocketClientConnection clientConnection = new SocketClientConnection(client,this);
-                Thread thread = new Thread(clientConnection, "ss_handler" + client.getInetAddress());
+                SocketClientConnection socketClientConnection = new SocketClientConnection(client,this);
+                Thread thread = new Thread(socketClientConnection, "SocketServerThread:" + client.getInetAddress());
                 thread.start();
-            } catch (IOException e) {
-                Server.LOGGER.severe("Connection dropped");
+
+            } catch (IOException e ) {
+                Server.LOGGER.severe("Unfortunately the Connection has dropped!");
             }
         }
     }

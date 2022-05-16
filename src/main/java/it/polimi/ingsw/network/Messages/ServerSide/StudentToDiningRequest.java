@@ -8,7 +8,7 @@ import java.util.List;
 
 public class StudentToDiningRequest extends Message {
 
-    // id serialization
+    private static final long serialVersionUID = 2634673647637517311L;
     private List<PawnColor> pawnColors;
 
     public StudentToDiningRequest(List<PawnColor> pawnColors){

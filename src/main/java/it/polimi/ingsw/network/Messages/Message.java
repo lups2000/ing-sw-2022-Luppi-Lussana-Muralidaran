@@ -1,11 +1,13 @@
 package it.polimi.ingsw.network.Messages;
 
+import java.io.Serializable;
+
 /**
  * @author Matteo Luppi
  */
-public abstract class Message {
+public abstract class Message implements Serializable {
 
-    private static final long serialVersionUID = 6589184250663958343L; //da cambiare
+    private static final long serialVersionUID = 2904325636479313765L;
 
     private String nickName;
     private MessageType messageType;

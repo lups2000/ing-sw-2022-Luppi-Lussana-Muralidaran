@@ -9,7 +9,7 @@ import java.util.List;
 
 public class StudentToIslandRequest extends Message {
 
-    //id serialization
+    private static final long serialVersionUID = 2476472674141441381L;
     private List<Island> islands;
 
 

@@ -8,9 +8,7 @@ import it.polimi.ingsw.network.Messages.MessageType;
  */
 public class ExpertVariantRequest extends Message {
 
-    //id serialization
-
-
+    private static final long serialVersionUID = 2906657863561921381L;
     public ExpertVariantRequest(){
 
         super("SERVER", MessageType.REQUEST_EXPERT_VARIANT);

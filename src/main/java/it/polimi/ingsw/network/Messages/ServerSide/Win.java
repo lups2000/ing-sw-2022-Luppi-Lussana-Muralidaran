@@ -9,7 +9,7 @@ import it.polimi.ingsw.Model.Player;
  */
 public class Win extends Message {
 
-    //id serialization
+    private static final long serialVersionUID = 2943736473776671181L;
     private Player winner;
 
     public Win(Player winner){

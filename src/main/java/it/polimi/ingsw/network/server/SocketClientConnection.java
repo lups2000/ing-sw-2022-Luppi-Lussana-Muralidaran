@@ -43,8 +43,9 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         try {
             handleClientConnection();
         } catch (IOException e) {
-            Server.LOGGER.severe("Client " + client.getInetAddress() + " connection dropped.");
-            disconnect();
+            //Server.LOGGER.severe("The connection of the Client " + client.getInetAddress() + " has dropped.");
+            //disconnect();
+            e.printStackTrace();
         }
     }
 
@@ -54,34 +55,42 @@ public class SocketClientConnection implements ClientConnection, Runnable {
      * @throws IOException any of the usual Input/Output related exceptions.
      */
     private void handleClientConnection() throws IOException {
-        Server.LOGGER.info("Client connected from " + client.getInetAddress());
+
+        Server.LOGGER.info("Client's address is: " + client.getInetAddress());
 
 
         try {
             while (!Thread.currentThread().isInterrupted()) {
+
                 synchronized (inputLock) {
 
                     Server.LOGGER.info("fin qui tutto bene");
 
+                    //readObject method is used to deserialize the message
                     Message message = (Message) input.readObject();
 
-                    Server.LOGGER.info("qui non ci arriva invece");
+                    //Server.LOGGER.info("qui non ci arriva invece");
 
 
                     //qui c'è un errore, lancia una IO Exception perché poi nella ServerApp esce "client 127.0.0.1 disconnected" TODO
 
-
-                    if (message != null && message.getMessageType() != MessageType.PING) {
+                    if (message != null /*&& message.getMessageType() != MessageType.PING*/) {
                         if (message.getMessageType() == MessageType.REQUEST_LOGIN) {
+                            //Server.LOGGER.info("OK");
                             socketServer.addClient(message.getNickName(), this);
-                        } else {
+                        }
+                        else {
                             Server.LOGGER.info(() -> "Received: " + message);
                             socketServer.forwardsMessage(message);
                         }
                     }
+                    else{
+                        Server.LOGGER.info("loop infinito :)");
+                    }
                 }
             }
-        } catch (ClassCastException | ClassNotFoundException e) {
+        }
+        catch (ClassCastException | ClassNotFoundException e) {
             Server.LOGGER.severe("Invalid stream from client");
         }
         client.close();

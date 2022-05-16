@@ -9,7 +9,7 @@ import it.polimi.ingsw.network.Messages.MessageType;
  */
 public class MotherNatureMoveReply extends Message {
 
-    //id serialization
+    private static final long serialVersionUID = 2906645563364723481L;
     private final Island island;
 
     public MotherNatureMoveReply(String nickNameClient, Island island){

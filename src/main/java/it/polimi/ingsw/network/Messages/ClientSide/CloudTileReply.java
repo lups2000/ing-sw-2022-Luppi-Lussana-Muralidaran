@@ -8,8 +8,7 @@ import java.util.List;
 
 public class CloudTileReply extends Message {
 
-    //id serialization
-
+    private static final long serialVersionUID = 2906646364567232381L;
     private CloudTile cloudTile;
 
     public CloudTileReply(String nickNameClient,CloudTile cloudTile){

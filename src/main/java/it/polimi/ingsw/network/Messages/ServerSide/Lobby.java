@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Lobby extends Message {
 
-    //id serialization
+    private static final long serialVersionUID = 2746726411493891381L;
     private List<Player> playersLobby; //current players in the Lobby
     private int numMaxPlayersLobby; //max size Lobby
 

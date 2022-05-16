@@ -8,8 +8,7 @@ import it.polimi.ingsw.network.Messages.MessageType;
  */
 public class NumPlayersRequest extends Message {
 
-    //id serialization
-
+    private static final long serialVersionUID = 2277254254511491381L;
     public NumPlayersRequest() {
         super("SERVER", MessageType.REQUEST_PLAYER_NUM);
     }

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CloudTileRequest extends Message {
 
-    //id serialization
+    private static final long serialVersionUID = 2625334356646364793L;
     private List<CloudTile> cloudTiles;
 
     public CloudTileRequest(List<CloudTile> cloudTiles){

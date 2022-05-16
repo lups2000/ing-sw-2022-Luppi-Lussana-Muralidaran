@@ -8,7 +8,7 @@ import it.polimi.ingsw.network.Messages.MessageType;
  */
 public class ExpertVariantReply extends Message {
 
-    //id serialization
+    private static final long serialVersionUID = 4673646364793891381L;
     private boolean expertVariant;
 
     public ExpertVariantReply(String nickNameClient,boolean expertVariant){

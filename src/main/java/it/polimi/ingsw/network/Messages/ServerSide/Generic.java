@@ -8,8 +8,7 @@ import it.polimi.ingsw.network.Messages.MessageType;
  */
 public class Generic extends Message {
 
-    //id serialization
-
+    private static final long serialVersionUID = 2487384811793891381L;
     private String message;
 
     public Generic(String message){

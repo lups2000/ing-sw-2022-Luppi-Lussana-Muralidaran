@@ -8,8 +8,7 @@ import it.polimi.ingsw.network.Messages.MessageType;
  */
 public class Ping extends Message {
 
-    //id serialization
-
+    private static final long serialVersionUID = 2746726476471741647L;
     public Ping(){
         super(null, MessageType.PING);
     }

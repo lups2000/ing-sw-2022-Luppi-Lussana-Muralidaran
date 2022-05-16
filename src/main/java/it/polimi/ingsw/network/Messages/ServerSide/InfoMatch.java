@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class InfoMatch extends Message {
 
+    private static final long serialVersionUID = 2906643764736121381L;
     private ArrayList<Player> players;
     private boolean experts;
     private int numPlayers;

@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class AssistantSeedRequest extends Message {
 
+    private static final long serialVersionUID = 2984763953492935947L;
     private final List<AssistantSeed> assistantSeedAvailable;
 
     //id serialization

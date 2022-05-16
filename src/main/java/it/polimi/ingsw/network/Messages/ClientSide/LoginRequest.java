@@ -8,8 +8,7 @@ import it.polimi.ingsw.network.Messages.MessageType;
  */
 public class LoginRequest extends Message {
 
-    private static final long serialVersionUID = -6343239452500134346L; //da vedere
-
+    private static final long serialVersionUID = 2906646364793891381L;
     public LoginRequest(String nickNameClient){
         super(nickNameClient, MessageType.REQUEST_LOGIN);
     }

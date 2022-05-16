@@ -5,7 +5,7 @@ import it.polimi.ingsw.network.Messages.MessageType;
 
 public class Error extends Message {
 
-    //id serialization
+    private static final long serialVersionUID = 2946395749574891381L;
     private String messageError;
 
     public Error(String messageError){

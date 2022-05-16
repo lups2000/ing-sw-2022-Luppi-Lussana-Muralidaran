@@ -16,8 +16,8 @@ public class ServerApp {
         MainController mainController = new MainController();
         Server server = new Server(mainController);
 
-        SocketServer socketServer = new SocketServer(server);
-        Thread thread = new Thread(socketServer, "socketserver_");
+        SocketServer socketServer = new SocketServer(server,serverPort);
+        Thread thread = new Thread(socketServer, "SocketServer");
         thread.start();
     }
 }

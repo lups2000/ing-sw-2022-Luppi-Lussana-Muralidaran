@@ -7,7 +7,7 @@ import it.polimi.ingsw.network.Messages.MessageType;
 
 public class StudentToDiningReply extends Message {
 
-    //id serialization
+    private static final long serialVersionUID = 2906348941393891381L;
     private PawnColor pawnColor;
 
     public StudentToDiningReply(String nickNameClient,PawnColor pawnColor){

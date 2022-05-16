@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class AssistantCardReply extends Message {
 
-    //id serialization
+    private static final long serialVersionUID = 4633218024793891381L;
     private AssistantCard assistantCard;
 
     public AssistantCardReply(String nickNameClient, AssistantCard assistantCard){

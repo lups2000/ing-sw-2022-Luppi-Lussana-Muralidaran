@@ -8,7 +8,7 @@ import it.polimi.ingsw.network.Messages.MessageType;
  */
 public class LoginReply extends Message {
 
-    private static final long serialVersionUID = -1423312065079102467L; //da cambiare
+    private static final long serialVersionUID = 2908646346376476371L; //da cambiare
     private boolean isNickAccepted;
     private boolean isConnAccepted;
 

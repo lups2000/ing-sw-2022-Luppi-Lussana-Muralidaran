@@ -8,7 +8,7 @@ import it.polimi.ingsw.network.Messages.MessageType;
 
 public class StudentToIslandReply extends Message {
 
-    //id serialization
+    private static final long serialVersionUID = 2906687587793891381L;
     private final Island island;
     private final PawnColor pawnColor;
 

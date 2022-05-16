@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class MotherNatureMoveRequest extends Message {
 
-    //id serialization
+    private static final long serialVersionUID = 2904834863264243863L;
     private final List<Island> availableIslands;
 
     public MotherNatureMoveRequest(List<Island> islands){

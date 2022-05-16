@@ -9,7 +9,7 @@ import it.polimi.ingsw.Model.Player;
  */
 public class Lose extends Message {
 
-    //id serialization
+    private static final long serialVersionUID = 2906646473674636412L;
     private Player loser;
 
     public Lose(Player loser){
