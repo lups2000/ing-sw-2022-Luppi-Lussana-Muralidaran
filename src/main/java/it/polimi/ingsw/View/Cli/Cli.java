@@ -1,16 +1,17 @@
 package it.polimi.ingsw.View.Cli;
 
 
+import it.polimi.ingsw.Controller.ClientController;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 import it.polimi.ingsw.View.View;
+import it.polimi.ingsw.observer.Observable4View;
+
 import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.*;
 
 
-public class Cli implements View/*extends observable ecc....*/ {
+public class Cli extends Observable4View implements View {
     private final PrintStream out;
     private static final String CANCEL_INPUT = "User input has been canceled";
     private static final String INVALID_INPUT = "The entered input is not valid!";
@@ -44,51 +45,70 @@ public class Cli implements View/*extends observable ecc....*/ {
         out.flush();
     }
 
+    /**
+     * Method to ask the ip and port number to the client and try to estabilish a connection to the server,
+     * after having checked that the client's input are valid with the CilentController's methods okIpAddress and okPortNumber
+     */
     public void connectToServer(){
-        Map<String, String> serverDetails = new HashMap<>();
-        String defaultAddress = "socketserver_ ";
+        final String correctIp;
+        final String correctPort;
+        String inputAddress;
+        String inputPort;
+        String defaultAddress = "localhost";
         String defaultPort = "12345";
-        boolean validInput = false;
+        boolean validInput;
 
         out.println("The value between the brackets is the default value");
 
         do {
             out.print("Please enter the server address (Default address: " + defaultAddress + "): ");
-            String inputAddress = readLine.next();
+            inputAddress = readLine.next();
 
             if (inputAddress.equals("")){
-                serverDetails.put("address", defaultAddress);
                 validInput = true;
             }
-            //else if (inputAddress.equals(INSERIRE CONTROLLO DEL CONTROLLER)){serverDetails.put("address", inputAddress);validInput = true;}
+
+            else if(ClientController.okIpAddress(inputAddress)){
+                validInput = true;
+            }
+
             else {
                 out.println(INVALID_INPUT);
                 clearCli();
                 validInput = false;
             }
         } while (!validInput);
+
+        correctIp = inputAddress;
 
         do {
             out.print("Please enter the server port (Default Port: " + defaultPort + "): ");
-            String inputPort = readLine.next();
+            inputPort = readLine.next();
 
             if (inputPort.equals("")){
-                serverDetails.put("port", defaultPort);
                 validInput = true;
             }
-            //else if (INSERIRE CONTROLLO DEL CONTROLLER){serverDetails.put("port", inputPort);validInput = false}
+
+            else if(ClientController.okPortNumber(inputPort)){
+                validInput = true;
+            }
+
             else {
                 out.println(INVALID_INPUT);
                 clearCli();
                 validInput = false;
             }
         } while (!validInput);
+
+        correctPort = inputPort;
+
+        notifyObserver(obs -> obs.connectClientToServer(correctIp,correctPort));
     }
 
 
     @Override
     public void askNickName() {
-        boolean validInput = false;
+        boolean validInput;
         out.print("Enter your nickname: ");
         String nickname = readLine.next();
         do {
@@ -97,7 +117,7 @@ public class Cli implements View/*extends observable ecc....*/ {
                 validInput = false;
             }
             else {
-                //Manda nickname al server
+                notifyObserver(obs -> obs.sendNickname(nickname));
                 validInput = true;
                 clearCli();
             }
@@ -107,17 +127,18 @@ public class Cli implements View/*extends observable ecc....*/ {
 
     @Override
     public void askNumPlayers() {
-        boolean validInput = false;
+        boolean validInput;
         out.print("Insert number of players: ");
         int playersNumber = readLine.nextInt();
         do {
             if (playersNumber == 2 || playersNumber == 3)  {
-                //Mandare il numero di giocatori al server
+                notifyObserver(obs -> obs.sendNumPlayers(playersNumber));
                 validInput = true;
             }
             else {
                 out.println(INVALID_INPUT);
                 clearCli();
+                validInput = false;
             }
 
         } while (!validInput);
@@ -126,8 +147,8 @@ public class Cli implements View/*extends observable ecc....*/ {
     @Override
     public void askAssistantSeed(List<AssistantSeed> assistantSeedAvailable) {
         AssistantSeed assistantSeedChosen;
-        Integer id;
-        boolean validInput=false;
+        int id;
+        boolean validInput;
         if(assistantSeedAvailable.size()>=1){
             do{
                 out.println("Please type the corresponding id to select one of the AssistantSeeds: ");
@@ -148,7 +169,8 @@ public class Cli implements View/*extends observable ecc....*/ {
                 else{
                     assistantSeedChosen=assistantSeedAvailable.get(id-1);
                     validInput=true;
-                    //send the seed to the server
+                    AssistantSeed finalAssistantSeedChosen = assistantSeedChosen;
+                    notifyObserver(obs -> obs.sendAssistantSeed(finalAssistantSeedChosen));
                 }
             }while (!validInput);
         }
@@ -160,8 +182,8 @@ public class Cli implements View/*extends observable ecc....*/ {
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards) {
         AssistantCard assistantCardChosen;
-        boolean validInput=false;
-        Integer id;
+        boolean validInput;
+        int id;
 
         if(assistantCards.size()>=1){
 
@@ -184,7 +206,8 @@ public class Cli implements View/*extends observable ecc....*/ {
                 else{
                     assistantCardChosen=assistantCards.get(id-1);
                     validInput=true;
-                    //send the card to the server
+                    AssistantCard finalAssistantCardChosen = assistantCardChosen;
+                    notifyObserver(obs -> obs.sendAssistantCard(finalAssistantCardChosen));
                 }
             }while (!validInput);
         }
@@ -212,8 +235,8 @@ public class Cli implements View/*extends observable ecc....*/ {
     public void askChooseCloudTile(List<CloudTile> cloudTiles) {
 
         CloudTile cloudTileChosen;
-        boolean validInput=false;
-        Integer id;
+        boolean validInput;
+        int id;
 
         if(cloudTiles.size()>=1){
 
@@ -247,7 +270,7 @@ public class Cli implements View/*extends observable ecc....*/ {
 
     @Override
     public void askExpertVariant() {
-        boolean validInput = false;
+        boolean validInput;
         out.println("Do you want to play the expert variant of the game? Y/N");
         String expertVariantAnswer = readLine.next();
         do {
@@ -265,7 +288,7 @@ public class Cli implements View/*extends observable ecc....*/ {
 
     @Override
     public void askPlayCharacterCard(List<CharacterCard> characterCards) {
-        boolean validInput = false;
+        boolean validInput;
         out.println("Do you want to use a Character Card?");
         String characterCardAnswer = readLine.next();
         do {
@@ -273,6 +296,7 @@ public class Cli implements View/*extends observable ecc....*/ {
                 //Manda risposta a server e scegli carta da utilizzare e attivane l'effetto
                 out.println("Select one of the three cards (type index):");
                 //Scegli carta e manda la risposta al server
+                validInput = true;
             }
             else if (characterCardAnswer.equals("N")) {
                 validInput = true;
@@ -286,13 +310,13 @@ public class Cli implements View/*extends observable ecc....*/ {
     }
 
     @Override
-    public void showSchoolBoard(SchoolBoard schoolBoard){;
+    public void showSchoolBoard(SchoolBoard schoolBoard){
         out.println("CURRENT SCHOOL BOARD\n\nDining Room:\n\n");
         for (PawnColor pawnColor: PawnColor.values()){
             out.print(pawnColor+" students: ");
             for (int i=0; i<schoolBoard.getStudentsDining().get(pawnColor); i++) {
                 out.print("X");
-                if (schoolBoard.getProfessors().get(pawnColor) == true) {
+                if (schoolBoard.getProfessors().get(pawnColor)) {
                     out.print("\nYou have this color professor");
                 }
             }

@@ -73,6 +73,11 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
+    public void showSchoolBoard(SchoolBoard schoolBoard) {
+
+    }
+
+    @Override
     public void showGenericMessage(String genericMessage) {
         clientConnection.sendMessageToClient(new Generic(genericMessage));
     }

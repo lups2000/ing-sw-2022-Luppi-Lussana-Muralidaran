@@ -16,6 +16,8 @@ public interface Observer4View {
      */
     void createConnection(Map<String, String> serverAddressAndPort) throws IOException;
 
+    void connectClientToServer(String ip, String port);
+
     /**
      * This method sends a message to the server to communicate the nickName
      *
@@ -83,5 +85,6 @@ public interface Observer4View {
      * Handles a disconnection wanted by the user.
      * (e.g. a click on the back button into the GUI).
 
+*
     void onDisconnection();*/
 }

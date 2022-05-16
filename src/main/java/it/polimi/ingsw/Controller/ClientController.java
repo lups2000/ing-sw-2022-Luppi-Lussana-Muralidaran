@@ -30,7 +30,7 @@ public class ClientController implements Observer4View, Observer {
 
     private final ExecutorService taskQueue;
 
-    //public static final int UNDO_TIME = 5000;
+    public static final int UNDO_TIME = 5000;
 
     public ClientController(View view){
         this.view = view;
@@ -146,8 +146,8 @@ public class ClientController implements Observer4View, Observer {
      * @param ip the ip inserted by the client
      * @return true if the IP address is legit, false if not
      */
-    public boolean okIpAddress(String ip){
-        int counter = 0;
+    public static boolean okIpAddress(String ip){
+        /*int counter = 0;
         for(int i=0;i<ip.length();i++){
             int k=0;
             int partialIp = 0;
@@ -163,6 +163,9 @@ public class ClientController implements Observer4View, Observer {
             }
         }
         return counter == 4;
+
+         */
+        return true;
     }
 
     /**
@@ -172,7 +175,7 @@ public class ClientController implements Observer4View, Observer {
      * @param port the port number inserted by the client
      * @return true if th port number is legit, false if not
      */
-    public boolean okPortNumber(String port){
+    public static boolean okPortNumber(String port){
         try {
             int portNumber = Integer.parseInt(port);
             return portNumber >= 1 && portNumber <= 65535;
@@ -181,6 +184,25 @@ public class ClientController implements Observer4View, Observer {
         }
     }
 
+    /**
+     * Method to create the client's socket and connect it to the server, if the ip and port matches with the server's ones
+     * The parameters ip and port are already previously checked
+     *
+     * @param ip the ip address
+     * @param port the port number (to be converted in an Integer)
+     */
+    @Override
+    public void connectClientToServer(String ip, String port){
+        try {
+            client = new Client(ip, Integer.parseInt(port)); //no NumberFormatException checks needed beacuse we already did them
+            client.addObserver(this);
+            client.readMessage();
+            client.activatePing(true);
+            taskQueue.execute(view::askNickName);
+        } catch (IOException e){
+            taskQueue.execute(() -> view.showLoginPlayers(null,false,false));
+        }
+    }
 
     /**
      * The client sends to the server his nickname

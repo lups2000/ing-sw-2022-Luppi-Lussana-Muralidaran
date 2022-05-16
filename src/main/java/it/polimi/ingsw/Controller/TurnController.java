@@ -20,13 +20,13 @@ public class TurnController implements Serializable {
     private Game model;
     private Player firstPlayerToPlayAssistant;
     private TurnPhase turnPhase;
-    private transient Map<Player, VirtualView> virtualViewMap;
+    private transient Map<String, VirtualView> virtualViewMap;
 
     /**
      * Constructor
      * @param model it is the Model according to the MVC pattern
      */
-    public TurnController(Game model,Map<Player, VirtualView> virtualViewMap){
+    public TurnController(Game model,Map<String, VirtualView> virtualViewMap){
         this.model=model;
         this.turnPhase = TurnPhase.START;
         this.firstPlayerToPlayAssistant=model.getFirstPlayer(); //initially he is the first one who joins the game
@@ -301,13 +301,14 @@ public class TurnController implements Serializable {
 
     /**
      * Method to send a message to all the players except the current one
+     *
      * @param message to send
      * @param currentPlayer who is playing
      */
     public void notifyOtherPlayers(String message,Player currentPlayer){
-        for(Player player : virtualViewMap.keySet()){
-            if(player.getId()!= currentPlayer.getId()){
-                virtualViewMap.get(player).showGenericMessage(message);
+        for(String nickname : virtualViewMap.keySet()){
+            if(!nickname.equals(currentPlayer.getNickname())){
+                virtualViewMap.get(nickname).showGenericMessage(message);
             }
         }
     }

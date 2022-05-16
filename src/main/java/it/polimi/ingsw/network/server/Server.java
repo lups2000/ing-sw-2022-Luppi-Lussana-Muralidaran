@@ -41,7 +41,7 @@ public class Server {
         /*if (!mainController.isGameStarted()) {
             if (mainController.checkLoginNickname(nickname, vv)) {
                 clientsConnected.put(nickname, clientConnection);
-                mainController.loginHandler(nickname, vv);
+                mainController.loginToTheNickname(nickname, vv);
             }
         } else {
             vv.showLoginResult(true, false, null);
