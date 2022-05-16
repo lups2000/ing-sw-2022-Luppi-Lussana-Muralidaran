@@ -1,5 +1,8 @@
 package it.polimi.ingsw.View.Cli;
 
+/**
+@author Pradeeban Muralidaran
+ */
 
 import it.polimi.ingsw.Controller.ClientController;
 import it.polimi.ingsw.Model.*;
@@ -217,7 +220,16 @@ public class Cli extends Observable4View implements View {
     }
 
     @Override
+    public void askMoveStud(List<PawnColor> pawnColors, List<Island> islands){
+
+    }
+
+    @Override
     public void askMoveStudToDining(List<PawnColor> pawnColors) {
+        int studentsToMove = 3;
+        boolean validInput = false;
+        out.println("Do you want to move some students in the dining room?");
+        String playerAnswer = readLine.next();
 
     }
 
@@ -289,13 +301,29 @@ public class Cli extends Observable4View implements View {
     @Override
     public void askPlayCharacterCard(List<CharacterCard> characterCards) {
         boolean validInput;
+        /*Forse si potrebbe fare un ciclo di controllo per vedere se si hanno abbastanza monete per giocare una delle 3 carte
+        in modo da non far partire inutilmente la funzione a schermo*/
         out.println("Do you want to use a Character Card?");
         String characterCardAnswer = readLine.next();
         do {
             if (characterCardAnswer.equals("Y")) {
-                //Manda risposta a server e scegli carta da utilizzare e attivane l'effetto
-                out.println("Select one of the three cards (type index):");
-                //Scegli carta e manda la risposta al server
+                boolean validCost = false;
+                do {
+                    //Manda risposta a server e scegli carta da utilizzare e attivane l'effetto
+                    out.println("Select one of the three cards (type index):");
+                    int characterCardIndex = readLine.nextInt();
+                    /*
+                    if (choosenCard.cost <= schoolBoard.getNumCoins()) {
+                        activate effect of the card;
+                        schoolBoard.decreaseNumCoins(choosenCard.cost);
+                        validCost = true;
+                    }
+                    else {
+                        out.println("Can't play this card");
+                    }
+                    */
+
+                } while (!validCost);
                 validInput = true;
             }
             else if (characterCardAnswer.equals("N")) {

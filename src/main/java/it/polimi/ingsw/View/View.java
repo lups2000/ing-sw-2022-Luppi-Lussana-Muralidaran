@@ -30,6 +30,8 @@ public interface View {
 
     void askAssistantCard(List<AssistantCard> assistantCards);
 
+    void askMoveStud (List<PawnColor> pawnColors, List<Island> islands);
+
     void askMoveStudToDining(List<PawnColor> pawnColors);
 
     void askMoveStudToIsland(List<Island> islands);
