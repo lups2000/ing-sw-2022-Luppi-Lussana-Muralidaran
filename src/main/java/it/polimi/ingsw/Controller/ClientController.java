@@ -147,25 +147,19 @@ public class ClientController implements Observer4View, Observer {
      * @return true if the IP address is legit, false if not
      */
     public static boolean okIpAddress(String ip){
-        /*int counter = 0;
-        for(int i=0;i<ip.length();i++){
-            int k=0;
-            int partialIp = 0;
-            while(ip.charAt(i) != '.'){
-                partialIp = partialIp + Character.getNumericValue(ip.charAt(i)) * 10^k;
-                k++;
-            }
-            if(partialIp < 0 || partialIp > 255){
-                return false;
-            }
-            else {
-                counter++;
-            }
-        }
-        return counter == 4;
+        String[] subStrings=ip.split("\\s+");
 
-         */
-        return true;
+        if(subStrings.length==4){
+            for(int i=0;i<4;i++){
+                if(Integer.parseInt(subStrings[i])<0 || Integer.parseInt(subStrings[i])>255){
+                    return false;
+                }
+            }
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /**
