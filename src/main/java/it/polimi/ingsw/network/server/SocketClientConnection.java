@@ -60,6 +60,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     private void handleClientConnection() throws IOException {
 
         Server.LOGGER.info("Client's address is: " + client.getInetAddress());
+        Server.LOGGER.info("Client's port is: " + client.getLocalPort()); //qua stampa la porta sbagliata!!!
 
         try {
             while (!Thread.currentThread().isInterrupted()) {

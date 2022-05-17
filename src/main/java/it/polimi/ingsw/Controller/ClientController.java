@@ -17,6 +17,7 @@ import java.util.concurrent.Executors;
 
 
 /**
+ * This controller is Client Side
  * This class handles all type of messages:
  * - it forwards to the server the ones sent by the client side
  * - it receives the ones arriving from the server side and it forwards them to the client's view
@@ -147,7 +148,7 @@ public class ClientController implements Observer4View, Observer {
      * @return true if the IP address is legit, false if not
      */
     public static boolean okIpAddress(String ip){
-        String[] subStrings=ip.split("\\s+");
+        String[] subStrings=ip.split("\\.");
 
         if(subStrings.length==4){
             for(int i=0;i<4;i++){
