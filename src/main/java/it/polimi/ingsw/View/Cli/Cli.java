@@ -94,11 +94,9 @@ public class Cli extends Observable4View implements View {
             if (inputPort.isEmpty()){ //empty string-->default value
                 validInput =true;
             }
-
             else if(ClientController.okPortNumber(inputPort)){ //input ok
                 validInput = true;
             }
-
             else {
                 out.println(INVALID_INPUT);
                 clearCli();
@@ -123,7 +121,7 @@ public class Cli extends Observable4View implements View {
         out.print("Enter your nickname: ");
         String nickname = readLine.nextLine();
         do {
-            if (nickname.equals("") /*|| ERRORE*/){
+            if (nickname.isEmpty()){
                 out.println(INVALID_INPUT);
                 validInput = false;
             }

@@ -4,9 +4,15 @@ import it.polimi.ingsw.network.Messages.Message;
 
 
 /**
- * Interface to handle clients
+ * Interface to handle the relationship with the clients
  */
 public interface ClientConnection {
+
+    /**
+     * Method to send a message to the client
+     * @param message the message to be sent.
+     */
+    void sendMessageToClient(Message message);
 
     /**
      * Method to verify if a client is currently connected or not
@@ -19,9 +25,4 @@ public interface ClientConnection {
      */
     void disconnect();
 
-    /**
-     * Method to send a message to the client
-     * @param message the message to be sent.
-     */
-    void sendMessageToClient(Message message);
 }

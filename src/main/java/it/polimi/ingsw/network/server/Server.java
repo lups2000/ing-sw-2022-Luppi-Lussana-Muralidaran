@@ -9,75 +9,83 @@ import java.util.logging.Logger;
 
 
 /**
- * Main server class that starts a socket server.
- * It can handle different types of connections.
+ * This class represents the main Server
  */
-
 public class Server {
 
-    private final MainController mainController;
-
-    private final Map<String, ClientConnection> clientsConnected;
-
     public static final Logger LOGGER = Logger.getLogger(Server.class.getName());
-
-    private final Object lock;
+    private final MainController mainController;
+    private final Map<String, ClientConnection> clientsConnected;
+    private final Object locker;
 
     public Server(MainController mainController) {
         this.mainController = mainController;
         this.clientsConnected = Collections.synchronizedMap(new HashMap<>());
-        this.lock = new Object();
+        this.locker = new Object();
     }
 
     /**
-     * Adds a client to be managed by the server
-     *
-     * @param nickname the client's nickname
-     * @param clientConnection the client's connection
+     * This method adds a new Client to the server
+     * @param nickname of the client
+     * @param clientConnection associated to the client
      */
-    public void addClient(String nickname, ClientConnection clientConnection) {
-        VirtualView vv = new VirtualView(clientConnection);
+    public void newClientManager(String nickname, ClientConnection clientConnection) {
+        //instantiate a new virtual view that will be associated to the client
+        VirtualView virtualView = new VirtualView(clientConnection);
 
         /*if (!mainController.isGameStarted()) {
-            if (mainController.checkLoginNickname(nickname, vv)) {
+            if (mainController.checkLoginNickname(nickname, virtualView)) {
                 clientsConnected.put(nickname, clientConnection);
-                mainController.loginToTheNickname(nickname, vv);
+                mainController.loginToTheNickname(nickname, virtualView);
             }
         } else {
-            vv.showLoginResult(true, false, null);
+            virtualView.showLoginResult(true, false, null);
             clientConnection.disconnect();
         }
         */
     }
 
     /**
-     * Removes a client given his nickname
-     *
-     * @param nickname the client's nickname to be removed
-     * @param notifyEnabled set to {@code true} to enable a lobby disconnection message, {@code false} otherwise.
+     * This method returns the nickName of the client that is associated at his client connection
+     * @param clientConnection of the client
+     * @return nickName of the client
      */
-    public void removeClient(String nickname, boolean notifyEnabled) {
-        clientsConnected.remove(nickname);
-        //mainController.removeVirtualView(nickname, notifyEnabled);
-        LOGGER.info(() -> "Removed " + nickname + " from the client list.");
+    private String getNickname(ClientConnection clientConnection) {
+        String nickname = null;
+        for(String nick : clientsConnected.keySet()){
+            if(clientConnection.equals(clientsConnected.get(nick))){
+                nickname = nick;
+                break;
+            }
+        }
+        return nickname;
     }
 
     /**
-     * Forwards a received message from the client to the MainController.
-     *
-     * @param message the message to be forwarded.
+     * This method removes a client from the server
+     * @param nickname the client's nickname to be removed
+     */
+    public void eliminateClientFromServer(String nickname /*, boolean notifyEnabled*/) { //notifyEnable non serve secondo me
+        //removing the client from the Map
+        clientsConnected.remove(nickname);
+        //mainController.removeVirtualView(nickname, notifyEnabled);
+        LOGGER.info(nickname + " has been removed from the list of connected players!");
+    }
+
+    /**
+     * This method forwards a message coming from the client to the MainController
+     * @param message
      */
     public void forwardsMessage(Message message) {
         mainController.messageFromServer(message);
     }
 
     /**
-     * Handles the disconnection of a client
-     *
-     * @param clientConnection the client disconnecting
+     * This class manages the case of disconnection of the client
+     * @param clientConnection associated to the client disconnected
      */
-    public void onDisconnect(ClientConnection clientConnection) {
-        synchronized (lock) {
+    public void disconnectionManager(ClientConnection clientConnection) {
+        synchronized (locker) {
             String nickname = getNickname(clientConnection);
 
             /*if (nickname != null) {
@@ -104,21 +112,4 @@ public class Server {
         }
     }
 
-
-    /**
-     * Returns the client's nickname given his client connection
-     *
-     * @param clientConnection the client connection
-     * @return the corresponding nickname of a client connection
-     */
-    private String getNickname(ClientConnection clientConnection) {
-        String nickname = null;
-        for(String key : clientsConnected.keySet()){
-            if(clientConnection.equals(clientsConnected.get(key))){
-                nickname = key;
-                break;
-            }
-        }
-        return nickname;
-    }
 }

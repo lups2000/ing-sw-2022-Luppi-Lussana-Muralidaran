@@ -174,7 +174,8 @@ public class ClientController implements Observer4View, Observer {
         try {
             int portNumber = Integer.parseInt(port);
             return portNumber >= 1 && portNumber <= 65535;
-        } catch (NumberFormatException e){
+        }
+        catch (NumberFormatException e){
             return false;
         }
     }

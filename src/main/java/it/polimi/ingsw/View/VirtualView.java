@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** This class represents the 'real' view to the Controller. It hides the implementation
- * of the network to the Controller
+ * of the network to the Controller-->Server Side
  * @author Matteo Luppi
  */
 public class VirtualView implements View, Observer {

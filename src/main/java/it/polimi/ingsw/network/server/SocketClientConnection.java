@@ -13,26 +13,27 @@ import java.net.Socket;
  */
 public class SocketClientConnection implements ClientConnection, Runnable {
 
-    private final Socket client;
     private final SocketServer socketServer;
     private boolean isConnected;
+    private final Socket clientSocket;
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
     private final Object inputLock;
     private final Object outputLock;
-    private ObjectOutputStream output;
-    private ObjectInputStream input;
 
 
-    public SocketClientConnection(Socket client,SocketServer socketServer) {
+
+    public SocketClientConnection(Socket clientSocket,SocketServer socketServer) {
         this.socketServer = socketServer;
-        this.client = client;
+        this.clientSocket = clientSocket;
         this.isConnected = true;
 
         this.inputLock = new Object(); // serve?
         this.outputLock = new Object(); // serve?
 
         try {
-            this.output = new ObjectOutputStream(client.getOutputStream());
-            this.input = new ObjectInputStream(client.getInputStream());
+            this.out = new ObjectOutputStream(clientSocket.getOutputStream());
+            this.in = new ObjectInputStream(clientSocket.getInputStream());
         }
         catch (IOException e) {
             Server.LOGGER.severe(e.getMessage());
@@ -46,7 +47,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
             handleClientConnection();
 
         } catch (IOException e) {
-            Server.LOGGER.severe("The connection of the Client " + client.getInetAddress() + " has dropped.");
+            Server.LOGGER.severe("The connection of the Client " + clientSocket.getInetAddress() + " has dropped.");
             disconnect();
             //e.printStackTrace();
         }
@@ -59,8 +60,8 @@ public class SocketClientConnection implements ClientConnection, Runnable {
      */
     private void handleClientConnection() throws IOException {
 
-        Server.LOGGER.info("Client's address is: " + client.getInetAddress());
-        Server.LOGGER.info("Client's port is: " + client.getLocalPort()); //qua stampa la porta sbagliata!!!
+        Server.LOGGER.info("Client's address is: " + clientSocket.getInetAddress());
+        Server.LOGGER.info("Client's port is: " + clientSocket.getLocalPort()); //qua stampa la porta sbagliata!!!
 
         try {
             while (!Thread.currentThread().isInterrupted()) {
@@ -70,7 +71,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
                     //readObject method is used to deserialize the message
                     //this message is received from the client-->method askNickName() in the CLI/GUI
-                    Message message = (Message) input.readObject();
+                    Message message = (Message) in.readObject();
 
                     if (message != null && message.getMessageType() != MessageType.PING) {
                         if (message.getMessageType() == MessageType.REQUEST_LOGIN) {
@@ -87,7 +88,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         catch (ClassCastException | ClassNotFoundException e) {
             Server.LOGGER.severe("Invalid stream from client");
         }
-        client.close();
+        clientSocket.close();
     }
 
     @Override
@@ -102,8 +103,8 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     public void disconnect() {
         if (isConnected) {
             try {
-                if (!client.isClosed()) {
-                    client.close();
+                if (!clientSocket.isClosed()) {
+                    clientSocket.close();
                 }
             } catch (IOException e) {
                 Server.LOGGER.severe(e.getMessage());
@@ -124,8 +125,8 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     public void sendMessageToClient(Message message) {
         try {
             synchronized (outputLock) {
-                output.writeObject(message);
-                output.reset();
+                out.writeObject(message);
+                out.reset();
                 Server.LOGGER.info(() -> "Message Sent: " + message);
             }
         }

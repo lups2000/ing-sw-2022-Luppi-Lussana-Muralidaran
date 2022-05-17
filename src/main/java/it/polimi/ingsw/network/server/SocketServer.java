@@ -5,16 +5,16 @@ import it.polimi.ingsw.network.Messages.Message;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 
 
 /**
- * Socket server that handles all the new socket connection
+ * This class handles the connection with the new client
  */
 public class SocketServer implements Runnable {
+
     private final Server server;
     private final int port;
-    ServerSocket serverSocket;
+    private ServerSocket serverSocket;
 
     public SocketServer(Server server,int port) {
         this.port=port;
@@ -57,7 +57,7 @@ public class SocketServer implements Runnable {
      * @param clientConnection the ClientConnection of the new client
      */
     public void addClient(String nickname, ClientConnection clientConnection) {
-        server.addClient(nickname, clientConnection);
+        server.newClientManager(nickname, clientConnection);
     }
 
     /**
@@ -75,6 +75,6 @@ public class SocketServer implements Runnable {
      * @param clientConnection the ClientConnection of the disconnecting client
      */
     public void onDisconnect(ClientConnection clientConnection) {
-        server.onDisconnect(clientConnection);
+        server.disconnectionManager(clientConnection);
     }
 }
