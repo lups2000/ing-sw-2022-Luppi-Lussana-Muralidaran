@@ -34,11 +34,11 @@ public class SocketServer implements Runnable {
 
         while (!Thread.currentThread().isInterrupted()) {
             try {
-                //to get a connection from the client
+                //wait from a connection of the client
                 Socket client = serverSocket.accept();
 
                 //if data do not arrive from the client, SocketTimeoutException will be thrown
-                client.setSoTimeout(8000);
+                client.setSoTimeout(10000);
 
                 SocketClientConnection socketClientConnection = new SocketClientConnection(client,this);
                 Thread thread = new Thread(socketClientConnection, "SocketServerThread:" + client.getInetAddress());

@@ -5,6 +5,8 @@ import it.polimi.ingsw.network.server.Server;
 import it.polimi.ingsw.network.server.SocketServer;
 
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Application to launch the server
@@ -21,12 +23,15 @@ public class ServerApp {
         catch (IllegalArgumentException e){
             Server.LOGGER.warning("Invalid port!Server available at the default one!");
         }
-
         MainController mainController = new MainController();
         Server server = new Server(mainController);
 
         SocketServer socketServer = new SocketServer(server,serverPort);
         Thread thread = new Thread(socketServer, "SocketServer");
         thread.start();
+
+        /*
+        ExecutorService executor= Executors.newCachedThreadPool();
+        executor.submit(socketServer);*/ //sostituisco?
     }
 }

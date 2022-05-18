@@ -18,8 +18,8 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     private final Socket clientSocket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
-    private final Object inputLock;
-    private final Object outputLock;
+    private final Object inputLock; //lock to be thread safe
+    private final Object outputLock; //lock to be thread safe
 
 
 
@@ -74,11 +74,14 @@ public class SocketClientConnection implements ClientConnection, Runnable {
                     Message message = (Message) in.readObject();
 
                     if (message != null && message.getMessageType() != MessageType.PING) {
+                        //if I receive a message of Type LOGIN
                         if (message.getMessageType() == MessageType.REQUEST_LOGIN) {
                             socketServer.addClient(message.getNickName(), this);
                         }
+                        //other messages that comes from the client
                         else {
-                            Server.LOGGER.info(() -> "Message Received: " + message);
+                            Server.LOGGER.info(() -> "Message Received from "+message.getNickName()+": "+message);
+                            //forwarding the message to the server that sends it to the main controller
                             socketServer.forwardsMessage(message);
                         }
                     }
@@ -88,7 +91,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         catch (ClassCastException | ClassNotFoundException e) {
             Server.LOGGER.severe("Invalid stream from client");
         }
-        clientSocket.close();
+        clientSocket.close(); //when the thread is interrupted
     }
 
     @Override
@@ -104,7 +107,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         if (isConnected) {
             try {
                 if (!clientSocket.isClosed()) {
-                    clientSocket.close();
+                    clientSocket.close(); //close the clientSocket
                 }
             } catch (IOException e) {
                 Server.LOGGER.severe(e.getMessage());
@@ -127,7 +130,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
             synchronized (outputLock) {
                 out.writeObject(message);
                 out.reset();
-                Server.LOGGER.info(() -> "Message Sent: " + message);
+                Server.LOGGER.info(() -> "Message Sent to "+message.getNickName()+": " + message);
             }
         }
         catch (IOException e) {

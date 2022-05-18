@@ -65,12 +65,13 @@ public class Server {
      * This method removes a client from the server
      * @param nickname the client's nickname to be removed
      */
-    public void eliminateClientFromServer(String nickname /*, boolean notifyEnabled*/) { //notifyEnable non serve secondo me
+    public void unregisterClientFromServer(String nickname /*, boolean notifyEnabled*/) { //notifyEnable non serve secondo me
         //removing the client from the Map
         clientsConnected.remove(nickname);
         //mainController.removeVirtualView(nickname, notifyEnabled);
         LOGGER.info(nickname + " has been removed from the list of connected players!");
     }
+
 
     /**
      * This method forwards a message coming from the client to the MainController

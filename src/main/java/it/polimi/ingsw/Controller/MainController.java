@@ -8,6 +8,7 @@ import it.polimi.ingsw.View.VirtualView;
 import it.polimi.ingsw.network.Messages.ClientSide.ExpertVariantReply;
 import it.polimi.ingsw.network.Messages.ClientSide.NumPlayersReply;
 import it.polimi.ingsw.network.Messages.Message;
+import it.polimi.ingsw.network.server.Server;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -48,7 +49,7 @@ public class MainController {
     /**
      * It receives a message from the server
      *
-     * @param message the message received from the server
+     * @param message the message received from the server. The message is related to a particular client
      */
     public void messageFromServer(Message message) {
 
@@ -64,7 +65,6 @@ public class MainController {
                 messageWhilePlaying(message);
                 break;
 
-
             case ENDED:
                 break;
         }
@@ -79,30 +79,36 @@ public class MainController {
      * @param message the message received
      */
     private void messageWhileLogging(Message message) {
+
         switch(message.getMessageType()){
+
             case REPLY_PLAYER_NUM -> {
-                if(messageController.checkNumPlayers(message)){
+                if(messageController.checkNumPlayers(message)){ //message format ok
                     NumPlayersReply numPlayersReply = (NumPlayersReply) message;
                     maxNumPlayers = numPlayersReply.getNumPlayers();
-                    //mostra a tutti un waiting ... (broadcast)
+                    broadcastingMessage("Waiting for players...");
+                }
+                else {
+                    Server.LOGGER.warning("The format of the message sent by the client is incorrect!");
                 }
             }
 
             case REPLY_EXPERT_VARIANT -> {
-                if(messageController.checkExpertVariant(message)){
+                if(messageController.checkExpertVariant(message)){ //message format ok
                     ExpertVariantReply expertVariantReply = (ExpertVariantReply) message;
-                    try {
-                        game.initGame(maxNumPlayers,expertVariantReply.isExpertVariant());
-                    } catch (TooManyPawnsPresent e) {
-                        e.printStackTrace();
-                    } catch (NoPawnPresentException e) {
-                        e.printStackTrace();
-                    }
+
+                    game.initGame(maxNumPlayers,expertVariantReply.isExpertVariant());
+                    broadcastingMessage("Match is starting... Players: "+maxNumPlayers+", "+ "ExpertVariant: " + expertVariantReply.isExpertVariant());
+                    //poi qua forse c'è da mostrare tramite la cli le 12 isole,le scholboards e le clouds
+                }
+                else {
+                    Server.LOGGER.warning("The format of the message sent by the client is incorrect!");
                 }
             }
 
             case REQUEST_ASSISTANT_SEED -> {
-                //game.addplayer();
+                //game.addplayer(); non lo metterei qui!!
+                //aggiungeri i player nel metodo loginToTheGame
             }
         }
     }
@@ -161,6 +167,12 @@ public class MainController {
 
         else{
             virtualView.showLoginPlayers(nickname,true,false);
+        }
+    }
+
+    public void broadcastingMessage(String message){
+        for(VirtualView virtualView : virtualViewsMap.values()){
+            virtualView.showGenericMessage(message);
         }
     }
 }

@@ -27,6 +27,22 @@ public class MessageController implements Serializable {
         this.model = mainController.getGame();
     }
 
+    public boolean messageFromClient(Message message){
+
+        return switch (message.getMessageType()) {
+            case REPLY_PLAYER_NUM -> checkNumPlayers(message);
+            case REPLY_ASSISTANT_SEED -> checkAssistantSeed(message);
+            case REPLY_ASSISTANT_CARD -> checkAssistantCard(message);
+            case REPLY_EXPERT_VARIANT -> checkExpertVariant(message);
+            case REPLY_MOVE_MOTHER_NATURE -> checkMotherNature(message);
+            case REPLY_CLOUD_TILE -> checkCloudTile(message);
+            case REPLY_MOVE_STUD_DINING -> checkStudentToDining(message);
+            case REPLY_MOVE_STUD_ISLAND -> checkStudentToIsland(message);
+            default -> false;
+        };
+    }
+
+
     public boolean checkNickName(String nickName, View view){
         if(!model.isNickNameAvailable(nickName)){ //if the nickName is not available anymore
             view.showGenericMessage("We are sorry but the nickName has been already take!");

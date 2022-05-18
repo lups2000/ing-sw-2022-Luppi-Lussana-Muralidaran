@@ -47,7 +47,7 @@ public class Game {
      * @param max indicates the max number of players chosen at the very start by the first player when he creates the match
      * @param experts indicates if the first player chooses to play the game with the experts variant or not
      */
-    public void initGame(int max,boolean experts) throws TooManyPawnsPresent, NoPawnPresentException {
+    public void initGame(int max,boolean experts){
         if(max<2 || max>4){
             throw new IllegalArgumentException("The number of players must be between 2 and 4!");
         }
@@ -62,7 +62,11 @@ public class Game {
                     //creating 'max' schoolBoards for the game with expert variant
                     schoolBoards.add(i,new SchoolBoard(max,true)); //a schoolboard passo il numero max di studenti e experts=true
                 }
-                pickThreeRandomCards();
+                try {
+                    pickThreeRandomCards();
+                } catch (NoPawnPresentException e) {
+                    e.printStackTrace();
+                }
             }
             else{
                 for(int i=0;i<max;i++){
@@ -73,7 +77,11 @@ public class Game {
             this.cloudTiles = new ArrayList<>();
             for(int i=0;i<max;i++){
                 CloudTile newCloud = new CloudTile(i,max);
-                fillCloudTile(newCloud);
+                try {
+                    fillCloudTile(newCloud);
+                } catch (TooManyPawnsPresent e) {
+                    e.printStackTrace();
+                }
                 cloudTiles.add(i,newCloud);
             }
         }
