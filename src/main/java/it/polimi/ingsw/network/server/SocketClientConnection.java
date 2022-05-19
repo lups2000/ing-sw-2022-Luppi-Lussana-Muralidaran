@@ -130,7 +130,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
             synchronized (outputLock) {
                 out.writeObject(message);
                 out.reset();
-                Server.LOGGER.info(() -> "Message Sent to "+message.getNickName()+": " + message);
+                Server.LOGGER.info(() -> "Message Sent : " + message);
             }
         }
         catch (IOException e) {

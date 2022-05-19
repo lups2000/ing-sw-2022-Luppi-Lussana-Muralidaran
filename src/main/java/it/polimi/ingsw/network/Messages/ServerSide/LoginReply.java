@@ -30,7 +30,7 @@ public class LoginReply extends Message {
     @Override
     public String toString() {
         return "LoginReply{" +
-                "NickName="+getNickName()+
+                "NickName="+getNickName()+", "+
                 "isNickAccepted=" + isNickAccepted +
                 ", isConnAccepted=" + isConnAccepted +
                 '}';

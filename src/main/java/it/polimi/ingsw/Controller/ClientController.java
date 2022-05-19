@@ -49,7 +49,7 @@ public class ClientController implements Observer4View, Observer {
         switch (message.getMessageType()) {
             case REPLY_LOGIN -> {
                 LoginReply loginReply = (LoginReply) message;
-                taskQueue.execute(() -> view.showLoginPlayers(nickname, loginReply.isNickAccepted(), loginReply.isConnAccepted()));
+                taskQueue.execute(() -> view.showLoginInfo(nickname, loginReply.isNickAccepted(), loginReply.isConnAccepted()));
             }
 
             case REQUEST_PLAYER_NUM -> taskQueue.execute(view::askNumPlayers);
@@ -136,7 +136,7 @@ public class ClientController implements Observer4View, Observer {
             //client.activatePing(true);
             taskQueue.execute(view::askNickName);
         } catch (IOException e){
-            taskQueue.execute(() -> view.showLoginPlayers(null,false,false));
+            taskQueue.execute(() -> view.showLoginInfo(null,false,false));
         }
     }
 
@@ -196,7 +196,7 @@ public class ClientController implements Observer4View, Observer {
             //client.activatePing(true);
             taskQueue.execute(view::askNickName);
         } catch (IOException e){
-            taskQueue.execute(() -> view.showLoginPlayers(null,false,false));
+            taskQueue.execute(() -> view.showLoginInfo(null,false,false));
         }
     }
 

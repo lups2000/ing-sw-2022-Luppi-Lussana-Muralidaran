@@ -118,31 +118,37 @@ public class Cli extends Observable4View implements View {
     @Override
     public void askNickName() {
         boolean validInput;
-        out.print("Enter your nickname: ");
-        String nickname = readLine.nextLine();
+        String nickName;
         do {
-            if (nickname.isEmpty()){
+            out.print("Enter your nickname: ");
+            nickName = readLine.nextLine();
+
+            if (nickName.isEmpty()){
                 out.println(INVALID_INPUT);
                 validInput = false;
             }
             else {
-                notifyObserver(obs -> obs.sendNickname(nickname));
                 validInput = true;
                 clearCli();
             }
 
         } while (!validInput);
+        String finalNickName = nickName;
+        notifyObserver(obs -> obs.sendNickname(finalNickName));
     }
 
     @Override
     public void askNumPlayers() {
         boolean validInput;
-        out.print("Insert number of players: ");
-        int playersNumber = readLine.nextInt();
+        int numPlayers;
         do {
-            if (playersNumber == 2 || playersNumber == 3)  {
-                notifyObserver(obs -> obs.sendNumPlayers(playersNumber));
+            out.print("Insert number of players( max: 3) : ");
+            numPlayers = Integer.parseInt(readLine.nextLine());
+
+            if (numPlayers>=2 && numPlayers<=3)  {
                 validInput = true;
+                int finalNumPlayers = numPlayers;
+                notifyObserver(obs->obs.sendNumPlayers(finalNumPlayers));
             }
             else {
                 out.println(INVALID_INPUT);
@@ -155,7 +161,7 @@ public class Cli extends Observable4View implements View {
 
     @Override
     public void askAssistantSeed(List<AssistantSeed> assistantSeedAvailable) {
-        AssistantSeed assistantSeedChosen;
+        AssistantSeed assistantSeedChosen = null;
         int id;
         boolean validInput;
         if(assistantSeedAvailable.size()>=1){
@@ -169,7 +175,7 @@ public class Cli extends Observable4View implements View {
                     }
                 }
                 System.out.println(" )");
-                id= readLine.nextInt();
+                id= Integer.parseInt(readLine.nextLine());
 
                 if(id<=0 || id>assistantSeedAvailable.size()){
                     out.println(INVALID_INPUT);
@@ -178,10 +184,10 @@ public class Cli extends Observable4View implements View {
                 else{
                     assistantSeedChosen=assistantSeedAvailable.get(id-1);
                     validInput=true;
-                    AssistantSeed finalAssistantSeedChosen = assistantSeedChosen;
-                    notifyObserver(obs -> obs.sendAssistantSeed(finalAssistantSeedChosen));
                 }
             }while (!validInput);
+            AssistantSeed finalAssistantSeedChosen = assistantSeedChosen;
+            notifyObserver(obs -> obs.sendAssistantSeed(finalAssistantSeedChosen));
         }
         else{
             showError("No seeds available!");
@@ -235,7 +241,7 @@ public class Cli extends Observable4View implements View {
         int studentsToMove = 3;
         boolean validInput = false;
         out.println("Do you want to move some students in the dining room?");
-        String playerAnswer = readLine.next();
+        String playerAnswer = readLine.nextLine();
 
     }
 
@@ -289,11 +295,17 @@ public class Cli extends Observable4View implements View {
     @Override
     public void askExpertVariant() {
         boolean validInput;
-        out.println("Do you want to play the expert variant of the game? Y/N");
-        String expertVariantAnswer = readLine.next();
+        boolean expertVariant=false;
+        out.print("Do you want to play the expert variant of the game? Y/N  ");
+        String expertVariantAnswer = readLine.nextLine();
         do {
-            if (expertVariantAnswer.equals("Y") || expertVariantAnswer.equals("N")) {
-                //Manda risposta a server
+            if (expertVariantAnswer.equalsIgnoreCase("y") || expertVariantAnswer.equalsIgnoreCase("n")) {
+                if(expertVariantAnswer.equalsIgnoreCase("y")){
+                    expertVariant=true;
+                }
+                else{
+                    expertVariant=false;
+                }
                 validInput = true;
             }
             else {
@@ -302,6 +314,8 @@ public class Cli extends Observable4View implements View {
                 validInput = false;
             }
         } while (!validInput);
+        boolean finalExpertVariant = expertVariant;
+        notifyObserver(obs->obs.sendExpertVariant(finalExpertVariant));
     }
 
     @Override
@@ -310,7 +324,7 @@ public class Cli extends Observable4View implements View {
         /*Forse si potrebbe fare un ciclo di controllo per vedere se si hanno abbastanza monete per giocare una delle 3 carte
         in modo da non far partire inutilmente la funzione a schermo*/
         out.println("Do you want to use a Character Card?");
-        String characterCardAnswer = readLine.next();
+        String characterCardAnswer = readLine.nextLine();
         do {
             if (characterCardAnswer.equals("Y")) {
                 boolean validCost = false;
@@ -402,7 +416,7 @@ public class Cli extends Observable4View implements View {
     }
 
     @Override
-    public void showLoginPlayers(String nickName, boolean nickNameOk, boolean connectionOk) {
+    public void showLoginInfo(String nickName, boolean nickNameOk, boolean connectionOk) {
         clearCli();
 
         if(nickNameOk && connectionOk){

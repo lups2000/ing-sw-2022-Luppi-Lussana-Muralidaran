@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Model.CharacterCards.*;
 import it.polimi.ingsw.Model.Exceptions.*;
+import it.polimi.ingsw.network.server.Server;
 
 import java.util.*;
 
@@ -31,7 +32,7 @@ public class Game {
 
     public Game(){
         this.players = new ArrayList<>();
-        this.status = GameState.CREATING;
+        this.status = GameState.PLAYING;
         this.seedsAvailable=new ArrayList<>(Arrays.asList(AssistantSeed.KING,AssistantSeed.SAMURAI,AssistantSeed.WITCH,AssistantSeed.MAGICIAN));
         this.islands = new ArrayList<>();
         fillIslands();
@@ -92,7 +93,8 @@ public class Game {
      * @param nickname is the nickname the player chooses when he registers himself
      * @param chosenSeed is the wizard selected by this player for the choice of the assistant cards' deck
      */
-    public void addPlayer(String nickname,AssistantSeed chosenSeed) throws TooManyPawnsPresent {
+    public void addPlayer(String nickname,AssistantSeed chosenSeed){
+
         if(!seedsAvailable.contains(chosenSeed)){
             throw new IllegalArgumentException("The seed has already been chosen!");
         }
@@ -103,7 +105,11 @@ public class Game {
             Player newPlayer = new Player(players.size(),nickname,chosenSeed,schoolBoards.get(players.size())); //gli passo la schoolBoard,index playersize()
             players.add(players.size(),newPlayer);
             seedsAvailable.remove(chosenSeed);
-            fillBoard(newPlayer);
+            try {
+                fillBoard(newPlayer);
+            } catch (TooManyPawnsPresent e) {
+                e.printStackTrace();
+            }
             if(players.size() == 1){
                 //at the first round we decide by default that the first player will be the first to log in the game
                 firstPlayer = newPlayer;
@@ -129,6 +135,7 @@ public class Game {
     public int getMotherNature() {return motherNature;}
     public Map<Player, AssistantCard> getCurrentHand() {return currentHand;}
     public int getMaxNumPlayers() {return maxNumPlayers;}
+    public void setMaxNumPlayers(int maxNumPlayers) {this.maxNumPlayers = maxNumPlayers;}
 
     /**
      * method invoked one time for each player at the start of the game that fills his school board

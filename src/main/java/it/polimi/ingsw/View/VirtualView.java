@@ -108,7 +108,7 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void showLoginPlayers(String nickName, boolean nickNameOk, boolean connectionOk) {
+    public void showLoginInfo(String nickName, boolean nickNameOk, boolean connectionOk) {
         clientConnection.sendMessageToClient(new LoginReply(nickNameOk,connectionOk));
     }
 

@@ -56,7 +56,7 @@ public interface View {
 
     void showLoseMessage(Player looser);
 
-    void showLoginPlayers(String nickName,boolean nickNameOk,boolean connectionOk);
+    void showLoginInfo(String nickName,boolean nickNameOk,boolean connectionOk);
 
     void showMatchInfo(ArrayList<Player> players,boolean experts,int numPlayers);
 

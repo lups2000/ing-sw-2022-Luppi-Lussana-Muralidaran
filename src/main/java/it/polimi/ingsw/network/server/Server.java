@@ -33,16 +33,19 @@ public class Server {
         //instantiate a new virtual view that will be associated to the client
         VirtualView virtualView = new VirtualView(clientConnection);
 
-        /*if (!mainController.isGameStarted()) {
-            if (mainController.checkLoginNickname(nickname, virtualView)) {
-                clientsConnected.put(nickname, clientConnection);
-                mainController.loginToTheNickname(nickname, virtualView);
-            }
-        } else {
-            virtualView.showLoginResult(true, false, null);
+        if(mainController.isGameStarted()){ //if the match has already started-->the client must disconnect
+            virtualView.showLoginInfo(null,true,false);
             clientConnection.disconnect();
         }
-        */
+        else { //the client has possibilities to connect to the match
+            if(mainController.getMessageController().checkNickName(nickname,virtualView)){ //nickName ok
+                clientsConnected.put(nickname, clientConnection);
+                mainController.loginToTheGame(nickname,virtualView);
+            }
+            else{
+                clientConnection.disconnect();
+            }
+        }
     }
 
     /**
