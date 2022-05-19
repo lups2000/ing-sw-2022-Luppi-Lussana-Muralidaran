@@ -29,7 +29,7 @@ public class Client extends Observable {
     private final ObjectOutputStream outputStm;
     private final ObjectInputStream inputStm;
     private final ExecutorService readExecutionQueue;
-    private final ScheduledExecutorService pinger;
+    private final ScheduledExecutorService pingSignal;
 
     private static final int SOCKET_TIMEOUT = 10000;
 
@@ -39,7 +39,7 @@ public class Client extends Observable {
         this.outputStm = new ObjectOutputStream(socket.getOutputStream());
         this.inputStm = new ObjectInputStream(socket.getInputStream());
         this.readExecutionQueue = Executors.newSingleThreadExecutor();
-        this.pinger = Executors.newSingleThreadScheduledExecutor();
+        this.pingSignal = Executors.newSingleThreadScheduledExecutor();
     }
 
     /**
@@ -57,7 +57,6 @@ public class Client extends Observable {
                     message = new Error( "Connection lost with the server.");
                     disconnect();
                     readExecutionQueue.shutdownNow();
-                    e.printStackTrace();
                 }
                 notifyObserver(message);
             }
@@ -86,7 +85,7 @@ public class Client extends Observable {
         try {
             if (!socket.isClosed()) {
                 readExecutionQueue.shutdownNow();
-                //activatePing(false);
+                sendPingMessage(false); //deactivate ping messages
                 socket.close();
             }
         } catch (IOException e) {
@@ -95,16 +94,14 @@ public class Client extends Observable {
     }
 
     /**
-     * Enable a heartbeat (ping messages) between client and server sockets to keep the connection alive.
-     *
-     * @param isActive set this argument to {@code true} to enable the heartbeat.
-     *                set to {@code false} to kill the heartbeat.
-
-    public void activatePing(boolean isActive) {
+     * This method enables to keep the connection activated between the client and the server
+     * @param isActive true/false to activate the ping signals
+    */
+    public void sendPingMessage(boolean isActive) {
         if (isActive) {
-            pinger.scheduleAtFixedRate(() -> sendMessage(new Ping()), 0, 1000, TimeUnit.MILLISECONDS);
+            pingSignal.scheduleAtFixedRate(() -> sendMessage(new Ping()), 0, 1000, TimeUnit.MILLISECONDS);
         } else {
-            pinger.shutdownNow();
+            pingSignal.shutdownNow();
         }
-    }*/
+    }
 }

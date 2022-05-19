@@ -133,7 +133,7 @@ public class ClientController implements Observer4View, Observer {
             client = new Client(serverAddressAndPort.get("address"), Integer.parseInt(serverAddressAndPort.get("port")));
             client.addObserver(this);
             client.readMessage();
-            //client.activatePing(true);
+            client.sendPingMessage(true);
             taskQueue.execute(view::askNickName);
         } catch (IOException e){
             taskQueue.execute(() -> view.showLoginInfo(null,false,false));
@@ -193,7 +193,7 @@ public class ClientController implements Observer4View, Observer {
             client = new Client(ip, Integer.parseInt(port)); //no NumberFormatException checks needed because we already did them
             client.addObserver(this);
             client.readMessage();
-            //client.activatePing(true);
+            client.sendPingMessage(true);
             taskQueue.execute(view::askNickName);
         } catch (IOException e){
             taskQueue.execute(() -> view.showLoginInfo(null,false,false));

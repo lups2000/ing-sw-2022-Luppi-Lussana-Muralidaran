@@ -61,7 +61,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     private void handleClientConnection() throws IOException {
 
         Server.LOGGER.info("Client's address is: " + clientSocket.getInetAddress());
-        Server.LOGGER.info("Client's port is: " + clientSocket.getLocalPort()); //qua stampa la porta sbagliata!!!
+        Server.LOGGER.info("Client's port is: " + clientSocket.getLocalPort());
 
         try {
             while (!Thread.currentThread().isInterrupted()) {
@@ -80,7 +80,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
                         }
                         //other messages that comes from the client
                         else {
-                            Server.LOGGER.info(() -> "Message Received from "+message.getNickName()+": "+message);
+                            Server.LOGGER.info(() -> "Message Received from " + message.getNickName() + ": "+message);
                             //forwarding the message to the server that sends it to the main controller
                             socketServer.forwardsMessage(message);
                         }

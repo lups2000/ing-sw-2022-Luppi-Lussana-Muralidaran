@@ -45,7 +45,7 @@ public class MessageController implements Serializable {
 
     public boolean checkNickName(String nickName, View view){
         if(!model.isNickNameAvailable(nickName)){ //if the nickName is not available anymore
-            view.showGenericMessage("We are sorry but the nickName has been already take!");
+            view.showGenericMessage("We are sorry but the nickName has been already taken!");
             view.showLoginInfo(null,false,true);
             return false;
         }

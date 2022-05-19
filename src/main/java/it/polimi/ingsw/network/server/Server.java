@@ -43,7 +43,7 @@ public class Server {
                 mainController.loginToTheGame(nickname,virtualView);
             }
             else{
-                clientConnection.disconnect();
+                virtualView.askNickName();
             }
         }
     }
