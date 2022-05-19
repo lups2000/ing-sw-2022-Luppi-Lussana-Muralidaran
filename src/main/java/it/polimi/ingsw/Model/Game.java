@@ -24,7 +24,7 @@ public class Game {
     private int noEntryTilesCounter; //counter used in the PutNoEntryTiles character card
     private List<CloudTile> cloudTiles; //2-4
     private Player firstPlayer;
-    private List<SchoolBoard> schoolBoards;
+    //private List<SchoolBoard> schoolBoards;
     private boolean noCountTower;   //flag used for the NoCountTower character card
     private PawnColor noColorInfluence; //used for the NoColorInfluence character card
     private Map<Player,AssistantCard> currentHand;    //list for the assistant cards chosen in this turn
@@ -38,7 +38,7 @@ public class Game {
         fillIslands();
         this.studentBag = new StudentBag();
         this.motherNature = 0;
-        this.schoolBoards=new ArrayList<>();
+        //this.schoolBoards=new ArrayList<>();
         this.characterCards=new ArrayList<>();
         this.currentHand = new HashMap();
     }
@@ -61,7 +61,13 @@ public class Game {
                 this.noColorInfluence = null;
                 for(int i=0;i<max;i++){
                     //creating 'max' schoolBoards for the game with expert variant
-                    schoolBoards.add(i,new SchoolBoard(max,true)); //a schoolboard passo il numero max di studenti e experts=true
+                    players.get(i).setSchoolBoard(new SchoolBoard(max,true));
+                    try {
+                        fillBoard(players.get(i));
+                    } catch (TooManyPawnsPresent e) {
+                        e.printStackTrace();
+                    }
+                    //schoolBoards.add(i,new SchoolBoard(max,true)); //a schoolboard passo il numero max di studenti e experts=true
                 }
                 try {
                     pickThreeRandomCards();
@@ -72,7 +78,13 @@ public class Game {
             else{
                 for(int i=0;i<max;i++){
                     //creating 'max' schoolBoards for the game with no expert variant
-                    schoolBoards.add(i,new SchoolBoard(max,false)); //a schoolboard passo il numero max di studenti e experts=true
+                    players.get(i).setSchoolBoard(new SchoolBoard(max,false));
+                    try {
+                        fillBoard(players.get(i));
+                    } catch (TooManyPawnsPresent e) {
+                        e.printStackTrace();
+                    }
+                    //schoolBoards.add(i,new SchoolBoard(max,false)); //a schoolboard passo il numero max di studenti e experts=true
                 }
             }
             this.cloudTiles = new ArrayList<>();
@@ -88,11 +100,20 @@ public class Game {
         }
     }
 
-    /**
+    public void addPlayer(String nickName){
+        Player newPlayer = new Player(players.size(),nickName); //gli passo la schoolBoard,index playersize()
+        players.add(players.size(),newPlayer);
+
+        if(players.size() == 1){
+            //at the first round we decide by default that the first player will be the first to log in the game
+            firstPlayer = newPlayer;
+        }
+    }
+
+    /*
      * method invoked every time a new player tries to connect with the server
      * @param nickname is the nickname the player chooses when he registers himself
      * @param chosenSeed is the wizard selected by this player for the choice of the assistant cards' deck
-     */
     public void addPlayer(String nickname,AssistantSeed chosenSeed){
 
         if(!seedsAvailable.contains(chosenSeed)){
@@ -116,13 +137,14 @@ public class Game {
             }
         }
     }
+     */
 
     public GameState getStatus() {return status;}
     public List<Player> getPlayers() {return players;}
     public boolean getExpertsVariant(){return expertsVariant;}
     public void changeStatus(GameState status){this.status = status;}
     public StudentBag getStudentBag() {return studentBag;}
-    public List<SchoolBoard> getSchoolBoards() {return schoolBoards;}
+    //public List<SchoolBoard> getSchoolBoards() {return schoolBoards;}
     public List<CloudTile> getCloudTiles() {return cloudTiles;}
     public void setNoCountTower(){this.noCountTower = true;}
     public void setNoColorInfluence(PawnColor picked){this.noColorInfluence = picked;}

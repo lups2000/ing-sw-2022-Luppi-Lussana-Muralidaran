@@ -23,9 +23,9 @@ public class Player {
      * constructor of the Player class
      * @param id is the id given to every player (the first to register will be given id=0 and so on)
      * @param nickname is the nickname the player chooses when he registers himself
-     * @param seed is the wizard selected by this player for the choice of the assistant cards' deck
+     // * @param seed is the wizard selected by this player for the choice of the assistant cards' deck
      */
-    public Player(int id,String nickname,AssistantSeed seed,SchoolBoard schoolBoard){
+    public Player(int id,String nickname/*,AssistantSeed seed,SchoolBoard schoolBoard*/){
         this.id = id;
         this.nickname = nickname;
         switch (id) {
@@ -34,8 +34,8 @@ public class Player {
             case 2 -> this.colorTower = ColorTower.GRAY;
         }
         this.playerStatus = PlayerStatus.WAITING;
-        this.schoolBoard = schoolBoard;
-        this.deckAssistantCard = new DeckAssistantCard(seed);
+        //this.schoolBoard = schoolBoard;
+        //this.deckAssistantCard = new DeckAssistantCard(seed);
         this.twoAdditionalPoints = false;
         this.controlOnProfessor = false;
     }
@@ -49,6 +49,7 @@ public class Player {
     public SchoolBoard getSchoolBoard() {return schoolBoard;}
     public DeckAssistantCard getDeckAssistantCard() {return deckAssistantCard;}
     public void setStatus(PlayerStatus newStatus){this.playerStatus = newStatus;}
+    public void setSchoolBoard(SchoolBoard schoolBoard) {this.schoolBoard = schoolBoard;}
     public void setTwoAdditionalPoints(boolean next){this.twoAdditionalPoints = next;}
     public boolean isTwoAdditionalPoints(){return this.twoAdditionalPoints;}
     public boolean getControlOnProfessor(){return this.controlOnProfessor;}
@@ -64,5 +65,8 @@ public class Player {
                 picked.put(pawnColor,picked.get(pawnColor)-1);
             }
         }
+    }
+    public void chooseDeck(AssistantSeed assistantSeed){
+        this.deckAssistantCard=new DeckAssistantCard(assistantSeed);
     }
 }

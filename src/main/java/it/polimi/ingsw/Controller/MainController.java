@@ -29,7 +29,6 @@ public class MainController {
     private GameState gameState;
     private int maxNumPlayers;
     private boolean expertVariant;
-    private AssistantSeed assistantSeedChosen;
 
     public MainController(){
         this.game = new Game();
@@ -94,7 +93,7 @@ public class MainController {
                 if(messageController.checkNumPlayers(message)){ //message format ok
                     NumPlayersReply numPlayersReply = (NumPlayersReply) message;
                     maxNumPlayers = numPlayersReply.getNumPlayers(); //save the max number of players
-                    game.setMaxNumPlayers(maxNumPlayers); //brutto ma se no non posso aggiungere i player prima di fare initGame
+                    //game.setMaxNumPlayers(maxNumPlayers); //brutto ma se no non posso aggiungere i player prima di fare initGame
                     broadcastingMessage("Waiting for players...");
                 }
                 else {
@@ -115,7 +114,8 @@ public class MainController {
             case REPLY_ASSISTANT_SEED -> {
                 if(messageController.checkAssistantSeed(message)){ //message format ok
                     AssistantSeedReply assistantSeedReply=(AssistantSeedReply) message;
-                    assistantSeedChosen=assistantSeedReply.getAssistantSeed();
+                    game.getPlayerByNickName(message.getNickName()).chooseDeck(assistantSeedReply.getAssistantSeed());
+                    game.getSeedsAvailable().remove(assistantSeedReply.getAssistantSeed()); //removing the seed chosen from the list
                 }
                 else{
                     Server.LOGGER.warning("The format of the message sent by the client is incorrect!");
@@ -154,20 +154,22 @@ public class MainController {
             //        game.addObserver(virtualView);
             //        game.getBoard().addObserver(virtualView);
             virtualView.showLoginInfo("SERVER",true,true);
+            game.addPlayer(nickname);
 
             virtualView.askNumPlayers();
             virtualView.askExpertVariant();
             virtualView.askAssistantSeed(game.getSeedsAvailable());
-            addPlayerToMatch(nickname,assistantSeedChosen); //errore qua che gli passo null come seed
+            //addPlayerToMatch(nickname,assistantSeedChosen); //errore qua che gli passo null come seed
         }
         else if(virtualViewsMap.size() < game.getMaxNumPlayers()){
             virtualViewsMap.put(nickname,virtualView);
             //        game.addObserver(virtualView);
             //        game.getBoard().addObserver(virtualView);
+            game.addPlayer(nickname);
 
             virtualView.showLoginInfo("SERVER",true,true);
             virtualView.askAssistantSeed(game.getSeedsAvailable());
-            addPlayerToMatch(nickname,assistantSeedChosen);
+            //addPlayerToMatch(nickname,assistantSeedChosen);
 
             if(game.getPlayers().size() == game.getMaxNumPlayers()){    //all the required players logged
                 //the match can start
@@ -189,14 +191,14 @@ public class MainController {
         //poi qua forse c'è da mostrare tramite la cli le 12 isole,le scholboards e le clouds -->matchInfo
         this.setGameState(game.getStatus()); //gameStatus==PLAYING set in the model
     }
-
+    /*
     private void addPlayerToMatch(String nickName,AssistantSeed assistantSeedChosen){
 
         game.addPlayer(nickName,assistantSeedChosen);
         //I do not have to remove the seed from the list because the model do it
         virtualViewsMap.get(nickName).showGenericMessage("You have chosen "+ assistantSeedChosen+" as AssistantSeed");
         broadcastingMessageExceptOne(nickName+" has chosen "+assistantSeedChosen+" as AssistantSeed",nickName);
-    }
+    }*/
 
     public void broadcastingMessage(String message){
         for(VirtualView virtualView : virtualViewsMap.values()){

@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
     SchoolBoard schoolBoard=new SchoolBoard(3,false);
-    Player player=new Player(2,"Teo",AssistantSeed.KING,schoolBoard);
+    Player player=new Player(2,"Teo");
 
     @Test
     @DisplayName("getNickname")
@@ -41,11 +41,6 @@ class PlayerTest {
         assertEquals(player.getColorTower(),ColorTower.GRAY);
     }
 
-    @Test
-    @DisplayName("getSchoolBoard")
-    void getSchoolBoard() {
-        assertEquals(player.getSchoolBoard(),schoolBoard);
-    }
 
     @Test
     @DisplayName("setPlayerStatus")
@@ -69,12 +64,6 @@ class PlayerTest {
     }
 
     @Test
-    @DisplayName("getAssistantDeck")
-    void getAssistantDeck(){
-        assertEquals(player.getDeckAssistantCard().getSeed(),AssistantSeed.KING);
-    }
-
-    @Test
     @DisplayName("getControlOnProfessor")
     void getControlOnProfessor(){
         assertFalse(player.getControlOnProfessor());
@@ -92,9 +81,11 @@ class PlayerTest {
     @DisplayName("pickCloudTile")
     void pickCloudTile() throws TooManyPawnsPresent, NoPawnPresentException {
         Game game = new Game();
+        game.addPlayer("Paolo");
+        game.addPlayer("Teo");
         game.initGame(2,true);
-        game.addPlayer("Paolo",AssistantSeed.MAGICIAN);
-
+        game.getPlayers().get(0).chooseDeck(AssistantSeed.MAGICIAN);
+        game.getPlayers().get(0).setSchoolBoard(new SchoolBoard(2,true));
         for(PawnColor pawnColor: PawnColor.values()){
             while(game.getPlayers().get(0).getSchoolBoard().getStudentsWaiting().get(pawnColor)>0){
                 game.getPlayers().get(0).getSchoolBoard().moveStudToDining(pawnColor);

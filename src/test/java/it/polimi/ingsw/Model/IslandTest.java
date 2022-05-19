@@ -59,8 +59,10 @@ class IslandTest {
     @Test
     @DisplayName("computeInfluence")
     void computeTotalInfluence() throws TooManyPawnsPresent, NoPawnPresentException {
-        Player player1 = new Player(0, "matteo", AssistantSeed.KING, new SchoolBoard(2, false));
-        Player player2 = new Player(1, "paolo", AssistantSeed.WITCH, new SchoolBoard(2, false));
+        Player player1 = new Player(0, "matteo");
+        Player player2 = new Player(1, "paolo");
+        player1.setSchoolBoard(new SchoolBoard(2, false));
+        player2.setSchoolBoard(new SchoolBoard(2, false));
 
         //player1 has the RED professor,while player 2 the BLUE one
         player1.getSchoolBoard().addProfessor(PawnColor.RED);

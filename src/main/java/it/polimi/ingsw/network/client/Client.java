@@ -49,7 +49,7 @@ public class Client extends Observable {
         readExecutionQueue.execute(() -> {
 
             while (!readExecutionQueue.isShutdown()) {
-                Message message;
+                Message message = null;
                 try {
                     message = (Message) inputStm.readObject();
                     Client.LOGGER.info("Received: " + message);
@@ -57,6 +57,7 @@ public class Client extends Observable {
                     message = new Error( "Connection lost with the server.");
                     disconnect();
                     readExecutionQueue.shutdownNow();
+                    e.printStackTrace();
                 }
                 notifyObserver(message);
             }

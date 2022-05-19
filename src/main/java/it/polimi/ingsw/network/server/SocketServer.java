@@ -35,6 +35,7 @@ public class SocketServer implements Runnable {
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 //wait from a connection of the client
+                System.out.println("Waiting for players...");
                 Socket client = serverSocket.accept();
 
                 //if data do not arrive from the client, SocketTimeoutException will be thrown
