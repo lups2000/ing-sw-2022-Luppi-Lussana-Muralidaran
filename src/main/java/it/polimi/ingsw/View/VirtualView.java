@@ -2,6 +2,8 @@ package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
+import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
+import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.network.Messages.ServerSide.Error;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.ServerSide.*;
@@ -48,17 +50,18 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void askMoveStud(List<PawnColor> pawnColors, List<Island> islands) {
+    public void askMoveStud(List<PawnColor> pawnColors, List<Island> islands, SchoolBoard schoolBoard) throws TooManyPawnsPresent, NoPawnPresentException {
 
     }
 
     @Override
-    public void askMoveStudToDining(List<PawnColor> pawnColors) {
+    public int askMoveStudToDining(List<PawnColor> pawnColors, SchoolBoard schoolBoard, int studentsToMove) throws TooManyPawnsPresent {
         clientConnection.sendMessageToClient(new StudentToDiningRequest(pawnColors));
+        return 0;
     }
 
     @Override
-    public void askMoveStudToIsland(List<Island> islands) {
+    public void askMoveStudToIsland(List<Island> islands, SchoolBoard schoolBoard, int studentsToMove) throws NoPawnPresentException {
         clientConnection.sendMessageToClient(new StudentToIslandRequest(islands));
     }
 
@@ -115,6 +118,16 @@ public class VirtualView implements View, Observer {
     @Override
     public void showMatchInfo(ArrayList<Player> players, boolean experts, int numPlayers) {
         clientConnection.sendMessageToClient(new InfoMatch(players,experts,numPlayers));
+    }
+
+    @Override
+    public void askMoveStudToIsland(List<Island> islands) {
+
+    }
+
+    @Override
+    public void askMoveStudToDining(List<PawnColor> pawnColors) {
+
     }
 
     @Override

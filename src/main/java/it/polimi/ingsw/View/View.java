@@ -2,6 +2,8 @@ package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
+import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
+import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +32,11 @@ public interface View {
 
     void askAssistantCard(List<AssistantCard> assistantCards);
 
-    void askMoveStud (List<PawnColor> pawnColors, List<Island> islands);
+    void askMoveStud (List<PawnColor> pawnColors, List<Island> islands, SchoolBoard schoolBoard) throws TooManyPawnsPresent, NoPawnPresentException;
 
-    void askMoveStudToDining(List<PawnColor> pawnColors);
+    int askMoveStudToDining(List<PawnColor> pawnColors, SchoolBoard schoolBoard, int studentsToMove) throws TooManyPawnsPresent;
 
-    void askMoveStudToIsland(List<Island> islands);
+    void askMoveStudToIsland(List<Island> islands, SchoolBoard schoolBoard, int studentsToMove) throws NoPawnPresentException;
 
     void askMoveMotherNature(List<Island> islands);
 
@@ -60,4 +62,7 @@ public interface View {
 
     void showMatchInfo(ArrayList<Player> players,boolean experts,int numPlayers);
 
+    void askMoveStudToIsland(List<Island> islands);
+
+    void askMoveStudToDining(List<PawnColor> pawnColors);
 }

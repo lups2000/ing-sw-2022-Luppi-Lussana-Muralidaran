@@ -7,6 +7,8 @@ package it.polimi.ingsw.View.Cli;
 import it.polimi.ingsw.Controller.ClientController;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
+import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
+import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.observer.Observable4View;
 
@@ -232,22 +234,51 @@ public class Cli extends Observable4View implements View {
     }
 
     @Override
-    public void askMoveStud(List<PawnColor> pawnColors, List<Island> islands){
-
-    }
-
-    @Override
-    public void askMoveStudToDining(List<PawnColor> pawnColors) {
+    public void askMoveStud(List<PawnColor> pawnColors, List<Island> islands, SchoolBoard schoolBoard) throws TooManyPawnsPresent, NoPawnPresentException {
         int studentsToMove = 3;
         boolean validInput = false;
-        out.println("Do you want to move some students in the dining room?");
+        out.println("Do you want to move some students in the dining room? Y/N");
         String playerAnswer = readLine.nextLine();
+        do {
+            if (playerAnswer.equals("Y")){
+                askMoveStudToDining(pawnColors, schoolBoard, studentsToMove);
+            }
+            else if (studentsToMove > 0){
+                askMoveStudToIsland(islands, schoolBoard, studentsToMove);
+            }
+        } while (!validInput);
 
     }
 
     @Override
-    public void askMoveStudToIsland(List<Island> islands) {
+    public int askMoveStudToDining(List<PawnColor> pawnColors, SchoolBoard schoolBoard, int studentsToMove) throws TooManyPawnsPresent {
+        PawnColor color = null;
+        String playerAnswer = null;
+        boolean validInput = false;
+        do {
+            //fare ciclo per scegliere il colore e messaggio di errore nel caso non fosse disponibile
+            schoolBoard.addStudToDining(color);
+            studentsToMove--;
+            if (studentsToMove > 0) {
+                out.println("Do you want to move another student to the dining room? Y/N");
+                playerAnswer = readLine.next();
+            }
+            else if (studentsToMove == 0) {
+                validInput = true;
+            }
+        } while (playerAnswer.equals("Y") || !validInput);
+        return studentsToMove;
+    }
 
+    @Override
+    public void askMoveStudToIsland(List<Island> islands, SchoolBoard schoolBoard, int studentsToMove) throws NoPawnPresentException {
+        PawnColor color = null;
+        Island island = null;
+        while (studentsToMove > 0) {
+            //ciclo for con elenco e degli studenti per far selezionare lo studente e l'isola in questione
+            schoolBoard.moveStudToIsland(color, island);
+            studentsToMove--;
+        }
     }
 
     @Override
@@ -448,5 +479,15 @@ public class Cli extends Observable4View implements View {
         }
         out.println(" ) "+players.size()+" / "+numPlayers);
         out.println("#Expert Variant: "+experts);
+    }
+
+    @Override
+    public void askMoveStudToIsland(List<Island> islands) {
+
+    }
+
+    @Override
+    public void askMoveStudToDining(List<PawnColor> pawnColors) {
+
     }
 }
