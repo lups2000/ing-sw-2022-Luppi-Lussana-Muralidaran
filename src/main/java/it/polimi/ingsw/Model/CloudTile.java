@@ -44,9 +44,10 @@ public class CloudTile {
 
     /**
      * when a player chooses a cloud tile at the end of his round
+     *
      * @return all the students presents on this cloud tile
      */
-    public Map<PawnColor,Integer> pickStudent(){
+    public Map<PawnColor,Integer> pickStudents(){
         Map<PawnColor,Integer> picked = new HashMap<>();
         picked.putAll(students);
         students.put(PawnColor.RED,0);

@@ -442,8 +442,8 @@ public class Cli extends Observable4View implements View {
     }
 
     @Override
-    public void showLoseMessage(Player looser) {
-        out.println("Sorry "+looser.getNickname()+" you have lost the game!Game finished.");
+    public void showLoseMessage(Player winner) {
+        out.println("Sorry, you have lost the game! \nThe winner is " + winner.getNickname() + "\nGame finished.");
         System.exit(0);
     }
 

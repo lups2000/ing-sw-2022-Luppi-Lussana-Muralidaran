@@ -21,6 +21,7 @@ public class Player {
 
     /**
      * constructor of the Player class
+     *
      * @param id is the id given to every player (the first to register will be given id=0 and so on)
      * @param nickname is the nickname the player chooses when he registers himself
      // * @param seed is the wizard selected by this player for the choice of the assistant cards' deck
@@ -57,7 +58,7 @@ public class Player {
     public AssistantCard getCurrentAssistant(){return this.currentAssistant;}
     public void pickAssistantCard(AssistantCard picked)throws IllegalArgumentException,IllegalStateException{currentAssistant = deckAssistantCard.pick(picked);}
     public void pickCloudTile(CloudTile cloudTile) throws TooManyPawnsPresent {
-        Map<PawnColor,Integer> picked=cloudTile.pickStudent();
+        Map<PawnColor,Integer> picked=cloudTile.pickStudents();
 
         for(PawnColor pawnColor : PawnColor.values()){
             while(picked.get(pawnColor)>0){

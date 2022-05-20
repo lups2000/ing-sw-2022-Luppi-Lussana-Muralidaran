@@ -24,8 +24,10 @@ public class Server {
         this.locker = new Object();
     }
 
+
     /**
      * This method adds a new Client to the server
+     *
      * @param nickname of the client
      * @param clientConnection associated to the client
      */
@@ -48,8 +50,10 @@ public class Server {
         }
     }
 
+
     /**
      * This method returns the nickName of the client that is associated at his client connection
+     *
      * @param clientConnection of the client
      * @return nickName of the client
      */
@@ -64,14 +68,16 @@ public class Server {
         return nickname;
     }
 
+
     /**
      * This method removes a client from the server
+     *
      * @param nickname the client's nickname to be removed
      */
     public void unregisterClientFromServer(String nickname /*, boolean notifyEnabled*/) { //notifyEnable non serve secondo me
         //removing the client from the Map
         clientsConnected.remove(nickname);
-        //mainController.removeVirtualView(nickname, notifyEnabled);
+        mainController.removeVirtualView(nickname);
         LOGGER.info(nickname + " has been removed from the list of connected players!");
     }
 
@@ -79,11 +85,12 @@ public class Server {
     /**
      * This method forwards a message coming from the client to the MainController
      *
-     * @param message
+     * @param message the message to be forwarded
      */
     public void forwardsMessage(Message message) {
         mainController.messageFromServer(message);
     }
+
 
     /**
      * This class manages the case of disconnection of the client
@@ -97,7 +104,7 @@ public class Server {
             /*if (nickname != null) {
 
                 boolean gameStarted = mainController.isGameStarted();
-                removeClient(nickname, !gameStarted); // enable lobby notifications only if the game didn't start yet.
+                unregisterClientFromServer(nickname, !gameStarted); // enable lobby notifications only if the game didn't start yet.
 
                 if(mainController.getTurnController() != null &&
                         !mainController.getTurnController().getNicknameQueue().contains(nickname)) {

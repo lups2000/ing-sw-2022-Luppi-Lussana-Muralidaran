@@ -106,8 +106,8 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void showLoseMessage(Player loser) {
-        clientConnection.sendMessageToClient(new Lose(loser));
+    public void showLoseMessage(Player winner) {
+        clientConnection.sendMessageToClient(new Lose(winner));
     }
 
     @Override

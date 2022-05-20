@@ -95,6 +95,7 @@ public class Client extends Observable {
 
     /**
      * This method enables to keep the connection activated between the client and the server
+     *
      * @param isActive true/false to activate the ping signals
     */
     public void sendPingMessage(boolean isActive) {

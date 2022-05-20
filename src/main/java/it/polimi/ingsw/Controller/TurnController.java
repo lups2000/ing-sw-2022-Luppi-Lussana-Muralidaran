@@ -33,6 +33,10 @@ public class TurnController implements Serializable {
         this.virtualViewMap=virtualViewMap;
     }
 
+    public Player getFirstPlayerToPlayAssistant() {
+        return firstPlayerToPlayAssistant;
+    }
+
     /**
      * This method calls planningPhase1(),planningPhase2(),choosePlayerToPlayAction(),action1(),action2(),action3() respectively!
      * After each player's turn we check if there is a winner;otherwise we call another time the method roundManager

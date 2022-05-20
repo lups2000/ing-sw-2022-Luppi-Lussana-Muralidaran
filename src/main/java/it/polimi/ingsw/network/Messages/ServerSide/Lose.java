@@ -10,22 +10,22 @@ import it.polimi.ingsw.Model.Player;
 public class Lose extends Message {
 
     private static final long serialVersionUID = 2906646473674636412L;
-    private Player loser;
+    private Player winner;
 
-    public Lose(Player loser){
+    public Lose(Player winner){
         super("SERVER", MessageType.LOSE);
-        this.loser=loser;
+        this.winner=winner;
     }
 
-    public Player getLoser() {
-        return loser;
+    public Player getWinner() {
+        return winner;
     }
 
     @Override
     public String toString() {
         return "Lose{" +
                 "nickName="+getNickName()+", "+
-                "looser=" + loser.getNickname() +
+                "looser=" + winner.getNickname() +
                 '}';
     }
 }

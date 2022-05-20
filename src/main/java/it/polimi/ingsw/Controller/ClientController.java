@@ -95,7 +95,7 @@ public class ClientController implements Observer4View, Observer {
             case LOSE -> {
                 Lose loseMessage = (Lose) message;
                 client.disconnect();
-                taskQueue.execute(() -> view.showLoseMessage(loseMessage.getLoser()));
+                taskQueue.execute(() -> view.showLoseMessage(loseMessage.getWinner()));
             }
 
             //il PING non penso sia da mettere qui (?), devo controllare TODO

@@ -63,7 +63,7 @@ class CloudTileTest {
         cloudTile.addStudent(pawnColor1);
         assertEquals(cloudTile.getNumStudents(),3);
 
-        Map<PawnColor,Integer> newMap=cloudTile.pickStudent();
+        Map<PawnColor,Integer> newMap=cloudTile.pickStudents();
 
         assertEquals(cloudTile.getNumStudents(),0);
         assertEquals(cloudTile.getStudents().get(PawnColor.RED),0);

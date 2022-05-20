@@ -56,7 +56,7 @@ public interface View {
 
     void showWinMessage(Player winner);
 
-    void showLoseMessage(Player looser);
+    void showLoseMessage(Player winner);
 
     void showLoginInfo(String nickName,boolean nickNameOk,boolean connectionOk);
 
