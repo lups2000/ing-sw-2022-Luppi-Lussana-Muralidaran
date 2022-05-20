@@ -31,8 +31,9 @@ public class Game {
 
 
     public Game(){
+        this.maxNumPlayers = 3;
         this.players = new ArrayList<>();
-        this.status = GameState.PLAYING;
+        this.status = GameState.LOGGING;
         this.seedsAvailable=new ArrayList<>(Arrays.asList(AssistantSeed.KING,AssistantSeed.SAMURAI,AssistantSeed.WITCH,AssistantSeed.MAGICIAN));
         this.islands = new ArrayList<>();
         fillIslands();

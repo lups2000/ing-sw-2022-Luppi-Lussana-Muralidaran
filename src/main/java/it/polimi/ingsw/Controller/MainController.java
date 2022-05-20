@@ -26,7 +26,7 @@ public class MainController {
     private transient Map<String, VirtualView> virtualViewsMap;
     private final MessageController messageController;
     private TurnController turnController;
-    private GameState gameState;
+    //private GameState gameState;  //c'è già in game del model
     private int maxNumPlayers;
     private boolean expertVariant;
 
@@ -34,7 +34,7 @@ public class MainController {
         this.game = new Game();
         this.virtualViewsMap = Collections.synchronizedMap(new HashMap<>());
         this.messageController = new MessageController(this,virtualViewsMap);
-        this.gameState = GameState.LOGGING;
+        //this.gameState = GameState.LOGGING;
     }
 
     public Game getGame() {
@@ -45,13 +45,15 @@ public class MainController {
         return turnController;
     }
 
-    public GameState getGameState() {
+    /*public GameState getGameState() {
         return gameState;
     }
 
+     */
+
     public MessageController getMessageController() {return messageController;}
 
-    public void setGameState(GameState gameState) {this.gameState = gameState;}
+    //public void setGameState(GameState gameState) {this.gameState = gameState;}
 
     /**
      * It receives a message from the server
@@ -93,8 +95,8 @@ public class MainController {
                 if(messageController.checkNumPlayers(message)){ //message format ok
                     NumPlayersReply numPlayersReply = (NumPlayersReply) message;
                     maxNumPlayers = numPlayersReply.getNumPlayers(); //save the max number of players
-                    //game.setMaxNumPlayers(maxNumPlayers); //brutto ma se no non posso aggiungere i player prima di fare initGame
-                    broadcastingMessage("Waiting for players...");
+                    game.setMaxNumPlayers(maxNumPlayers); //brutto ma se no non posso aggiungere i player prima di fare initGame
+                    broadcastingMessage("Waiting for players...");        //questo mi mandava un messaggio generic null
                 }
                 else {
                     Server.LOGGER.warning("The format of the message sent by the client is incorrect!");
@@ -189,7 +191,7 @@ public class MainController {
         game.initGame(maxNumPlayers,experts);
         broadcastingMessage("Match is starting... All players are connected... ");
         //poi qua forse c'è da mostrare tramite la cli le 12 isole,le scholboards e le clouds -->matchInfo
-        this.setGameState(game.getStatus()); //gameStatus==PLAYING set in the model
+        game.changeStatus(GameState.PLAYING); //gameStatus==PLAYING set in the model
     }
     /*
     private void addPlayerToMatch(String nickName,AssistantSeed assistantSeedChosen){
@@ -200,6 +202,8 @@ public class MainController {
         broadcastingMessageExceptOne(nickName+" has chosen "+assistantSeedChosen+" as AssistantSeed",nickName);
     }*/
 
+
+    //da problemi, manda a tutti un messaggio generic null -> TODO
     public void broadcastingMessage(String message){
         for(VirtualView virtualView : virtualViewsMap.values()){
             virtualView.showGenericMessage(message);
@@ -215,6 +219,6 @@ public class MainController {
     }
 
     public boolean isGameStarted(){
-        return this.gameState!=GameState.LOGGING;
+        return game.getStatus()!=GameState.LOGGING;
     }
 }

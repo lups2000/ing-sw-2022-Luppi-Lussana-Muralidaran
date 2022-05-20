@@ -76,6 +76,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
                     if (message != null && message.getMessageType() != MessageType.PING) {
                         //if I receive a message of Type LOGIN
                         if (message.getMessageType() == MessageType.REQUEST_LOGIN) {
+                            Server.LOGGER.info(() -> "Message (loginRequest) Received from " + message.getNickName() + ": "+message);
                             socketServer.addClient(message.getNickName(), this);
                         }
                         //other messages that comes from the client

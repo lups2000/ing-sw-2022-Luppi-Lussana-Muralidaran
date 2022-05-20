@@ -135,6 +135,7 @@ public class Cli extends Observable4View implements View {
             }
 
         } while (!validInput);
+
         String finalNickName = nickName;
         notifyObserver(obs -> obs.sendNickname(finalNickName));
     }
@@ -144,7 +145,7 @@ public class Cli extends Observable4View implements View {
         boolean validInput;
         int numPlayers;
         do {
-            out.print("Insert number of players( max: 3) : ");
+            out.print("Insert number of players (max 3): ");
             numPlayers = Integer.parseInt(readLine.nextLine());
 
             if (numPlayers>=2 && numPlayers<=3)  {

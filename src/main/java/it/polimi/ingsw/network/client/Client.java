@@ -49,7 +49,7 @@ public class Client extends Observable {
         readExecutionQueue.execute(() -> {
 
             while (!readExecutionQueue.isShutdown()) {
-                Message message = null;
+                Message message;
                 try {
                     message = (Message) inputStm.readObject();
                     Client.LOGGER.info("Received: " + message);

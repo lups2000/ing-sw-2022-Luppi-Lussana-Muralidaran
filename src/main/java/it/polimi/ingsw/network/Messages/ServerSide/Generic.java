@@ -13,6 +13,7 @@ public class Generic extends Message {
 
     public Generic(String message){
         super("SERVER", MessageType.GENERIC_MESSAGE);
+        this.message = message;
     }
 
     public String getMessage() {return message;}

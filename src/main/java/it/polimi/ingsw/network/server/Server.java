@@ -78,6 +78,7 @@ public class Server {
 
     /**
      * This method forwards a message coming from the client to the MainController
+     *
      * @param message
      */
     public void forwardsMessage(Message message) {
@@ -86,6 +87,7 @@ public class Server {
 
     /**
      * This class manages the case of disconnection of the client
+     *
      * @param clientConnection associated to the client disconnected
      */
     public void disconnectionManager(ClientConnection clientConnection) {
