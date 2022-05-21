@@ -271,7 +271,13 @@ public class MainController {
         //Player firstPlayer = turnController.getFirstPlayerToPlayAssistant();
         //broadcastingMessageExceptOne(firstPlayer.getNickname() + " is now choosing his assistant card",firstPlayer.getNickname());
         //VirtualView toPlay = virtualViewsMap.get(firstPlayer.getNickname());
-        turnController.roundManager();
+        Thread threadRoundManager=new Thread(new Runnable() {
+            @Override
+            public void run() {
+                turnController.roundManager();
+            }
+        });
+        threadRoundManager.start();
         //toPlay.askAssistantCard(firstPlayer.getDeckAssistantCard().getCards());   //questa decommentata da problemi TODO
     }
 

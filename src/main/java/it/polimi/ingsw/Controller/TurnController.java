@@ -24,6 +24,8 @@ public class TurnController implements Serializable {
     private TurnPhase turnPhase;
     private transient Map<String, VirtualView> virtualViewMap;
     private AssistantCard currentAssistantCard;
+    private boolean winner=false;
+    private boolean flag=false;
 
     /**
      * Constructor
@@ -41,13 +43,15 @@ public class TurnController implements Serializable {
     }
 
     //da vedere questa cosa
-    public void messageFromMainController(Message message){
+    public synchronized void messageFromMainController(Message message){
 
         switch (message.getMessageType()){
 
             case REPLY_ASSISTANT_CARD:
                 AssistantCardReply assistantCardReply =(AssistantCardReply) message;
                 currentAssistantCard=assistantCardReply.getAssistantCard();
+                flag=true;
+                this.notifyAll();
         }
     }
 
@@ -58,6 +62,7 @@ public class TurnController implements Serializable {
      */
     public void roundManager(){
 
+        /*
         while(turnPhase != TurnPhase.END){
             //nota bene: al primo giro le clouds sono gia piene!Quindi inizializzo turnPhase a PLANNING1
             planningPhase1();
@@ -70,15 +75,23 @@ public class TurnController implements Serializable {
                 actionPhase1(currentActionPlayer);
                 actionPhase2(currentActionPlayer);
                 if(checkWinner()){
-                    turnPhase = TurnPhase.END;
+                    winner=true;
                     break;
                 }
                 else{
                     actionPhase3(currentActionPlayer);
                 }
             }
-            turnPhase = TurnPhase.START;
-        }
+            if(winner){
+                turnPhase=TurnPhase.END;
+            }
+            else{
+                turnPhase = TurnPhase.START;
+            }
+        }*/
+        planningPhase1();
+        notifyPlayers("The cloud tiles have been filled!");
+        planningPhase2();
 
     }
 
@@ -102,7 +115,7 @@ public class TurnController implements Serializable {
      * This method represents the second part of the planning phase, where each player plays an Assistant Card
      */
     private void planningPhase2(){
-        boolean flag=false;
+
         if(turnPhase == TurnPhase.PLANNING1){
             model.getCurrentHand().clear();
 
@@ -111,7 +124,6 @@ public class TurnController implements Serializable {
 
                     //List<AssistantCard> assistantCardsAvailable=new ArrayList<>(model.getPlayers().get(i).getDeckAssistantCard().getCards());
                     Player currentPlayer=model.getPlayers().get(i);
-
                     //notify to other players that it's the turn of the current player
                     this.notifyOtherPlayers("Now it's the Turn of "+currentPlayer.getNickname()+" who plays the Assistant Card! Please Wait...",currentPlayer);
 
@@ -119,7 +131,16 @@ public class TurnController implements Serializable {
                     virtualViewCurrentPlayer.showGenericMessage("Hey "+ currentPlayer.getNickname() +", now it's your turn!");
                     //ask to the current player which Assistant Card he wants to move
 
-                    virtualViewCurrentPlayer.askAssistantCard(currentPlayer.getDeckAssistantCard().getCards()); //this must be contained in a loop
+                    synchronized (this){
+                        virtualViewCurrentPlayer.askAssistantCard(currentPlayer.getDeckAssistantCard().getCards()); //this must be contained in a loop
+                        while (!flag){
+                            try {
+                                this.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
 
                     //every player must choose an assistant card-->NB: different from the others-->we must call the method checkAssistant()
                     //we must control that the Assistant chosen is not present in the currentHand!!!
