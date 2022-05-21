@@ -52,10 +52,11 @@ public class TurnController implements Serializable {
             case REPLY_ASSISTANT_CARD -> {
                 AssistantCardReply assistantCardReply = (AssistantCardReply) message;
                 currentAssistantCard = assistantCardReply.getAssistantCard();   //perché questo è un attributo della classe?
+                /* spostato nel metodo planning phase 2 perche cosi faccio anche i controllo della carta
                 Player currentPlayer = model.getPlayerByNickName(assistantCardReply.getNickName()); //to cleanup the following lines
                 currentPlayer.pickAssistantCard(currentAssistantCard);
                 currentPlayer.setStatus(PlayerStatus.PLAYING_ASSISTANT);
-                model.getCurrentHand().put(currentPlayer, currentPlayer.getCurrentAssistant());
+                model.getCurrentHand().put(currentPlayer, currentPlayer.getCurrentAssistant());*/
                 hasAnswered = true;
             }
         }
@@ -69,8 +70,9 @@ public class TurnController implements Serializable {
      */
     public void roundManager(){
 
-
+        /*
         while(turnPhase != TurnPhase.END){
+
             //nota bene: al primo giro le clouds sono gia piene!Quindi inizializzo turnPhase a PLANNING1
             planningPhase1();
             notifyPlayers("The cloud tiles have been filled!");
@@ -95,7 +97,7 @@ public class TurnController implements Serializable {
             else{
                 turnPhase = TurnPhase.START;
             }
-        }
+        }*/
         planningPhase1();
         notifyPlayers("The cloud tiles have been filled!");
         planningPhase2();
@@ -122,8 +124,11 @@ public class TurnController implements Serializable {
      * This method represents the second part of the planning phase, where each player plays an Assistant Card
      */
     private synchronized void planningPhase2(){
+        //è giusto che sia sync??
+        boolean assistantOk=false;
 
         if(turnPhase == TurnPhase.PLANNING1){
+
             model.getCurrentHand().clear();
 
             for(int i= firstPlayerToPlayAssistant.getId();i<model.getPlayers().size();i++){
@@ -138,13 +143,25 @@ public class TurnController implements Serializable {
                     virtualViewCurrentPlayer.showGenericMessage("Hey "+ currentPlayer.getNickname() +", now it's your turn!");
                     //ask to the current player which Assistant Card he wants to move
 
-                        //SEVERE: it.polimi.ingsw.Model.AssistantCard
+
+                    //SEVERE: it.polimi.ingsw.Model.AssistantCard
+                    while(!assistantOk){
                         virtualViewCurrentPlayer.askAssistantCard(currentPlayer.getDeckAssistantCard().getCards()); //this must be contained in a loop
                         //metodo waitAnswer senza wait e notify (?)
-
                         waitAnswer();
 
-
+                        if(checkAssistantCard(currentAssistantCard)){
+                            currentPlayer.pickAssistantCard(currentAssistantCard);
+                            currentPlayer.setStatus(PlayerStatus.PLAYING_ASSISTANT);
+                            model.getCurrentHand().put(currentPlayer, currentPlayer.getCurrentAssistant());
+                            assistantOk=true;
+                        }
+                        else{
+                            //if the assistantCard is invalid
+                            virtualViewCurrentPlayer.showGenericMessage("Assistant Card invalid!");
+                        }
+                    }
+                    assistantOk=false;
 
                     //every player must choose an assistant card-->NB: different from the others-->we must call the method checkAssistant()
                     //we must control that the Assistant chosen is not present in the currentHand!!! TODO
@@ -194,16 +211,15 @@ public class TurnController implements Serializable {
         Player firstPlayerEverToPlayAssistant=model.getPlayers().get(0);
         //if the player '0' has more Assistant Cards than the number of players of the Game - 1,the Assistant card must be different by the other ones in the current hand
         if(firstPlayerEverToPlayAssistant.getDeckAssistantCard().getCards().size() > model.getPlayers().size()-1){
-            for(AssistantCard card : model.getCurrentHand().values()){
-                if(card.equals(assistantCard)){
-                    return false;
+            if (model.getCurrentHand().size() != 0) {
+                for (AssistantCard card : model.getCurrentHand().values()) {
+                    if (card.getValue() == assistantCard.getValue() && card.getMaxStepsMotherNature() == assistantCard.getMaxStepsMotherNature()) {
+                        return false;
+                    }
                 }
             }
-            return true;
         }
-        else{
-            return true;
-        }
+        return true;
     }
 
     /**

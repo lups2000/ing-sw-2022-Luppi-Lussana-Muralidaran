@@ -204,14 +204,17 @@ public class Cli extends Observable4View implements View {
         AssistantCard assistantCardChosen;
         boolean validInput;
         int id;
+        int i=1;
 
         if(assistantCards.size()>=1){
 
             do {
                 out.println("Please type the corresponding id to select one of the Assistant Cards: ");
                 for (AssistantCard assistantCard : assistantCards) {
-                    out.print("ID: " + assistantCard.getValue());
-                    out.print("  Max steps: " + assistantCard.getMaxStepsMotherNature() + "\n");
+                    out.print(i +" ) ");
+                    out.print("Card Value: " + assistantCard.getValue()+", ");
+                    out.print("Max steps motherNature: " + assistantCard.getMaxStepsMotherNature() + "\n");
+                    i++;
                 }
                 id= Integer.parseInt(readLine.nextLine());
 
@@ -280,10 +283,6 @@ public class Cli extends Observable4View implements View {
         }
     }
 
-    @Override
-    public void askMoveMotherNature(List<Island> islands) {
-
-    }
 
     @Override
     public void askMoveMotherNature(List<Island> islands, AssistantCard assistantCard) {

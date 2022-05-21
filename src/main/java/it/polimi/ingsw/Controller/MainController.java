@@ -268,12 +268,9 @@ public class MainController {
         game.changeStatus(GameState.PLAYING); //gameStatus==PLAYING set in the model
 
         this.turnController = new TurnController(game,virtualViewsMap);
-        //Player firstPlayer = turnController.getFirstPlayerToPlayAssistant();
-        //broadcastingMessageExceptOne(firstPlayer.getNickname() + " is now choosing his assistant card",firstPlayer.getNickname());
-        //VirtualView toPlay = virtualViewsMap.get(firstPlayer.getNickname());
+
         Thread threadRoundManager=new Thread(() -> turnController.roundManager());
         threadRoundManager.start();
-        //toPlay.askAssistantCard(firstPlayer.getDeckAssistantCard().getCards());
     }
 
 

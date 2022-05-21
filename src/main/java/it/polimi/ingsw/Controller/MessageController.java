@@ -123,7 +123,7 @@ public class MessageController implements Serializable {
 
         VirtualView virtualView=virtualViewsMap.get(message.getNickName());
         virtualView.showGenericMessage("You didn't provide a valid island!The island index must be between 0 and "+(model.getIslands().size()-1));
-        virtualView.askMoveMotherNature(model.getIslands());
+        virtualView.askMoveMotherNature(model.getIslands(),model.getPlayerByNickName(message.getNickName()).getCurrentAssistant());
         return false;
     }
 

@@ -65,10 +65,6 @@ public class VirtualView implements View, Observer {
         clientConnection.sendMessageToClient(new StudentToIslandRequest(islands));
     }
 
-    @Override
-    public void askMoveMotherNature(List<Island> islands) {
-
-    }
 
     @Override
     public void askMoveMotherNature(List<Island> islands, AssistantCard assistantCard) {

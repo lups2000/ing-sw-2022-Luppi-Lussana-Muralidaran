@@ -80,7 +80,8 @@ public class ClientController implements Observer4View, Observer {
 
             case REQUEST_MOVE_MOTHER_NATURE -> {
                 MotherNatureMoveRequest motherNatureMoveRequest = (MotherNatureMoveRequest) message;
-                taskQueue.execute(() -> view.askMoveMotherNature(motherNatureMoveRequest.getAvailableIslands()));
+                //da sistemare, non so come
+                //taskQueue.execute(() -> view.askMoveMotherNature(motherNatureMoveRequest.getAvailableIslands(),));
             }
 
             case ERROR -> {

@@ -54,7 +54,7 @@ public class DeckAssistantCard implements Serializable {
             boolean found=false;
             AssistantCard picked = null;
             for(int i = 0; i<cards.size(); i++){
-                if(cards.get(i).getValue()==assistantCard.getValue() && cards.get(i).getValue()==assistantCard.getMaxStepsMotherNature()){
+                if(cards.get(i).getValue()==assistantCard.getValue() && cards.get(i).getMaxStepsMotherNature()==assistantCard.getMaxStepsMotherNature()){
                     picked = cards.get(i);
                     cards.remove(i);
                     found=true;

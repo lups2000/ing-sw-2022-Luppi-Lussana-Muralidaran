@@ -38,8 +38,6 @@ public interface View {
 
     void askMoveStudToIsland(List<Island> islands, SchoolBoard schoolBoard, int studentsToMove) throws NoPawnPresentException;
 
-    void askMoveMotherNature(List<Island> islands);
-
     void askChooseCloudTile(List<CloudTile> cloudTiles);
 
     void askExpertVariant();
