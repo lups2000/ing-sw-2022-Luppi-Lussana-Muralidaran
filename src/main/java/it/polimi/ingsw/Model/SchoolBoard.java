@@ -5,6 +5,8 @@ import it.polimi.ingsw.Model.Exceptions.NoTowersException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.Model.Exceptions.TooManyTowersException;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +14,9 @@ import java.util.Map;
  * Class SchoolBoard
  * @author Matteo Luppi,Paolo Lussana
  */
-public class SchoolBoard {
+public class SchoolBoard implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 7151174979897245763L;
     private Map<PawnColor, Boolean> professors;
     private Map<PawnColor, Integer> studentsDining;
     private Map<PawnColor, Integer> studentsWaiting;

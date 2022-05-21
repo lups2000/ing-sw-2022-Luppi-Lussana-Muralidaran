@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,7 +9,9 @@ import java.util.Map;
  * @author Paolo Lussana,Matteo Luppi, Pradeeban Muralidaran
  */
 
-public class Island {
+public class Island implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -681054024599101267L;
     private int index;
     private int noEntryTiles;
     private ColorTower tower;
@@ -26,12 +30,7 @@ public class Island {
         this.noEntryTiles = 0;
         this.tower = null;
         this.numTowers = 0;
-        if(index == 0){
-            this.motherNature = true;
-        }
-        else{
-            this.motherNature = false;
-        }
+        this.motherNature = index == 0;
         this.students = new HashMap<>();
         students.put(PawnColor.RED,0);
         students.put(PawnColor.BLUE,0);
@@ -119,8 +118,7 @@ public class Island {
             throw new NullPointerException("Parameter cannot be null!");
         }
         else{
-            int influence = computeTowerInfluence(player) + computeStudentsInfluence(player);
-            return influence;
+            return computeTowerInfluence(player) + computeStudentsInfluence(player);
         }
     }
 

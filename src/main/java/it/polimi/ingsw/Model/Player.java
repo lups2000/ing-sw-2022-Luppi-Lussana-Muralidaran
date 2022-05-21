@@ -2,13 +2,17 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 /**
  * @author Matteo Luppi, Paolo Lussana, Pradeeban Muralidaran
  */
-public class Player {
+public class Player implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -921895788350304977L;
     private int id;
     private String nickname;
     private ColorTower colorTower;
@@ -48,7 +52,7 @@ public class Player {
     public PlayerStatus getStatus() {return playerStatus;}
     public ColorTower getColorTower() {return colorTower;}
     public SchoolBoard getSchoolBoard() {return schoolBoard;}
-    public DeckAssistantCard getDeckAssistantCard() {return deckAssistantCard;}
+    public DeckAssistantCard getDeckAssistantCard() {return this.deckAssistantCard;}
     public void setStatus(PlayerStatus newStatus){this.playerStatus = newStatus;}
     public void setSchoolBoard(SchoolBoard schoolBoard) {this.schoolBoard = schoolBoard;}
     public void setTwoAdditionalPoints(boolean next){this.twoAdditionalPoints = next;}

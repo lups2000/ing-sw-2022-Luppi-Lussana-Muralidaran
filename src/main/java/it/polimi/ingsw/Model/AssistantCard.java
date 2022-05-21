@@ -1,11 +1,17 @@
 package it.polimi.ingsw.Model;
 
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * @author Matteo Luppi
  */
-public class AssistantCard {
-    private int value;
+public class AssistantCard implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -2089913761654565866L;
+
+    private final int value;
     private int maxStepsMotherNature;
 
     /**
@@ -41,8 +47,14 @@ public class AssistantCard {
 
         AssistantCard c = (AssistantCard) o;
         // Compare the data members and return accordingly
-        return value == c.value
-                && maxStepsMotherNature == c.maxStepsMotherNature;
+        return (value == c.value && maxStepsMotherNature == c.maxStepsMotherNature);
     }
 
+    @Override
+    public String toString() {
+        return "AssistantCard{" +
+                "value=" + value +
+                ", maxStepsMotherNature=" + maxStepsMotherNature +
+                '}';
+    }
 }

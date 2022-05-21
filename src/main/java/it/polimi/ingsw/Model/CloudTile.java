@@ -2,13 +2,17 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author Paolo Lussana
  */
-public class CloudTile {
+public class CloudTile implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -9138279216308762534L;
     private int maxNumStudents;
     private int numStudents;
     private int id;
@@ -19,7 +23,7 @@ public class CloudTile {
      * constructor of the CloudTile class
      * @param id is the id given to every cloud tiles, to differentiate them one with each other
      */
-    public CloudTile(int id,int numMaxPlayers){
+    public CloudTile(int id,int numMaxPlayers) {
         this.id = id;
         this.numMaxPlayers=numMaxPlayers;
         this.numStudents=0;

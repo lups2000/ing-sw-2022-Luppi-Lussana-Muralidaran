@@ -1,12 +1,17 @@
 package it.polimi.ingsw.Model;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Matteo Luppi
  */
-public class DeckAssistantCard {
+public class DeckAssistantCard implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -8889919724434577025L;
     private List<AssistantCard> cards;
     private AssistantSeed seed;
 
@@ -33,7 +38,7 @@ public class DeckAssistantCard {
         return seed;
     }
     public List<AssistantCard> getCards() {
-        return cards;
+        return this.cards;
     }
 
 

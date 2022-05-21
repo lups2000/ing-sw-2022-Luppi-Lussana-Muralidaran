@@ -6,8 +6,10 @@ import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.View.VirtualView;
 import it.polimi.ingsw.network.Messages.ClientSide.AssistantCardReply;
 import it.polimi.ingsw.network.Messages.Message;
+import it.polimi.ingsw.network.server.Server;
 
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.Map;
  */
 public class TurnController implements Serializable {
 
+    @Serial
     private static final long serialVersionUID=-5987205913389392005L;
     private Game model;
     private Player firstPlayerToPlayAssistant;
@@ -25,7 +28,7 @@ public class TurnController implements Serializable {
     private transient Map<String, VirtualView> virtualViewMap;
     private AssistantCard currentAssistantCard;
     private boolean winner=false;
-    private boolean flag=false;
+    private boolean hasAnswered=false;
 
     /**
      * Constructor
@@ -43,16 +46,20 @@ public class TurnController implements Serializable {
     }
 
     //da vedere questa cosa
-    public synchronized void messageFromMainController(Message message){
+    public void messageFromMainController(Message message){
+        switch (message.getMessageType()) {
 
-        switch (message.getMessageType()){
-
-            case REPLY_ASSISTANT_CARD:
-                AssistantCardReply assistantCardReply =(AssistantCardReply) message;
-                currentAssistantCard=assistantCardReply.getAssistantCard();
-                flag=true;
-                this.notifyAll();
+            case REPLY_ASSISTANT_CARD -> {
+                AssistantCardReply assistantCardReply = (AssistantCardReply) message;
+                currentAssistantCard = assistantCardReply.getAssistantCard();   //perché questo è un attributo della classe?
+                Player currentPlayer = model.getPlayerByNickName(assistantCardReply.getNickName()); //to cleanup the following lines
+                currentPlayer.pickAssistantCard(currentAssistantCard);
+                currentPlayer.setStatus(PlayerStatus.PLAYING_ASSISTANT);
+                model.getCurrentHand().put(currentPlayer, currentPlayer.getCurrentAssistant());
+                hasAnswered = true;
+            }
         }
+
     }
 
 
@@ -62,7 +69,7 @@ public class TurnController implements Serializable {
      */
     public void roundManager(){
 
-        /*
+
         while(turnPhase != TurnPhase.END){
             //nota bene: al primo giro le clouds sono gia piene!Quindi inizializzo turnPhase a PLANNING1
             planningPhase1();
@@ -88,7 +95,7 @@ public class TurnController implements Serializable {
             else{
                 turnPhase = TurnPhase.START;
             }
-        }*/
+        }
         planningPhase1();
         notifyPlayers("The cloud tiles have been filled!");
         planningPhase2();
@@ -114,7 +121,7 @@ public class TurnController implements Serializable {
     /**
      * This method represents the second part of the planning phase, where each player plays an Assistant Card
      */
-    private void planningPhase2(){
+    private synchronized void planningPhase2(){
 
         if(turnPhase == TurnPhase.PLANNING1){
             model.getCurrentHand().clear();
@@ -131,23 +138,19 @@ public class TurnController implements Serializable {
                     virtualViewCurrentPlayer.showGenericMessage("Hey "+ currentPlayer.getNickname() +", now it's your turn!");
                     //ask to the current player which Assistant Card he wants to move
 
-                    synchronized (this){
+                        //SEVERE: it.polimi.ingsw.Model.AssistantCard
                         virtualViewCurrentPlayer.askAssistantCard(currentPlayer.getDeckAssistantCard().getCards()); //this must be contained in a loop
-                        while (!flag){
-                            try {
-                                this.wait();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
+                        //metodo waitAnswer senza wait e notify (?)
+
+                        waitAnswer();
+
+
 
                     //every player must choose an assistant card-->NB: different from the others-->we must call the method checkAssistant()
-                    //we must control that the Assistant chosen is not present in the currentHand!!!
-                    //model.getPlayers().get(i).pickAssistantCard(AssistantCard picked); surrounded by try catch block
+                    //we must control that the Assistant chosen is not present in the currentHand!!! TODO
+
                     //if the assistant cards of the current player are finished I could call model.checkWinner() (the one written by Paolo)
-                    model.getPlayers().get(i).setStatus(PlayerStatus.PLAYING_ASSISTANT);
-                    model.getCurrentHand().put(model.getPlayers().get(i),model.getPlayers().get(i).getCurrentAssistant());
+
                     turnPhase = TurnPhase.PLANNING2;
                 }
                 else{
@@ -165,9 +168,25 @@ public class TurnController implements Serializable {
     }
 
     /**
+     * to wait the player's answer before going on with the game
+     */
+    private void waitAnswer() {
+        while (!hasAnswered) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        hasAnswered = false;
+    }
+
+
+    /**
      * This method check if the assistant card played by the current player is
      * valid or not. If an Assistant card has already been played by a player, the next players
      * cannot play it in the current turn. They could play the same card only if they have only this card
+     *
      * @param assistantCard that has been just played by the player
      * @return true/false
      */

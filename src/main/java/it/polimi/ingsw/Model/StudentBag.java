@@ -2,6 +2,8 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.lang.Math;
@@ -9,7 +11,9 @@ import java.lang.Math;
 /**
  * @author Paolo Lussana
  */
-public class StudentBag {
+public class StudentBag implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 8583576046704852855L;
     private int numStudents;
     private Map<PawnColor,Integer> students;
 

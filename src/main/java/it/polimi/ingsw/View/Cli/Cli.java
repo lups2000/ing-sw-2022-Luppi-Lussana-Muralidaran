@@ -1,8 +1,5 @@
 package it.polimi.ingsw.View.Cli;
 
-/**
-@author Pradeeban Muralidaran
- */
 
 import it.polimi.ingsw.Controller.ClientController;
 import it.polimi.ingsw.Model.*;
@@ -16,6 +13,9 @@ import java.io.PrintStream;
 import java.util.*;
 
 
+/**
+ * @author Pradeeban Muralidaran
+ */
 public class Cli extends Observable4View implements View {
     private final PrintStream out;
     private static final String CANCEL_INPUT = "User input has been canceled";
@@ -31,16 +31,18 @@ public class Cli extends Observable4View implements View {
 
     //Starts the interface
     public void matchStart(){
-        out.println("\n" +
-                "\033[38;2;255;0;0m   ▄████████    ▄████████  ▄█     ▄████████ ███▄▄▄▄       ███     ▄██   ▄      ▄████████ \n" +
-                "\033[38;2;255;128;0m  ███    ███   ███    ███ ███    ███    ███ ███▀▀▀██▄ ▀█████████▄ ███   ██▄   ███    ███ \n" +
-                "\033[38;2;255;255;0m  ███    █▀    ███    ███ ███▌   ███    ███ ███   ███    ▀███▀▀██ ███▄▄▄███   ███    █▀  \n" +
-                "\033[38;2;0;255;0m ▄███▄▄▄      ▄███▄▄▄▄██▀ ███▌   ███    ███ ███   ███     ███   ▀ ▀▀▀▀▀▀███   ███        \n" +
-                "\033[38;2;0;255;128m▀▀███▀▀▀     ▀▀███▀▀▀▀▀   ███▌ ▀███████████ ███   ███     ███     ▄██   ███ ▀███████████ \n" +
-                "\033[38;2;0;255;255m  ███    █▄  ▀███████████ ███    ███    ███ ███   ███     ███     ███   ███          ███ \n" +
-                "\033[38;2;0;128;255m  ███    ███   ███    ███ ███    ███    ███ ███   ███     ███     ███   ███    ▄█    ███ \n" +
-                "\033[38;2;0;0;255m  ██████████   ███    ███ █▀     ███    █▀   ▀█   █▀     ▄████▀    ▀█████▀   ▄████████▀  \n" +
-                "\033[38;2;127;0;255m               ███    ███                                                                \n");
+        out.println("""
+
+                \033[38;2;255;0;0m   ▄████████    ▄████████  ▄█     ▄████████ ███▄▄▄▄       ███     ▄██   ▄      ▄████████\s
+                \033[38;2;255;128;0m  ███    ███   ███    ███ ███    ███    ███ ███▀▀▀██▄ ▀█████████▄ ███   ██▄   ███    ███\s
+                \033[38;2;255;255;0m  ███    █▀    ███    ███ ███▌   ███    ███ ███   ███    ▀███▀▀██ ███▄▄▄███   ███    █▀ \s
+                \033[38;2;0;255;0m ▄███▄▄▄      ▄███▄▄▄▄██▀ ███▌   ███    ███ ███   ███     ███   ▀ ▀▀▀▀▀▀███   ███       \s
+                \033[38;2;0;255;128m▀▀███▀▀▀     ▀▀███▀▀▀▀▀   ███▌ ▀███████████ ███   ███     ███     ▄██   ███ ▀███████████\s
+                \033[38;2;0;255;255m  ███    █▄  ▀███████████ ███    ███    ███ ███   ███     ███     ███   ███          ███\s
+                \033[38;2;0;128;255m  ███    ███   ███    ███ ███    ███    ███ ███   ███     ███     ███   ███    ▄█    ███\s
+                \033[38;2;0;0;255m  ██████████   ███    ███ █▀     ███    █▀   ▀█   █▀     ▄████▀    ▀█████▀   ▄████████▀ \s
+                \033[38;2;127;0;255m               ███    ███                                                               \s
+                """);
         welcomeMessage += new String(Character.toChars(0x1F604));
         out.println(welcomeMessage);
         connectToServer();
@@ -206,16 +208,12 @@ public class Cli extends Observable4View implements View {
         if(assistantCards.size()>=1){
 
             do {
-                out.println("Please type the corresponding id to select one of the AssistantCards: ");
-                out.print("( ");
-                for(int i=0;i<assistantCards.size();i++){
-                    out.print((i+1)+": "+assistantCards.get(i));
-                    if(i< assistantCards.size()-1){
-                        out.print(", ");
-                    }
+                out.println("Please type the corresponding id to select one of the Assistant Cards: ");
+                for (AssistantCard assistantCard : assistantCards) {
+                    out.print("ID: " + assistantCard.getValue());
+                    out.print("  Max steps: " + assistantCard.getMaxStepsMotherNature() + "\n");
                 }
-                out.println(" )");
-                id= readLine.nextInt();
+                id= Integer.parseInt(readLine.nextLine());
 
                 if(id<=0 || id>assistantCards.size()){
                     out.println(INVALID_INPUT);
@@ -332,12 +330,7 @@ public class Cli extends Observable4View implements View {
         String expertVariantAnswer = readLine.nextLine();
         do {
             if (expertVariantAnswer.equalsIgnoreCase("y") || expertVariantAnswer.equalsIgnoreCase("n")) {
-                if(expertVariantAnswer.equalsIgnoreCase("y")){
-                    expertVariant=true;
-                }
-                else{
-                    expertVariant=false;
-                }
+                expertVariant= expertVariantAnswer.equalsIgnoreCase("y");
                 validInput = true;
             }
             else {

@@ -3,7 +3,10 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Model.CharacterCards.*;
 import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.network.server.Server;
+import it.polimi.ingsw.observer.Observable;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -11,7 +14,10 @@ import java.util.*;
  * @author Paolo Lussana,Matteo Luppi,Pradeeban Muralidaran
  */
 
-public class Game {
+public class Game extends Observable implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -3707988409798577202L;
     private int maxNumPlayers;
     private List<Player> players; //2-4
     private boolean expertsVariant;
