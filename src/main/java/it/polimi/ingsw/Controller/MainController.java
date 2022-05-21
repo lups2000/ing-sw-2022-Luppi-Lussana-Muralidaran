@@ -1,13 +1,10 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.Exceptions.NoTowersException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.Model.Exceptions.TooManyTowersException;
-import it.polimi.ingsw.Model.Game;
-import it.polimi.ingsw.Model.GameState;
-import it.polimi.ingsw.Model.Player;
-import it.polimi.ingsw.Model.PlayerStatus;
 import it.polimi.ingsw.View.VirtualView;
 import it.polimi.ingsw.network.Messages.ClientSide.*;
 import it.polimi.ingsw.network.Messages.Message;
@@ -30,12 +27,15 @@ public class MainController {
     //private GameState gameState;  //c'è già in game del model
     private int maxNumPlayers;
     private boolean expertVariant;
+    private boolean flag=false;
+    private final Object lock;
 
     public MainController(){
         this.game = new Game();
         this.virtualViewsMap = Collections.synchronizedMap(new HashMap<>());
         this.messageController = new MessageController(this,virtualViewsMap);
         //this.gameState = GameState.LOGGING;
+        this.lock=new Object();
     }
 
     public Game getGame() {
@@ -49,7 +49,6 @@ public class MainController {
 
     public MessageController getMessageController() {return messageController;}
 
-    //public void setGameState(GameState gameState) {this.gameState = gameState;}
 
     /**
      * It receives a message from the server, who previously received it from the client
@@ -114,12 +113,17 @@ public class MainController {
                     AssistantSeedReply assistantSeedReply=(AssistantSeedReply) message;
                     game.getPlayerByNickName(message.getNickName()).chooseDeck(assistantSeedReply.getAssistantSeed());
                     game.getSeedsAvailable().remove(assistantSeedReply.getAssistantSeed()); //removing the seed chosen from the list
+
+                    if(game.getPlayers().size() == game.getMaxNumPlayers()){
+                        //the match can start only when the Assistant seeds of all players are received
+                        startMatch(maxNumPlayers,expertVariant);
+                    }
                 }
                 else{
                     Server.LOGGER.warning("The format of the message sent by the client is incorrect!");
                 }
             }
-            default ->             Server.LOGGER.warning("Wrong message received from client.");
+            default -> Server.LOGGER.warning("Wrong message received from client.");
         }
     }
 
@@ -133,8 +137,10 @@ public class MainController {
         switch(message.getMessageType()){
             case REPLY_ASSISTANT_CARD -> {
                 if(messageController.checkAssistantCard(message)){
+                    turnController.messageFromMainController(message);
+                    /*
                     AssistantCardReply assistantCardReply = (AssistantCardReply) message;
-                    game.getPlayerByNickName(assistantCardReply.getNickName()).pickAssistantCard(assistantCardReply.getAssistantCard());
+                    game.getPlayerByNickName(assistantCardReply.getNickName()).pickAssistantCard(assistantCardReply.getAssistantCard());*/
                     //bisogna far vedere l'assistente scelto anche a tutti gli altri
                 }
                 else {
@@ -197,7 +203,7 @@ public class MainController {
                     Server.LOGGER.warning("The format of the message sent by the client is incorrect!");
                 }
             }
-            default ->             Server.LOGGER.warning("Wrong message received from client.");
+            default -> Server.LOGGER.warning("Wrong message received from client.");
         }
     }
 
@@ -211,7 +217,7 @@ public class MainController {
      * @param nickname the client's nickname
      * @param virtualView the virtual view associated to the client
      */
-    public void loginToTheGame(String nickname, VirtualView virtualView){   //viene invocato dalla classe Server quando si aggiunge un nuovo client, solo se non si è già raggiunto il num di players
+    public void loginToTheGame(String nickname, VirtualView virtualView) {   //viene invocato dalla classe Server quando si aggiunge un nuovo client, solo se non si è già raggiunto il num di players
 
         if(virtualViewsMap.size() == 0){    //it means it is the first player ever to connect
 
@@ -219,28 +225,27 @@ public class MainController {
             //        game.addObserver(virtualView);
             //        game.getBoard().addObserver(virtualView);
             virtualView.showLoginInfo("SERVER",true,true);
-            game.addPlayer(nickname);
+            game.addPlayer(nickname); //add the player to the model
 
             virtualView.askNumPlayers();
             virtualView.askExpertVariant();
             virtualView.askAssistantSeed(game.getSeedsAvailable());
+
         }
         else if(virtualViewsMap.size() < game.getMaxNumPlayers()){
+
             virtualViewsMap.put(nickname,virtualView);
             //        game.addObserver(virtualView);
             //        game.getBoard().addObserver(virtualView);
-            game.addPlayer(nickname);
+            game.addPlayer(nickname); //add the player to the model
 
             virtualView.showLoginInfo("SERVER",true,true);
             virtualView.askAssistantSeed(game.getSeedsAvailable());
 
-            if(game.getPlayers().size() == game.getMaxNumPlayers()){    //all the required players logged
-                //the match can start
+            /*if(game.getPlayers().size() == game.getMaxNumPlayers()){
+                //now the match can start
                 startMatch(maxNumPlayers,expertVariant);
-                //questo metodo setta gia GameState==PLAYING-->per mostrare tutto lo farei in startMatch
-                //o forse direttamente PLAYING, però c'è da mostrare a tutti i player i giocatori registrati nella lobby
-                // e il risultato dell'inizializzazione (scelta dei seed, tavolo da gioco imbandito dopo initGame() del model)
-            }
+            }*/
         }
         else{
             virtualView.showLoginInfo("SERVER",true,false);
@@ -261,10 +266,11 @@ public class MainController {
         //poi qua forse c'è da mostrare tramite la cli le 12 isole,le scholboards e le clouds -->matchInfo
 
         game.changeStatus(GameState.PLAYING); //gameStatus==PLAYING set in the model
+
         this.turnController = new TurnController(game,virtualViewsMap);
-        Player firstPlayer = turnController.getFirstPlayerToPlayAssistant();
-        broadcastingMessageExceptOne(firstPlayer.getNickname() + " is now choosing his assistant card",firstPlayer.getNickname());
-        VirtualView toPlay = virtualViewsMap.get(firstPlayer.getNickname());
+        //Player firstPlayer = turnController.getFirstPlayerToPlayAssistant();
+        //broadcastingMessageExceptOne(firstPlayer.getNickname() + " is now choosing his assistant card",firstPlayer.getNickname());
+        //VirtualView toPlay = virtualViewsMap.get(firstPlayer.getNickname());
         turnController.roundManager();
         //toPlay.askAssistantCard(firstPlayer.getDeckAssistantCard().getCards());   //questa decommentata da problemi TODO
     }

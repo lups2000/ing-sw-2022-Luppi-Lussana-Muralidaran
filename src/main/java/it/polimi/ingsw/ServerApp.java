@@ -23,6 +23,7 @@ public class ServerApp {
         catch (IllegalArgumentException e){
             Server.LOGGER.warning("Invalid port!Server available at the default one!");
         }
+        System.out.println("The server is running...");
         MainController mainController = new MainController();
         Server server = new Server(mainController);
 

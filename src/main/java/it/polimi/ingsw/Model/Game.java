@@ -88,6 +88,7 @@ public class Game {
                     //schoolBoards.add(i,new SchoolBoard(max,false)); //a schoolboard passo il numero max di studenti e experts=true
                 }
             }
+
             this.cloudTiles = new ArrayList<>();
             for(int i=0;i<max;i++){
                 CloudTile newCloud = new CloudTile(i,max);

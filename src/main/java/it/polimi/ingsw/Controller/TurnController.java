@@ -4,6 +4,8 @@ import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.View.VirtualView;
+import it.polimi.ingsw.network.Messages.ClientSide.AssistantCardReply;
+import it.polimi.ingsw.network.Messages.Message;
 
 
 import java.io.Serializable;
@@ -21,6 +23,7 @@ public class TurnController implements Serializable {
     private Player firstPlayerToPlayAssistant;
     private TurnPhase turnPhase;
     private transient Map<String, VirtualView> virtualViewMap;
+    private AssistantCard currentAssistantCard;
 
     /**
      * Constructor
@@ -28,7 +31,7 @@ public class TurnController implements Serializable {
      */
     public TurnController(Game model,Map<String, VirtualView> virtualViewMap){
         this.model=model;
-        this.turnPhase = TurnPhase.START;
+        this.turnPhase = TurnPhase.PLANNING1; //motivo: vedi nota bene in roundManager
         this.firstPlayerToPlayAssistant=model.getFirstPlayer(); //initially he is the first one who joins the game
         this.virtualViewMap=virtualViewMap;
     }
@@ -37,6 +40,18 @@ public class TurnController implements Serializable {
         return firstPlayerToPlayAssistant;
     }
 
+    //da vedere questa cosa
+    public void messageFromMainController(Message message){
+
+        switch (message.getMessageType()){
+
+            case REPLY_ASSISTANT_CARD:
+                AssistantCardReply assistantCardReply =(AssistantCardReply) message;
+                currentAssistantCard=assistantCardReply.getAssistantCard();
+        }
+    }
+
+
     /**
      * This method calls planningPhase1(),planningPhase2(),choosePlayerToPlayAction(),action1(),action2(),action3() respectively!
      * After each player's turn we check if there is a winner;otherwise we call another time the method roundManager
@@ -44,7 +59,9 @@ public class TurnController implements Serializable {
     public void roundManager(){
 
         while(turnPhase != TurnPhase.END){
+            //nota bene: al primo giro le clouds sono gia piene!Quindi inizializzo turnPhase a PLANNING1
             planningPhase1();
+            notifyPlayers("The cloud tiles have been filled!");
             planningPhase2();
 
             //I put the players.size() because if a player is disconnected the round continues
@@ -85,21 +102,24 @@ public class TurnController implements Serializable {
      * This method represents the second part of the planning phase, where each player plays an Assistant Card
      */
     private void planningPhase2(){
+        boolean flag=false;
         if(turnPhase == TurnPhase.PLANNING1){
             model.getCurrentHand().clear();
 
             for(int i= firstPlayerToPlayAssistant.getId();i<model.getPlayers().size();i++){
                 if(model.getPlayers().get(i).getStatus()==PlayerStatus.WAITING){
-                    List<AssistantCard> assistantCardsAvailable=new ArrayList<>(model.getPlayers().get(i).getDeckAssistantCard().getCards());
+
+                    //List<AssistantCard> assistantCardsAvailable=new ArrayList<>(model.getPlayers().get(i).getDeckAssistantCard().getCards());
                     Player currentPlayer=model.getPlayers().get(i);
 
                     //notify to other players that it's the turn of the current player
-                    this.notifyOtherPlayers("Now it's the Turn of "+currentPlayer.getNickname()+" who plays the Assistant Card!",currentPlayer);
+                    this.notifyOtherPlayers("Now it's the Turn of "+currentPlayer.getNickname()+" who plays the Assistant Card! Please Wait...",currentPlayer);
 
                     VirtualView virtualViewCurrentPlayer=virtualViewMap.get(currentPlayer.getNickname()); //getting the virtual view of the current player
                     virtualViewCurrentPlayer.showGenericMessage("Hey "+ currentPlayer.getNickname() +", now it's your turn!");
                     //ask to the current player which Assistant Card he wants to move
-                    virtualViewCurrentPlayer.askAssistantCard(assistantCardsAvailable); //this must be contained in a loop
+
+                    virtualViewCurrentPlayer.askAssistantCard(currentPlayer.getDeckAssistantCard().getCards()); //this must be contained in a loop
 
                     //every player must choose an assistant card-->NB: different from the others-->we must call the method checkAssistant()
                     //we must control that the Assistant chosen is not present in the currentHand!!!
@@ -314,6 +334,12 @@ public class TurnController implements Serializable {
             if(!nickname.equals(currentPlayer.getNickname())){
                 virtualViewMap.get(nickname).showGenericMessage(message);
             }
+        }
+    }
+
+    public void notifyPlayers(String message){
+        for(String nickname : virtualViewMap.keySet()){
+            virtualViewMap.get(nickname).showGenericMessage(message);
         }
     }
 }

@@ -37,11 +37,11 @@ public class MessageController implements Serializable {
      */
     public boolean checkNickName(String nickName, View view){
         if(!model.isNickNameAvailable(nickName)){ //if the nickName is not available anymore
-            view.showGenericMessage("We are sorry but the nickName has been already taken!");
+            view.showGenericMessage("We are sorry but the nickName has already been taken! Try again: ");
             return false;
         }
         else if(nickName==null || nickName.isEmpty() || nickName.equals("SERVER")){ //if the input is invalid
-            view.showGenericMessage("We are sorry but the nickName is invalid!");
+            view.showGenericMessage("We are sorry but the nickName is invalid!Try again: ");
             return false;
         }
         else{
