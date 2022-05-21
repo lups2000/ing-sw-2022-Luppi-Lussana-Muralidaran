@@ -1,5 +1,8 @@
 package it.polimi.ingsw.observer;
 
+import it.polimi.ingsw.Model.AssistantCard;
+import it.polimi.ingsw.Model.Island;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -53,4 +56,6 @@ public abstract class Observable4View {
             lambda.accept(observer);
         }
     }
+
+    public abstract void askMoveMotherNature(List<Island> islands, AssistantCard assistantCard);
 }

@@ -11,6 +11,7 @@ import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.observer.Observer4View;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -38,6 +39,11 @@ public class ClientController implements Observer4View, Observer {
         taskQueue = Executors.newSingleThreadExecutor();
     }
 
+
+    @Override
+    public void askMoveMotherNature(List<Island> islands, AssistantCard assistantCard) {
+
+    }
 
     /**
      * it forwards to the client the messages received from the server

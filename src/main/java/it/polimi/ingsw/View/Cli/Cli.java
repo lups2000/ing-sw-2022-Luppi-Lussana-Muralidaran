@@ -286,6 +286,22 @@ public class Cli extends Observable4View implements View {
     }
 
     @Override
+    public void askMoveMotherNature(List<Island> islands, AssistantCard assistantCard) {
+        boolean validInput = false;
+        do {
+            out.println("How many steps does Mother Nature take?");
+            int inputSteps = readLine.nextInt();
+            if (inputSteps <= assistantCard.getMaxStepsMotherNature() && inputSteps > 0) {
+                //muovere madre natura nell'isola corrispondente
+                validInput = true;
+            }
+            else {
+                out.println(INVALID_INPUT);
+            }
+        } while (!validInput);
+    }
+
+    @Override
     public void askChooseCloudTile(List<CloudTile> cloudTiles) {
 
         CloudTile cloudTileChosen;

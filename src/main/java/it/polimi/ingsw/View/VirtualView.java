@@ -67,6 +67,11 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void askMoveMotherNature(List<Island> islands) {
+
+    }
+
+    @Override
+    public void askMoveMotherNature(List<Island> islands, AssistantCard assistantCard) {
         clientConnection.sendMessageToClient(new MotherNatureMoveRequest(islands));
     }
 
@@ -124,6 +129,7 @@ public class VirtualView implements View, Observer {
     public void askMoveStudToIsland(List<Island> islands) {
 
     }
+
 
     @Override
     public void askMoveStudToDining(List<PawnColor> pawnColors) {
