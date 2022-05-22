@@ -78,7 +78,7 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void askPlayCharacterCard(List<CharacterCard> characterCards) {
-
+        clientConnection.sendMessageToClient(new CharacterCardRequest(characterCards));
     }
 
     @Override

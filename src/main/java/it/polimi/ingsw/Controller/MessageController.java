@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Model.*;
+import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.View.VirtualView;
 import it.polimi.ingsw.network.Messages.ClientSide.*;
@@ -137,7 +138,6 @@ public class MessageController implements Serializable {
         AssistantCardReply assistantCardReply=(AssistantCardReply) message;
         AssistantCard assistantCard = assistantCardReply.getAssistantCard();
 
-        //si potrebbe aggiungere il controllo che non sia giocata da un altro giocatore nello stesso turno TODO
         if(assistantCard.getValue()>=1 && assistantCard.getValue()<=10 && assistantCard.getMaxStepsMotherNature()>=1 && assistantCard.getMaxStepsMotherNature()<=5
                 && model.getPlayerByNickName(message.getNickName()).getDeckAssistantCard().getCards().contains(assistantCard)){
             return true;
@@ -146,6 +146,19 @@ public class MessageController implements Serializable {
         VirtualView virtualView=virtualViewsMap.get(message.getNickName());
         virtualView.showGenericMessage("You didn't provide a valid AssistantCard!");
         virtualView.askAssistantCard(model.getPlayerByNickName(message.getNickName()).getDeckAssistantCard().getCards());
+        return false;
+    }
+
+    public boolean checkCharacterCard(Message message){
+        CharacterCardReply characterCardReply=(CharacterCardReply) message;
+        CharacterCard characterCard=characterCardReply.getCharacterCard();
+
+        if(characterCard.getCost()>=1 && characterCard.getCost()<=3){
+            return true;
+        }
+        VirtualView virtualView=virtualViewsMap.get(message.getNickName());
+        virtualView.showGenericMessage("You didn't provide a valid AssistantCard!");
+        virtualView.askPlayCharacterCard(model.getCharacterCards());
         return false;
     }
 

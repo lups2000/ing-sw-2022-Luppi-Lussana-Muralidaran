@@ -3,6 +3,8 @@ package it.polimi.ingsw.Model.CharacterCards;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
+
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,8 +12,9 @@ import java.util.Map;
 //EFFECT: take 1 student from this card and place it in your dining room.
 //  Then, draw a new student from the bag and place it on this card
 
-public class StudentToDining extends CharacterCard{
+public class StudentToDining extends CharacterCard implements Serializable {
 
+    private static final long serialVersionUID = 3644546535811928477L;
     private Map<PawnColor,Integer> students;
 
     public StudentToDining(Game game) throws NoPawnPresentException {
@@ -46,6 +49,13 @@ public class StudentToDining extends CharacterCard{
             students.put(sorted,students.get(sorted)+1);
         }
         used();
+    }
+
+    @Override
+    public String toString() {
+        return "StudentToDining ( Cost: " +cost+
+                ", alreadyUsed: "+used+
+                " )";
     }
 }
 

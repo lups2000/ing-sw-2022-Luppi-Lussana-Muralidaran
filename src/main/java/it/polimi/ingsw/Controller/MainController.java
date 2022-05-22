@@ -24,7 +24,6 @@ public class MainController {
     private transient Map<String, VirtualView> virtualViewsMap;
     private final MessageController messageController;
     private TurnController turnController;
-    //private GameState gameState;  //c'è già in game del model
     private int maxNumPlayers;
     private boolean expertVariant;
     private boolean flag=false;
@@ -144,6 +143,15 @@ public class MainController {
                     //bisogna far vedere l'assistente scelto anche a tutti gli altri
                 }
                 else {
+                    Server.LOGGER.warning("The format of the message sent by the client is incorrect!");
+                }
+            }
+
+            case REPLY_CHARACTER_CARD -> {
+                if(messageController.checkCharacterCard(message)){
+                    turnController.messageFromMainController(message);
+                }
+                else{
                     Server.LOGGER.warning("The format of the message sent by the client is incorrect!");
                 }
             }

@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.View.VirtualView;
 import it.polimi.ingsw.network.Messages.ClientSide.AssistantCardReply;
+import it.polimi.ingsw.network.Messages.ClientSide.CharacterCardReply;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.server.Server;
 
@@ -27,6 +28,7 @@ public class TurnController implements Serializable {
     private TurnPhase turnPhase;
     private transient Map<String, VirtualView> virtualViewMap;
     private AssistantCard currentAssistantCard;
+    private CharacterCard currentCharacterCard;
     private boolean winner=false;
     private boolean hasAnswered=false;
 
@@ -51,14 +53,16 @@ public class TurnController implements Serializable {
 
             case REPLY_ASSISTANT_CARD -> {
                 AssistantCardReply assistantCardReply = (AssistantCardReply) message;
-                currentAssistantCard = assistantCardReply.getAssistantCard();   //perché questo è un attributo della classe?
-                /* spostato nel metodo planning phase 2 perche cosi faccio anche i controllo della carta
-                Player currentPlayer = model.getPlayerByNickName(assistantCardReply.getNickName()); //to cleanup the following lines
-                currentPlayer.pickAssistantCard(currentAssistantCard);
-                currentPlayer.setStatus(PlayerStatus.PLAYING_ASSISTANT);
-                model.getCurrentHand().put(currentPlayer, currentPlayer.getCurrentAssistant());*/
+                currentAssistantCard = assistantCardReply.getAssistantCard();
                 hasAnswered = true;
             }
+
+            case REPLY_CHARACTER_CARD -> {
+                CharacterCardReply characterCardReply=(CharacterCardReply) message;
+                currentCharacterCard=characterCardReply.getCharacterCard();
+                hasAnswered=true;
+            }
+
         }
 
     }
@@ -102,7 +106,8 @@ public class TurnController implements Serializable {
         notifyPlayers("The cloud tiles have been filled!");
         planningPhase2();
         Player currentActionPlayer=choosePlayerToPlayAction(); //funziona,sembra tutto ok
-        System.out.println(currentActionPlayer.getNickname());
+        actionPhase1(currentActionPlayer);
+
 
     }
 
@@ -226,6 +231,10 @@ public class TurnController implements Serializable {
         return true;
     }
 
+    private boolean checkCharacterCard(CharacterCard characterCard,Player player){
+        return player.getSchoolBoard().getNumCoins() >= characterCard.getCost();
+    }
+
     /**
      * This method chooses who is the player who plays the current action phase
      * @return the player
@@ -254,16 +263,39 @@ public class TurnController implements Serializable {
      * @param player current player chosen by the method ChoosePlayerToAction()
      */
     private void actionPhase1(Player player){
+        boolean characterCardOk=false;
+
         if(turnPhase == TurnPhase.PLANNING2 && player.getStatus()==PlayerStatus.PLAYING_ACTION){
-            notifyOtherPlayers(player.getNickname()+" is playing the action phase!", player);
-            if(model.getExpertsVariant()){
+
+            VirtualView virtualViewCurrentPlayer=virtualViewMap.get(player.getNickname());
+            virtualViewCurrentPlayer.showGenericMessage("Hey "+ player.getNickname() +", now it's your turn!");
+            notifyOtherPlayers(player.getNickname()+" is playing the action phase!Please wait...", player);
+
+            if(model.getExpertsVariant()){ //if the expert Mode has been chosen
                 List<CharacterCard> characterCardsGame=model.getCharacterCards();
-                VirtualView virtualViewCurrentPlayer=virtualViewMap.get(player.getNickname());
-                virtualViewCurrentPlayer.showGenericMessage("You are playing the ExpertVariant! Do you want to play a Character Card?");
-                //we could ask if the player wants to play a character card
-                //the player must choose between the three random character cards of the Game
-                virtualViewCurrentPlayer.askPlayCharacterCard(characterCardsGame);
+
+                while(!characterCardOk){
+
+                    //sono arrivato qui e non mi stampa la lista di carte personaggio
+                    virtualViewCurrentPlayer.askPlayCharacterCard(characterCardsGame);
+
+                    waitAnswer(); //wait for the answer of the current Player
+
+                    if(checkCharacterCard(currentCharacterCard,player)){
+                        virtualViewCurrentPlayer.showGenericMessage("CharacterCard played: "+currentCharacterCard);
+                        notifyOtherPlayers(player.getNickname()+" has played the following CharacterCard: "+currentCharacterCard,player);
+
+                        characterCardOk=true;
+                    }
+                    else{
+                        virtualViewCurrentPlayer.showGenericMessage("Invalid characterCard!");
+                    }
+                    characterCardOk=true;
+                }
+                characterCardOk=false;
             }
+
+            //sono arrivato fino a qua TODO
             if(model.getMaxNumPlayers()==2){
                 //the player must choose if he wants to move the students(3) to an island or to the dining
                 for(int i=0;i<3;i++){

@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.Island;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.PawnColor;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,9 +17,10 @@ import java.util.Map;
 //EFFECT: take 1 student from this card and place it on an island of your choice.
     //Then, draw a new student from the bag and place it on this card
 
-public class OneStudentToIsland extends CharacterCard{
-    private Map<PawnColor,Integer> students;
+public class OneStudentToIsland extends CharacterCard implements Serializable {
 
+    private static final long serialVersionUID = 4727649867986987547L;
+    private Map<PawnColor,Integer> students;
 
     /**
      * Constructor
@@ -71,5 +73,12 @@ public class OneStudentToIsland extends CharacterCard{
             addStudent(); //put new student on the card
         }
         used();
+    }
+
+    @Override
+    public String toString() {
+        return "OneStudentToIsland ( Cost: " +cost+
+                ", alreadyUsed: "+used+
+                " )";
     }
 }

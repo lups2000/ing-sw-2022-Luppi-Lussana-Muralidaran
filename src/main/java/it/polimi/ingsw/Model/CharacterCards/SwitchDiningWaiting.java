@@ -4,11 +4,14 @@ import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 
+import java.io.Serializable;
 import java.util.Map;
 
 //EFFECT: you may exchange up to 2 students between your entrance and your dining room
 
-public class SwitchDiningWaiting extends CharacterCard{
+public class SwitchDiningWaiting extends CharacterCard implements Serializable {
+
+    private static final long serialVersionUID = 3644762764736912717L;
 
     public SwitchDiningWaiting(Game game){
         cost = 1;
@@ -42,6 +45,13 @@ public class SwitchDiningWaiting extends CharacterCard{
             }
         }
         used();
+    }
+
+    @Override
+    public String toString() {
+        return "SwitchDiningWaiting ( Cost: " +cost+
+                ", alreadyUsed: "+used+
+                " )";
     }
 }
 

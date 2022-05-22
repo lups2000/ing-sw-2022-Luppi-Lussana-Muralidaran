@@ -4,6 +4,8 @@ import it.polimi.ingsw.Model.Island;
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Exceptions.NoNoEntryTilesException;
 
+import java.io.Serializable;
+
 /**
  * @author Pradeeban Muralidaran
  */
@@ -15,7 +17,9 @@ The first time mother nature ends her movement there, put the no entry tile back
 DO NOT calculate influence on that island, or place any towers
 */
 
-public class PutNoEntryTiles extends CharacterCard {
+public class PutNoEntryTiles extends CharacterCard implements Serializable {
+
+    private static final long serialVersionUID = 3989754764767642117L;
 
     public PutNoEntryTiles(Game game){
         cost = 2;
@@ -30,5 +34,12 @@ public class PutNoEntryTiles extends CharacterCard {
             used();
         }
         else {throw new NoNoEntryTilesException();}
+    }
+
+    @Override
+    public String toString() {
+        return "PutNoEntryTiles ( Cost: " +cost+
+                ", alreadyUsed: "+used+
+                " )";
     }
 }

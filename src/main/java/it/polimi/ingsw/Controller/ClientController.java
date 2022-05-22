@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Model.*;
+import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.network.Messages.ClientSide.*;
 import it.polimi.ingsw.network.Messages.Message;
@@ -76,6 +77,11 @@ public class ClientController implements Observer4View, Observer {
             case REQUEST_ASSISTANT_CARD -> {
                 AssistantCardRequest assistantCardRequest = (AssistantCardRequest) message;
                 taskQueue.execute(() -> view.askAssistantCard(assistantCardRequest.getAssistantCards()));
+            }
+
+            case REQUEST_CHARACTER_CARD -> {
+                CharacterCardRequest characterCardRequest=(CharacterCardRequest) message;
+                taskQueue.execute(()->view.askPlayCharacterCard(characterCardRequest.getCharacterCards()));
             }
 
             case REQUEST_MOVE_MOTHER_NATURE -> {
@@ -242,6 +248,11 @@ public class ClientController implements Observer4View, Observer {
     @Override
     public void sendAssistantCard(AssistantCard chosenCard) {
         client.sendMessage(new AssistantCardReply(this.nickname,chosenCard));
+    }
+
+    @Override
+    public void sendCharacterCard(CharacterCard characterCardChosen) {
+        client.sendMessage(new CharacterCardReply(this.nickname,characterCardChosen));
     }
 
     /**

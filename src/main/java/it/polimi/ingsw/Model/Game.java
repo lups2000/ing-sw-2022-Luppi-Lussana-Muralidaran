@@ -118,41 +118,12 @@ public class Game extends Observable implements Serializable {
         }
     }
 
-    /*
-     * method invoked every time a new player tries to connect with the server
-     * @param nickname is the nickname the player chooses when he registers himself
-     * @param chosenSeed is the wizard selected by this player for the choice of the assistant cards' deck
-    public void addPlayer(String nickname,AssistantSeed chosenSeed){
-
-        if(!seedsAvailable.contains(chosenSeed)){
-            throw new IllegalArgumentException("The seed has already been chosen!");
-        }
-        else if(players.size() == maxNumPlayers){
-            throw new IllegalStateException("Too many players!");
-        }
-        else{
-            Player newPlayer = new Player(players.size(),nickname,chosenSeed,schoolBoards.get(players.size())); //gli passo la schoolBoard,index playersize()
-            players.add(players.size(),newPlayer);
-            seedsAvailable.remove(chosenSeed);
-            try {
-                fillBoard(newPlayer);
-            } catch (TooManyPawnsPresent e) {
-                e.printStackTrace();
-            }
-            if(players.size() == 1){
-                //at the first round we decide by default that the first player will be the first to log in the game
-                firstPlayer = newPlayer;
-            }
-        }
-    }
-     */
 
     public GameState getStatus() {return status;}
     public List<Player> getPlayers() {return players;}
     public boolean getExpertsVariant(){return expertsVariant;}
     public void changeStatus(GameState status){this.status = status;}
     public StudentBag getStudentBag() {return studentBag;}
-    //public List<SchoolBoard> getSchoolBoards() {return schoolBoards;}
     public List<CloudTile> getCloudTiles() {return cloudTiles;}
     public void setNoCountTower(){this.noCountTower = true;}
     public void setNoColorInfluence(PawnColor picked){this.noColorInfluence = picked;}

@@ -4,7 +4,11 @@ package it.polimi.ingsw.Model.CharacterCards;
 
 import it.polimi.ingsw.Model.*;
 
-public class TwoAdditionalPoints extends CharacterCard{
+import java.io.Serializable;
+
+public class TwoAdditionalPoints extends CharacterCard implements Serializable {
+
+    private static final long serialVersionUID = 6875895261637393857L;
 
     public TwoAdditionalPoints(Game game){
         cost = 2;
@@ -19,6 +23,13 @@ public class TwoAdditionalPoints extends CharacterCard{
             }
         }
         used();
+    }
+
+    @Override
+    public String toString() {
+        return "TwoAdditionalPoints ( Cost: " +cost+
+                ", alreadyUsed: "+used+
+                " )";
     }
 }
 

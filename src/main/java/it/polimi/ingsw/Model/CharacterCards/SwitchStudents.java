@@ -7,11 +7,13 @@ import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SwitchStudents extends CharacterCard{
+public class SwitchStudents extends CharacterCard implements Serializable {
 
+    private static final long serialVersionUID = 3645873027497384707L;
     private Map<PawnColor,Integer> students;
 
     public SwitchStudents(Game game) throws NoPawnPresentException {
@@ -53,6 +55,13 @@ public class SwitchStudents extends CharacterCard{
         }
 
         used();
+    }
+
+    @Override
+    public String toString() {
+        return "SwitchStudent ( Cost: " +cost+
+                ", alreadyUsed: "+used+
+                " )";
     }
 }
 

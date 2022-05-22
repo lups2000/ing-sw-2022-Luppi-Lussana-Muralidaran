@@ -4,6 +4,8 @@ import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Exceptions.NoTowersException;
 import it.polimi.ingsw.Model.Exceptions.TooManyTowersException;
 
+import java.io.Serializable;
+
 /**
  * @author Pradeeban Muralidaran
  */
@@ -13,7 +15,9 @@ EFFECT: choose an island and resolve the island as if mother nature had ended he
 Mother nature will still move and the island where she ends her movement will also be resolved
  */
 
-public class ChooseIsland extends CharacterCard{
+public class ChooseIsland extends CharacterCard implements Serializable {
+
+    private static final long serialVersionUID = 3453275472345232517L;
 
     public ChooseIsland(Game game){
         cost = 3;
@@ -26,5 +30,11 @@ public class ChooseIsland extends CharacterCard{
         used();
     }
 
+    @Override
+    public String toString() {
+        return "ChooseIsland ( Cost: " +cost+
+                ", alreadyUsed: "+used+
+                " )";
+    }
 }
 

@@ -362,32 +362,38 @@ public class Cli extends Observable4View implements View {
     @Override
     public void askPlayCharacterCard(List<CharacterCard> characterCards) {
         boolean validInput;
+        int id;
+        CharacterCard characterCardChosen = null;
         /*Forse si potrebbe fare un ciclo di controllo per vedere se si hanno abbastanza monete per giocare una delle 3 carte
         in modo da non far partire inutilmente la funzione a schermo*/
-        out.println("Do you want to use a Character Card?");
+        out.print("Do you want to play a Character Card? Y/N ");
         String characterCardAnswer = readLine.nextLine();
+
         do {
-            if (characterCardAnswer.equals("Y")) {
+            if (characterCardAnswer.equalsIgnoreCase("y")) {
                 boolean validCost = false;
-                do {
-                    //Manda risposta a server e scegli carta da utilizzare e attivane l'effetto
-                    out.println("Select one of the three cards (type index):");
-                    int characterCardIndex = readLine.nextInt();
-                    /*
-                    if (choosenCard.cost <= schoolBoard.getNumCoins()) {
-                        activate effect of the card;
-                        schoolBoard.decreaseNumCoins(choosenCard.cost);
-                        validCost = true;
+                do{
+                    out.println("Please type the corresponding id to select one of the AssistantSeeds: ");
+                    for(int i=0;i<characterCards.size();i++){
+                        System.out.println((i+1)+": "+characterCards.get(i));
                     }
-                    else {
-                        out.println("Can't play this card");
+
+                    id= Integer.parseInt(readLine.nextLine());
+
+                    if(id<=0 || id>characterCards.size()){
+                        out.println(INVALID_INPUT);
+                        validCost = false;
                     }
-                    */
+                    else{
+                        characterCardChosen=characterCards.get(id-1);
+                        validCost=true;
+                    }
 
                 } while (!validCost);
                 validInput = true;
             }
-            else if (characterCardAnswer.equals("N")) {
+            else if (characterCardAnswer.equalsIgnoreCase("n")) {
+                characterCardChosen=null;
                 validInput = true;
             }
             else {
@@ -396,6 +402,8 @@ public class Cli extends Observable4View implements View {
                 validInput = false;
             }
         } while (!validInput);
+        CharacterCard finalCharacterCardChosen = characterCardChosen;
+        notifyObserver(obs->obs.sendCharacterCard(finalCharacterCardChosen));
     }
 
     @Override

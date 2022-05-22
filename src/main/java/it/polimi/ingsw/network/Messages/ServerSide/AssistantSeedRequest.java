@@ -27,7 +27,8 @@ public class AssistantSeedRequest extends Message {
     @Override
     public String toString() {
         return "AssistantSeedRequest{" +
-                "nickName="+getNickName()+
+                "nickName="+getNickName()+", "+
+                "assistantSeedAvailable=" + assistantSeedAvailable +
                 '}';
     }
 }

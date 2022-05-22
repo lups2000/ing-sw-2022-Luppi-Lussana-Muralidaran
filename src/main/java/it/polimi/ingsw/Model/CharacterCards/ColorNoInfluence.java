@@ -4,7 +4,11 @@ package it.polimi.ingsw.Model.CharacterCards;
 
 import it.polimi.ingsw.Model.*;
 
-public class ColorNoInfluence extends CharacterCard{
+import java.io.Serializable;
+
+public class ColorNoInfluence extends CharacterCard implements Serializable {
+
+    private static final long serialVersionUID = 2564765265484758477L;
 
     public ColorNoInfluence(Game game){
         cost = 3;
@@ -15,5 +19,12 @@ public class ColorNoInfluence extends CharacterCard{
     public void effect(PawnColor chosen) {
         game.setNoColorInfluence(chosen);
         used();
+    }
+
+    @Override
+    public String toString() {
+        return "ColorNoInfluence ( Cost: " +cost+
+                ", alreadyUsed: "+used+
+                " )";
     }
 }

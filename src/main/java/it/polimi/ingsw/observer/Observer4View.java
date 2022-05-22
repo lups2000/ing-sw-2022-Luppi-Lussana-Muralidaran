@@ -1,6 +1,7 @@
 package it.polimi.ingsw.observer;
 
 import it.polimi.ingsw.Model.*;
+import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 
 import java.io.IOException;
 import java.util.Map;
@@ -38,6 +39,8 @@ public interface Observer4View {
      * @param chosenCard the assistant card chosen
      */
     void sendAssistantCard(AssistantCard chosenCard);
+
+    void sendCharacterCard(CharacterCard characterCard);
 
     /**
      * This method sends a message to the server to communicate which assistant seed he chose
@@ -84,7 +87,6 @@ public interface Observer4View {
     /*
      * Handles a disconnection wanted by the user.
      * (e.g. a click on the back button into the GUI).
-
-*
+     *
     void onDisconnection();*/
 }

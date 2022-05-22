@@ -4,7 +4,11 @@ import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 
-public abstract class CharacterCard {
+import java.io.Serializable;
+
+public abstract class CharacterCard implements Serializable {
+
+    private static final long serialVersionUID = 2564765267367312717L;
     protected int cost;
     protected boolean used;
     protected Game game;
