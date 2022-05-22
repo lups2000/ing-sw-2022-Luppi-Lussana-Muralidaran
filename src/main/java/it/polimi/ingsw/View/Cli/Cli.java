@@ -212,7 +212,7 @@ public class Cli extends Observable4View implements View {
                 out.println("Please type the corresponding id to select one of the Assistant Cards: ");
                 for (AssistantCard assistantCard : assistantCards) {
                     out.print(i +" ) ");
-                    out.print("Card Value: " + assistantCard.getValue()+", ");
+                    out.print("Value: " + assistantCard.getValue()+", ");
                     out.print("Max steps motherNature: " + assistantCard.getMaxStepsMotherNature() + "\n");
                     i++;
                 }

@@ -101,6 +101,8 @@ public class TurnController implements Serializable {
         planningPhase1();
         notifyPlayers("The cloud tiles have been filled!");
         planningPhase2();
+        Player currentActionPlayer=choosePlayerToPlayAction(); //funziona,sembra tutto ok
+        System.out.println(currentActionPlayer.getNickname());
 
     }
 
@@ -146,11 +148,15 @@ public class TurnController implements Serializable {
 
                     //SEVERE: it.polimi.ingsw.Model.AssistantCard
                     while(!assistantOk){
+
                         virtualViewCurrentPlayer.askAssistantCard(currentPlayer.getDeckAssistantCard().getCards()); //this must be contained in a loop
                         //metodo waitAnswer senza wait e notify (?)
-                        waitAnswer();
+                        waitAnswer(); //wait for the answer of the current Player
 
                         if(checkAssistantCard(currentAssistantCard)){
+                            virtualViewCurrentPlayer.showGenericMessage("AssistantCard played:  Value: "+currentAssistantCard.getValue()+", MaxStepsMotherNature: "+currentAssistantCard.getMaxStepsMotherNature());
+                            notifyOtherPlayers(currentPlayer.getNickname()+" has played the following AssistantCard:  Value: "+currentAssistantCard.getValue()+", MaxStepsMotherNature: "+currentAssistantCard.getMaxStepsMotherNature(),currentPlayer);
+
                             currentPlayer.pickAssistantCard(currentAssistantCard);
                             currentPlayer.setStatus(PlayerStatus.PLAYING_ASSISTANT);
                             model.getCurrentHand().put(currentPlayer, currentPlayer.getCurrentAssistant());
@@ -158,15 +164,13 @@ public class TurnController implements Serializable {
                         }
                         else{
                             //if the assistantCard is invalid
-                            virtualViewCurrentPlayer.showGenericMessage("Assistant Card invalid!");
+                            virtualViewCurrentPlayer.showGenericMessage("Assistant Card invalid!Please Retry...");
                         }
                     }
                     assistantOk=false;
 
-                    //every player must choose an assistant card-->NB: different from the others-->we must call the method checkAssistant()
-                    //we must control that the Assistant chosen is not present in the currentHand!!! TODO
-
                     //if the assistant cards of the current player are finished I could call model.checkWinner() (the one written by Paolo)
+                    //TODO
 
                     turnPhase = TurnPhase.PLANNING2;
                 }

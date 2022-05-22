@@ -242,11 +242,8 @@ public class MainController {
             virtualView.showLoginInfo("SERVER",true,true);
             virtualView.askAssistantSeed(game.getSeedsAvailable());
 
-            /*if(game.getPlayers().size() == game.getMaxNumPlayers()){
-                //now the match can start
-                startMatch(maxNumPlayers,expertVariant);
-            }*/
         }
+        //a questo else teoricamente non ci arrivo mai
         else{
             virtualView.showLoginInfo("SERVER",true,false);
         }
@@ -262,7 +259,6 @@ public class MainController {
 
         game.initGame(maxNumPlayers,experts);
         broadcastingMessage("Match is starting... All players are connected... ");
-
         //poi qua forse c'è da mostrare tramite la cli le 12 isole,le scholboards e le clouds -->matchInfo
 
         game.changeStatus(GameState.PLAYING); //gameStatus==PLAYING set in the model

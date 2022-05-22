@@ -37,6 +37,7 @@ public class Server {
 
         if(mainController.isGameStarted()){ //if the match has already started-->the client must disconnect
             virtualView.showLoginInfo(null,true,false);
+            virtualView.showError("Sorry but the Game has already started!");
             clientConnection.disconnect();
         }
         else { //the client has possibilities to connect to the match
