@@ -17,6 +17,7 @@ public enum MessageType {
     REQUEST_CLOUD_TILE,REPLY_CLOUD_TILE,
     WIN,LOSE,
     INFO_MATCH,
+    INFO_ISLANDS,
 
     GENERIC_MESSAGE,
     ERROR,

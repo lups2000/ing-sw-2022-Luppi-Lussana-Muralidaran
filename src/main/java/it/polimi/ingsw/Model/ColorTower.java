@@ -5,5 +5,13 @@ package it.polimi.ingsw.Model;
 public enum ColorTower {
     WHITE(Colors.WHITE_TOWER),GRAY(Colors.GRAY_TOWER),BLACK(Colors.BLACK_TOWER);
 
-    ColorTower(String visualColor) {}
+    private final String visualColor;
+
+    ColorTower(String visualColor) {
+        this.visualColor=visualColor;
+    }
+
+    public String getVisualColor() {
+        return visualColor;
+    }
 }

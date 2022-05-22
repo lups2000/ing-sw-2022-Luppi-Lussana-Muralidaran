@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.View.View;
+import it.polimi.ingsw.network.Messages.ServerSide.Islands;
 import it.polimi.ingsw.observer.Observable4View;
 
 import java.io.PrintStream;
@@ -14,7 +15,7 @@ import java.util.*;
 
 
 /**
- * @author Pradeeban Muralidaran
+ * @author Pradeeban Muralidaran,Matteo Luppi
  */
 public class Cli extends Observable4View implements View {
     private final PrintStream out;
@@ -399,24 +400,24 @@ public class Cli extends Observable4View implements View {
 
     @Override
     public void showSchoolBoard(SchoolBoard schoolBoard){
-        out.println("CURRENT SCHOOL BOARD\n\nDining Room:\n\n");
+        out.println("CURRENT SCHOOL BOARD\n\nDining Room:");
         for (PawnColor pawnColor: PawnColor.values()){
-            out.print(pawnColor+" students: ");
+            out.print(pawnColor.getVisualColor()+pawnColor+Colors.RESET+" students: ");
             for (int i=0; i<schoolBoard.getStudentsDining().get(pawnColor); i++) {
-                out.print("X");
+                out.print(pawnColor.getVisualColor()+"X"+" ");
                 if (schoolBoard.getProfessors().get(pawnColor)) {
-                    out.print("\nYou have this color professor");
+                    out.print("  "+pawnColor.getVisualColor()+"P"+Colors.RESET);
                 }
             }
             out.println("");
         }
-        out.println("\nStudents waiting outside");
+        out.print("\nStudents in the Entrance: ");
         for (PawnColor pawnColor: PawnColor.values()){
             for (int i=0; i<schoolBoard.getStudentsWaiting().get(pawnColor); i++){
-                out.println("X");
+                out.print(pawnColor.getVisualColor()+"X "+Colors.RESET);
             }
         }
-        out.println("Number of coins: "+ schoolBoard.getNumCoins());
+        out.println("\nNumber of coins: "+ schoolBoard.getNumCoins());
         out.println("Number of available towers: "+schoolBoard.getNumTowers());
     }
 
@@ -498,5 +499,25 @@ public class Cli extends Observable4View implements View {
     @Override
     public void askMoveStudToDining(List<PawnColor> pawnColors) {
 
+    }
+
+    @Override
+    public void showIslands(List<Island> islands) {
+
+        out.println("ISLANDS: ");
+
+        for(Island island : islands){
+            out.print("- Index: "+island.getIndex()+" ");
+            out.print(" Students: ");
+            for (PawnColor pawnColor: PawnColor.values()){
+                for (int i=0; i<island.getStudents().get(pawnColor); i++){
+                    out.print(pawnColor.getVisualColor()+"X "+Colors.RESET);
+                }
+            }
+            if(island.isMotherNature()){
+                out.print(" MotherNature here");
+            }
+            out.println("");
+        }
     }
 }

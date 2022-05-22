@@ -63,4 +63,6 @@ public interface View {
     void askMoveStudToIsland(List<Island> islands);
 
     void askMoveStudToDining(List<PawnColor> pawnColors);
+
+    void showIslands(List<Island> islands);
 }

@@ -133,6 +133,11 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
+    public void showIslands(List<Island> islands) {
+        clientConnection.sendMessageToClient(new Islands(islands));
+    }
+
+    @Override
     public void askExpertVariant() {
         clientConnection.sendMessageToClient(new ExpertVariantRequest());
     }
