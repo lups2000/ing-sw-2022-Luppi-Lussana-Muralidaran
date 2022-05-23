@@ -408,7 +408,7 @@ public class Cli extends Observable4View implements View {
 
     @Override
     public void showSchoolBoard(SchoolBoard schoolBoard){
-        out.println("CURRENT SCHOOL BOARD\n\nDining Room:");
+        out.println("Dining Room:");
         for (PawnColor pawnColor: PawnColor.values()){
             out.print(pawnColor.getVisualColor()+pawnColor+Colors.RESET+" students: ");
             for (int i=0; i<schoolBoard.getStudentsDining().get(pawnColor); i++) {
@@ -527,5 +527,19 @@ public class Cli extends Observable4View implements View {
             }
             out.println("");
         }
+    }
+
+    @Override
+    public void showGameBoard(List<Island> islands, List<Player> players) {
+        out.println("\n"+Colors.RED_PAWN+"CURRENT GAME SITUATION: "+Colors.RESET);
+
+        this.showIslands(islands);
+        out.println("");
+        for(Player player :players){
+            out.println(player.getNickname()+": ");
+            this.showSchoolBoard(player.getSchoolBoard());
+            out.println("");
+        }
+        out.print("\n\n\033[38;2;255;255;0m");
     }
 }

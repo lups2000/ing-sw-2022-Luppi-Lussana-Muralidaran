@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.View.VirtualView;
 import it.polimi.ingsw.network.Messages.ClientSide.AssistantCardReply;
 import it.polimi.ingsw.network.Messages.ClientSide.CharacterCardReply;
+import it.polimi.ingsw.network.Messages.ClientSide.CloudTileReply;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.server.Server;
 
@@ -29,6 +30,7 @@ public class TurnController implements Serializable {
     private transient Map<String, VirtualView> virtualViewMap;
     private AssistantCard currentAssistantCard;
     private CharacterCard currentCharacterCard;
+    private CloudTile currentCloudTile;
     private boolean winner=false;
     private boolean hasAnswered=false;
 
@@ -63,6 +65,12 @@ public class TurnController implements Serializable {
                 hasAnswered=true;
             }
 
+            case REPLY_CLOUD_TILE -> {
+                CloudTileReply cloudTileReply=(CloudTileReply) message;
+                currentCloudTile=cloudTileReply.getCloudTile();
+                hasAnswered=true;
+            }
+
         }
 
     }
@@ -79,7 +87,12 @@ public class TurnController implements Serializable {
 
             //nota bene: al primo giro le clouds sono gia piene!Quindi inizializzo turnPhase a PLANNING1
             planningPhase1();
+
             notifyPlayers("The cloud tiles have been filled!");
+            for(VirtualView virtualView: virtualViewMap.values()){ //show to the players the current situation
+                virtualView.showGameBoard(model.getIslands(),model.getPlayers());
+            }
+
             planningPhase2();
 
             //I put the players.size() because if a player is disconnected the round continues
@@ -104,6 +117,9 @@ public class TurnController implements Serializable {
         }*/
         planningPhase1();
         notifyPlayers("The cloud tiles have been filled!");
+        for(VirtualView virtualView: virtualViewMap.values()){
+            virtualView.showGameBoard(model.getIslands(),model.getPlayers());
+        }
         planningPhase2();
         Player currentActionPlayer=choosePlayerToPlayAction(); //funziona,sembra tutto ok
         actionPhase1(currentActionPlayer);
@@ -150,15 +166,13 @@ public class TurnController implements Serializable {
                     virtualViewCurrentPlayer.showGenericMessage("Hey "+ currentPlayer.getNickname() +", now it's your turn!");
                     //ask to the current player which Assistant Card he wants to move
 
-
-                    //SEVERE: it.polimi.ingsw.Model.AssistantCard
                     while(!assistantOk){
 
                         virtualViewCurrentPlayer.askAssistantCard(currentPlayer.getDeckAssistantCard().getCards()); //this must be contained in a loop
                         //metodo waitAnswer senza wait e notify (?)
                         waitAnswer(); //wait for the answer of the current Player
 
-                        if(checkAssistantCard(currentAssistantCard)){
+                        if(checkAssistantCard(currentAssistantCard)){ //assistantCard ok
                             virtualViewCurrentPlayer.showGenericMessage("AssistantCard played:  Value: "+currentAssistantCard.getValue()+", MaxStepsMotherNature: "+currentAssistantCard.getMaxStepsMotherNature());
                             notifyOtherPlayers(currentPlayer.getNickname()+" has played the following AssistantCard:  Value: "+currentAssistantCard.getValue()+", MaxStepsMotherNature: "+currentAssistantCard.getMaxStepsMotherNature(),currentPlayer);
 
@@ -284,7 +298,6 @@ public class TurnController implements Serializable {
                     if(checkCharacterCard(currentCharacterCard,player)){
                         virtualViewCurrentPlayer.showGenericMessage("CharacterCard played: "+currentCharacterCard);
                         notifyOtherPlayers(player.getNickname()+" has played the following CharacterCard: "+currentCharacterCard,player);
-
                         characterCardOk=true;
                     }
                     else{
@@ -399,7 +412,18 @@ public class TurnController implements Serializable {
     private void actionPhase3(Player player){
         if(turnPhase == TurnPhase.ACTION2 && player.getStatus()==PlayerStatus.PLAYING_ACTION){
             //we ask the player which CloudTile he wants to pick
-            //player.pickCloudTile(CloudTileChosen);
+            VirtualView virtualViewPlayer=virtualViewMap.get(player.getNickname());
+            virtualViewPlayer.askChooseCloudTile(model.getCloudTiles());
+
+            waitAnswer();
+
+            try {
+                player.pickCloudTile(currentCloudTile);
+
+            } catch (TooManyPawnsPresent e) {
+                e.printStackTrace();
+            }
+
             player.setStatus(PlayerStatus.WAITING);
             turnPhase = TurnPhase.PLANNING2;//in order to come back to the next player's action
         }

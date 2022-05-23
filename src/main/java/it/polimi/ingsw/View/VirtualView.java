@@ -138,6 +138,11 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
+    public void showGameBoard(List<Island> islands,List<Player> players) {
+        clientConnection.sendMessageToClient(new GameBoard(islands,players));
+    }
+
+    @Override
     public void askExpertVariant() {
         clientConnection.sendMessageToClient(new ExpertVariantRequest());
     }

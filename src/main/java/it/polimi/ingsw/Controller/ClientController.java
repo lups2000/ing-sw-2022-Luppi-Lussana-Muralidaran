@@ -67,6 +67,11 @@ public class ClientController implements Observer4View, Observer {
                 taskQueue.execute(() -> view.showLobby(lobbyMessage.getPlayersLobby(), lobbyMessage.getNumMaxPlayersLobby()));
             }
 
+            case GAME_BOARD -> {
+                GameBoard gameBoard=(GameBoard) message;
+                taskQueue.execute(()->view.showGameBoard(gameBoard.getIslands(),gameBoard.getPlayers()));
+            }
+
             case REQUEST_EXPERT_VARIANT -> taskQueue.execute(view::askExpertVariant);
 
             case REQUEST_ASSISTANT_SEED -> {
