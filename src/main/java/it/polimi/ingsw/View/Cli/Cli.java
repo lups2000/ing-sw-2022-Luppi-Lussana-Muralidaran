@@ -392,10 +392,10 @@ public class Cli extends Observable4View implements View {
         int idCharacterCard=-1;
         CharacterCard characterCardChosen = null;
 
-        out.print("Do you want to play a Character Card? Y/N ");
-        String characterCardAnswer = readLine.nextLine();
-
         do {
+            out.print("Do you want to play a Character Card? Y/N ");
+            String characterCardAnswer = readLine.nextLine();
+
             if (characterCardAnswer.equalsIgnoreCase("y")) {
                 boolean validCost = false;
                 do{
@@ -441,7 +441,7 @@ public class Cli extends Observable4View implements View {
         String answer=null;
 
         do{
-            out.print("Move a student:\n press 'S' to move to your dining Room or 'I' to an island:   ");
+            out.print("\npress 'S' to move to your dining Room or 'I' to an island:   ");
             answer = readLine.nextLine();
 
             if (answer.equalsIgnoreCase("s") || answer.equalsIgnoreCase("i")) {
@@ -589,8 +589,9 @@ public class Cli extends Observable4View implements View {
                 for(int i=0;i<studentsWaiting.get(pawnColor);i++){
                     out.print(pawnColor.getVisualColor()+" X "+Colors.RESET);
                 }
-                out.println(Colors.RESET+"");
+                out.println("");
             }
+            out.print("\n\n\033[38;2;255;255;0m");
             answerColor= readLine.nextLine();
 
 

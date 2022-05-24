@@ -335,11 +335,12 @@ public class TurnController implements Serializable {
             }
 
             for(int i=0;i<model.getMaxNumPlayers()+1;i++){
-
+                int numStud=model.getMaxNumPlayers()+1-i;
+                int numTot=model.getMaxNumPlayers()+1;
+                virtualViewCurrentPlayer.showGenericMessage("It's time to move your students: "+numStud+" / "+numTot);
                 virtualViewCurrentPlayer.askMoveStud();
                 waitAnswer();
-                System.out.println(currentMessageMoveStud);
-                //sono arrivato fino a qua TODO
+
                 if(currentMessageMoveStud.equalsIgnoreCase("s")){
                     //we ask the player which PawnColor he wants to move
                     virtualViewCurrentPlayer.askMoveStudToDining(player.getSchoolBoard().getStudentsWaiting());
