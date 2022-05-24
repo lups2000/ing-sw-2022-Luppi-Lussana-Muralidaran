@@ -12,6 +12,7 @@ import it.polimi.ingsw.observer.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /** This class represents the 'real' view to the Controller. It hides the implementation
  * of the network to the Controller-->Server Side
@@ -49,9 +50,9 @@ public class VirtualView implements View, Observer {
         clientConnection.sendMessageToClient(new AssistantCardRequest(assistantCards));
     }
 
+    /*
     @Override
     public void askMoveStud(List<PawnColor> pawnColors, List<Island> islands, SchoolBoard schoolBoard) throws TooManyPawnsPresent, NoPawnPresentException {
-
     }
 
     @Override
@@ -63,7 +64,7 @@ public class VirtualView implements View, Observer {
     @Override
     public void askMoveStudToIsland(List<Island> islands, SchoolBoard schoolBoard, int studentsToMove) throws NoPawnPresentException {
         clientConnection.sendMessageToClient(new StudentToIslandRequest(islands));
-    }
+    }*/
 
 
     @Override
@@ -82,13 +83,18 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
+    public void askMoveStud(String message) {
+        clientConnection.sendMessageToClient(new Generic("SERVER",message));
+    }
+
+    @Override
     public void showSchoolBoard(SchoolBoard schoolBoard) {
 
     }
 
     @Override
     public void showGenericMessage(String genericMessage) {
-        clientConnection.sendMessageToClient(new Generic(genericMessage));
+        clientConnection.sendMessageToClient(new Generic("SERVER",genericMessage));
     }
 
     @Override
@@ -123,13 +129,13 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void askMoveStudToIsland(List<Island> islands) {
-
+        clientConnection.sendMessageToClient(new StudentToIslandRequest(islands));
     }
 
 
     @Override
-    public void askMoveStudToDining(List<PawnColor> pawnColors) {
-
+    public void askMoveStudToDining(Map<PawnColor,Integer> studentsWaiting) {
+        clientConnection.sendMessageToClient(new StudentToDiningRequest(studentsWaiting));
     }
 
     @Override

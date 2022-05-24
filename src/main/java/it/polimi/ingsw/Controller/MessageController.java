@@ -205,7 +205,7 @@ public class MessageController implements Serializable {
 
         VirtualView virtualView=virtualViewsMap.get(message.getNickName());
         virtualView.showGenericMessage("You didn't provide a valid Student!");
-        virtualView.askMoveStudToDining(Arrays.asList(PawnColor.values()));
+        virtualView.askMoveStudToDining(player.getSchoolBoard().getStudentsWaiting());
         return false;
     }
 

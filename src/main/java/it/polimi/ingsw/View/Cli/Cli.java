@@ -236,6 +236,7 @@ public class Cli extends Observable4View implements View {
         }
     }
 
+    /*
     @Override
     public void askMoveStud(List<PawnColor> pawnColors, List<Island> islands, SchoolBoard schoolBoard) throws TooManyPawnsPresent, NoPawnPresentException {
         int studentsToMove = 3;
@@ -251,8 +252,9 @@ public class Cli extends Observable4View implements View {
             }
         } while (!validInput);
 
-    }
+    }*/
 
+    /*
     @Override
     public int askMoveStudToDining(List<PawnColor> pawnColors, SchoolBoard schoolBoard, int studentsToMove) throws TooManyPawnsPresent {
         PawnColor color = null;
@@ -271,8 +273,9 @@ public class Cli extends Observable4View implements View {
             }
         } while (playerAnswer.equals("Y") || !validInput);
         return studentsToMove;
-    }
+    }*/
 
+    /*
     @Override
     public void askMoveStudToIsland(List<Island> islands, SchoolBoard schoolBoard, int studentsToMove) throws NoPawnPresentException {
         PawnColor color = null;
@@ -282,7 +285,7 @@ public class Cli extends Observable4View implements View {
             schoolBoard.moveStudToIsland(color, island);
             studentsToMove--;
         }
-    }
+    }*/
 
 
     @Override
@@ -407,6 +410,27 @@ public class Cli extends Observable4View implements View {
     }
 
     @Override
+    public void askMoveStud(String message) {
+        boolean validInput=false;
+        String answer=null;
+        do{
+            out.print("Move a student:\n press 'S' to move to your dining Room or 'I' to an island:   ");
+            answer=readLine.nextLine();
+
+            if(answer.equalsIgnoreCase("s") || answer.equalsIgnoreCase("i")){
+                validInput=true;
+            }
+            else{
+                out.println(INVALID_INPUT);
+                clearCli();
+                validInput=false;
+            }
+        }while(!validInput);
+        String finalAnswer = answer;
+        notifyObserver(obs->obs.sendGenericMessage(finalAnswer));
+    }
+
+    @Override
     public void showSchoolBoard(SchoolBoard schoolBoard){
         out.println("Dining Room:");
         for (PawnColor pawnColor: PawnColor.values()){
@@ -501,11 +525,82 @@ public class Cli extends Observable4View implements View {
 
     @Override
     public void askMoveStudToIsland(List<Island> islands) {
+        boolean validInput=false;
+        int indexIsland;
+        PawnColor pawnColorChosen;
+        do{
+            /*
+            this.showIslands(islands);
+            out.println("Please type the corresponding index to select one of the Islands: ");
+            index=Integer.parseInt(readLine.nextLine());
+
+            if(index<0 && index> islands.size()){ //da controllare bene qua
+                validInput=true;
+            }
+            else{
+                out.println(INVALID_INPUT);
+                clearCli();
+                validInput=false;
+            }
+             */
+
+        }while(!validInput);
+        //notifyObserver(obs->obs.sendStudentToIsland());
 
     }
 
     @Override
-    public void askMoveStudToDining(List<PawnColor> pawnColors) {
+    public void askMoveStudToDining(Map<PawnColor,Integer> studentsWaiting) {
+        boolean validInput=false;
+        String answerColor;
+        PawnColor pawnColorChosen=null;
+        //show the students in the entrance
+        do{
+            out.println("Students in the Waiting Room...Select one color(ex. red,blue...) : ");
+            for(PawnColor pawnColor : studentsWaiting.keySet()){
+                for(Integer integer : studentsWaiting.values()){
+                    out.print(pawnColor.getVisualColor()+"X"+Colors.RESET);
+                }
+            }
+            answerColor= readLine.nextLine();
+
+
+            if(answerColor.equalsIgnoreCase("red") || answerColor.equalsIgnoreCase("blue") || answerColor.equalsIgnoreCase("pink") ||
+                answerColor.equalsIgnoreCase("green") || answerColor.equalsIgnoreCase("yellow")){
+
+                if(answerColor.equalsIgnoreCase("red")){
+                    pawnColorChosen=PawnColor.RED;
+                }
+                else if(answerColor.equalsIgnoreCase("blue")){
+                    pawnColorChosen=PawnColor.BLUE;
+                }
+                else if(answerColor.equalsIgnoreCase("pink")){
+                    pawnColorChosen=PawnColor.PINK;
+                }
+                else if(answerColor.equalsIgnoreCase("yellow")){
+                    pawnColorChosen=PawnColor.YELLOW;
+                }
+                else{
+                    pawnColorChosen=PawnColor.GREEN;
+                }
+
+                if(studentsWaiting.get(pawnColorChosen)<=0){
+                    out.println(INVALID_INPUT);
+                    clearCli();
+                    validInput=false;
+                }
+                else{
+                    validInput=true;
+                }
+            }
+            else{
+                out.println(INVALID_INPUT);
+                clearCli();
+                validInput=false;
+            }
+        }while(!validInput);
+        PawnColor finalPawnColorChosen = pawnColorChosen;
+        notifyObserver(obs->obs.sendStudentToDining(finalPawnColorChosen));
 
     }
 
@@ -535,6 +630,7 @@ public class Cli extends Observable4View implements View {
 
         this.showIslands(islands);
         out.println("");
+
         for(Player player :players){
             out.println(player.getNickname()+": ");
             this.showSchoolBoard(player.getSchoolBoard());

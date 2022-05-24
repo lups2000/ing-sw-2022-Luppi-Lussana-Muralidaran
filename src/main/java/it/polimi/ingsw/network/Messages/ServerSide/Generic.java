@@ -11,8 +11,8 @@ public class Generic extends Message {
     private static final long serialVersionUID = 2487384811793891381L;
     private String message;
 
-    public Generic(String message){
-        super("SERVER", MessageType.GENERIC_MESSAGE);
+    public Generic(String nickName,String message){
+        super(nickName, MessageType.GENERIC_MESSAGE);
         this.message = message;
     }
 

@@ -125,7 +125,7 @@ public class ClientController implements Observer4View, Observer {
 
             case REQUEST_MOVE_STUD_DINING -> {
                 StudentToDiningRequest studentToDiningRequest = (StudentToDiningRequest) message;
-                taskQueue.execute(() -> view.askMoveStudToDining(studentToDiningRequest.getPawnColors()));
+                taskQueue.execute(() -> view.askMoveStudToDining(studentToDiningRequest.getStudentsWaiting()));
             }
 
             case REQUEST_MOVE_STUD_ISLAND -> {
@@ -258,6 +258,11 @@ public class ClientController implements Observer4View, Observer {
     @Override
     public void sendCharacterCard(CharacterCard characterCardChosen) {
         client.sendMessage(new CharacterCardReply(this.nickname,characterCardChosen));
+    }
+
+    @Override
+    public void sendGenericMessage(String message) {
+        client.sendMessage(new Generic(this.nickname,message));
     }
 
     /**

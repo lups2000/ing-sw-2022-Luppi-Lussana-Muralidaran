@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This interface defines the methods that will be implemented in the CLI and in the GUI
@@ -32,17 +33,19 @@ public interface View {
 
     void askAssistantCard(List<AssistantCard> assistantCards);
 
-    void askMoveStud (List<PawnColor> pawnColors, List<Island> islands, SchoolBoard schoolBoard) throws TooManyPawnsPresent, NoPawnPresentException;
+    //void askMoveStud (List<PawnColor> pawnColors, List<Island> islands, SchoolBoard schoolBoard) throws TooManyPawnsPresent, NoPawnPresentException;
 
-    int askMoveStudToDining(List<PawnColor> pawnColors, SchoolBoard schoolBoard, int studentsToMove) throws TooManyPawnsPresent;
+    //int askMoveStudToDining(List<PawnColor> pawnColors, SchoolBoard schoolBoard, int studentsToMove) throws TooManyPawnsPresent;
 
-    void askMoveStudToIsland(List<Island> islands, SchoolBoard schoolBoard, int studentsToMove) throws NoPawnPresentException;
+    //void askMoveStudToIsland(List<Island> islands, SchoolBoard schoolBoard, int studentsToMove) throws NoPawnPresentException;
 
     void askChooseCloudTile(List<CloudTile> cloudTiles);
 
     void askExpertVariant();
 
     void askPlayCharacterCard(List<CharacterCard> characterCards);
+
+    void askMoveStud(String message);
 
     void showSchoolBoard(SchoolBoard schoolBoard);
 
@@ -62,7 +65,7 @@ public interface View {
 
     void askMoveStudToIsland(List<Island> islands);
 
-    void askMoveStudToDining(List<PawnColor> pawnColors);
+    void askMoveStudToDining(Map<PawnColor,Integer> studentsWaiting);
 
     void showIslands(List<Island> islands);
 

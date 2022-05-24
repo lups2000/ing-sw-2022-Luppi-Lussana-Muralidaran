@@ -211,8 +211,14 @@ public class MainController {
                     Server.LOGGER.warning("The format of the message sent by the client is incorrect!");
                 }
             }
+
+            case GENERIC_MESSAGE -> {
+                turnController.messageFromMainController(message);
+            }
+
             default -> Server.LOGGER.warning("Wrong message received from client.");
         }
+
     }
 
 

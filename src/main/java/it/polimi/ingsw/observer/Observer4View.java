@@ -42,6 +42,8 @@ public interface Observer4View {
 
     void sendCharacterCard(CharacterCard characterCard);
 
+    void sendGenericMessage(String message);
+
     /**
      * This method sends a message to the server to communicate which assistant seed he chose
      *

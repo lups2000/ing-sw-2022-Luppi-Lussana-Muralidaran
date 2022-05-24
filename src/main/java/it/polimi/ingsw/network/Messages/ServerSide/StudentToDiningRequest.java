@@ -5,24 +5,25 @@ import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.MessageType;
 
 import java.util.List;
+import java.util.Map;
 
 public class StudentToDiningRequest extends Message {
 
     private static final long serialVersionUID = 2634673647637517311L;
-    private List<PawnColor> pawnColors;
+    private Map<PawnColor,Integer> studentsWaiting;
 
-    public StudentToDiningRequest(List<PawnColor> pawnColors){
+    public StudentToDiningRequest(Map<PawnColor,Integer> studentsWaiting){
         super("SERVER", MessageType.REQUEST_MOVE_STUD_DINING);
-        this.pawnColors=pawnColors;
+        this.studentsWaiting=studentsWaiting;
     }
 
-    public List<PawnColor> getPawnColors() {return pawnColors;}
+    public Map<PawnColor, Integer> getStudentsWaiting() {return studentsWaiting;}
 
     @Override
     public String toString() {
         return "StudentToDiningRequest{" +
                 "nickName="+getNickName()+", "+
-                "pawnColors=" + pawnColors +
+                "studentsWaiting=" + studentsWaiting +
                 '}';
     }
 }

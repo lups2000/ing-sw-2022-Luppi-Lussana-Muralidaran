@@ -8,6 +8,7 @@ import it.polimi.ingsw.network.Messages.ClientSide.AssistantCardReply;
 import it.polimi.ingsw.network.Messages.ClientSide.CharacterCardReply;
 import it.polimi.ingsw.network.Messages.ClientSide.CloudTileReply;
 import it.polimi.ingsw.network.Messages.Message;
+import it.polimi.ingsw.network.Messages.ServerSide.Generic;
 import it.polimi.ingsw.network.server.Server;
 
 
@@ -31,6 +32,7 @@ public class TurnController implements Serializable {
     private AssistantCard currentAssistantCard;
     private CharacterCard currentCharacterCard;
     private CloudTile currentCloudTile;
+    private String currentMessageMoveStud;
     private boolean winner=false;
     private boolean hasAnswered=false;
 
@@ -68,6 +70,12 @@ public class TurnController implements Serializable {
             case REPLY_CLOUD_TILE -> {
                 CloudTileReply cloudTileReply=(CloudTileReply) message;
                 currentCloudTile=cloudTileReply.getCloudTile();
+                hasAnswered=true;
+            }
+
+            case GENERIC_MESSAGE -> {
+                Generic generic=(Generic) message;
+                currentMessageMoveStud=generic.getMessage();
                 hasAnswered=true;
             }
 
@@ -312,11 +320,16 @@ public class TurnController implements Serializable {
             if(model.getMaxNumPlayers()==2){
                 //the player must choose if he wants to move the students(3) to an island or to the dining
                 for(int i=0;i<3;i++){
-                    //we ask the player if he wants to move to his dining room or to an island
 
-                    /*
-                    if("ToSchoolboard"){
+                    //stampa il messaggio a schermo,non va bene!!!
+                    virtualViewCurrentPlayer.askMoveStud("insert answer"); //in realtà la stringa che gli passo è inutile ma per come è stato definito GenericMessage va cosi
+
+                    waitAnswer(); //wait for the player's answer
+
+                    if(currentMessageMoveStud.equalsIgnoreCase("s")){ //move to dining
                         //we ask the player which PawnColor he wants to move
+                        virtualViewCurrentPlayer.askMoveStudToDining(player.getSchoolBoard().getStudentsWaiting());
+                        /*
                         try {
                             player.getSchoolBoard().moveStudToDining(PawnColorChosen);
                         } catch (NoPawnPresentException e) {
@@ -331,21 +344,23 @@ public class TurnController implements Serializable {
                             e.printStackTrace();
                         } catch (TooManyPawnsPresent e) {
                             e.printStackTrace();
-                        }
+                        }*/
                     }
-                    else if("ToIsland"){
+                    else if(currentMessageMoveStud.equalsIgnoreCase("i")){ //move to island
                         //we ask the player where he wants to move the student
+                        /*
                         try {
                             player.getSchoolBoard().moveStudToIsland(PawnColorChosen,IslandChosen);
                         } catch (NoPawnPresentException e) {
                             e.printStackTrace();
-                        }
+                        }*/
                     }
-                    else{
+                    /*
+                    else{ //non ci vado mai teoricamente
                         //messaggio di errore tramite la view
                         i--; //cosi da rifare ancora la mossa
-                    }
-                     */
+                    }/*
+
                 }
                 //action phase 1 of the player finished,now move to the 2 action phase
             }
