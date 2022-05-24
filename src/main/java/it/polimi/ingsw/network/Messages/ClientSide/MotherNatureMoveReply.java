@@ -10,20 +10,20 @@ import it.polimi.ingsw.network.Messages.MessageType;
 public class MotherNatureMoveReply extends Message {
 
     private static final long serialVersionUID = 2906645563364723481L;
-    private final Island island;
+    private final int steps;
 
-    public MotherNatureMoveReply(String nickNameClient, Island island){
+    public MotherNatureMoveReply(String nickNameClient, int steps){
         super(nickNameClient, MessageType.REPLY_MOVE_MOTHER_NATURE);
-        this.island = island;
+        this.steps = steps;
     }
 
-    public Island getIsland() {return island;}
+    public int getSteps() {return steps;}
 
     @Override
     public String toString() {
         return "MotherNatureMoveReply{" +
                 "nickName="+getNickName()+", "+
-                "island=" + island +
+                "steps=" + steps +
                 '}';
     }
 }

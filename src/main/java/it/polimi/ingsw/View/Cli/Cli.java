@@ -294,8 +294,9 @@ public class Cli extends Observable4View implements View {
         do {
             out.println("How many steps does Mother Nature take?");
             int inputSteps = readLine.nextInt();
+            readLine.next();
             if (inputSteps <= assistantCard.getMaxStepsMotherNature() && inputSteps > 0) {
-                //muovere madre natura nell'isola corrispondente
+                notifyObserver(obs -> obs.sendMoveMotherNature(inputSteps));
                 validInput = true;
             }
             else {
@@ -314,6 +315,7 @@ public class Cli extends Observable4View implements View {
         if(cloudTiles.size()>=1){
 
             do{
+                //mostrare le cloud tiles TODO
                 out.println("Please type the corresponding id to select one of the CloudTiles: ");
                 out.print("( ");
                 for(int i=0;i<cloudTiles.size();i++){
@@ -324,6 +326,7 @@ public class Cli extends Observable4View implements View {
                 }
                 System.out.println(" )");
                 id= readLine.nextInt();
+                readLine.next();
 
                 if(id<=0 || id>cloudTiles.size()){
                     out.println(INVALID_INPUT);
@@ -332,7 +335,8 @@ public class Cli extends Observable4View implements View {
                 else{
                     cloudTileChosen=cloudTiles.get(id-1);
                     validInput=true;
-                    //send the cloudTile to the server
+                    CloudTile finalCloudTileChosen = cloudTileChosen;
+                    notifyObserver(obs -> obs.sendCloudTile(finalCloudTileChosen));
                 }
             }while(!validInput);
         }
@@ -624,11 +628,14 @@ public class Cli extends Observable4View implements View {
         }
     }
 
+
     @Override
-    public void showGameBoard(List<Island> islands, List<Player> players) {
+    public void showGameBoard(List<Island> islands, List<CloudTile> cloudTiles, List<Player> players) {
         out.println("\n"+Colors.RED_PAWN+"CURRENT GAME SITUATION: "+Colors.RESET);
 
         this.showIslands(islands);
+        out.println("");
+        this.showCloudTiles(cloudTiles);
         out.println("");
 
         for(Player player :players){
@@ -637,5 +644,22 @@ public class Cli extends Observable4View implements View {
             out.println("");
         }
         out.print("\n\n\033[38;2;255;255;0m");
+    }
+
+    @Override
+    public void showCloudTiles(List<CloudTile> cloudTiles) {
+        out.println("CLOUD TILES: ");
+
+        for(CloudTile cloudTile : cloudTiles){
+            out.print("- Index: "+cloudTile.getId()+" ");
+            out.print(" Students: ");
+            for (PawnColor pawnColor: PawnColor.values()){
+                for (int i=0; i<cloudTile.getStudents().get(pawnColor); i++){
+                    out.print(pawnColor.getVisualColor()+"X "+Colors.RESET);
+                }
+            }
+
+            out.println("");
+        }
     }
 }

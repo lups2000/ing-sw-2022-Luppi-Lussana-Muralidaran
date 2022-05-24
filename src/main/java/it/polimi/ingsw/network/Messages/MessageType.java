@@ -20,6 +20,7 @@ public enum MessageType {
     INFO_MATCH,
     INFO_ISLANDS,
     GAME_BOARD,
+    INFO_CLOUDS,
 
     GENERIC_MESSAGE,
     ERROR,

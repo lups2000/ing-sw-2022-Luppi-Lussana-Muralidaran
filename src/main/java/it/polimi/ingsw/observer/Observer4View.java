@@ -68,9 +68,9 @@ public interface Observer4View {
     /**
      * This method sends a message to the server to communicate on which island the client wants mother nature to stop
      *
-     * @param chosenIsland the island on which the client wants mother nature to stop
+     * @param chosenSteps the chosen number of steps that mother nature has to take
      */
-    void sendMoveMotherNature(Island chosenIsland);
+    void sendMoveMotherNature(int chosenSteps);
 
     /**
      * This method sends a message to the server to communicate which student the client wants to move from his entrance room into his dining room

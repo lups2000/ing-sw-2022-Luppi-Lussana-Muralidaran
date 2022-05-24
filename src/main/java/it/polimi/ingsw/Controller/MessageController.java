@@ -116,14 +116,16 @@ public class MessageController implements Serializable {
      */
     public boolean checkMotherNature(Message message){
         MotherNatureMoveReply motherNatureMoveReply=(MotherNatureMoveReply) message;
+        Player player = model.getPlayerByNickName(message.getNickName());
+        int maxStepsAllowed;
+        maxStepsAllowed = player.getCurrentAssistant().getMaxStepsMotherNature();
 
-        if(motherNatureMoveReply.getIsland().getIndex()>=0 && motherNatureMoveReply.getIsland().getIndex()<model.getIslands().size()
-            /*aggiungere anche controlllo che il numero di passi richiesto sia concesso dal currentAssistant del currentPlayer TODO*/){
+        if(motherNatureMoveReply.getSteps()>0 && motherNatureMoveReply.getSteps()<=maxStepsAllowed){
             return true;
         }
 
         VirtualView virtualView=virtualViewsMap.get(message.getNickName());
-        virtualView.showGenericMessage("You didn't provide a valid island!The island index must be between 0 and "+(model.getIslands().size()-1));
+        virtualView.showGenericMessage("You didn't provide a valid number of steps! It must be between 1 and " + maxStepsAllowed);
         virtualView.askMoveMotherNature(model.getIslands(),model.getPlayerByNickName(message.getNickName()).getCurrentAssistant());
         return false;
     }
@@ -149,7 +151,7 @@ public class MessageController implements Serializable {
         return false;
     }
 
-    public boolean checkCharacterCard(Message message){
+    public boolean checkCharacterCard(Message message){ //da invocare solo se la risposta è yes
         CharacterCardReply characterCardReply=(CharacterCardReply) message;
         CharacterCard characterCard=characterCardReply.getCharacterCard();
 

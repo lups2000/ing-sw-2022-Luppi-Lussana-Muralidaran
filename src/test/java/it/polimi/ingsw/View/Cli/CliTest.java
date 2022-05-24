@@ -35,6 +35,6 @@ class CliTest {
         game.addPlayer("Lups");
         game.addPlayer("Paolo");
         game.initGame(2,true);
-        cli.showGameBoard(game.getIslands(),game.getPlayers());
+        cli.showGameBoard(game.getIslands(),game.getCloudTiles(),game.getPlayers());
     }
 }

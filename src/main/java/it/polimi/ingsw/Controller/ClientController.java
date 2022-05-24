@@ -69,7 +69,7 @@ public class ClientController implements Observer4View, Observer {
 
             case GAME_BOARD -> {
                 GameBoard gameBoard=(GameBoard) message;
-                taskQueue.execute(()->view.showGameBoard(gameBoard.getIslands(),gameBoard.getPlayers()));
+                taskQueue.execute(()->view.showGameBoard(gameBoard.getIslands(),gameBoard.getCloudTiles(),gameBoard.getPlayers()));
             }
 
             case REQUEST_EXPERT_VARIANT -> taskQueue.execute(view::askExpertVariant);
@@ -295,14 +295,15 @@ public class ClientController implements Observer4View, Observer {
         client.sendMessage(new ExpertVariantReply(this.nickname,experts));
     }
 
+
     /**
      * This method sends a message to the server to communicate on which island the client wants mother nature to stop
      *
-     * @param chosenIsland the island on which the client wants mother nature to stop
+     * @param chosenSteps the chosen number of steps that mother nature has to take
      */
     @Override
-    public void sendMoveMotherNature(Island chosenIsland) {
-        client.sendMessage(new MotherNatureMoveReply(this.nickname,chosenIsland));
+    public void sendMoveMotherNature(int chosenSteps) {
+        client.sendMessage(new MotherNatureMoveReply(this.nickname,chosenSteps));
     }
 
     /**

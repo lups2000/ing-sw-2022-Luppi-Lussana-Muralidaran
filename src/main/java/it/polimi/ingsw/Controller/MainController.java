@@ -174,7 +174,9 @@ public class MainController {
                 if(messageController.checkMotherNature(message)){
                     MotherNatureMoveReply motherNatureMoveReply = (MotherNatureMoveReply) message;
                     try {
-                        game.moveMotherNature(motherNatureMoveReply.getIsland());
+                        int newIndex = (game.getMotherNature()+ motherNatureMoveReply.getSteps())%(Island.getNumIslands());
+                        Island nextIsland = game.getIslands().get(newIndex);
+                        game.moveMotherNature(nextIsland);
                     } catch (TooManyTowersException | NoTowersException e) {
                         e.printStackTrace();
                     }

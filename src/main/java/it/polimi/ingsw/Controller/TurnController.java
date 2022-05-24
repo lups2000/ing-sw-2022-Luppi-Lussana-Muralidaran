@@ -126,7 +126,7 @@ public class TurnController implements Serializable {
         planningPhase1();
         notifyPlayers("The cloud tiles have been filled!");
         for(VirtualView virtualView: virtualViewMap.values()){
-            virtualView.showGameBoard(model.getIslands(),model.getPlayers());
+            virtualView.showGameBoard(model.getIslands(),model.getCloudTiles(),model.getPlayers());
         }
         planningPhase2();
         Player currentActionPlayer=choosePlayerToPlayAction(); //funziona,sembra tutto ok
