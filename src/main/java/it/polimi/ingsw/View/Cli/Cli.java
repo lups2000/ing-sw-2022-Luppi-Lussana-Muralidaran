@@ -146,10 +146,15 @@ public class Cli extends Observable4View implements View {
     @Override
     public void askNumPlayers() {
         boolean validInput;
-        int numPlayers;
+        int numPlayers = 0;
         do {
             out.print("Insert number of players (max 3): ");
-            numPlayers = Integer.parseInt(readLine.nextLine());
+            try{
+                numPlayers = Integer.parseInt(readLine.nextLine());
+            }catch (NumberFormatException e){
+                clearCli();
+                validInput = false;
+            }
 
             if (numPlayers>=2 && numPlayers<=3)  {
                 validInput = true;
@@ -168,7 +173,7 @@ public class Cli extends Observable4View implements View {
     @Override
     public void askAssistantSeed(List<AssistantSeed> assistantSeedAvailable) {
         AssistantSeed assistantSeedChosen = null;
-        int id;
+        int id = -1;
         boolean validInput;
         if(assistantSeedAvailable.size()>=1){
             do{
@@ -181,7 +186,12 @@ public class Cli extends Observable4View implements View {
                     }
                 }
                 System.out.println(" )");
-                id= Integer.parseInt(readLine.nextLine());
+                try{
+                    id=Integer.parseInt(readLine.nextLine());
+                }
+                catch (NumberFormatException e){
+                    validInput=false;
+                }
 
                 if(id<=0 || id>assistantSeedAvailable.size()){
                     out.println(INVALID_INPUT);
@@ -204,12 +214,13 @@ public class Cli extends Observable4View implements View {
     public void askAssistantCard(List<AssistantCard> assistantCards) {
         AssistantCard assistantCardChosen;
         boolean validInput;
-        int id;
-        int i=1;
+        int id = -1;
+        int i;
 
         if(assistantCards.size()>=1){
 
             do {
+                i=1;
                 out.println("Please type the corresponding id to select one of the Assistant Cards: ");
                 for (AssistantCard assistantCard : assistantCards) {
                     out.print(i +" ) ");
@@ -217,7 +228,12 @@ public class Cli extends Observable4View implements View {
                     out.print("Max steps motherNature: " + assistantCard.getMaxStepsMotherNature() + "\n");
                     i++;
                 }
-                id= Integer.parseInt(readLine.nextLine());
+                try{
+                    id= Integer.parseInt(readLine.nextLine());
+                }
+                catch (NumberFormatException e){
+                    validInput=false;
+                }
 
                 if(id<=0 || id>assistantCards.size()){
                     out.println(INVALID_INPUT);
@@ -308,9 +324,8 @@ public class Cli extends Observable4View implements View {
     @Override
     public void askChooseCloudTile(List<CloudTile> cloudTiles) {
 
-        CloudTile cloudTileChosen;
         boolean validInput;
-        int id;
+        int idCloudTile = -1;
 
         if(cloudTiles.size()>=1){
 
@@ -325,18 +340,21 @@ public class Cli extends Observable4View implements View {
                     }
                 }
                 System.out.println(" )");
-                id= readLine.nextInt();
-                readLine.next();
+                try{
+                    idCloudTile= Integer.parseInt(readLine.nextLine());
+                }
+                catch (NumberFormatException e){
+                    validInput=false;
+                }
 
-                if(id<=0 || id>cloudTiles.size()){
+                if(idCloudTile<=0 || idCloudTile>cloudTiles.size()){
                     out.println(INVALID_INPUT);
                     validInput = false;
                 }
                 else{
-                    cloudTileChosen=cloudTiles.get(id-1);
                     validInput=true;
-                    CloudTile finalCloudTileChosen = cloudTileChosen;
-                    notifyObserver(obs -> obs.sendCloudTile(finalCloudTileChosen));
+                    int finalIdCloudTile = idCloudTile;
+                    notifyObserver(obs -> obs.sendCloudTile(finalIdCloudTile));
                 }
             }while(!validInput);
         }
@@ -349,9 +367,11 @@ public class Cli extends Observable4View implements View {
     public void askExpertVariant() {
         boolean validInput;
         boolean expertVariant=false;
-        out.print("Do you want to play the expert variant of the game? Y/N  ");
-        String expertVariantAnswer = readLine.nextLine();
+
         do {
+            out.print("Do you want to play the expert variant of the game? Y/N  ");
+            String expertVariantAnswer = readLine.nextLine();
+
             if (expertVariantAnswer.equalsIgnoreCase("y") || expertVariantAnswer.equalsIgnoreCase("n")) {
                 expertVariant= expertVariantAnswer.equalsIgnoreCase("y");
                 validInput = true;
@@ -369,10 +389,9 @@ public class Cli extends Observable4View implements View {
     @Override
     public void askPlayCharacterCard(List<CharacterCard> characterCards) {
         boolean validInput;
-        int id;
+        int idCharacterCard=-1;
         CharacterCard characterCardChosen = null;
-        /*Forse si potrebbe fare un ciclo di controllo per vedere se si hanno abbastanza monete per giocare una delle 3 carte
-        in modo da non far partire inutilmente la funzione a schermo*/
+
         out.print("Do you want to play a Character Card? Y/N ");
         String characterCardAnswer = readLine.nextLine();
 
@@ -380,19 +399,21 @@ public class Cli extends Observable4View implements View {
             if (characterCardAnswer.equalsIgnoreCase("y")) {
                 boolean validCost = false;
                 do{
-                    out.println("Please type the corresponding id to select one of the AssistantSeeds: ");
+                    out.println("Please type the corresponding id to select one of the Character Cards: ");
                     for(int i=0;i<characterCards.size();i++){
                         System.out.println((i+1)+": "+characterCards.get(i));
                     }
-
-                    id= Integer.parseInt(readLine.nextLine());
-
-                    if(id<=0 || id>characterCards.size()){
+                    try{
+                        idCharacterCard=Integer.parseInt(readLine.nextLine());
+                    }
+                    catch (NumberFormatException e){
+                        validCost=false;
+                    }
+                    if(idCharacterCard<=0 || idCharacterCard>characterCards.size()){
                         out.println(INVALID_INPUT);
                         validCost = false;
                     }
                     else{
-                        characterCardChosen=characterCards.get(id-1);
                         validCost=true;
                     }
 
@@ -400,7 +421,7 @@ public class Cli extends Observable4View implements View {
                 validInput = true;
             }
             else if (characterCardAnswer.equalsIgnoreCase("n")) {
-                characterCardChosen=null;
+                idCharacterCard=-1;
                 validInput = true;
             }
             else {
@@ -409,25 +430,27 @@ public class Cli extends Observable4View implements View {
                 validInput = false;
             }
         } while (!validInput);
-        CharacterCard finalCharacterCardChosen = characterCardChosen;
-        notifyObserver(obs->obs.sendCharacterCard(finalCharacterCardChosen));
+        //qua devo mandare l'id quindi è da cambiare un po di roba
+        int finalIdCharacterCard = idCharacterCard;
+        notifyObserver(obs->obs.sendCharacterCard(finalIdCharacterCard));
     }
 
     @Override
-    public void askMoveStud(String message) {
+    public void askMoveStud() {
         boolean validInput=false;
         String answer=null;
+
         do{
             out.print("Move a student:\n press 'S' to move to your dining Room or 'I' to an island:   ");
-            answer=readLine.nextLine();
+            answer = readLine.nextLine();
 
-            if(answer.equalsIgnoreCase("s") || answer.equalsIgnoreCase("i")){
-                validInput=true;
+            if (answer.equalsIgnoreCase("s") || answer.equalsIgnoreCase("i")) {
+                validInput = true;
             }
-            else{
+            else {
                 out.println(INVALID_INPUT);
                 clearCli();
-                validInput=false;
+                validInput = false;
             }
         }while(!validInput);
         String finalAnswer = answer;
@@ -562,9 +585,11 @@ public class Cli extends Observable4View implements View {
         do{
             out.println("Students in the Waiting Room...Select one color(ex. red,blue...) : ");
             for(PawnColor pawnColor : studentsWaiting.keySet()){
-                for(Integer integer : studentsWaiting.values()){
-                    out.print(pawnColor.getVisualColor()+"X"+Colors.RESET);
+                out.print(pawnColor.getVisualColor()+pawnColor+Colors.RESET+" students: ");
+                for(int i=0;i<studentsWaiting.get(pawnColor);i++){
+                    out.print(pawnColor.getVisualColor()+" X "+Colors.RESET);
                 }
+                out.println(Colors.RESET+"");
             }
             answerColor= readLine.nextLine();
 

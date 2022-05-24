@@ -40,7 +40,7 @@ public interface Observer4View {
      */
     void sendAssistantCard(AssistantCard chosenCard);
 
-    void sendCharacterCard(CharacterCard characterCard);
+    public void sendCharacterCard(Integer idCharacterCard);
 
     void sendGenericMessage(String message);
 
@@ -54,9 +54,9 @@ public interface Observer4View {
     /**
      * This method sends a message to the server to communicate which cloud tile he chose
      *
-     * @param chosenCloud the cloud tile chosen
+     // @param chosenCloud the cloud tile chosen
      */
-    void sendCloudTile(CloudTile chosenCloud);
+    void sendCloudTile(int idCloudTile);
 
     /**
      * This method sends a message to the server to communicate if the first player wants to activate or less the experts variant

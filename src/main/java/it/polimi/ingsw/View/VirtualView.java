@@ -83,8 +83,8 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void askMoveStud(String message) {
-        clientConnection.sendMessageToClient(new Generic("SERVER",message));
+    public void askMoveStud() {
+        clientConnection.sendMessageToClient(new MoveStud("It's time to move your students!"));
     }
 
     @Override

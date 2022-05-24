@@ -153,15 +153,21 @@ public class MessageController implements Serializable {
 
     public boolean checkCharacterCard(Message message){ //da invocare solo se la risposta è yes
         CharacterCardReply characterCardReply=(CharacterCardReply) message;
-        CharacterCard characterCard=characterCardReply.getCharacterCard();
-
-        if(characterCard.getCost()>=1 && characterCard.getCost()<=3){
+        if(characterCardReply.getIdCharacterCard()==-1){ //no character card
             return true;
         }
-        VirtualView virtualView=virtualViewsMap.get(message.getNickName());
-        virtualView.showGenericMessage("You didn't provide a valid AssistantCard!");
-        virtualView.askPlayCharacterCard(model.getCharacterCards());
-        return false;
+        else{
+            CharacterCard characterCard=model.getCharacterCards().get(characterCardReply.getIdCharacterCard()-1);
+
+            if(characterCard.getCost()>=1 && characterCard.getCost()<=3){
+                return true;
+            }
+            VirtualView virtualView=virtualViewsMap.get(message.getNickName());
+            virtualView.showGenericMessage("You didn't provide a valid AssistantCard!");
+            virtualView.askPlayCharacterCard(model.getCharacterCards());
+            return false;
+        }
+
     }
 
     /**
@@ -172,7 +178,7 @@ public class MessageController implements Serializable {
      */
     public boolean checkCloudTile(Message message){
         CloudTileReply cloudTileReply=(CloudTileReply) message;
-        CloudTile cloudTile=cloudTileReply.getCloudTile();
+        CloudTile cloudTile=model.getCloudTiles().get(cloudTileReply.getIdCloudTile()-1);
 
         if(cloudTile.getId()>=0 && cloudTile.getId()<model.getCloudTiles().size() && cloudTile.getNumStudents() > 0){
             return true;

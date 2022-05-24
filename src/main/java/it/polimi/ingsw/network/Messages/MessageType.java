@@ -21,6 +21,7 @@ public enum MessageType {
     INFO_ISLANDS,
     GAME_BOARD,
     INFO_CLOUDS,
+    MOVE_STUD,
 
     GENERIC_MESSAGE,
     ERROR,

@@ -9,20 +9,20 @@ import java.util.List;
 public class CloudTileReply extends Message {
 
     private static final long serialVersionUID = 2906646364567232381L;
-    private CloudTile cloudTile;
+    private int idCloudTile;
 
-    public CloudTileReply(String nickNameClient,CloudTile cloudTile){
+    public CloudTileReply(String nickNameClient,int idCloudTile){
         super(nickNameClient, MessageType.REPLY_CLOUD_TILE);
-        this.cloudTile=cloudTile;
+        this.idCloudTile=idCloudTile;
     }
 
-    public CloudTile getCloudTile() {return cloudTile;}
+    public int getIdCloudTile() {return idCloudTile;}
 
     @Override
     public String toString() {
         return "CloudTileReply{" +
                 "nickName="+getNickName()+", "+
-                "cloudTiles=" + cloudTile +
+                "idCloudTile=" + idCloudTile +
                 '}';
     }
 }

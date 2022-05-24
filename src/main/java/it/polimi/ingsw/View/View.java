@@ -45,7 +45,7 @@ public interface View {
 
     void askPlayCharacterCard(List<CharacterCard> characterCards);
 
-    void askMoveStud(String message);
+    void askMoveStud();
 
     void showSchoolBoard(SchoolBoard schoolBoard);
 

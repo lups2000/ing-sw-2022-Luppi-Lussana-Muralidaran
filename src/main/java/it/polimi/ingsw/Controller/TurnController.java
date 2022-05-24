@@ -2,11 +2,13 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
+import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.View.VirtualView;
 import it.polimi.ingsw.network.Messages.ClientSide.AssistantCardReply;
 import it.polimi.ingsw.network.Messages.ClientSide.CharacterCardReply;
 import it.polimi.ingsw.network.Messages.ClientSide.CloudTileReply;
+import it.polimi.ingsw.network.Messages.ClientSide.StudentToDiningReply;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.ServerSide.Generic;
 import it.polimi.ingsw.network.server.Server;
@@ -33,6 +35,7 @@ public class TurnController implements Serializable {
     private CharacterCard currentCharacterCard;
     private CloudTile currentCloudTile;
     private String currentMessageMoveStud;
+    private PawnColor currentStudent;
     private boolean winner=false;
     private boolean hasAnswered=false;
 
@@ -63,19 +66,30 @@ public class TurnController implements Serializable {
 
             case REPLY_CHARACTER_CARD -> {
                 CharacterCardReply characterCardReply=(CharacterCardReply) message;
-                currentCharacterCard=characterCardReply.getCharacterCard();
+                if(characterCardReply.getIdCharacterCard()==-1){
+                    currentCharacterCard=null;
+                }
+                else{
+                    currentCharacterCard=model.getCharacterCards().get(characterCardReply.getIdCharacterCard()-1);
+                }
                 hasAnswered=true;
             }
 
             case REPLY_CLOUD_TILE -> {
                 CloudTileReply cloudTileReply=(CloudTileReply) message;
-                currentCloudTile=cloudTileReply.getCloudTile();
+                currentCloudTile=model.getCloudTiles().get(cloudTileReply.getIdCloudTile()-1);
                 hasAnswered=true;
             }
 
             case GENERIC_MESSAGE -> {
                 Generic generic=(Generic) message;
                 currentMessageMoveStud=generic.getMessage();
+                hasAnswered=true;
+            }
+
+            case REPLY_MOVE_STUD_DINING -> {
+                StudentToDiningReply studentToDiningReply=(StudentToDiningReply) message;
+                currentStudent=studentToDiningReply.getPawnColor();
                 hasAnswered=true;
             }
 
@@ -303,106 +317,62 @@ public class TurnController implements Serializable {
 
                     waitAnswer(); //wait for the answer of the current Player
 
-                    if(checkCharacterCard(currentCharacterCard,player)){
+                    if(currentCharacterCard==null){
+                        virtualViewCurrentPlayer.showGenericMessage("No characterCard played!");
+                        characterCardOk=true;
+                    }
+                    else if(checkCharacterCard(currentCharacterCard,player)){
                         virtualViewCurrentPlayer.showGenericMessage("CharacterCard played: "+currentCharacterCard);
                         notifyOtherPlayers(player.getNickname()+" has played the following CharacterCard: "+currentCharacterCard,player);
                         characterCardOk=true;
                     }
                     else{
-                        virtualViewCurrentPlayer.showGenericMessage("Invalid characterCard!");
+                        virtualViewCurrentPlayer.showGenericMessage("Invalid characterCard!You do not have enough coins to activate it");
+                        characterCardOk=false;
                     }
-                    characterCardOk=true;
                 }
                 characterCardOk=false;
             }
 
-            //sono arrivato fino a qua TODO
-            if(model.getMaxNumPlayers()==2){
-                //the player must choose if he wants to move the students(3) to an island or to the dining
-                for(int i=0;i<3;i++){
+            for(int i=0;i<model.getMaxNumPlayers()+1;i++){
 
-                    //stampa il messaggio a schermo,non va bene!!!
-                    virtualViewCurrentPlayer.askMoveStud("insert answer"); //in realtà la stringa che gli passo è inutile ma per come è stato definito GenericMessage va cosi
+                virtualViewCurrentPlayer.askMoveStud();
+                waitAnswer();
+                System.out.println(currentMessageMoveStud);
+                //sono arrivato fino a qua TODO
+                if(currentMessageMoveStud.equalsIgnoreCase("s")){
+                    //we ask the player which PawnColor he wants to move
+                    virtualViewCurrentPlayer.askMoveStudToDining(player.getSchoolBoard().getStudentsWaiting());
+                    waitAnswer();
 
-                    waitAnswer(); //wait for the player's answer
-
-                    if(currentMessageMoveStud.equalsIgnoreCase("s")){ //move to dining
-                        //we ask the player which PawnColor he wants to move
-                        virtualViewCurrentPlayer.askMoveStudToDining(player.getSchoolBoard().getStudentsWaiting());
-                        /*
-                        try {
-                            player.getSchoolBoard().moveStudToDining(PawnColorChosen);
-                        } catch (NoPawnPresentException e) {
-                            e.printStackTrace();
-                        } catch (TooManyPawnsPresent e) {
-                            e.printStackTrace();
-                        }
-
-                        try {
-                            model.allocateProfessors(); //method we call each time there is a movement in the player's schoolboard
-                        } catch (NoPawnPresentException e) {
-                            e.printStackTrace();
-                        } catch (TooManyPawnsPresent e) {
-                            e.printStackTrace();
-                        }*/
+                    try {
+                        player.getSchoolBoard().moveStudToDining(currentStudent);
+                    } catch (NoPawnPresentException | TooManyPawnsPresent e) {
+                        e.printStackTrace();
                     }
-                    else if(currentMessageMoveStud.equalsIgnoreCase("i")){ //move to island
-                        //we ask the player where he wants to move the student
-                        /*
-                        try {
-                            player.getSchoolBoard().moveStudToIsland(PawnColorChosen,IslandChosen);
-                        } catch (NoPawnPresentException e) {
-                            e.printStackTrace();
-                        }*/
+                    try {
+                        model.allocateProfessors(); //method we call each time there is a movement in the player's schoolboard
+                    } catch (NoPawnPresentException | TooManyPawnsPresent e) {
+                        e.printStackTrace();
                     }
-                    /*
-                    else{ //non ci vado mai teoricamente
-                        //messaggio di errore tramite la view
-                        i--; //cosi da rifare ancora la mossa
-                    }/*
-
+                    virtualViewCurrentPlayer.showSchoolBoard(player.getSchoolBoard());
                 }
-                //action phase 1 of the player finished,now move to the 2 action phase
-            }
-            else if(model.getMaxNumPlayers()==3){
-                //the player must choose if he wants to move the students(4) to an island or to the dining
-                for(int i=0;i<4;i++){
-                    //we ask the player if he wants to move to his dining room or to an island
-
+                else if(currentMessageMoveStud.equalsIgnoreCase("i")){
+                    //we ask the player where he wants to move the student
                     /*
-                    if("ToSchoolboard"){
-                        //we ask the player which PawnColor he wants to move
-                        try {
-                            player.getSchoolBoard().moveStudToDining(PawnColorChosen);
-                        } catch (NoPawnPresentException e) {
-                            e.printStackTrace();
-                        } catch (TooManyPawnsPresent e) {
-                            e.printStackTrace();
-                        }
-
-                        try {
-                            model.allocateProfessors(); //method we call each time there is a movement in the player's schoolboard
-                        } catch (NoPawnPresentException e) {
-                            e.printStackTrace();
-                        } catch (TooManyPawnsPresent e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    else if("ToIsland"){
-                        //we ask the player where he wants to move the student
-                        try {
-                            player.getSchoolBoard().moveStudToIsland(PawnColorChosen,IslandChosen);
-                        } catch (NoPawnPresentException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    else{
-                        //messaggio di errore tramite la view
-                        i--; //cosi da rifare ancora la mossa
-                    }
-                     */
+                    try {
+                        player.getSchoolBoard().moveStudToIsland(PawnColorChosen,IslandChosen);
+                    } catch (NoPawnPresentException e) {
+                        e.printStackTrace();
+                    }*/
                 }
+                else{ //non ci vado mai teoricamente
+                    //messaggio di errore tramite la view
+                    i--; //cosi da rifare ancora la mossa
+                }
+
             }
+
             turnPhase = TurnPhase.ACTION1;
         }
     }

@@ -7,20 +7,20 @@ import it.polimi.ingsw.network.Messages.MessageType;
 public class CharacterCardReply extends Message {
 
     private static final long serialVersionUID = 1525728444737640947L;
-    private CharacterCard characterCard;
+    private int idCharacterCard;
 
-    public CharacterCardReply(String nickName,CharacterCard characterCard){
+    public CharacterCardReply(String nickName,int idCharacterCard){
         super(nickName, MessageType.REPLY_CHARACTER_CARD);
-        this.characterCard=characterCard;
+        this.idCharacterCard=idCharacterCard;
     }
 
-    public CharacterCard getCharacterCard() {return characterCard;}
+    public int getIdCharacterCard() {return idCharacterCard;}
 
     @Override
     public String toString() {
         return "CharacterCardReply{" +
                 "nickName="+getNickName()+", "+
-                "characterCard=" + characterCard +
+                "idCharacterCard=" + idCharacterCard +
                 '}';
     }
 }

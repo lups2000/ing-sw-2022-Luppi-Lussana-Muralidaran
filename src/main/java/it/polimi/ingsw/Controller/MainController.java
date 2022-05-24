@@ -137,10 +137,6 @@ public class MainController {
             case REPLY_ASSISTANT_CARD -> {
                 if(messageController.checkAssistantCard(message)){
                     turnController.messageFromMainController(message);
-                    /*
-                    AssistantCardReply assistantCardReply = (AssistantCardReply) message;
-                    game.getPlayerByNickName(assistantCardReply.getNickName()).pickAssistantCard(assistantCardReply.getAssistantCard());*/
-                    //bisogna far vedere l'assistente scelto anche a tutti gli altri
                 }
                 else {
                     Server.LOGGER.warning("The format of the message sent by the client is incorrect!");
@@ -158,12 +154,7 @@ public class MainController {
 
             case REPLY_CLOUD_TILE -> {
                 if(messageController.checkCloudTile(message)){
-                    CloudTileReply cloudTileReply = (CloudTileReply) message;
-                    try {
-                        game.getPlayerByNickName(cloudTileReply.getNickName()).pickCloudTile(cloudTileReply.getCloudTile());
-                    } catch (TooManyPawnsPresent e) {
-                        e.printStackTrace();
-                    }
+                    turnController.messageFromMainController(message);
                 }
                 else {
                     Server.LOGGER.warning("The format of the message sent by the client is incorrect!");
@@ -188,12 +179,7 @@ public class MainController {
 
             case REPLY_MOVE_STUD_DINING -> {
                 if(messageController.checkStudentToDining(message)){
-                    StudentToDiningReply studentToDiningReply = (StudentToDiningReply) message;
-                    try {
-                        game.getPlayerByNickName(studentToDiningReply.getNickName()).getSchoolBoard().moveStudToDining(studentToDiningReply.getPawnColor());
-                    } catch (NoPawnPresentException | TooManyPawnsPresent e) {
-                        e.printStackTrace();
-                    }
+                    turnController.messageFromMainController(message);
                 }
                 else {
                     Server.LOGGER.warning("The format of the message sent by the client is incorrect!");

@@ -104,6 +104,11 @@ public class ClientController implements Observer4View, Observer {
                 taskQueue.execute(() -> view.showGenericMessage(genericMessage.getMessage()));
             }
 
+            case MOVE_STUD -> {
+                MoveStud moveStud=(MoveStud) message;
+                taskQueue.execute(view::askMoveStud);
+            }
+
             case WIN -> {
                 Win winMessage = (Win) message;
                 client.disconnect();
@@ -256,8 +261,8 @@ public class ClientController implements Observer4View, Observer {
     }
 
     @Override
-    public void sendCharacterCard(CharacterCard characterCardChosen) {
-        client.sendMessage(new CharacterCardReply(this.nickname,characterCardChosen));
+    public void sendCharacterCard(Integer idCharacterCard) {
+        client.sendMessage(new CharacterCardReply(this.nickname,idCharacterCard));
     }
 
     @Override
@@ -278,11 +283,11 @@ public class ClientController implements Observer4View, Observer {
     /**
      * This method sends a message to the server to communicate which cloud tile he chose
      *
-     * @param chosenCloud the cloud tile chosen
+     //* @param chosenCloud the cloud tile chosen
      */
     @Override
-    public void sendCloudTile(CloudTile chosenCloud) {
-        client.sendMessage(new CloudTileReply(this.nickname,chosenCloud));
+    public void sendCloudTile(int idCloudTile) {
+        client.sendMessage(new CloudTileReply(this.nickname,idCloudTile));
     }
 
     /**
