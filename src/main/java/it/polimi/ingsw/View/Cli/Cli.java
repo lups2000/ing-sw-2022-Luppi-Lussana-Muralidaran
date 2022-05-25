@@ -583,7 +583,7 @@ public class Cli extends Observable4View implements View {
         PawnColor pawnColorChosen=null;
         //show the students in the entrance
         do{
-            out.println("Students in the Waiting Room...Select one color(ex. red,blue...) : ");
+            out.println("Students in the Entrance... ");
             for(PawnColor pawnColor : studentsWaiting.keySet()){
                 out.print(pawnColor.getVisualColor()+pawnColor+Colors.RESET+" students: ");
                 for(int i=0;i<studentsWaiting.get(pawnColor);i++){
@@ -592,6 +592,7 @@ public class Cli extends Observable4View implements View {
                 out.println("");
             }
             out.print("\n\n\033[38;2;255;255;0m");
+            out.print("Select one color(ex. red,blue...) to move the student to the Dining :");
             answerColor= readLine.nextLine();
 
 

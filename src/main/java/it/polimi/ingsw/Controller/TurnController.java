@@ -337,6 +337,7 @@ public class TurnController implements Serializable {
             for(int i=0;i<model.getMaxNumPlayers()+1;i++){
                 int numStud=model.getMaxNumPlayers()+1-i;
                 int numTot=model.getMaxNumPlayers()+1;
+
                 virtualViewCurrentPlayer.showGenericMessage("It's time to move your students: "+numStud+" / "+numTot);
                 virtualViewCurrentPlayer.askMoveStud();
                 waitAnswer();
@@ -345,7 +346,6 @@ public class TurnController implements Serializable {
                     //we ask the player which PawnColor he wants to move
                     virtualViewCurrentPlayer.askMoveStudToDining(player.getSchoolBoard().getStudentsWaiting());
                     waitAnswer();
-
                     try {
                         player.getSchoolBoard().moveStudToDining(currentStudent);
                     } catch (NoPawnPresentException | TooManyPawnsPresent e) {
@@ -356,7 +356,9 @@ public class TurnController implements Serializable {
                     } catch (NoPawnPresentException | TooManyPawnsPresent e) {
                         e.printStackTrace();
                     }
+                    //perche non la mostri?
                     virtualViewCurrentPlayer.showSchoolBoard(player.getSchoolBoard());
+
                 }
                 else if(currentMessageMoveStud.equalsIgnoreCase("i")){
                     //we ask the player where he wants to move the student
@@ -373,7 +375,6 @@ public class TurnController implements Serializable {
                 }
 
             }
-
             turnPhase = TurnPhase.ACTION1;
         }
     }
