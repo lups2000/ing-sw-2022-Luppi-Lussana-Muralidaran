@@ -528,4 +528,12 @@ public class Game extends Observable implements Serializable {
         return null;
     }
 
+
+    public void useCharacterCard(CharacterCard characterCard){
+        try {
+            characterCard.effect();
+        } catch (NoPawnPresentException | TooManyPawnsPresent e) {
+            e.printStackTrace();
+        }
+    }
 }

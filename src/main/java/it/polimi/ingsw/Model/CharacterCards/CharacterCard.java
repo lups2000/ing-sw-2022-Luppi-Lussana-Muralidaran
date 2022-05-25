@@ -12,11 +12,16 @@ public abstract class CharacterCard implements Serializable {
     protected int cost;
     protected boolean used;
     protected Game game;
+    protected CharacterCardType type;
 
     public int getCost() {return cost;}
 
     public void effect() throws NoPawnPresentException, TooManyPawnsPresent {
 
+    }
+
+    public CharacterCardType getType() {
+        return type;
     }
 
     /**

@@ -7,12 +7,14 @@ import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 public class SwitchStudents extends CharacterCard implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3645873027497384707L;
     private Map<PawnColor,Integer> students;
 
@@ -20,8 +22,9 @@ public class SwitchStudents extends CharacterCard implements Serializable {
         cost = 1;
         used = false;
         this.game = game;
+        this.type = CharacterCardType.SWITCH_STUDENTS;
 
-        this.students = new HashMap<>();
+                this.students = new HashMap<>();
         students.put(PawnColor.RED,0);
         students.put(PawnColor.BLUE,0);
         students.put(PawnColor.YELLOW,0);

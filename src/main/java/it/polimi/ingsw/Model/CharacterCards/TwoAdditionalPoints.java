@@ -4,16 +4,19 @@ package it.polimi.ingsw.Model.CharacterCards;
 
 import it.polimi.ingsw.Model.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class TwoAdditionalPoints extends CharacterCard implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 6875895261637393857L;
 
     public TwoAdditionalPoints(Game game){
         cost = 2;
         used = false;
         this.game = game;
+        this.type = CharacterCardType.TWO_ADDITIONAL_POINTS;
     }
 
     public void effect() {

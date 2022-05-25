@@ -4,6 +4,7 @@ import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 //EFFECT: choose a type of student: every player (including yourself) must return 3 students of that type from their dining room to the bag.
@@ -11,12 +12,14 @@ import java.io.Serializable;
 
 public class ColorToStudentBag extends CharacterCard implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3647110312238484717L;
 
     public ColorToStudentBag(Game game){
         cost = 3;
         used = false;
         this.game = game;
+        this.type = CharacterCardType.COLOR_TO_STUDENT_BAG;
     }
 
     public void effect(PawnColor chosen) throws TooManyPawnsPresent, NoPawnPresentException {

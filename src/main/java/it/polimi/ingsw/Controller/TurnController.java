@@ -2,6 +2,7 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
+import it.polimi.ingsw.Model.CharacterCards.ChooseIsland;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.View.VirtualView;
@@ -33,6 +34,7 @@ public class TurnController implements Serializable {
     private transient Map<String, VirtualView> virtualViewMap;
     private AssistantCard currentAssistantCard;
     private CharacterCard currentCharacterCard;
+    private int currentIdCharCard;
     private CloudTile currentCloudTile;
     private String currentMessageMoveStud;
     private PawnColor currentStudent;
@@ -66,11 +68,13 @@ public class TurnController implements Serializable {
 
             case REPLY_CHARACTER_CARD -> {
                 CharacterCardReply characterCardReply=(CharacterCardReply) message;
-                if(characterCardReply.getIdCharacterCard()==-1){
+                currentIdCharCard = characterCardReply.getIdCharacterCard()-1;
+
+                if(currentIdCharCard < 0){
                     currentCharacterCard=null;
                 }
                 else{
-                    currentCharacterCard=model.getCharacterCards().get(characterCardReply.getIdCharacterCard()-1);
+                    currentCharacterCard=model.getCharacterCards().get(currentIdCharCard);
                 }
                 hasAnswered=true;
             }
@@ -294,8 +298,76 @@ public class TurnController implements Serializable {
         return first;
     }
 
+
+    /**
+     * this method is used to activate the effect of the chosen character card
+     */
+    private void playCharacterCard() throws NoPawnPresentException, TooManyPawnsPresent {
+        switch(currentCharacterCard.getType()){
+            //alcune posso raggrupparle qui
+            //TODO
+            case CHOOSE_ISLAND -> {
+                //passare Island
+                model.getCharacterCards().get(currentIdCharCard).effect();
+            }
+
+            case NO_COUNT_TOWER -> {
+                model.getCharacterCards().get(currentIdCharCard).effect();
+            }
+
+            case SWITCH_STUDENTS -> {
+                //passare Students selezionati
+                model.getCharacterCards().get(currentIdCharCard).effect();
+            }
+
+            case STUDENT_TO_DINING -> {
+                //passare PawnColor
+                model.getCharacterCards().get(currentIdCharCard).effect();
+            }
+
+            case COLOR_NO_INFLUENCE -> {
+                //passare PawnColor
+                model.getCharacterCards().get(currentIdCharCard).effect();
+            }
+
+            case PUT_NO_ENTRY_TILES -> {
+                //passare Island
+                model.getCharacterCards().get(currentIdCharCard).effect();
+            }
+
+            case COLOR_TO_STUDENT_BAG -> {
+                //passare PawnColor
+                model.getCharacterCards().get(currentIdCharCard).effect();
+            }
+
+            case CONTROL_ON_PROFESSOR -> {
+                model.getCharacterCards().get(currentIdCharCard).effect();
+            }
+
+            case ONE_STUDENT_TO_ISLAND -> {
+                //passare Island e PawnColor
+                model.getCharacterCards().get(currentIdCharCard).effect();
+            }
+
+            case SWITCH_DINING_WAITING -> {
+                //passare Students selezionati
+                model.getCharacterCards().get(currentIdCharCard).effect();
+            }
+
+            case TWO_ADDITIONAL_POINTS -> {
+                model.getCharacterCards().get(currentIdCharCard).effect();
+            }
+
+            case MOVE_MORE_MOTHER_NATURE -> {
+                model.getCharacterCards().get(currentIdCharCard).effect();
+            }
+        }
+    }
+
+
     /**
      * This is the method which represents the first step of the action phase where the player must move X students
+     *
      * @param player current player chosen by the method ChoosePlayerToAction()
      */
     private void actionPhase1(Player player){
@@ -312,7 +384,6 @@ public class TurnController implements Serializable {
 
                 while(!characterCardOk){
 
-                    //sono arrivato qui e non mi stampa la lista di carte personaggio
                     virtualViewCurrentPlayer.askPlayCharacterCard(characterCardsGame);
 
                     waitAnswer(); //wait for the answer of the current Player
@@ -328,7 +399,14 @@ public class TurnController implements Serializable {
                     }
                     else{
                         virtualViewCurrentPlayer.showGenericMessage("Invalid characterCard!You do not have enough coins to activate it");
-                        characterCardOk=false;
+                    }
+                }
+
+                if(currentCharacterCard != null) {
+                    try {
+                        playCharacterCard();
+                    } catch (NoPawnPresentException | TooManyPawnsPresent e) {
+                        e.printStackTrace();
                     }
                 }
                 characterCardOk=false;

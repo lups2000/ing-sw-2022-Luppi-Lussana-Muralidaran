@@ -4,6 +4,7 @@ import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
 
@@ -11,12 +12,14 @@ import java.util.Map;
 
 public class SwitchDiningWaiting extends CharacterCard implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3644762764736912717L;
 
     public SwitchDiningWaiting(Game game){
         cost = 1;
         used = false;
         this.game = game;
+        this.type = CharacterCardType.SWITCH_DINING_WAITING;
     }
 
     public void effect(Map<PawnColor,Integer> exWaiting, Map<PawnColor,Integer> exDining) throws TooManyPawnsPresent, NoPawnPresentException {

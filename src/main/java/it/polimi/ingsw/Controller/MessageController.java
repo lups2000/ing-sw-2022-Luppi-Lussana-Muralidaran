@@ -163,11 +163,10 @@ public class MessageController implements Serializable {
                 return true;
             }
             VirtualView virtualView=virtualViewsMap.get(message.getNickName());
-            virtualView.showGenericMessage("You didn't provide a valid AssistantCard!");
+            virtualView.showGenericMessage("You didn't provide a valid Character Card!");
             virtualView.askPlayCharacterCard(model.getCharacterCards());
             return false;
         }
-
     }
 
     /**

@@ -34,7 +34,7 @@ public class AssistantCard implements Serializable {
      Void function which updates the number of steps Mother Nature
      can do if the MoveMoreMotherNature CharacterCard is activated
     */
-    public void updateMaxStepsMotherNature(int newStepsNumber) { this.maxStepsMotherNature=newStepsNumber; }
+    public void updateMaxStepsMotherNature(int newStepsNumber) { this.maxStepsMotherNature = maxStepsMotherNature + newStepsNumber; }
 
     @Override
     public boolean equals(Object o) {

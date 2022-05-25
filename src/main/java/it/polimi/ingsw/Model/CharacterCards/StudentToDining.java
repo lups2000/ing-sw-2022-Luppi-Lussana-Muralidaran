@@ -4,6 +4,7 @@ import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +15,7 @@ import java.util.Map;
 
 public class StudentToDining extends CharacterCard implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3644546535811928477L;
     private Map<PawnColor,Integer> students;
 
@@ -21,6 +23,7 @@ public class StudentToDining extends CharacterCard implements Serializable {
         cost = 2;
         used = false;
         this.game = game;
+        this.type = CharacterCardType.STUDENT_TO_DINING;
         this.students = new HashMap<>();
         students.put(PawnColor.RED,0);
         students.put(PawnColor.BLUE,0);
