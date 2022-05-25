@@ -22,6 +22,7 @@ public enum MessageType {
     GAME_BOARD,
     INFO_CLOUDS,
     MOVE_STUD,
+    SCHOOLBOARD,
 
     GENERIC_MESSAGE,
     ERROR,

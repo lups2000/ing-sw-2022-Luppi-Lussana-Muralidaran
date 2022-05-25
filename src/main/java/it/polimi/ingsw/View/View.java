@@ -33,12 +33,6 @@ public interface View {
 
     void askAssistantCard(List<AssistantCard> assistantCards);
 
-    //void askMoveStud (List<PawnColor> pawnColors, List<Island> islands, SchoolBoard schoolBoard) throws TooManyPawnsPresent, NoPawnPresentException;
-
-    //int askMoveStudToDining(List<PawnColor> pawnColors, SchoolBoard schoolBoard, int studentsToMove) throws TooManyPawnsPresent;
-
-    //void askMoveStudToIsland(List<Island> islands, SchoolBoard schoolBoard, int studentsToMove) throws NoPawnPresentException;
-
     void askChooseCloudTile(List<CloudTile> cloudTiles);
 
     void askExpertVariant();
@@ -63,7 +57,7 @@ public interface View {
 
     void showMatchInfo(ArrayList<Player> players,boolean experts,int numPlayers);
 
-    void askMoveStudToIsland(List<Island> islands);
+    void askMoveStudToIsland(Map<PawnColor,Integer> studentsWaiting,List<Island> islands);
 
     void askMoveStudToDining(Map<PawnColor,Integer> studentsWaiting);
 

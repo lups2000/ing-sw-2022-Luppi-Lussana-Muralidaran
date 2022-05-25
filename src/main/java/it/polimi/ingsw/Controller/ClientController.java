@@ -72,6 +72,11 @@ public class ClientController implements Observer4View, Observer {
                 taskQueue.execute(()->view.showGameBoard(gameBoard.getIslands(),gameBoard.getCloudTiles(),gameBoard.getPlayers()));
             }
 
+            case SCHOOLBOARD -> {
+                SchoolBoardPlayer schoolBoardPlayer=(SchoolBoardPlayer) message;
+                taskQueue.execute(()->view.showSchoolBoard(schoolBoardPlayer.getSchoolBoard()));
+            }
+
             case REQUEST_EXPERT_VARIANT -> taskQueue.execute(view::askExpertVariant);
 
             case REQUEST_ASSISTANT_SEED -> {
@@ -135,7 +140,7 @@ public class ClientController implements Observer4View, Observer {
 
             case REQUEST_MOVE_STUD_ISLAND -> {
                 StudentToIslandRequest studentToIslandRequest = (StudentToIslandRequest) message;
-                taskQueue.execute(() -> view.askMoveStudToIsland(studentToIslandRequest.getIslands()));
+                taskQueue.execute(() -> view.askMoveStudToIsland(studentToIslandRequest.getStudentsWaiting(),studentToIslandRequest.getIslands()));
             }
 
             case INFO_MATCH -> {
@@ -325,10 +330,10 @@ public class ClientController implements Observer4View, Observer {
      * This method sends a message to the server to communicate which student the client wants to move from his entrance room to an island
      *
      * @param chosenColor the color of the student to move
-     * @param chosenIsland the island on which move the chosen student
+     //* @param chosenIsland the island on which move the chosen student
      */
     @Override
-    public void sendStudentToIsland(PawnColor chosenColor, Island chosenIsland) {
-        client.sendMessage(new StudentToIslandReply(this.nickname,chosenColor,chosenIsland));
+    public void sendStudentToIsland(PawnColor chosenColor,int islandIndex) {
+        client.sendMessage(new StudentToIslandReply(this.nickname,chosenColor,islandIndex));
     }
 }

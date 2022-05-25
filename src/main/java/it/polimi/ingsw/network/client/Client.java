@@ -52,7 +52,7 @@ public class Client extends Observable {
                 Message message;
                 try {
                     message = (Message) inputStm.readObject();
-                    Client.LOGGER.info("Received: " + message);
+                    //Client.LOGGER.info("Received: " + message); logger messages
                 } catch (IOException | ClassNotFoundException e) {
                     message = new Error( "Connection lost with the server.");
                     disconnect();

@@ -10,6 +10,7 @@ import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.network.Messages.ServerSide.Islands;
 import it.polimi.ingsw.observer.Observable4View;
 
+import javax.swing.*;
 import java.io.PrintStream;
 import java.util.*;
 
@@ -177,7 +178,7 @@ public class Cli extends Observable4View implements View {
         boolean validInput;
         if(assistantSeedAvailable.size()>=1){
             do{
-                out.println("Please type the corresponding id to select one of the AssistantSeeds: ");
+                out.println("Please type the corresponding id to select one of the AssistantSeeds: "+Colors.RESET);
                 System.out.print("( ");
                 for(int i=0;i<assistantSeedAvailable.size();i++){
                     System.out.print((i+1)+": "+assistantSeedAvailable.get(i));
@@ -186,6 +187,7 @@ public class Cli extends Observable4View implements View {
                     }
                 }
                 System.out.println(" )");
+                out.print("\033[38;2;255;255;0m");
                 try{
                     id=Integer.parseInt(readLine.nextLine());
                 }
@@ -195,6 +197,7 @@ public class Cli extends Observable4View implements View {
 
                 if(id<=0 || id>assistantSeedAvailable.size()){
                     out.println(INVALID_INPUT);
+                    clearCli();
                     validInput = false;
                 }
                 else{
@@ -222,12 +225,14 @@ public class Cli extends Observable4View implements View {
             do {
                 i=1;
                 out.println("Please type the corresponding id to select one of the Assistant Cards: ");
+                out.println(Colors.RESET);
                 for (AssistantCard assistantCard : assistantCards) {
                     out.print(i +" ) ");
                     out.print("Value: " + assistantCard.getValue()+", ");
                     out.print("Max steps motherNature: " + assistantCard.getMaxStepsMotherNature() + "\n");
                     i++;
                 }
+                out.print("\033[38;2;255;255;0m");
                 try{
                     id= Integer.parseInt(readLine.nextLine());
                 }
@@ -237,6 +242,7 @@ public class Cli extends Observable4View implements View {
 
                 if(id<=0 || id>assistantCards.size()){
                     out.println(INVALID_INPUT);
+                    clearCli();
                     validInput = false;
                 }
                 else{
@@ -252,58 +258,6 @@ public class Cli extends Observable4View implements View {
         }
     }
 
-    /*
-    @Override
-    public void askMoveStud(List<PawnColor> pawnColors, List<Island> islands, SchoolBoard schoolBoard) throws TooManyPawnsPresent, NoPawnPresentException {
-        int studentsToMove = 3;
-        boolean validInput = false;
-        out.println("Do you want to move some students in the dining room? Y/N");
-        String playerAnswer = readLine.nextLine();
-        do {
-            if (playerAnswer.equals("Y")){
-                askMoveStudToDining(pawnColors, schoolBoard, studentsToMove);
-            }
-            else if (studentsToMove > 0){
-                askMoveStudToIsland(islands, schoolBoard, studentsToMove);
-            }
-        } while (!validInput);
-
-    }*/
-
-    /*
-    @Override
-    public int askMoveStudToDining(List<PawnColor> pawnColors, SchoolBoard schoolBoard, int studentsToMove) throws TooManyPawnsPresent {
-        PawnColor color = null;
-        String playerAnswer = null;
-        boolean validInput = false;
-        do {
-            //fare ciclo per scegliere il colore e messaggio di errore nel caso non fosse disponibile
-            schoolBoard.addStudToDining(color);
-            studentsToMove--;
-            if (studentsToMove > 0) {
-                out.println("Do you want to move another student to the dining room? Y/N");
-                playerAnswer = readLine.next();
-            }
-            else if (studentsToMove == 0) {
-                validInput = true;
-            }
-        } while (playerAnswer.equals("Y") || !validInput);
-        return studentsToMove;
-    }*/
-
-    /*
-    @Override
-    public void askMoveStudToIsland(List<Island> islands, SchoolBoard schoolBoard, int studentsToMove) throws NoPawnPresentException {
-        PawnColor color = null;
-        Island island = null;
-        while (studentsToMove > 0) {
-            //ciclo for con elenco e degli studenti per far selezionare lo studente e l'isola in questione
-            schoolBoard.moveStudToIsland(color, island);
-            studentsToMove--;
-        }
-    }*/
-
-
     @Override
     public void askMoveMotherNature(List<Island> islands, AssistantCard assistantCard) {
         boolean validInput = false;
@@ -317,6 +271,7 @@ public class Cli extends Observable4View implements View {
             }
             else {
                 out.println(INVALID_INPUT);
+                clearCli();
             }
         } while (!validInput);
     }
@@ -349,6 +304,7 @@ public class Cli extends Observable4View implements View {
 
                 if(idCloudTile<=0 || idCloudTile>cloudTiles.size()){
                     out.println(INVALID_INPUT);
+                    clearCli();
                     validInput = false;
                 }
                 else{
@@ -411,6 +367,7 @@ public class Cli extends Observable4View implements View {
                     }
                     if(idCharacterCard<=0 || idCharacterCard>characterCards.size()){
                         out.println(INVALID_INPUT);
+                        clearCli();
                         validCost = false;
                     }
                     else{
@@ -459,25 +416,27 @@ public class Cli extends Observable4View implements View {
 
     @Override
     public void showSchoolBoard(SchoolBoard schoolBoard){
+        out.print(Colors.RESET);
         out.println("Dining Room:");
         for (PawnColor pawnColor: PawnColor.values()){
             out.print(pawnColor.getVisualColor()+pawnColor+Colors.RESET+" students: ");
             for (int i=0; i<schoolBoard.getStudentsDining().get(pawnColor); i++) {
-                out.print(pawnColor.getVisualColor()+"X"+" ");
-                if (schoolBoard.getProfessors().get(pawnColor)) {
-                    out.print("  "+pawnColor.getVisualColor()+"P"+Colors.RESET);
-                }
+                out.print(pawnColor.getVisualColor()+"X "+Colors.RESET);
+            }
+            if (schoolBoard.getProfessors().get(pawnColor)) {
+                out.print("  "+pawnColor.getVisualColor()+"P"+Colors.RESET);
             }
             out.println("");
         }
-        out.print("\nStudents in the Entrance: ");
+        out.print("\nWaiting Room/Entrance: ");
         for (PawnColor pawnColor: PawnColor.values()){
             for (int i=0; i<schoolBoard.getStudentsWaiting().get(pawnColor); i++){
                 out.print(pawnColor.getVisualColor()+"X "+Colors.RESET);
             }
         }
         out.println("\nNumber of coins: "+ schoolBoard.getNumCoins());
-        out.println("Number of available towers: "+schoolBoard.getNumTowers());
+        out.print("Number of available towers: "+schoolBoard.getNumTowers());
+        out.print("\033[38;2;255;255;0m");
     }
 
     @Override
@@ -520,7 +479,7 @@ public class Cli extends Observable4View implements View {
         clearCli();
 
         if(nickNameOk && connectionOk){
-            out.println("Nice to meet you "+nickName+", now you are connected!");
+            out.println(Colors.RESET+"Nice to meet you "+nickName+", now you are connected!"+"\033[38;2;255;255;0m");
         }
         else if(nickNameOk){
             out.println("We are sorry but the connection has been refused!Try later!");
@@ -551,28 +510,83 @@ public class Cli extends Observable4View implements View {
     }
 
     @Override
-    public void askMoveStudToIsland(List<Island> islands) {
+    public void askMoveStudToIsland(Map<PawnColor,Integer> studentsWaiting,List<Island> islands) {
         boolean validInput=false;
-        int indexIsland;
-        PawnColor pawnColorChosen;
+        boolean validIndex=false;
+        int indexIsland=-1;
+        PawnColor pawnColorChosen=null;
+        String answerColor;
         do{
-            /*
-            this.showIslands(islands);
-            out.println("Please type the corresponding index to select one of the Islands: ");
-            index=Integer.parseInt(readLine.nextLine());
+            out.print(Colors.RESET);
+            out.println("Students in the Entrance... ");
+            for(PawnColor pawnColor : studentsWaiting.keySet()){
+                out.print(pawnColor.getVisualColor()+pawnColor+Colors.RESET+" students: ");
+                for(int i=0;i<studentsWaiting.get(pawnColor);i++){
+                    out.print(pawnColor.getVisualColor()+" X "+Colors.RESET);
+                }
+                out.println("");
+            }
+            out.print("\033[38;2;255;255;0m");
+            out.print("Select one color(ex. red,blue...) to move the student to an Island : ");
+            answerColor= readLine.nextLine();
 
-            if(index<0 && index> islands.size()){ //da controllare bene qua
-                validInput=true;
+            if(answerColor.equalsIgnoreCase("red") || answerColor.equalsIgnoreCase("blue") || answerColor.equalsIgnoreCase("pink") ||
+                    answerColor.equalsIgnoreCase("green") || answerColor.equalsIgnoreCase("yellow")){
+
+                if(answerColor.equalsIgnoreCase("red")){
+                    pawnColorChosen=PawnColor.RED;
+                }
+                else if(answerColor.equalsIgnoreCase("blue")){
+                    pawnColorChosen=PawnColor.BLUE;
+                }
+                else if(answerColor.equalsIgnoreCase("pink")){
+                    pawnColorChosen=PawnColor.PINK;
+                }
+                else if(answerColor.equalsIgnoreCase("yellow")){
+                    pawnColorChosen=PawnColor.YELLOW;
+                }
+                else{
+                    pawnColorChosen=PawnColor.GREEN;
+                }
+
+                if(studentsWaiting.get(pawnColorChosen)<=0){
+                    out.println(INVALID_INPUT);
+                    clearCli();
+                    validInput=false;
+                }
+                else{
+                    validInput=true;
+                }
             }
             else{
                 out.println(INVALID_INPUT);
                 clearCli();
                 validInput=false;
             }
-             */
+
+            do{
+                out.println("Please type the corresponding index to select one of the Islands: ");
+                this.showIslands(islands);
+                try{
+                    indexIsland=Integer.parseInt(readLine.nextLine());
+                }catch (NumberFormatException e){
+                    validIndex=false;
+                }
+                if(indexIsland>=0 && indexIsland<islands.size()){ //da controllare bene qua
+                    validIndex=true;
+                }
+                else{
+                    out.println(INVALID_INPUT);
+                    clearCli();
+                    validIndex=false;
+                }
+            }while(!validIndex);
 
         }while(!validInput);
-        //notifyObserver(obs->obs.sendStudentToIsland());
+        out.print("\033[38;2;255;255;0m");
+        PawnColor finalPawnColorChosen = pawnColorChosen;
+        int finalIndexIsland = indexIsland;
+        notifyObserver(obs->obs.sendStudentToIsland(finalPawnColorChosen, finalIndexIsland));
 
     }
 
@@ -583,6 +597,7 @@ public class Cli extends Observable4View implements View {
         PawnColor pawnColorChosen=null;
         //show the students in the entrance
         do{
+            out.print(Colors.RESET);
             out.println("Students in the Entrance... ");
             for(PawnColor pawnColor : studentsWaiting.keySet()){
                 out.print(pawnColor.getVisualColor()+pawnColor+Colors.RESET+" students: ");
@@ -591,8 +606,8 @@ public class Cli extends Observable4View implements View {
                 }
                 out.println("");
             }
-            out.print("\n\n\033[38;2;255;255;0m");
-            out.print("Select one color(ex. red,blue...) to move the student to the Dining :");
+            out.print("\033[38;2;255;255;0m");
+            out.print("Select one color(ex. red,blue...) to move the student to the Dining : ");
             answerColor= readLine.nextLine();
 
 
@@ -638,55 +653,59 @@ public class Cli extends Observable4View implements View {
     @Override
     public void showIslands(List<Island> islands) {
 
+        out.print(Colors.RESET);
         out.println("ISLANDS: ");
-
-        for(Island island : islands){
-            out.print("- Index: "+island.getIndex()+" ");
+        for(int id=0;id<islands.size();id++){
+            out.print("- Index: "+islands.get(id).getIndex()+" ");
             out.print(" Students: ");
             for (PawnColor pawnColor: PawnColor.values()){
-                for (int i=0; i<island.getStudents().get(pawnColor); i++){
+                for (int i=0; i<islands.get(id).getStudents().get(pawnColor); i++){
                     out.print(pawnColor.getVisualColor()+"X "+Colors.RESET);
                 }
             }
-            if(island.isMotherNature()){
+            if(islands.get(id).isMotherNature()){
                 out.print(" MotherNature here");
             }
-            out.println("");
+            if(id<islands.size()-1){
+                out.println("");
+            }
+            //Entry tiles TODO
         }
+        out.print("\033[38;2;255;255;0m");
     }
 
 
     @Override
     public void showGameBoard(List<Island> islands, List<CloudTile> cloudTiles, List<Player> players) {
         out.println("\n"+Colors.RED_PAWN+"CURRENT GAME SITUATION: "+Colors.RESET);
-
         this.showIslands(islands);
-        out.println("");
         this.showCloudTiles(cloudTiles);
-        out.println("");
-
+        out.print(Colors.RESET);
+        out.println("\nPLAYER'S SCHOOLBOARDS:");
         for(Player player :players){
             out.println(player.getNickname()+": ");
             this.showSchoolBoard(player.getSchoolBoard());
-            out.println("");
+            out.println(Colors.RESET+"\n");
         }
-        out.print("\n\n\033[38;2;255;255;0m");
+        out.println("\033[38;2;255;255;0m");
     }
 
     @Override
     public void showCloudTiles(List<CloudTile> cloudTiles) {
-        out.println("CLOUD TILES: ");
-
-        for(CloudTile cloudTile : cloudTiles){
-            out.print("- Index: "+cloudTile.getId()+" ");
+        out.print(Colors.RESET);
+        out.println("\nCLOUD TILES: ");
+        for(int id=0;id<cloudTiles.size();id++){
+            out.print("- Index: "+cloudTiles.get(id).getId()+" ");
             out.print(" Students: ");
             for (PawnColor pawnColor: PawnColor.values()){
-                for (int i=0; i<cloudTile.getStudents().get(pawnColor); i++){
+                for (int i=0; i<cloudTiles.get(id).getStudents().get(pawnColor); i++){
                     out.print(pawnColor.getVisualColor()+"X "+Colors.RESET);
                 }
             }
-
-            out.println("");
+            if(id<cloudTiles.size()-1){
+                out.println("");
+            }
         }
+        out.print("\033[38;2;255;255;0m");
     }
 }

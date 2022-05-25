@@ -6,10 +6,7 @@ import it.polimi.ingsw.Model.CharacterCards.ChooseIsland;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.View.VirtualView;
-import it.polimi.ingsw.network.Messages.ClientSide.AssistantCardReply;
-import it.polimi.ingsw.network.Messages.ClientSide.CharacterCardReply;
-import it.polimi.ingsw.network.Messages.ClientSide.CloudTileReply;
-import it.polimi.ingsw.network.Messages.ClientSide.StudentToDiningReply;
+import it.polimi.ingsw.network.Messages.ClientSide.*;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.ServerSide.Generic;
 import it.polimi.ingsw.network.server.Server;
@@ -38,6 +35,7 @@ public class TurnController implements Serializable {
     private CloudTile currentCloudTile;
     private String currentMessageMoveStud;
     private PawnColor currentStudent;
+    private int currentIslandIndex;
     private boolean winner=false;
     private boolean hasAnswered=false;
 
@@ -94,6 +92,13 @@ public class TurnController implements Serializable {
             case REPLY_MOVE_STUD_DINING -> {
                 StudentToDiningReply studentToDiningReply=(StudentToDiningReply) message;
                 currentStudent=studentToDiningReply.getPawnColor();
+                hasAnswered=true;
+            }
+
+            case REPLY_MOVE_STUD_ISLAND -> {
+                StudentToIslandReply studentToIslandReply=(StudentToIslandReply) message;
+                currentStudent=studentToIslandReply.getPawnColor();
+                currentIslandIndex= studentToIslandReply.getIslandIndex();
                 hasAnswered=true;
             }
 
@@ -199,7 +204,7 @@ public class TurnController implements Serializable {
                         waitAnswer(); //wait for the answer of the current Player
 
                         if(checkAssistantCard(currentAssistantCard)){ //assistantCard ok
-                            virtualViewCurrentPlayer.showGenericMessage("AssistantCard played:  Value: "+currentAssistantCard.getValue()+", MaxStepsMotherNature: "+currentAssistantCard.getMaxStepsMotherNature());
+                            virtualViewCurrentPlayer.showGenericMessage(Colors.RESET+"AssistantCard played:  Value: "+currentAssistantCard.getValue()+", MaxStepsMotherNature: "+currentAssistantCard.getMaxStepsMotherNature());
                             notifyOtherPlayers(currentPlayer.getNickname()+" has played the following AssistantCard:  Value: "+currentAssistantCard.getValue()+", MaxStepsMotherNature: "+currentAssistantCard.getMaxStepsMotherNature(),currentPlayer);
 
                             currentPlayer.pickAssistantCard(currentAssistantCard);
@@ -412,11 +417,11 @@ public class TurnController implements Serializable {
                 characterCardOk=false;
             }
 
-            for(int i=0;i<model.getMaxNumPlayers()+1;i++){
+            for(int i=0;i<model.getMaxNumPlayers()+1;i++){ // the player must move numPlayers+1 students
                 int numStud=model.getMaxNumPlayers()+1-i;
                 int numTot=model.getMaxNumPlayers()+1;
 
-                virtualViewCurrentPlayer.showGenericMessage("It's time to move your students: "+numStud+" / "+numTot);
+                virtualViewCurrentPlayer.showGenericMessage("It's time to move your students: "+numStud+" / "+numTot+" available");
                 virtualViewCurrentPlayer.askMoveStud();
                 waitAnswer();
 
@@ -424,6 +429,7 @@ public class TurnController implements Serializable {
                     //we ask the player which PawnColor he wants to move
                     virtualViewCurrentPlayer.askMoveStudToDining(player.getSchoolBoard().getStudentsWaiting());
                     waitAnswer();
+
                     try {
                         player.getSchoolBoard().moveStudToDining(currentStudent);
                     } catch (NoPawnPresentException | TooManyPawnsPresent e) {
@@ -434,18 +440,21 @@ public class TurnController implements Serializable {
                     } catch (NoPawnPresentException | TooManyPawnsPresent e) {
                         e.printStackTrace();
                     }
-                    //perche non la mostri?
+
                     virtualViewCurrentPlayer.showSchoolBoard(player.getSchoolBoard());
 
                 }
                 else if(currentMessageMoveStud.equalsIgnoreCase("i")){
                     //we ask the player where he wants to move the student
-                    /*
+                    virtualViewCurrentPlayer.askMoveStudToIsland(player.getSchoolBoard().getStudentsWaiting(),model.getIslands());
+                    waitAnswer();
+
                     try {
-                        player.getSchoolBoard().moveStudToIsland(PawnColorChosen,IslandChosen);
+                        player.getSchoolBoard().moveStudToIsland(currentStudent,model.getIslands().get(currentIslandIndex));
                     } catch (NoPawnPresentException e) {
                         e.printStackTrace();
-                    }*/
+                    }
+                    virtualViewCurrentPlayer.showGameBoard(model.getIslands(),model.getCloudTiles(),model.getPlayers());
                 }
                 else{ //non ci vado mai teoricamente
                     //messaggio di errore tramite la view

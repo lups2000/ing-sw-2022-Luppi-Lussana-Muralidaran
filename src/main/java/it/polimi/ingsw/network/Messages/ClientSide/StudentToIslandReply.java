@@ -9,23 +9,23 @@ import it.polimi.ingsw.network.Messages.MessageType;
 public class StudentToIslandReply extends Message {
 
     private static final long serialVersionUID = 2906687587793891381L;
-    private final Island island;
+    private final int islandIndex;
     private final PawnColor pawnColor;
 
-    public StudentToIslandReply(String nickNameClient,PawnColor pawnColor,Island island){
+    public StudentToIslandReply(String nickNameClient,PawnColor pawnColor,int islandIndex){
         super(nickNameClient, MessageType.REPLY_MOVE_STUD_ISLAND);
         this.pawnColor=pawnColor;
-        this.island=island;
+        this.islandIndex=islandIndex;
     }
 
-    public Island getIsland() {return island;}
+    public int getIslandIndex() {return islandIndex;}
     public PawnColor getPawnColor() {return pawnColor;}
 
     @Override
     public String toString() {
         return "StudentToIslandReply{" +
                 "nickName="+getNickName()+", "+
-                "island=" + island +
+                "islandIndex=" + islandIndex +
                 ", pawnColor=" + pawnColor +
                 '}';
     }

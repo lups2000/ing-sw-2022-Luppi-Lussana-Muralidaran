@@ -188,12 +188,7 @@ public class MainController {
 
             case REPLY_MOVE_STUD_ISLAND -> {
                 if(messageController.checkStudentToIsland(message)){
-                    StudentToIslandReply studentToIslandReply = (StudentToIslandReply) message;
-                    try {
-                        game.getPlayerByNickName(studentToIslandReply.getNickName()).getSchoolBoard().moveStudToIsland(studentToIslandReply.getPawnColor(), studentToIslandReply.getIsland());
-                    } catch (NoPawnPresentException e) {
-                        e.printStackTrace();
-                    }
+                    turnController.messageFromMainController(message);
                 }
                 else {
                     Server.LOGGER.warning("The format of the message sent by the client is incorrect!");

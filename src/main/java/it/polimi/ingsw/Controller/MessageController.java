@@ -225,7 +225,7 @@ public class MessageController implements Serializable {
      */
     public boolean checkStudentToIsland(Message message){
         StudentToIslandReply studentToIslandReply=(StudentToIslandReply)message;
-        Island islandChosen=studentToIslandReply.getIsland();
+        Island islandChosen=model.getIslands().get(studentToIslandReply.getIslandIndex());
         PawnColor chosenColor = studentToIslandReply.getPawnColor();
         Player player = mainController.getGame().getPlayerByNickName(studentToIslandReply.getNickName());
 
@@ -235,7 +235,7 @@ public class MessageController implements Serializable {
             if(chosenColor==PawnColor.BLUE || chosenColor==PawnColor.RED ||
                     chosenColor==PawnColor.YELLOW || chosenColor==PawnColor.GREEN || chosenColor==PawnColor.PINK){
                 //here we control that the player has in his waiting room at least a student of the chosen color
-                if(player.getSchoolBoard().getStudentsWaiting().get(chosenColor) != 0) {
+                if(player.getSchoolBoard().getStudentsWaiting().get(chosenColor) > 0) {
                     return true;
                 }
             }
@@ -243,7 +243,7 @@ public class MessageController implements Serializable {
 
         VirtualView virtualView=virtualViewsMap.get(message.getNickName());
         virtualView.showGenericMessage("You didn't provide a valid Island!");
-        virtualView.askMoveStudToIsland(model.getIslands());
+        virtualView.askMoveStudToIsland(player.getSchoolBoard().getStudentsWaiting(),model.getIslands());
         return false;
     }
 }

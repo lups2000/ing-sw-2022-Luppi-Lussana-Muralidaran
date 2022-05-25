@@ -83,9 +83,9 @@ public interface Observer4View {
      * This method sends a message to the server to communicate which student the client wants to move from his entrance room to an island
      *
      * @param chosenColor the color of the student to move
-     * @param chosenIsland the island on which move the chosen student
+     //* @param chosenIsland the island on which move the chosen student
      */
-    void sendStudentToIsland(PawnColor chosenColor, Island chosenIsland);
+    void sendStudentToIsland(PawnColor chosenColor,int islandIndex);
     /*
      * Handles a disconnection wanted by the user.
      * (e.g. a click on the back button into the GUI).

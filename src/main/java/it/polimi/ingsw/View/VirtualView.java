@@ -50,23 +50,6 @@ public class VirtualView implements View, Observer {
         clientConnection.sendMessageToClient(new AssistantCardRequest(assistantCards));
     }
 
-    /*
-    @Override
-    public void askMoveStud(List<PawnColor> pawnColors, List<Island> islands, SchoolBoard schoolBoard) throws TooManyPawnsPresent, NoPawnPresentException {
-    }
-
-    @Override
-    public int askMoveStudToDining(List<PawnColor> pawnColors, SchoolBoard schoolBoard, int studentsToMove) throws TooManyPawnsPresent {
-        clientConnection.sendMessageToClient(new StudentToDiningRequest(pawnColors));
-        return 0;
-    }
-
-    @Override
-    public void askMoveStudToIsland(List<Island> islands, SchoolBoard schoolBoard, int studentsToMove) throws NoPawnPresentException {
-        clientConnection.sendMessageToClient(new StudentToIslandRequest(islands));
-    }*/
-
-
     @Override
     public void askMoveMotherNature(List<Island> islands, AssistantCard assistantCard) {
         clientConnection.sendMessageToClient(new MotherNatureMoveRequest(islands));
@@ -89,7 +72,7 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void showSchoolBoard(SchoolBoard schoolBoard) {
-
+        clientConnection.sendMessageToClient(new SchoolBoardPlayer(schoolBoard));
     }
 
     @Override
@@ -128,8 +111,8 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void askMoveStudToIsland(List<Island> islands) {
-        clientConnection.sendMessageToClient(new StudentToIslandRequest(islands));
+    public void askMoveStudToIsland(Map<PawnColor,Integer> studentsWaiting,List<Island> islands) {
+        clientConnection.sendMessageToClient(new StudentToIslandRequest(studentsWaiting,islands));
     }
 
 
