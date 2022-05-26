@@ -40,12 +40,6 @@ public class ClientController implements Observer4View, Observer {
         taskQueue = Executors.newSingleThreadExecutor();
     }
 
-
-    @Override
-    public void askMoveMotherNature(List<Island> islands, AssistantCard assistantCard) {
-
-    }
-
     /**
      * it forwards to the client the messages received from the server
      *
@@ -96,8 +90,7 @@ public class ClientController implements Observer4View, Observer {
 
             case REQUEST_MOVE_MOTHER_NATURE -> {
                 MotherNatureMoveRequest motherNatureMoveRequest = (MotherNatureMoveRequest) message;
-                //da sistemare, non so come
-                //taskQueue.execute(() -> view.askMoveMotherNature(motherNatureMoveRequest.getAvailableIslands(),));
+                taskQueue.execute(() -> view.askMoveMotherNature(motherNatureMoveRequest.getIslands(), motherNatureMoveRequest.getMaxSteps()));
             }
 
             case ERROR -> {
@@ -135,7 +128,7 @@ public class ClientController implements Observer4View, Observer {
 
             case REQUEST_MOVE_STUD_DINING -> {
                 StudentToDiningRequest studentToDiningRequest = (StudentToDiningRequest) message;
-                taskQueue.execute(() -> view.askMoveStudToDining(studentToDiningRequest.getStudentsWaiting()));
+                taskQueue.execute(() -> view.askMoveStudToDining(studentToDiningRequest.getSchoolBoard()));
             }
 
             case REQUEST_MOVE_STUD_ISLAND -> {

@@ -12,20 +12,24 @@ import java.util.List;
 public class MotherNatureMoveRequest extends Message {
 
     private static final long serialVersionUID = 2904834863264243863L;
-    private final List<Island> availableIslands;
+    private final List<Island> islands;
+    private final int maxSteps;
 
-    public MotherNatureMoveRequest(List<Island> islands){
+    public MotherNatureMoveRequest(List<Island> islands,int maxSteps){
         super("SERVER", MessageType.REQUEST_MOVE_MOTHER_NATURE);
-        this.availableIslands=islands;
+        this.islands=islands;
+        this.maxSteps=maxSteps;
     }
 
-    public List<Island> getAvailableIslands() {return availableIslands;}
+    public List<Island> getIslands() {return islands;}
+    public int getMaxSteps() {return maxSteps;}
 
     @Override
     public String toString() {
         return "MotherNatureMoveRequest{" +
                 "nickName="+getNickName()+", "+
-                "islands=" + availableIslands +
+                "islands=" + islands +", "+
+                "maxSteps="+maxSteps+
                 '}';
     }
 }

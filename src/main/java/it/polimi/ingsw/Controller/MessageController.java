@@ -126,7 +126,7 @@ public class MessageController implements Serializable {
 
         VirtualView virtualView=virtualViewsMap.get(message.getNickName());
         virtualView.showGenericMessage("You didn't provide a valid number of steps! It must be between 1 and " + maxStepsAllowed);
-        virtualView.askMoveMotherNature(model.getIslands(),model.getPlayerByNickName(message.getNickName()).getCurrentAssistant());
+        virtualView.askMoveMotherNature(model.getIslands(),model.getPlayerByNickName(message.getNickName()).getCurrentAssistant().getMaxStepsMotherNature());
         return false;
     }
 
@@ -177,7 +177,7 @@ public class MessageController implements Serializable {
      */
     public boolean checkCloudTile(Message message){
         CloudTileReply cloudTileReply=(CloudTileReply) message;
-        CloudTile cloudTile=model.getCloudTiles().get(cloudTileReply.getIdCloudTile()-1);
+        CloudTile cloudTile=model.getCloudTiles().get(cloudTileReply.getIdCloudTile());
 
         if(cloudTile.getId()>=0 && cloudTile.getId()<model.getCloudTiles().size() && cloudTile.getNumStudents() > 0){
             return true;
@@ -212,7 +212,7 @@ public class MessageController implements Serializable {
 
         VirtualView virtualView=virtualViewsMap.get(message.getNickName());
         virtualView.showGenericMessage("You didn't provide a valid Student!");
-        virtualView.askMoveStudToDining(player.getSchoolBoard().getStudentsWaiting());
+        virtualView.askMoveStudToDining(player.getSchoolBoard());
         return false;
     }
 

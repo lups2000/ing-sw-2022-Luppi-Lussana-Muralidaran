@@ -56,6 +56,4 @@ public abstract class Observable4View {
             lambda.accept(observer);
         }
     }
-
-    public abstract void askMoveMotherNature(List<Island> islands, AssistantCard assistantCard);
 }

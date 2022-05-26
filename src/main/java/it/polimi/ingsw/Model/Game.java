@@ -35,7 +35,6 @@ public class Game extends Observable implements Serializable {
     private PawnColor noColorInfluence; //used for the NoColorInfluence character card
     private Map<Player,AssistantCard> currentHand;    //list for the assistant cards chosen in this turn
 
-
     public Game(){
         this.maxNumPlayers = 3;
         this.players = new ArrayList<>();

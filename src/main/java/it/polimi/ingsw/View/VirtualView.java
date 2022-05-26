@@ -51,8 +51,8 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void askMoveMotherNature(List<Island> islands, AssistantCard assistantCard) {
-        clientConnection.sendMessageToClient(new MotherNatureMoveRequest(islands));
+    public void askMoveMotherNature(List<Island> islands, int maxSteps) {
+        clientConnection.sendMessageToClient(new MotherNatureMoveRequest(islands,maxSteps));
     }
 
     @Override
@@ -117,8 +117,8 @@ public class VirtualView implements View, Observer {
 
 
     @Override
-    public void askMoveStudToDining(Map<PawnColor,Integer> studentsWaiting) {
-        clientConnection.sendMessageToClient(new StudentToDiningRequest(studentsWaiting));
+    public void askMoveStudToDining(SchoolBoard schoolBoard) {
+        clientConnection.sendMessageToClient(new StudentToDiningRequest(schoolBoard));
     }
 
     @Override

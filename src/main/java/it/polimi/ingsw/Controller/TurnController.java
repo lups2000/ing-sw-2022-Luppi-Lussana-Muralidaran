@@ -2,14 +2,14 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
-import it.polimi.ingsw.Model.CharacterCards.ChooseIsland;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
+import it.polimi.ingsw.Model.Exceptions.NoTowersException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
+import it.polimi.ingsw.Model.Exceptions.TooManyTowersException;
 import it.polimi.ingsw.View.VirtualView;
 import it.polimi.ingsw.network.Messages.ClientSide.*;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.ServerSide.Generic;
-import it.polimi.ingsw.network.server.Server;
 
 
 import java.io.Serial;
@@ -36,6 +36,7 @@ public class TurnController implements Serializable {
     private String currentMessageMoveStud;
     private PawnColor currentStudent;
     private int currentIslandIndex;
+    private int currentStepsMotherNature;
     private boolean winner=false;
     private boolean hasAnswered=false;
 
@@ -54,7 +55,7 @@ public class TurnController implements Serializable {
         return firstPlayerToPlayAssistant;
     }
 
-    //da vedere questa cosa
+
     public void messageFromMainController(Message message){
         switch (message.getMessageType()) {
 
@@ -79,7 +80,7 @@ public class TurnController implements Serializable {
 
             case REPLY_CLOUD_TILE -> {
                 CloudTileReply cloudTileReply=(CloudTileReply) message;
-                currentCloudTile=model.getCloudTiles().get(cloudTileReply.getIdCloudTile()-1);
+                currentCloudTile=model.getCloudTiles().get(cloudTileReply.getIdCloudTile());
                 hasAnswered=true;
             }
 
@@ -102,6 +103,12 @@ public class TurnController implements Serializable {
                 hasAnswered=true;
             }
 
+            case REPLY_MOVE_MOTHER_NATURE -> {
+                MotherNatureMoveReply motherNatureMoveReply=(MotherNatureMoveReply) message;
+                currentStepsMotherNature=motherNatureMoveReply.getSteps();
+                hasAnswered=true;
+            }
+
         }
 
     }
@@ -113,7 +120,6 @@ public class TurnController implements Serializable {
      */
     public void roundManager(){
 
-        /*
         while(turnPhase != TurnPhase.END){
 
             //nota bene: al primo giro le clouds sono gia piene!Quindi inizializzo turnPhase a PLANNING1
@@ -121,7 +127,7 @@ public class TurnController implements Serializable {
 
             notifyPlayers("The cloud tiles have been filled!");
             for(VirtualView virtualView: virtualViewMap.values()){ //show to the players the current situation
-                virtualView.showGameBoard(model.getIslands(),model.getPlayers());
+                virtualView.showGameBoard(model.getIslands(),model.getCloudTiles(),model.getPlayers());
             }
 
             planningPhase2();
@@ -145,16 +151,7 @@ public class TurnController implements Serializable {
             else{
                 turnPhase = TurnPhase.START;
             }
-        }*/
-        planningPhase1();
-        notifyPlayers("The cloud tiles have been filled!");
-        for(VirtualView virtualView: virtualViewMap.values()){
-            virtualView.showGameBoard(model.getIslands(),model.getCloudTiles(),model.getPlayers());
         }
-        planningPhase2();
-        Player currentActionPlayer=choosePlayerToPlayAction(); //funziona,sembra tutto ok
-        actionPhase1(currentActionPlayer);
-
 
     }
 
@@ -204,8 +201,8 @@ public class TurnController implements Serializable {
                         waitAnswer(); //wait for the answer of the current Player
 
                         if(checkAssistantCard(currentAssistantCard)){ //assistantCard ok
-                            virtualViewCurrentPlayer.showGenericMessage(Colors.RESET+"AssistantCard played:  Value: "+currentAssistantCard.getValue()+", MaxStepsMotherNature: "+currentAssistantCard.getMaxStepsMotherNature());
-                            notifyOtherPlayers(currentPlayer.getNickname()+" has played the following AssistantCard:  Value: "+currentAssistantCard.getValue()+", MaxStepsMotherNature: "+currentAssistantCard.getMaxStepsMotherNature(),currentPlayer);
+                            virtualViewCurrentPlayer.showGenericMessage("AssistantCard played: < Value: "+currentAssistantCard.getValue()+", MaxStepsMotherNature: "+currentAssistantCard.getMaxStepsMotherNature()+" > ");
+                            notifyOtherPlayers(currentPlayer.getNickname()+" has played the following AssistantCard: <  Value: "+currentAssistantCard.getValue()+", MaxStepsMotherNature: "+currentAssistantCard.getMaxStepsMotherNature()+" > ",currentPlayer);
 
                             currentPlayer.pickAssistantCard(currentAssistantCard);
                             currentPlayer.setStatus(PlayerStatus.PLAYING_ASSISTANT);
@@ -403,22 +400,17 @@ public class TurnController implements Serializable {
 
                 if(currentMessageMoveStud.equalsIgnoreCase("s")){
                     //we ask the player which PawnColor he wants to move
-                    virtualViewCurrentPlayer.askMoveStudToDining(player.getSchoolBoard().getStudentsWaiting());
+                    virtualViewCurrentPlayer.askMoveStudToDining(player.getSchoolBoard());
                     waitAnswer();
 
                     try {
                         player.getSchoolBoard().moveStudToDining(currentStudent);
-                    } catch (NoPawnPresentException | TooManyPawnsPresent e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        model.allocateProfessors(); //method we call each time there is a movement in the player's schoolboard
+                        model.allocateProfessors();
                     } catch (NoPawnPresentException | TooManyPawnsPresent e) {
                         e.printStackTrace();
                     }
 
                     virtualViewCurrentPlayer.showSchoolBoard(player.getSchoolBoard());
-
                 }
                 else if(currentMessageMoveStud.equalsIgnoreCase("i")){
                     //we ask the player where he wants to move the student
@@ -430,13 +422,12 @@ public class TurnController implements Serializable {
                     } catch (NoPawnPresentException e) {
                         e.printStackTrace();
                     }
-                    virtualViewCurrentPlayer.showGameBoard(model.getIslands(),model.getCloudTiles(),model.getPlayers());
+                    virtualViewCurrentPlayer.showIslands(model.getIslands());
                 }
                 else{ //non ci vado mai teoricamente
                     //messaggio di errore tramite la view
                     i--; //cosi da rifare ancora la mossa
                 }
-
             }
             turnPhase = TurnPhase.ACTION1;
         }
@@ -449,8 +440,19 @@ public class TurnController implements Serializable {
     private void actionPhase2(Player player){
         if(turnPhase == TurnPhase.ACTION1 && player.getStatus()==PlayerStatus.PLAYING_ACTION){
             //we ask the player on which island he wants to move mother nature
-            //we must control that the player can move mother nature there according to the assistant card played!!!
-            //model.moveMotherNature(IslandChosen);
+            VirtualView virtualViewPlayer=virtualViewMap.get(player.getNickname());
+            virtualViewPlayer.askMoveMotherNature(model.getIslands(),player.getCurrentAssistant().getMaxStepsMotherNature());
+            waitAnswer();
+
+            try {
+                int newIndex=(model.getMotherNature()+currentStepsMotherNature)%model.getIslands().size();
+                model.moveMotherNature(model.getIslands().get(newIndex));
+            } catch (TooManyTowersException | NoTowersException e) {
+                e.printStackTrace();
+            }
+
+            virtualViewPlayer.showIslands(model.getIslands());
+
             turnPhase = TurnPhase.ACTION2;
         }
     }
@@ -469,11 +471,10 @@ public class TurnController implements Serializable {
 
             try {
                 player.pickCloudTile(currentCloudTile);
-
             } catch (TooManyPawnsPresent e) {
                 e.printStackTrace();
             }
-
+            virtualViewPlayer.showSchoolBoard(player.getSchoolBoard());
             player.setStatus(PlayerStatus.WAITING);
             turnPhase = TurnPhase.PLANNING2;//in order to come back to the next player's action
         }

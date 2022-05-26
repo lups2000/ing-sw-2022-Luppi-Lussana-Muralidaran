@@ -163,14 +163,7 @@ public class MainController {
 
             case REPLY_MOVE_MOTHER_NATURE -> {
                 if(messageController.checkMotherNature(message)){
-                    MotherNatureMoveReply motherNatureMoveReply = (MotherNatureMoveReply) message;
-                    try {
-                        int newIndex = (game.getMotherNature()+ motherNatureMoveReply.getSteps())%(Island.getNumIslands());
-                        Island nextIsland = game.getIslands().get(newIndex);
-                        game.moveMotherNature(nextIsland);
-                    } catch (TooManyTowersException | NoTowersException e) {
-                        e.printStackTrace();
-                    }
+                    turnController.messageFromMainController(message);
                 }
                 else {
                     Server.LOGGER.warning("The format of the message sent by the client is incorrect!");

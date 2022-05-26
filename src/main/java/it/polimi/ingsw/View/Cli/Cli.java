@@ -260,19 +260,27 @@ public class Cli extends Observable4View implements View {
     }
 
     @Override
-    public void askMoveMotherNature(List<Island> islands, AssistantCard assistantCard) {
+    public void askMoveMotherNature(List<Island> islands, int maxSteps) {
         boolean validInput = false;
+        int inputSteps = 0;
         do {
-            out.println("How many steps does Mother Nature take?");
-            int inputSteps = readLine.nextInt();
-            readLine.next();
-            if (inputSteps <= assistantCard.getMaxStepsMotherNature() && inputSteps > 0) {
-                notifyObserver(obs -> obs.sendMoveMotherNature(inputSteps));
+            out.println("How many steps does Mother Nature take?(Max: "+maxSteps+" ):  ");
+            this.showIslands(islands);
+            try{
+                inputSteps=Integer.parseInt(readLine.nextLine());
+            }
+            catch (NumberFormatException e){
+                validInput=false;
+            }
+            if (inputSteps <= maxSteps && inputSteps > 0) {
+                int finalInputSteps = inputSteps;
+                notifyObserver(obs -> obs.sendMoveMotherNature(finalInputSteps));
                 validInput = true;
             }
             else {
                 out.println(INVALID_INPUT);
                 clearCli();
+                validInput=false;
             }
         } while (!validInput);
     }
@@ -286,16 +294,9 @@ public class Cli extends Observable4View implements View {
         if(cloudTiles.size()>=1){
 
             do{
-                //mostrare le cloud tiles TODO
                 out.println("Please type the corresponding id to select one of the CloudTiles: ");
-                out.print("( ");
-                for(int i=0;i<cloudTiles.size();i++){
-                    System.out.print((i+1)+": "+cloudTiles.get(i));
-                    if(i< cloudTiles.size()-1){
-                        System.out.print(", ");
-                    }
-                }
-                System.out.println(" )");
+                this.showCloudTiles(cloudTiles);
+                out.println();
                 try{
                     idCloudTile= Integer.parseInt(readLine.nextLine());
                 }
@@ -303,7 +304,7 @@ public class Cli extends Observable4View implements View {
                     validInput=false;
                 }
 
-                if(idCloudTile<=0 || idCloudTile>cloudTiles.size()){
+                if(idCloudTile<0 || idCloudTile>cloudTiles.size()){
                     out.println(INVALID_INPUT);
                     clearCli();
                     validInput = false;
@@ -436,7 +437,7 @@ public class Cli extends Observable4View implements View {
             }
         }
         out.println("\nNumber of coins: "+ schoolBoard.getNumCoins());
-        out.print("Number of available towers: "+schoolBoard.getNumTowers());
+        out.println("Number of available towers: "+schoolBoard.getNumTowers());
         out.print("\033[38;2;255;255;0m");
     }
 
@@ -592,18 +593,30 @@ public class Cli extends Observable4View implements View {
     }
 
     @Override
-    public void askMoveStudToDining(Map<PawnColor,Integer> studentsWaiting) {
+    public void askMoveStudToDining(SchoolBoard schoolBoard) {
         boolean validInput=false;
         String answerColor;
         PawnColor pawnColorChosen=null;
-        //show the students in the entrance
+
         do{
             out.print(Colors.RESET);
-            out.println("Students in the Entrance... ");
-            for(PawnColor pawnColor : studentsWaiting.keySet()){
+            out.println("YOUR SCHOOLBOARD:\n");
+            out.println("Students in your Waiting Room/Entrance... ");
+            for(PawnColor pawnColor : schoolBoard.getStudentsWaiting().keySet()){
                 out.print(pawnColor.getVisualColor()+pawnColor+Colors.RESET+" students: ");
-                for(int i=0;i<studentsWaiting.get(pawnColor);i++){
+                for(int i=0;i<schoolBoard.getStudentsWaiting().get(pawnColor);i++){
                     out.print(pawnColor.getVisualColor()+" X "+Colors.RESET);
+                }
+                out.println("");
+            }
+            out.println("Students in your Dining Room... ");
+            for (PawnColor pawnColor: PawnColor.values()){
+                out.print(pawnColor.getVisualColor()+pawnColor+Colors.RESET+" students: ");
+                for (int i=0; i<schoolBoard.getStudentsDining().get(pawnColor); i++) {
+                    out.print(pawnColor.getVisualColor()+"X "+Colors.RESET);
+                }
+                if (schoolBoard.getProfessors().get(pawnColor)) {
+                    out.print("  "+pawnColor.getVisualColor()+"P"+Colors.RESET);
                 }
                 out.println("");
             }
@@ -631,7 +644,7 @@ public class Cli extends Observable4View implements View {
                     pawnColorChosen=PawnColor.GREEN;
                 }
 
-                if(studentsWaiting.get(pawnColorChosen)<=0){
+                if(schoolBoard.getStudentsWaiting().get(pawnColorChosen)<=0){
                     out.println(INVALID_INPUT);
                     clearCli();
                     validInput=false;
@@ -664,6 +677,10 @@ public class Cli extends Observable4View implements View {
                     out.print(pawnColor.getVisualColor()+"X "+Colors.RESET);
                 }
             }
+            for(int i=0;i<islands.get(id).getNumTowers();i++){
+                out.print(islands.get(id).getTower().getVisualColor()+" T ");
+            }
+            out.print(Colors.RESET);
             if(islands.get(id).isMotherNature()){
                 out.print(" MotherNature here");
             }
@@ -672,7 +689,7 @@ public class Cli extends Observable4View implements View {
             }
             //Entry tiles TODO
         }
-        out.print("\033[38;2;255;255;0m");
+        out.println("\033[38;2;255;255;0m");
     }
 
 

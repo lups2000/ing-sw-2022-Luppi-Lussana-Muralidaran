@@ -11,7 +11,5 @@ import java.util.List;
  */
 public interface Observer {
 
-    void askMoveMotherNature(List<Island> islands, AssistantCard assistantCard);
-
     void update(Message message);
 }
