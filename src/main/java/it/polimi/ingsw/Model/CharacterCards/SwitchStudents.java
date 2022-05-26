@@ -24,7 +24,7 @@ public class SwitchStudents extends CharacterCard implements Serializable {
         this.game = game;
         this.type = CharacterCardType.SWITCH_STUDENTS;
 
-                this.students = new HashMap<>();
+        this.students = new HashMap<>();
         students.put(PawnColor.RED,0);
         students.put(PawnColor.BLUE,0);
         students.put(PawnColor.YELLOW,0);

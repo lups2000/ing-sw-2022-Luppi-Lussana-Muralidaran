@@ -308,62 +308,38 @@ public class TurnController implements Serializable {
      * this method is used to activate the effect of the chosen character card
      */
     private void playCharacterCard() throws NoPawnPresentException, TooManyPawnsPresent {
-        switch(currentCharacterCard.getType()){
+        switch (currentCharacterCard.getType()) {
             //alcune posso raggrupparle qui
             //TODO
+            case NO_COUNT_TOWER, CONTROL_ON_PROFESSOR, TWO_ADDITIONAL_POINTS, MOVE_MORE_MOTHER_NATURE -> model.getCharacterCards().get(currentIdCharCard).effect();
+
             case CHOOSE_ISLAND -> {
-                //passare Island
+                //chiedo l'isola (dovrebbe già esserci)
                 model.getCharacterCards().get(currentIdCharCard).effect();
+                //mostro il risultato dell'influenza sull'isola (se non c'è già potrebbe tornare utile come metodo da invocare a fine fase 2)
             }
-
-            case NO_COUNT_TOWER -> {
-                model.getCharacterCards().get(currentIdCharCard).effect();
-            }
-
             case SWITCH_STUDENTS -> {
-                //passare Students selezionati
+                //mostra i 6 studenti su questa carta e fai selezionare 3 da pickare e 3 da depositare
                 model.getCharacterCards().get(currentIdCharCard).effect();
             }
-
             case STUDENT_TO_DINING -> {
-                //passare PawnColor
+                //mostrare i 4 studenti di questa carta e farne scegliere uno
                 model.getCharacterCards().get(currentIdCharCard).effect();
             }
-
-            case COLOR_NO_INFLUENCE -> {
-                //passare PawnColor
+            case COLOR_TO_STUDENT_BAG, COLOR_NO_INFLUENCE -> {
+                //chiedi un pawncolor al client
                 model.getCharacterCards().get(currentIdCharCard).effect();
             }
-
             case PUT_NO_ENTRY_TILES -> {
-                //passare Island
+                //chiedi un'isola su cui piazzare la tessera divieto
                 model.getCharacterCards().get(currentIdCharCard).effect();
             }
-
-            case COLOR_TO_STUDENT_BAG -> {
-                //passare PawnColor
-                model.getCharacterCards().get(currentIdCharCard).effect();
-            }
-
-            case CONTROL_ON_PROFESSOR -> {
-                model.getCharacterCards().get(currentIdCharCard).effect();
-            }
-
             case ONE_STUDENT_TO_ISLAND -> {
-                //passare Island e PawnColor
+                //mostra i 4 studenti presenti su questa carta, chiedi un'isola
                 model.getCharacterCards().get(currentIdCharCard).effect();
             }
-
             case SWITCH_DINING_WAITING -> {
-                //passare Students selezionati
-                model.getCharacterCards().get(currentIdCharCard).effect();
-            }
-
-            case TWO_ADDITIONAL_POINTS -> {
-                model.getCharacterCards().get(currentIdCharCard).effect();
-            }
-
-            case MOVE_MORE_MOTHER_NATURE -> {
+                //mostra la propria schoolboard e chiedi max due switch
                 model.getCharacterCards().get(currentIdCharCard).effect();
             }
         }

@@ -51,6 +51,7 @@ public class Cli extends Observable4View implements View {
     }
 
     public void clearCli(){
+        out.print("\033[H\033[2J");
         out.flush();
     }
 
@@ -679,7 +680,9 @@ public class Cli extends Observable4View implements View {
     public void showGameBoard(List<Island> islands, List<CloudTile> cloudTiles, List<Player> players) {
         out.println("\n"+Colors.RED_PAWN+"CURRENT GAME SITUATION: "+Colors.RESET);
         this.showIslands(islands);
+        out.print("");
         this.showCloudTiles(cloudTiles);
+        out.print("");
         out.print(Colors.RESET);
         out.println("\nPLAYER'S SCHOOLBOARDS:");
         for(Player player :players){
