@@ -446,6 +446,7 @@ public class TurnController implements Serializable {
 
             try {
                 int newIndex=(model.getMotherNature()+currentStepsMotherNature)%model.getIslands().size();
+                System.out.println(newIndex);
                 model.moveMotherNature(model.getIslands().get(newIndex));
             } catch (TooManyTowersException | NoTowersException e) {
                 e.printStackTrace();
@@ -474,6 +475,7 @@ public class TurnController implements Serializable {
             } catch (TooManyPawnsPresent e) {
                 e.printStackTrace();
             }
+            virtualViewPlayer.showGenericMessage("Your schoolboard...\n");
             virtualViewPlayer.showSchoolBoard(player.getSchoolBoard());
             player.setStatus(PlayerStatus.WAITING);
             turnPhase = TurnPhase.PLANNING2;//in order to come back to the next player's action

@@ -372,7 +372,6 @@ public class Game extends Observable implements Serializable {
             for (Player player : players) {
                 if(player.getSchoolBoard().getProfessors().get(color)){
                     previousOwner = player;
-                    maxStudents=player.getSchoolBoard().getStudentsDining().get(color); //aggiunto
                 }
                 if(player.getSchoolBoard().getStudentsDining().get(color) > maxStudents){
                     winner = player;
