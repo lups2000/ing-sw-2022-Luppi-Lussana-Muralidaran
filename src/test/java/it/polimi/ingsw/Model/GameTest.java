@@ -509,16 +509,6 @@ class GameTest {
         assertFalse(game.getPlayers().get(0).getSchoolBoard().getProfessors().get(PawnColor.RED));
         assertTrue(game.getPlayers().get(1).getSchoolBoard().getProfessors().get(PawnColor.RED));
 
-        game.getPlayers().get(0).getSchoolBoard().addStudToDining(PawnColor.RED);
-        game.allocateProfessors(); //Teo now has the RED professor
-
-        System.out.println(game.getPlayers().get(0).getSchoolBoard().getProfessors());
-        System.out.println(game.getPlayers().get(1).getSchoolBoard().getProfessors());
-
-        assertTrue(game.getPlayers().get(0).getSchoolBoard().getProfessors().get(PawnColor.RED));
-        assertFalse(game.getPlayers().get(1).getSchoolBoard().getProfessors().get(PawnColor.RED));
-
-        /*
         game.getPlayers().get(1).getSchoolBoard().addStudToDining(PawnColor.RED);
         game.allocateProfessors(); //no change,Paolo has the RED professor
         assertFalse(game.getPlayers().get(0).getSchoolBoard().getProfessors().get(PawnColor.RED));
@@ -543,7 +533,7 @@ class GameTest {
         assertFalse(game.getPlayers().get(0).getSchoolBoard().getProfessors().get(PawnColor.RED));
         assertTrue(game.getPlayers().get(1).getSchoolBoard().getProfessors().get(PawnColor.RED));
         assertTrue(game.getPlayers().get(1).getSchoolBoard().getProfessors().get(PawnColor.PINK));
-        assertTrue(game.getPlayers().get(1).getSchoolBoard().getProfessors().get(PawnColor.BLUE));*/
+        assertTrue(game.getPlayers().get(1).getSchoolBoard().getProfessors().get(PawnColor.BLUE));
         /* just to verify
         for(Player player: game.getPlayers()){
             System.out.println(player.getSchoolBoard().getProfessors());
