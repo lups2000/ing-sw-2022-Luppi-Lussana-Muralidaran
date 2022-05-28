@@ -27,7 +27,7 @@ class GameTest {
     @Test
     @DisplayName("setup")
     void setup(){
-        assertEquals(game2.getStatus(),GameState.PLAYING);
+        assertEquals(game2.getStatus(),GameState.LOGGING);
         assertEquals(game2.getSeedsAvailable().size(),4);
         assertEquals(game2.getSeedsAvailable().get(0),AssistantSeed.KING);
         assertEquals(game2.getSeedsAvailable().get(1),AssistantSeed.SAMURAI);

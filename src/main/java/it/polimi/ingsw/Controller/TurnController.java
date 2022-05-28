@@ -445,9 +445,11 @@ public class TurnController implements Serializable {
             waitAnswer();
 
             try {
-                int newIndex=(model.getMotherNature()+currentStepsMotherNature)%model.getIslands().size();
+                int newIndex=(model.getMotherNature()+currentStepsMotherNature)%Island.getNumIslands();
                 System.out.println(newIndex);
+                System.out.println("BEFORE: "+model.getMotherNature());
                 model.moveMotherNature(model.getIslands().get(newIndex));
+                System.out.println("AFTER: "+model.getMotherNature());
             } catch (TooManyTowersException | NoTowersException e) {
                 e.printStackTrace();
             }

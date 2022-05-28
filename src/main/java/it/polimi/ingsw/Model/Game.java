@@ -320,11 +320,17 @@ public class Game extends Observable implements Serializable {
     private void checkArchipelago(Island island){
         int index=island.getIndex();
         if(islands.get(index).getTower().equals(islands.get((index+1)%(Island.getNumIslands())).getTower())){
+            islands.get(index).setMotherNature(islands.get((index+1)%(Island.getNumIslands())).isMotherNature());
+            islands.get((index+1)%(Island.getNumIslands())).setMotherNature(false);
             islands.get(index).merge(islands.get((index+1)%(Island.getNumIslands())));
+            this.motherNature=index;
             updateIndexes((index+1)%(Island.getNumIslands()));
         }
         if(islands.get(index).getTower().equals(islands.get((index-1+Island.getNumIslands())%(Island.getNumIslands())).getTower())){
+            islands.get((index-1+Island.getNumIslands())%(Island.getNumIslands())).setMotherNature(islands.get(index).isMotherNature());
+            islands.get(index).setMotherNature(false);
             islands.get((index-1+Island.getNumIslands())%(Island.getNumIslands())).merge(islands.get(index));
+            this.motherNature=index-1;
             updateIndexes(index);
         }
         if(Island.getNumIslands() <= 3){
@@ -340,15 +346,17 @@ public class Game extends Observable implements Serializable {
      * @param removedIndex is the index of the island that need to be merged (and so removed from the ArrayList)
      */
     private void updateIndexes(int removedIndex){
-        if(removedIndex<0 || removedIndex>Island.getNumIslands()-1){
+        if(removedIndex<0 || removedIndex> islands.size()-1){
             throw new IllegalArgumentException("The index must be between 0 and the ('NumIsland'-1)!");
         }
         else{
             for(int i=removedIndex;i<Island.getNumIslands();i++){
+
                 //to update "index", attribute of the object Island
                 islands.get(i+1).setIndex(i);
                 //to update the index of the ArrayList "islands"
                 islands.set(i,islands.get(i+1));
+
             }
             islands.remove(Island.getNumIslands());
         }
