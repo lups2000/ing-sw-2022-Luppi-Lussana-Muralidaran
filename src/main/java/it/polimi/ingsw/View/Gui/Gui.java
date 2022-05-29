@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 
 public class Gui extends Application {
 
+
     public static void main(String[] args){
         launch(args);
     }

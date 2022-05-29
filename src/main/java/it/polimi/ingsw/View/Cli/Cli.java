@@ -217,10 +217,9 @@ public class Cli extends Observable4View implements View {
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards) {
         AssistantCard assistantCardChosen;
-        boolean validInput;
+        boolean validInput=false;
         int id = -1;
         int i;
-
         if(assistantCards.size()>=1){
 
             do {
@@ -448,12 +447,13 @@ public class Cli extends Observable4View implements View {
 
     @Override
     public void showError(String error) {
-        out.println("Error: "+error);
+        out.println(Colors.RED_PAWN+error+"\n"+"EXIT...\033[38;2;255;255;0m");
+        System.exit(1);
     }
 
     @Override
     public void showLobby(List<Player> players, int numPlayers) {
-        out.println("At the moment there are the the following players in the Lobby: "+players.size()+" / "+numPlayers);
+        out.println("Lobby: "+players.size()+" / "+numPlayers);
         out.print("( ");
         for(int i=0;i<players.size();i++){
             out.print(players.get(i).getNickname());
@@ -466,13 +466,13 @@ public class Cli extends Observable4View implements View {
 
     @Override
     public void showWinMessage(Player winner) {
-        out.println("Congratulations "+winner.getNickname()+" you have won the game!Game finished.");
+        out.println("\n\nCongratulations "+winner.getNickname()+" you have won the game!Game finished.");
         System.exit(0);
     }
 
     @Override
     public void showLoseMessage(Player winner) {
-        out.println("Sorry, you have lost the game! \nThe winner is " + winner.getNickname() + "\nGame finished.");
+        out.println("Sorry, you have lost the game! The winner is " + winner.getNickname() + "!Game finished.");
         System.exit(0);
     }
 

@@ -212,7 +212,7 @@ public class MainController {
         if(virtualViewsMap.size() == 0){    //it means it is the first player ever to connect
 
             virtualViewsMap.put(nickname,virtualView);
-            //        game.addObserver(virtualView);
+            game.addObserver(virtualView);
             //        game.getBoard().addObserver(virtualView);
             virtualView.showLoginInfo("SERVER",true,true);
             game.addPlayer(nickname); //add the player to the model
@@ -225,12 +225,13 @@ public class MainController {
         else if(virtualViewsMap.size() < game.getMaxNumPlayers()){
 
             virtualViewsMap.put(nickname,virtualView);
-            //        game.addObserver(virtualView);
+            game.addObserver(virtualView);
             //        game.getBoard().addObserver(virtualView);
             game.addPlayer(nickname); //add the player to the model
 
             virtualView.showLoginInfo("SERVER",true,true);
             virtualView.askAssistantSeed(game.getSeedsAvailable());
+
 
         }
         //a questo else teoricamente non ci arrivo mai
@@ -249,7 +250,6 @@ public class MainController {
 
         game.initGame(maxNumPlayers,experts);
         broadcastingMessage("Match is starting... All players are connected... ");
-        //poi qua forse c'è da mostrare tramite la cli le 12 isole,le scholboards e le clouds -->matchInfo
 
         game.changeStatus(GameState.PLAYING); //gameStatus==PLAYING set in the model
 
@@ -305,6 +305,7 @@ public class MainController {
     /**
      * method to call at the end of the game to show the final messages to each player (a win or a lose message) and to end the game
      */
+    /*
     public void endedGame(){
         Player winningPlayer = null;    //forse possiamo evitare questo primo for per cercare il winning player
         for (Player player : game.getPlayers()){
@@ -324,4 +325,5 @@ public class MainController {
             }
         }
     }
+     */
 }

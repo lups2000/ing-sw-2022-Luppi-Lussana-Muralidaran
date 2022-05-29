@@ -2,6 +2,10 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Model.CharacterCards.*;
 import it.polimi.ingsw.Model.Exceptions.*;
+import it.polimi.ingsw.network.Messages.ServerSide.Generic;
+import it.polimi.ingsw.network.Messages.ServerSide.Islands;
+import it.polimi.ingsw.network.Messages.ServerSide.Lobby;
+import it.polimi.ingsw.network.Messages.ServerSide.MotherNatureMoveRequest;
 import it.polimi.ingsw.network.server.Server;
 import it.polimi.ingsw.observer.Observable;
 
@@ -115,6 +119,7 @@ public class Game extends Observable implements Serializable {
             //at the first round we decide by default that the first player will be the first to log in the game
             firstPlayer = newPlayer;
         }
+        notifyObserver(new Lobby(players,maxNumPlayers));
     }
 
 
@@ -224,6 +229,7 @@ public class Game extends Observable implements Serializable {
                     island1.setMotherNature(false);
                 }
             }
+            notifyObserver(new Generic("SERVER","\n<  MotherNature has been moved to island with index: "+island.getIndex()+"  >\n"));
             influence(island);
         }
     }
@@ -304,6 +310,7 @@ public class Game extends Observable implements Serializable {
                     winner.setStatus(PlayerStatus.WINNER);
                     this.status = GameState.ENDED;
                 }
+                notifyObserver(new Generic("SERVER", "<  "+winner.getNickname()+" has more influence( tot: "+maxInfluence+" ) on the island with index: " + islandIndex + ". Tower built.  >\n"));
                 checkArchipelago(island);
             }
         }
@@ -324,6 +331,7 @@ public class Game extends Observable implements Serializable {
             islands.get((index+1)%(Island.getNumIslands())).setMotherNature(false);
             islands.get(index).merge(islands.get((index+1)%(Island.getNumIslands())));
             this.motherNature=index;
+            notifyObserver(new Generic("SERVER","<  Merge between island with index '"+index+"' and island with index '"+(index+1)%(Island.getNumIslands())+"'  >\n"));
             updateIndexes((index+1)%(Island.getNumIslands()));
         }
         if(islands.get(index).getTower().equals(islands.get((index-1+Island.getNumIslands())%(Island.getNumIslands())).getTower())){
@@ -331,8 +339,10 @@ public class Game extends Observable implements Serializable {
             islands.get(index).setMotherNature(false);
             islands.get((index-1+Island.getNumIslands())%(Island.getNumIslands())).merge(islands.get(index));
             this.motherNature=index-1;
+            notifyObserver(new Generic("SERVER","<  Merge between island with index '"+(index-1+Island.getNumIslands())%(Island.getNumIslands())+"' and island with index '"+index+"'  >\n"));
             updateIndexes(index);
         }
+        notifyObserver(new Islands(islands));
         if(Island.getNumIslands() <= 3){
             checkWinner();
         }

@@ -67,7 +67,6 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         try {
             while (!Thread.currentThread().isInterrupted()) {
 
-                //a che serve il lock?
                 synchronized (inputLock) {
 
                     //readObject method is used to deserialize the message

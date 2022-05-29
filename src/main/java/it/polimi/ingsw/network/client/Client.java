@@ -87,6 +87,7 @@ public class Client extends Observable {
                 readExecutionQueue.shutdownNow();
                 sendPingMessage(false); //deactivate ping messages
                 socket.close();
+
             }
         } catch (IOException e) {
             notifyObserver(new Error("Could not disconnect."));

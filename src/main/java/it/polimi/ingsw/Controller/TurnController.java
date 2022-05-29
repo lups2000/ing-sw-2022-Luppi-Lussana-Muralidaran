@@ -10,6 +10,7 @@ import it.polimi.ingsw.View.VirtualView;
 import it.polimi.ingsw.network.Messages.ClientSide.*;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.ServerSide.Generic;
+import it.polimi.ingsw.network.server.Server;
 
 
 import java.io.Serial;
@@ -17,6 +18,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /** This class represents the Turn manager
  * @author Matteo Luppi
@@ -27,6 +29,7 @@ public class TurnController implements Serializable {
     private static final long serialVersionUID=-5987205913389392005L;
     private Game model;
     private Player firstPlayerToPlayAssistant;
+    private Player currentPlayerToPlayAssistant;
     private TurnPhase turnPhase;
     private transient Map<String, VirtualView> virtualViewMap;
     private AssistantCard currentAssistantCard;
@@ -125,7 +128,8 @@ public class TurnController implements Serializable {
             //nota bene: al primo giro le clouds sono gia piene!Quindi inizializzo turnPhase a PLANNING1
             planningPhase1();
 
-            notifyPlayers("The cloud tiles have been filled!");
+            notifyPlayers("The cloud tiles have been filled!"); //meglio cosi piuttosto che notificare la modifica nel model
+
             for(VirtualView virtualView: virtualViewMap.values()){ //show to the players the current situation
                 virtualView.showGameBoard(model.getIslands(),model.getCloudTiles(),model.getPlayers());
             }
@@ -152,7 +156,7 @@ public class TurnController implements Serializable {
                 turnPhase = TurnPhase.START;
             }
         }
-
+        this.endGame();
     }
 
     /**
@@ -186,27 +190,27 @@ public class TurnController implements Serializable {
                 if(model.getPlayers().get(i).getStatus()==PlayerStatus.WAITING){
 
                     //List<AssistantCard> assistantCardsAvailable=new ArrayList<>(model.getPlayers().get(i).getDeckAssistantCard().getCards());
-                    Player currentPlayer=model.getPlayers().get(i);
+                    currentPlayerToPlayAssistant=model.getPlayers().get(i);
                     //notify to other players that it's the turn of the current player
-                    this.notifyOtherPlayers("Now it's the Turn of "+currentPlayer.getNickname()+" who plays the Assistant Card! Please Wait...",currentPlayer);
+                    this.notifyOtherPlayers("Now it's the Turn of "+currentPlayerToPlayAssistant.getNickname()+" who plays the Assistant Card! Please Wait...",currentPlayerToPlayAssistant);
 
-                    VirtualView virtualViewCurrentPlayer=virtualViewMap.get(currentPlayer.getNickname()); //getting the virtual view of the current player
-                    virtualViewCurrentPlayer.showGenericMessage("Hey "+ currentPlayer.getNickname() +", now it's your turn!");
+                    VirtualView virtualViewCurrentPlayer=virtualViewMap.get(currentPlayerToPlayAssistant.getNickname()); //getting the virtual view of the current player
+                    virtualViewCurrentPlayer.showGenericMessage("Hey "+ currentPlayerToPlayAssistant.getNickname() +", now it's your turn!");
                     //ask to the current player which Assistant Card he wants to move
 
                     while(!assistantOk){
 
-                        virtualViewCurrentPlayer.askAssistantCard(currentPlayer.getDeckAssistantCard().getCards()); //this must be contained in a loop
-                        //metodo waitAnswer senza wait e notify (?)
+                        virtualViewCurrentPlayer.askAssistantCard(currentPlayerToPlayAssistant.getDeckAssistantCard().getCards()); //this must be contained in a loop
+
                         waitAnswer(); //wait for the answer of the current Player
 
                         if(checkAssistantCard(currentAssistantCard)){ //assistantCard ok
                             virtualViewCurrentPlayer.showGenericMessage("AssistantCard played: < Value: "+currentAssistantCard.getValue()+", MaxStepsMotherNature: "+currentAssistantCard.getMaxStepsMotherNature()+" > ");
-                            notifyOtherPlayers(currentPlayer.getNickname()+" has played the following AssistantCard: <  Value: "+currentAssistantCard.getValue()+", MaxStepsMotherNature: "+currentAssistantCard.getMaxStepsMotherNature()+" > ",currentPlayer);
+                            notifyOtherPlayers(currentPlayerToPlayAssistant.getNickname()+" has played the following AssistantCard: <  Value: "+currentAssistantCard.getValue()+", MaxStepsMotherNature: "+currentAssistantCard.getMaxStepsMotherNature()+" > ",currentPlayerToPlayAssistant);
 
-                            currentPlayer.pickAssistantCard(currentAssistantCard);
-                            currentPlayer.setStatus(PlayerStatus.PLAYING_ASSISTANT);
-                            model.getCurrentHand().put(currentPlayer, currentPlayer.getCurrentAssistant());
+                            currentPlayerToPlayAssistant.pickAssistantCard(currentAssistantCard);
+                            currentPlayerToPlayAssistant.setStatus(PlayerStatus.PLAYING_ASSISTANT);
+                            model.getCurrentHand().put(currentPlayerToPlayAssistant, currentPlayerToPlayAssistant.getCurrentAssistant());
                             assistantOk=true;
                         }
                         else{
@@ -446,15 +450,12 @@ public class TurnController implements Serializable {
 
             try {
                 int newIndex=(model.getMotherNature()+currentStepsMotherNature)%Island.getNumIslands();
-                System.out.println(newIndex);
-                System.out.println("BEFORE: "+model.getMotherNature());
                 model.moveMotherNature(model.getIslands().get(newIndex));
-                System.out.println("AFTER: "+model.getMotherNature());
             } catch (TooManyTowersException | NoTowersException e) {
                 e.printStackTrace();
             }
 
-            virtualViewPlayer.showIslands(model.getIslands());
+            //virtualViewPlayer.showIslands(model.getIslands());
 
             turnPhase = TurnPhase.ACTION2;
         }
@@ -477,7 +478,7 @@ public class TurnController implements Serializable {
             } catch (TooManyPawnsPresent e) {
                 e.printStackTrace();
             }
-            virtualViewPlayer.showGenericMessage("Your schoolboard...\n");
+            virtualViewPlayer.showGenericMessage("\nYour schoolboard...\n");
             virtualViewPlayer.showSchoolBoard(player.getSchoolBoard());
             player.setStatus(PlayerStatus.WAITING);
             turnPhase = TurnPhase.PLANNING2;//in order to come back to the next player's action
@@ -492,6 +493,20 @@ public class TurnController implements Serializable {
             }
         }
         return false;
+    }
+
+    private void endGame(){
+        //show to the players the result of the match
+        for(Player player : model.getPlayers()){
+            if(player.getStatus()==PlayerStatus.WINNER){
+                virtualViewMap.get(player.getNickname()).showWinMessage(player);
+            }
+            else{
+                virtualViewMap.get(player.getNickname()).showLoseMessage(player);
+            }
+        }
+        model.changeStatus(GameState.ENDED);
+        Server.LOGGER.info("Game Ended!Server ready for a new match...");
     }
 
     /**
