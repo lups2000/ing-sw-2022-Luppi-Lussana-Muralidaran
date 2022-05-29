@@ -51,7 +51,7 @@ public class Cli extends Observable4View implements View {
     }
 
     public void clearCli(){
-        out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J");
         out.flush();
     }
 
@@ -416,27 +416,31 @@ public class Cli extends Observable4View implements View {
     }
 
     @Override
-    public void showSchoolBoard(SchoolBoard schoolBoard){
+    public void showSchoolBoardPlayers(List<Player> players){
         out.print(Colors.RESET);
-        out.println("Dining Room:");
-        for (PawnColor pawnColor: PawnColor.values()){
-            out.print(pawnColor.getVisualColor()+pawnColor+Colors.RESET+" students: ");
-            for (int i=0; i<schoolBoard.getStudentsDining().get(pawnColor); i++) {
-                out.print(pawnColor.getVisualColor()+"X "+Colors.RESET);
+        out.println("PLAYERS SCHOOLBOARDS:");
+        for(Player player : players){
+            out.println("\033[38;2;255;255;0m"+player.getNickname()+":"+Colors.RESET);
+            out.println("Dining Room:");
+            for (PawnColor pawnColor: PawnColor.values()){
+                out.print(pawnColor.getVisualColor()+pawnColor+Colors.RESET+" students: ");
+                for (int i=0; i<player.getSchoolBoard().getStudentsDining().get(pawnColor); i++) {
+                    out.print(pawnColor.getVisualColor()+"X "+Colors.RESET);
+                }
+                if (player.getSchoolBoard().getProfessors().get(pawnColor)) {
+                    out.print("  "+pawnColor.getVisualColor()+"P"+Colors.RESET);
+                }
+                out.println("");
             }
-            if (schoolBoard.getProfessors().get(pawnColor)) {
-                out.print("  "+pawnColor.getVisualColor()+"P"+Colors.RESET);
+            out.print("\nWaiting Room/Entrance: ");
+            for (PawnColor pawnColor: PawnColor.values()){
+                for (int i=0; i<player.getSchoolBoard().getStudentsWaiting().get(pawnColor); i++){
+                    out.print(pawnColor.getVisualColor()+"X "+Colors.RESET);
+                }
             }
-            out.println("");
+            out.println("\nNumber of coins: "+ player.getSchoolBoard().getNumCoins());
+            out.println("Number of available towers: "+player.getSchoolBoard().getNumTowers()+"\n");
         }
-        out.print("\nWaiting Room/Entrance: ");
-        for (PawnColor pawnColor: PawnColor.values()){
-            for (int i=0; i<schoolBoard.getStudentsWaiting().get(pawnColor); i++){
-                out.print(pawnColor.getVisualColor()+"X "+Colors.RESET);
-            }
-        }
-        out.println("\nNumber of coins: "+ schoolBoard.getNumCoins());
-        out.println("Number of available towers: "+schoolBoard.getNumTowers());
         out.print("\033[38;2;255;255;0m");
     }
 
@@ -695,18 +699,14 @@ public class Cli extends Observable4View implements View {
 
     @Override
     public void showGameBoard(List<Island> islands, List<CloudTile> cloudTiles, List<Player> players) {
+        this.clearCli();
         out.println("\n"+Colors.RED_PAWN+"CURRENT GAME SITUATION: "+Colors.RESET);
         this.showIslands(islands);
         out.print("");
         this.showCloudTiles(cloudTiles);
-        out.print("");
-        out.print(Colors.RESET);
-        out.println("\nPLAYER'S SCHOOLBOARDS:");
-        for(Player player :players){
-            out.println(player.getNickname()+": ");
-            this.showSchoolBoard(player.getSchoolBoard());
-            out.println(Colors.RESET+"\n");
-        }
+        out.println("\n");
+        this.showSchoolBoardPlayers(players);
+
         out.println("\033[38;2;255;255;0m");
     }
 

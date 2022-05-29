@@ -2,10 +2,7 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Model.CharacterCards.*;
 import it.polimi.ingsw.Model.Exceptions.*;
-import it.polimi.ingsw.network.Messages.ServerSide.Generic;
-import it.polimi.ingsw.network.Messages.ServerSide.Islands;
-import it.polimi.ingsw.network.Messages.ServerSide.Lobby;
-import it.polimi.ingsw.network.Messages.ServerSide.MotherNatureMoveRequest;
+import it.polimi.ingsw.network.Messages.ServerSide.*;
 import it.polimi.ingsw.network.server.Server;
 import it.polimi.ingsw.observer.Observable;
 
@@ -313,6 +310,10 @@ public class Game extends Observable implements Serializable {
                 notifyObserver(new Generic("SERVER", "<  "+winner.getNickname()+" has more influence( tot: "+maxInfluence+" ) on the island with index: " + islandIndex + ". Tower built.  >\n"));
                 checkArchipelago(island);
             }
+            else{
+                notifyObserver(new Generic("SERVER", "<  No Player has influence on island with index: "+islandIndex+"  >\n"));
+                notifyObserver(new Islands(islands));
+            }
         }
         else{
             island.setNoEntryTiles(-1);
@@ -431,6 +432,7 @@ public class Game extends Observable implements Serializable {
                 player.setControlOnProfessor(false);
             }
         }
+        notifyObserver(new SchoolBoardPlayers(players));
     }
 
     /**

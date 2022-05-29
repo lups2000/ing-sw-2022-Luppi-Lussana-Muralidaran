@@ -192,10 +192,10 @@ public class TurnController implements Serializable {
                     //List<AssistantCard> assistantCardsAvailable=new ArrayList<>(model.getPlayers().get(i).getDeckAssistantCard().getCards());
                     currentPlayerToPlayAssistant=model.getPlayers().get(i);
                     //notify to other players that it's the turn of the current player
-                    this.notifyOtherPlayers("Now it's the Turn of "+currentPlayerToPlayAssistant.getNickname()+" who plays the Assistant Card! Please Wait...",currentPlayerToPlayAssistant);
+                    this.notifyOtherPlayers("\nNow it's the Turn of "+currentPlayerToPlayAssistant.getNickname()+" who plays the Assistant Card! Please Wait...",currentPlayerToPlayAssistant);
 
                     VirtualView virtualViewCurrentPlayer=virtualViewMap.get(currentPlayerToPlayAssistant.getNickname()); //getting the virtual view of the current player
-                    virtualViewCurrentPlayer.showGenericMessage("Hey "+ currentPlayerToPlayAssistant.getNickname() +", now it's your turn!");
+                    virtualViewCurrentPlayer.showGenericMessage("\nHey "+ currentPlayerToPlayAssistant.getNickname() +", now it's your turn!");
                     //ask to the current player which Assistant Card he wants to move
 
                     while(!assistantOk){
@@ -358,8 +358,8 @@ public class TurnController implements Serializable {
         if(turnPhase == TurnPhase.PLANNING2 && player.getStatus()==PlayerStatus.PLAYING_ACTION){
 
             VirtualView virtualViewCurrentPlayer=virtualViewMap.get(player.getNickname());
-            virtualViewCurrentPlayer.showGenericMessage("Hey "+ player.getNickname() +", now it's your turn!");
-            notifyOtherPlayers(player.getNickname()+" is playing the action phase!Please wait...", player);
+            virtualViewCurrentPlayer.showGenericMessage("\nHey "+ player.getNickname() +", now it's your turn!");
+            notifyOtherPlayers("\n"+player.getNickname()+" is playing the action phase!Please wait...", player);
 
             if(model.getExpertsVariant()){ //if the expert Mode has been chosen
                 List<CharacterCard> characterCardsGame=model.getCharacterCards();
@@ -414,7 +414,7 @@ public class TurnController implements Serializable {
                         e.printStackTrace();
                     }
 
-                    virtualViewCurrentPlayer.showSchoolBoard(player.getSchoolBoard());
+                    //virtualViewCurrentPlayer.showSchoolBoard(player.getSchoolBoard());
                 }
                 else if(currentMessageMoveStud.equalsIgnoreCase("i")){
                     //we ask the player where he wants to move the student
@@ -478,8 +478,8 @@ public class TurnController implements Serializable {
             } catch (TooManyPawnsPresent e) {
                 e.printStackTrace();
             }
-            virtualViewPlayer.showGenericMessage("\nYour schoolboard...\n");
-            virtualViewPlayer.showSchoolBoard(player.getSchoolBoard());
+            //virtualViewPlayer.showGenericMessage("\nYour schoolboard...\n");
+            //virtualViewPlayer.showSchoolBoard(player.getSchoolBoard());
             player.setStatus(PlayerStatus.WAITING);
             turnPhase = TurnPhase.PLANNING2;//in order to come back to the next player's action
         }

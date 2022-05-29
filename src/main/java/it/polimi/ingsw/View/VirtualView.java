@@ -2,8 +2,6 @@ package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
-import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
-import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.network.Messages.ServerSide.Error;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.ServerSide.*;
@@ -71,8 +69,8 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void showSchoolBoard(SchoolBoard schoolBoard) {
-        clientConnection.sendMessageToClient(new SchoolBoardPlayer(schoolBoard));
+    public void showSchoolBoardPlayers(List<Player> players) {
+        clientConnection.sendMessageToClient(new SchoolBoardPlayers(players));
     }
 
     @Override

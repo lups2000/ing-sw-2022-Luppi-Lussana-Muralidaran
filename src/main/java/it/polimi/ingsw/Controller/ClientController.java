@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Model.*;
-import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.network.Messages.ClientSide.*;
 import it.polimi.ingsw.network.Messages.Message;
@@ -12,7 +11,6 @@ import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.observer.Observer4View;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -67,8 +65,8 @@ public class ClientController implements Observer4View, Observer {
             }
 
             case SCHOOLBOARD -> {
-                SchoolBoardPlayer schoolBoardPlayer=(SchoolBoardPlayer) message;
-                taskQueue.execute(()->view.showSchoolBoard(schoolBoardPlayer.getSchoolBoard()));
+                SchoolBoardPlayers schoolBoardPlayers =(SchoolBoardPlayers) message;
+                taskQueue.execute(()->view.showSchoolBoardPlayers(schoolBoardPlayers.getPlayers()));
             }
 
             case REQUEST_EXPERT_VARIANT -> taskQueue.execute(view::askExpertVariant);

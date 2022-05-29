@@ -41,7 +41,7 @@ public interface View {
 
     void askMoveStud();
 
-    void showSchoolBoard(SchoolBoard schoolBoard);
+    void showSchoolBoardPlayers(List<Player> players);
 
     void showGenericMessage(String genericMessage);
 
