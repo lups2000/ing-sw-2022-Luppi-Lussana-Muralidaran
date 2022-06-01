@@ -14,6 +14,11 @@ public class Gui extends Application {
     Stage window;
     Scene scene1, scene2;
 
+    public static void main(String[] args) {
+
+
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 

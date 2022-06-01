@@ -4,6 +4,6 @@ import it.polimi.ingsw.View.Gui.*;
 
 public class Launcher {
     public static void main (String[] args){
-        Gui.launch();
+        Gui.main(args);
     }
 }
