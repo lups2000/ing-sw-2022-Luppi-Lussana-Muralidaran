@@ -53,6 +53,8 @@ public interface View {
 
     void showLoseMessage(Player winner);
 
+    void showDisconnection(String nickName,String message);
+
     void showLoginInfo(String nickName,boolean nickNameOk,boolean connectionOk);
 
     void showMatchInfo(ArrayList<Player> players,boolean experts,int numPlayers);

@@ -307,11 +307,12 @@ public class Game extends Observable implements Serializable {
                     winner.setStatus(PlayerStatus.WINNER);
                     this.status = GameState.ENDED;
                 }
-                notifyObserver(new Generic("SERVER", "<  "+winner.getNickname()+" has more influence( tot: "+maxInfluence+" ) on the island with index: " + islandIndex + ". Tower built.  >\n"));
+                notifyObserver(new Generic("SERVER", "<  "+winner.getNickname()+" has more influence( tot: "+maxInfluence+" ) on the island with index: " + islandIndex + ". "+ winner.getColorTower().getNameColor()+" Tower Built.  >\n"));
                 checkArchipelago(island);
             }
             else{
-                notifyObserver(new Generic("SERVER", "<  No Player has influence on island with index: "+islandIndex+"  >\n"));
+                notifyObserver(new Generic("SERVER","\nISLANDS UPDATE:\n"));
+                notifyObserver(new Generic("SERVER", "<  No Player has influence on the island with index: "+islandIndex+"  >\n"));
                 notifyObserver(new Islands(islands));
             }
         }
@@ -343,6 +344,7 @@ public class Game extends Observable implements Serializable {
             notifyObserver(new Generic("SERVER","<  Merge between island with index '"+(index-1+Island.getNumIslands())%(Island.getNumIslands())+"' and island with index '"+index+"'  >\n"));
             updateIndexes(index);
         }
+        notifyObserver(new Generic("SERVER","\nISLANDS UPDATE:\n"));
         notifyObserver(new Islands(islands));
         if(Island.getNumIslands() <= 3){
             checkWinner();
@@ -432,6 +434,7 @@ public class Game extends Observable implements Serializable {
                 player.setControlOnProfessor(false);
             }
         }
+        notifyObserver(new Generic("SERVER","\nUPDATE SCHOOLBOARD:\n"));
         notifyObserver(new SchoolBoardPlayers(players));
     }
 
@@ -546,6 +549,13 @@ public class Game extends Observable implements Serializable {
         return null;
     }
 
+    public List<String> getAllPlayersNickName(){
+        List<String> playersNickNames=new ArrayList<>();
+        for(Player player :players){
+            playersNickNames.add(player.getNickname());
+        }
+        return playersNickNames;
+    }
 
     public void useCharacterCard(CharacterCard characterCard){
         try {
@@ -553,5 +563,22 @@ public class Game extends Observable implements Serializable {
         } catch (NoPawnPresentException | TooManyPawnsPresent e) {
             e.printStackTrace();
         }
+    }
+
+    public void replaceGame(List<Player> players,int numPlayers,boolean expertVariant,List<Island> islands,List<CloudTile> cloudTiles,List<CharacterCard> characterCards,
+                            GameState gameState,StudentBag studentBag,int motherNature,Map<Player,AssistantCard> currentHand,List<AssistantSeed> seedsAvailable,int noEntryTilesCounter){
+
+        this.players=players;
+        this.maxNumPlayers=numPlayers;
+        this.expertsVariant=expertVariant;
+        this.seedsAvailable=seedsAvailable;
+        this.islands=islands;
+        this.cloudTiles=cloudTiles;
+        this.characterCards=characterCards;
+        this.status=gameState;
+        this.studentBag=studentBag;
+        this.motherNature=motherNature;
+        this.noEntryTilesCounter=noEntryTilesCounter;
+        this.currentHand=currentHand;
     }
 }

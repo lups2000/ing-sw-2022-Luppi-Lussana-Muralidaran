@@ -26,6 +26,7 @@ public enum MessageType {
     MOVE_STUD,
     SCHOOLBOARD,
     SHOW_CHARACTER_CARD,
+    DISCONNECTION,
 
     GENERIC_MESSAGE,
     ERROR,

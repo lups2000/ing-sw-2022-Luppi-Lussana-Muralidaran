@@ -477,6 +477,12 @@ public class Cli extends Observable4View implements View {
     }
 
     @Override
+    public void showDisconnection(String nickName, String message) {
+        out.println("\n"+Colors.RED_PAWN+nickName+message+"\033[38;2;255;255;0m");
+        System.exit(1);
+    }
+
+    @Override
     public void showLoginInfo(String nickName, boolean nickNameOk, boolean connectionOk) {
         clearCli();
 
@@ -484,7 +490,7 @@ public class Cli extends Observable4View implements View {
             out.println(Colors.RESET+"Nice to meet you "+nickName+", now you are connected!"+"\033[38;2;255;255;0m");
         }
         else if(nickNameOk){
-            out.println("We are sorry but the connection has been refused!Try later!");
+            out.println(Colors.RED_PAWN+"We are sorry but the connection has been refused!Try later!"+"\033[38;2;255;255;0m");
             System.exit(1);
         }
         else if(connectionOk){

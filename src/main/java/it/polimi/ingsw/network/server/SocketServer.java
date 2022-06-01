@@ -38,7 +38,7 @@ public class SocketServer implements Runnable {
                 Socket client = serverSocket.accept();
 
                 //if data do not arrive from the client, SocketTimeoutException will be thrown
-                client.setSoTimeout(10000);
+                client.setSoTimeout(6000);
 
                 SocketClientConnection socketClientConnection = new SocketClientConnection(client,this);
                 Thread thread = new Thread(socketClientConnection, "SocketServerThread:" + client.getInetAddress());

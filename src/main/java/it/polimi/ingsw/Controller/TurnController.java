@@ -4,6 +4,12 @@ import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.*;
 import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.View.View;
+import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
+import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
+import it.polimi.ingsw.Model.Exceptions.NoTowersException;
+import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
+import it.polimi.ingsw.Model.Exceptions.TooManyTowersException;
+import it.polimi.ingsw.Utils.StoreGame;
 import it.polimi.ingsw.View.VirtualView;
 import it.polimi.ingsw.network.Messages.ClientSide.*;
 import it.polimi.ingsw.network.Messages.Message;
@@ -23,6 +29,7 @@ public class TurnController implements Serializable {
     @Serial
     private static final long serialVersionUID=-5987205913389392005L;
     private Game model;
+    private MainController mainController;
     private Player firstPlayerToPlayAssistant;
     private Player currentPlayerToPlayAssistant;
     private TurnPhase turnPhase;
@@ -42,17 +49,20 @@ public class TurnController implements Serializable {
      * Constructor
      * @param model it is the Model according to the MVC pattern
      */
-    public TurnController(Game model,Map<String, VirtualView> virtualViewMap){
+    public TurnController(Game model,Map<String, VirtualView> virtualViewMap,MainController mainController){
         this.model=model;
         this.turnPhase = TurnPhase.PLANNING1; //motivo: vedi nota bene in roundManager
         this.firstPlayerToPlayAssistant=model.getFirstPlayer(); //initially he is the first one who joins the game
         this.virtualViewMap=virtualViewMap;
+        this.mainController=mainController;
     }
 
     public Player getFirstPlayerToPlayAssistant() {
         return firstPlayerToPlayAssistant;
     }
-
+    public void setVirtualViewMap(Map<String, VirtualView> virtualViewMap) {this.virtualViewMap = virtualViewMap;}
+    public Map<String, VirtualView> getVirtualViewMap() {return virtualViewMap;}
+    public void setModel(Game model) {this.model = model;}
 
     public void messageFromMainController(Message message){
         switch (message.getMessageType()) {
@@ -161,6 +171,9 @@ public class TurnController implements Serializable {
             }
             else{
                 turnPhase = TurnPhase.START;
+                //qua salvo su disco la situazione del match
+                StoreGame storeGame=new StoreGame(mainController);
+                storeGame.saveMatch(mainController);
             }
         }
         this.endGame();
@@ -185,8 +198,8 @@ public class TurnController implements Serializable {
     /**
      * This method represents the second part of the planning phase, where each player plays an Assistant Card
      */
-    private synchronized void planningPhase2(){
-        //è giusto che sia sync??
+    private void planningPhase2(){
+
         boolean assistantOk=false;
 
         if(turnPhase == TurnPhase.PLANNING1){
@@ -492,7 +505,7 @@ public class TurnController implements Serializable {
                         e.printStackTrace();
                     }
 
-                    //virtualViewCurrentPlayer.showSchoolBoard(player.getSchoolBoard());
+                    //virtualViewCurrentPlayer.showSchoolBoardPlayers(model.getPlayers());
                 }
                 else if(currentMessageMoveStud.equalsIgnoreCase("i")){
                     //we ask the player where he wants to move the student
@@ -504,7 +517,6 @@ public class TurnController implements Serializable {
                     } catch (NoPawnPresentException e) {
                         e.printStackTrace();
                     }
-                    virtualViewCurrentPlayer.showIslands(model.getIslands());
                 }
                 else{ //non ci vado mai teoricamente
                     //messaggio di errore tramite la view
@@ -532,8 +544,6 @@ public class TurnController implements Serializable {
             } catch (TooManyTowersException | NoTowersException e) {
                 e.printStackTrace();
             }
-
-            //virtualViewPlayer.showIslands(model.getIslands());
 
             turnPhase = TurnPhase.ACTION2;
         }

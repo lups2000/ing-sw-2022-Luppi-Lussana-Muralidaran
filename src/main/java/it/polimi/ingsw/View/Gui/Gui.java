@@ -1,27 +1,43 @@
 package it.polimi.ingsw.View.Gui;
+import it.polimi.ingsw.network.server.Server;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
+
+/**
+ * @author Pradeeban Muralidaran
+ * */
 public class Gui extends Application {
 
+    //Button button;
+    Stage window;
+    Scene scene1, scene2;
 
     public static void main(String[] args){
         launch(args);
     }
-    @Override
-    public void start(Stage stage) throws Exception {
-        Group root = new Group();
-        Scene scene = new Scene(root, Color.BLACK);
-        //Image icon = new Image("src/main/java/it.polimi.ingsw/View/Gui/Images/logocranio.png");
 
-        //stage.getIcons().add(icon);
-        stage.setFullScreen(true);
-        stage.setFullScreenExitHint("WELCOME TO ERIANTYS!\nPress esc button if you want exit fullscreen");
-        stage.setTitle("Eriantys");
-        stage.setScene(scene);
-        stage.show();
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
+        FXMLLoader fxmlLoader=new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/fxml/MainScreen.fxml"));
+        Parent root=null;
+
+        try{
+            root=fxmlLoader.load();
+        }
+        catch (IOException e){
+            Server.LOGGER.severe(e.getMessage());
+            System.exit(1);
+        }
+
+        primaryStage.setTitle("Eriantys");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
     }
 }
