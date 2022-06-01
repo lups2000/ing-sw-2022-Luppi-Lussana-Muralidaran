@@ -37,6 +37,10 @@ public class StudentToDining extends CharacterCard implements Serializable {
         }
     }
 
+    public Map<PawnColor, Integer> getStudents() {
+        return students;
+    }
+
     public void effect(PawnColor chosen) throws NoPawnPresentException, TooManyPawnsPresent {
         if(students.get(chosen) == 0){
             throw new NoPawnPresentException();

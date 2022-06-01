@@ -1,13 +1,13 @@
 package it.polimi.ingsw.Model.CharacterCards;
 
 import it.polimi.ingsw.Model.Game;
-import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
-import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public abstract class CharacterCard implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 2564765267367312717L;
     protected int cost;
     protected boolean used;
@@ -16,7 +16,7 @@ public abstract class CharacterCard implements Serializable {
 
     public int getCost() {return cost;}
 
-    public void effect() throws NoPawnPresentException, TooManyPawnsPresent {
+    public void effect(){
 
     }
 

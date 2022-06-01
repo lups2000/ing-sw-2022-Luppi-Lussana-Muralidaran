@@ -40,7 +40,7 @@ public interface Observer4View {
      */
     void sendAssistantCard(AssistantCard chosenCard);
 
-    public void sendCharacterCard(Integer idCharacterCard);
+    void sendCharacterCard(Integer idCharacterCard);
 
     void sendGenericMessage(String message);
 
@@ -86,6 +86,21 @@ public interface Observer4View {
      //* @param chosenIsland the island on which move the chosen student
      */
     void sendStudentToIsland(PawnColor chosenColor,int islandIndex);
+
+    /**
+     * This method sends a message to the server to communicate which island the client has chosen
+     *
+     * @param islandIndex the index of the chosen island
+     */
+    void sendChosenIsland(int islandIndex);
+
+    /**
+     * This method sends a message to the server to communicate which pawn color the client has chosen
+     *
+     * @param chosencolor the chosen color
+     */
+    void sendChosenColor(PawnColor chosencolor);
+
     /*
      * Handles a disconnection wanted by the user.
      * (e.g. a click on the back button into the GUI).

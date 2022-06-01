@@ -117,7 +117,15 @@ public class ClientController implements Observer4View, Observer {
                 taskQueue.execute(() -> view.showLoseMessage(loseMessage.getWinner()));
             }
 
-            //il PING non penso sia da mettere qui (?), devo controllare TODO
+            case REQUEST_ISLAND -> {
+                IslandRequest islandRequest = (IslandRequest) message;
+                taskQueue.execute(() -> view.askIsland(islandRequest.getIslands()));
+            }
+
+            case REQUEST_COLOR -> {
+                ColorRequest colorRequest = (ColorRequest) message;
+                taskQueue.execute(() -> view.askColor(colorRequest.getAvailableStudents()));
+            }
 
             case REQUEST_CLOUD_TILE -> {
                 CloudTileRequest cloudTileRequest = (CloudTileRequest) message;
@@ -327,4 +335,25 @@ public class ClientController implements Observer4View, Observer {
     public void sendStudentToIsland(PawnColor chosenColor,int islandIndex) {
         client.sendMessage(new StudentToIslandReply(this.nickname,chosenColor,islandIndex));
     }
+
+    /**
+     * This method sends a message to the server to communicate which island the client has chosen
+     *
+     * @param islandIndex the index of the chosen island
+     */
+    @Override
+    public void sendChosenIsland(int islandIndex) {
+        client.sendMessage(new IslandReply(this.nickname,islandIndex));
+    }
+
+    /**
+     * This method sends a message to the server to communicate which color the client has chosen
+     *
+     * @param chosenColor the color of the student to move
+     */
+    @Override
+    public void sendChosenColor(PawnColor chosenColor) {
+        client.sendMessage(new ColorReply(this.nickname,chosenColor));
+    }
+
 }

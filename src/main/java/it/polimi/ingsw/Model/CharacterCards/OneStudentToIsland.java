@@ -46,6 +46,10 @@ public class OneStudentToIsland extends CharacterCard implements Serializable {
         }
     }
 
+    public Map<PawnColor, Integer> getStudents() {
+        return students;
+    }
+
     /**
      * Private method called only in the method 'effect(...)'
      */

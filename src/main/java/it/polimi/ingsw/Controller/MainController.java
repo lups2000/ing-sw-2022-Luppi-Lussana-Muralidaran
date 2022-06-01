@@ -188,9 +188,25 @@ public class MainController {
                 }
             }
 
-            case GENERIC_MESSAGE -> {
-                turnController.messageFromMainController(message);
+            case REPLY_COLOR -> {
+                if(messageController.checkColor(message)){
+                    turnController.messageFromMainController(message);
+                }
+                else {
+                    Server.LOGGER.warning("The format of the message sent by the client is incorrect!");
+                }
             }
+
+            case REPLY_ISLAND -> {
+                if(messageController.checkIsland(message)){
+                    turnController.messageFromMainController(message);
+                }
+                else {
+                    Server.LOGGER.warning("The format of the message sent by the client is incorrect!");
+                }
+            }
+
+            case GENERIC_MESSAGE -> turnController.messageFromMainController(message);
 
             default -> Server.LOGGER.warning("Wrong message received from client.");
         }
@@ -302,10 +318,9 @@ public class MainController {
         //game.getBoard().removeObserver(toRemove);
     }
 
+    /*
     /**
      * method to call at the end of the game to show the final messages to each player (a win or a lose message) and to end the game
-     */
-    /*
     public void endedGame(){
         Player winningPlayer = null;    //forse possiamo evitare questo primo for per cercare il winning player
         for (Player player : game.getPlayers()){

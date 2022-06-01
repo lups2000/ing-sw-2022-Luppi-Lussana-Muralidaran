@@ -68,4 +68,10 @@ public interface View {
     void showGameBoard(List<Island> islands,List<CloudTile> cloudTiles,List<Player> players);
 
     void showCloudTiles(List<CloudTile> cloudTiles);
+
+    void askIsland(List<Island> islands);
+
+    void askColor(Map<PawnColor,Integer> availableStudents);
+
+    void showCharacterCard(Map<PawnColor,Integer> students);
 }

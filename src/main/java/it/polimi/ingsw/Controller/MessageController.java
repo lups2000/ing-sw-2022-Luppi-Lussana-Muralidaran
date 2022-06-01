@@ -170,6 +170,32 @@ public class MessageController implements Serializable {
     }
 
     /**
+     * to check if the chosen island's index is legit
+     *
+     * @param message the message received to check
+     * @return the result of the check, true or false
+     */
+    public boolean checkIsland(Message message){
+        IslandReply islandReply = (IslandReply) message;
+        int index = islandReply.getIndexIsland();
+        return index >= 0 && index < model.getIslands().size();
+    }
+
+
+    /**
+     * to check if the chosen color is legit
+     *
+     * @param message the message received to check
+     * @return the result of the check, true or false
+     */
+    public boolean checkColor(Message message){
+        ColorReply colorReply = (ColorReply) message;
+        PawnColor chosenColor = colorReply.getChosenColor();
+        return (chosenColor.equals(PawnColor.BLUE) || chosenColor.equals(PawnColor.GREEN) || chosenColor.equals(PawnColor.PINK) ||
+                chosenColor.equals(PawnColor.RED) || chosenColor.equals(PawnColor.YELLOW));
+    }
+
+    /**
      * to check if the chosen is cloud tile exists in the current game and was not already picked by some other player before
      *
      * @param message the message received to check

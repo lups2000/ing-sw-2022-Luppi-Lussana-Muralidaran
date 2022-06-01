@@ -1,11 +1,9 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Model.*;
-import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
-import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
-import it.polimi.ingsw.Model.Exceptions.NoTowersException;
-import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
-import it.polimi.ingsw.Model.Exceptions.TooManyTowersException;
+import it.polimi.ingsw.Model.CharacterCards.*;
+import it.polimi.ingsw.Model.Exceptions.*;
+import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.View.VirtualView;
 import it.polimi.ingsw.network.Messages.ClientSide.*;
 import it.polimi.ingsw.network.Messages.Message;
@@ -15,10 +13,7 @@ import it.polimi.ingsw.network.server.Server;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /** This class represents the Turn manager
  * @author Matteo Luppi
@@ -109,6 +104,18 @@ public class TurnController implements Serializable {
             case REPLY_MOVE_MOTHER_NATURE -> {
                 MotherNatureMoveReply motherNatureMoveReply=(MotherNatureMoveReply) message;
                 currentStepsMotherNature=motherNatureMoveReply.getSteps();
+                hasAnswered=true;
+            }
+
+            case REPLY_ISLAND -> {
+                IslandReply islandReply = (IslandReply) message;
+                currentIslandIndex = islandReply.getIndexIsland();
+                hasAnswered=true;
+            }
+
+            case REPLY_COLOR -> {
+                ColorReply colorReply = (ColorReply) message;
+                currentStudent = colorReply.getChosenColor();
                 hasAnswered=true;
             }
 
@@ -307,41 +314,111 @@ public class TurnController implements Serializable {
 
     /**
      * this method is used to activate the effect of the chosen character card
+     *
+     * @param currentView the virtual view of the player who just played the character card
      */
-    private void playCharacterCard() throws NoPawnPresentException, TooManyPawnsPresent {
-        switch (currentCharacterCard.getType()) {
-            //alcune posso raggrupparle qui
-            //TODO
-            case NO_COUNT_TOWER, CONTROL_ON_PROFESSOR, TWO_ADDITIONAL_POINTS, MOVE_MORE_MOTHER_NATURE -> model.getCharacterCards().get(currentIdCharCard).effect();
+    private void playCharacterCard(VirtualView currentView) throws NoPawnPresentException, TooManyPawnsPresent {
+        //far vedere l'effetto della carta anche agli altri giocatori? TODO
 
+        switch (currentCharacterCard.getType()) {
+            //for these character cards no choice from the user is required
+            case NO_COUNT_TOWER, CONTROL_ON_PROFESSOR, TWO_ADDITIONAL_POINTS, MOVE_MORE_MOTHER_NATURE -> currentCharacterCard.effect();
+
+            //the user chooses the island
             case CHOOSE_ISLAND -> {
-                //chiedo l'isola (dovrebbe già esserci)
-                model.getCharacterCards().get(currentIdCharCard).effect();
-                //mostro il risultato dell'influenza sull'isola (se non c'è già potrebbe tornare utile come metodo da invocare a fine fase 2)
+                ChooseIsland chooseIsland = (ChooseIsland) currentCharacterCard;
+                currentView.showSchoolBoardPlayers(model.getPlayers());
+                currentView.showIslands(model.getIslands());
+                currentView.askIsland(model.getIslands());
+                waitAnswer();
+                Island chosenIsland = model.getIslands().get(currentIslandIndex);
+                try {
+                    chooseIsland.effect(chosenIsland);
+                } catch (NoTowersException | TooManyTowersException e) {
+                    e.printStackTrace();
+                }
+                //mostro il risultato dell'influenza sull'isola, con gli observer del model fa già in automatico?
             }
-            case SWITCH_STUDENTS -> {
-                //mostra i 6 studenti su questa carta e fai selezionare 3 da pickare e 3 da depositare
-                model.getCharacterCards().get(currentIdCharCard).effect();
-            }
-            case STUDENT_TO_DINING -> {
-                //mostrare i 4 studenti di questa carta e farne scegliere uno
-                model.getCharacterCards().get(currentIdCharCard).effect();
-            }
-            case COLOR_TO_STUDENT_BAG, COLOR_NO_INFLUENCE -> {
-                //chiedi un pawncolor al client
-                model.getCharacterCards().get(currentIdCharCard).effect();
-            }
+
+            //the user chooses an island
             case PUT_NO_ENTRY_TILES -> {
-                //chiedi un'isola su cui piazzare la tessera divieto
-                model.getCharacterCards().get(currentIdCharCard).effect();
+                PutNoEntryTiles putNoEntryTiles = (PutNoEntryTiles) currentCharacterCard;
+                currentView.showSchoolBoardPlayers(model.getPlayers());
+                currentView.showIslands(model.getIslands());
+                currentView.askIsland(model.getIslands());
+                waitAnswer();
+                Island chosenIsland = model.getIslands().get(currentIslandIndex);
+                try {
+                    putNoEntryTiles.effect(chosenIsland);
+                } catch (NoNoEntryTilesException e) {
+                    e.printStackTrace();
+                }
+                //mostro il risultato dell'influenza sull'isola, con gli observer del model fa già in automatico?
             }
+
+            //the user chooses a color
+            case COLOR_TO_STUDENT_BAG -> {
+                ColorToStudentBag colorToStudentBag = (ColorToStudentBag) currentCharacterCard;
+                currentView.showSchoolBoardPlayers(model.getPlayers());
+                Map<PawnColor,Integer> students = new HashMap<>();
+                students.put(PawnColor.RED,1);
+                students.put(PawnColor.BLUE,1);
+                students.put(PawnColor.YELLOW,1);
+                students.put(PawnColor.PINK,1);
+                students.put(PawnColor.GREEN,1);
+                currentView.askColor(students);
+                waitAnswer();
+                colorToStudentBag.effect(currentStudent);
+            }
+
+            //the user chooses a color
+            case COLOR_NO_INFLUENCE -> {
+                ColorNoInfluence colorNoInfluence = (ColorNoInfluence) currentCharacterCard;
+                currentView.showSchoolBoardPlayers(model.getPlayers());
+                Map<PawnColor,Integer> students = new HashMap<>();
+                students.put(PawnColor.RED,1);
+                students.put(PawnColor.BLUE,1);
+                students.put(PawnColor.YELLOW,1);
+                students.put(PawnColor.PINK,1);
+                students.put(PawnColor.GREEN,1);
+                currentView.askColor(students);
+                waitAnswer();
+                colorNoInfluence.effect(currentStudent);
+            }
+
+            //the user chooses a color
+            case STUDENT_TO_DINING -> {
+                StudentToDining studentToDining = (StudentToDining) currentCharacterCard;
+                currentView.showCharacterCard(studentToDining.getStudents());
+                currentView.showSchoolBoardPlayers(model.getPlayers());
+                currentView.askColor(studentToDining.getStudents());
+                studentToDining.effect(currentStudent);
+            }
+
+            //the user chooses an island and a color
             case ONE_STUDENT_TO_ISLAND -> {
-                //mostra i 4 studenti presenti su questa carta, chiedi un'isola
-                model.getCharacterCards().get(currentIdCharCard).effect();
+                OneStudentToIsland oneStudentToIsland = (OneStudentToIsland) currentCharacterCard;
+                currentView.showCharacterCard(oneStudentToIsland.getStudents());
+                currentView.showSchoolBoardPlayers(model.getPlayers());
+                currentView.askColor(oneStudentToIsland.getStudents());
+                currentView.askIsland(model.getIslands());
+                Island island = model.getIslands().get(currentIslandIndex);
+                oneStudentToIsland.effect(island,currentStudent);
             }
+
+            case SWITCH_STUDENTS -> {
+                SwitchStudents switchStudents = (SwitchStudents) currentCharacterCard;
+                currentView.showCharacterCard(switchStudents.getStudents());
+                currentView.showSchoolBoardPlayers(model.getPlayers());
+                //mostra i 6 studenti su questa carta e fai selezionare 3 da pickare e 3 da depositare
+                switchStudents.effect();
+            }
+
             case SWITCH_DINING_WAITING -> {
+                SwitchDiningWaiting switchDiningWaiting = (SwitchDiningWaiting) currentCharacterCard;
+                currentView.showSchoolBoardPlayers(model.getPlayers());
                 //mostra la propria schoolboard e chiedi max due switch
-                model.getCharacterCards().get(currentIdCharCard).effect();
+                switchDiningWaiting.effect();
             }
         }
     }
@@ -386,7 +463,8 @@ public class TurnController implements Serializable {
 
                 if(currentCharacterCard != null) {
                     try {
-                        playCharacterCard();
+                        playCharacterCard(virtualViewCurrentPlayer);
+                        virtualViewCurrentPlayer.showGenericMessage("Character card activated succesfully!");
                     } catch (NoPawnPresentException | TooManyPawnsPresent e) {
                         e.printStackTrace();
                     }

@@ -135,12 +135,29 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
+    public void showCharacterCard(Map<PawnColor,Integer> students){
+        clientConnection.sendMessageToClient(new ShowCharacterCard(students));
+    }
+
+    @Override
     public void askExpertVariant() {
         clientConnection.sendMessageToClient(new ExpertVariantRequest());
+    }
+
+    @Override
+    public void askIsland(List<Island> islands){
+        clientConnection.sendMessageToClient(new IslandRequest(islands));
+    }
+
+    @Override
+    public void askColor(Map<PawnColor,Integer> availableStudents){
+        clientConnection.sendMessageToClient(new ColorRequest(availableStudents));
     }
 
     @Override
     public void update(Message message) {
         clientConnection.sendMessageToClient(message);
     }
+
+
 }

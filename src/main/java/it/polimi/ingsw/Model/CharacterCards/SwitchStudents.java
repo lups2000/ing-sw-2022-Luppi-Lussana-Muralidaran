@@ -37,6 +37,10 @@ public class SwitchStudents extends CharacterCard implements Serializable {
         }
     }
 
+    public Map<PawnColor, Integer> getStudents() {
+        return students;
+    }
+
     public void effect(Map<PawnColor,Integer> toPick, Map<PawnColor,Integer> toDeposit) throws TooManyPawnsPresent {
         for(Player player : game.getPlayers()){
             if((player.getStatus()).equals(PlayerStatus.PLAYING_ACTION)){
