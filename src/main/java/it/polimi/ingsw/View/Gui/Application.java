@@ -1,7 +1,6 @@
 package it.polimi.ingsw.View.Gui;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-
 public abstract class Application {
+    public static void launch(Class<Gui> guiClass, String[] args) {
+    }
 }
