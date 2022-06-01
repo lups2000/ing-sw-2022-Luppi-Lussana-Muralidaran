@@ -1,8 +1,11 @@
 package it.polimi.ingsw.View.Gui;
+import it.polimi.ingsw.network.server.Server;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 
 /**
@@ -14,15 +17,25 @@ public class Gui extends Application {
     Stage window;
     Scene scene1, scene2;
 
-    public static void main(String[] args) {
-
-
+    public static void main(String[] args){
+        launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Parent root = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));
+        FXMLLoader fxmlLoader=new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/fxml/MainScreen.fxml"));
+        Parent root=null;
+
+        try{
+            root=fxmlLoader.load();
+        }
+        catch (IOException e){
+            Server.LOGGER.severe(e.getMessage());
+            System.exit(1);
+        }
+
         primaryStage.setTitle("Eriantys");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
