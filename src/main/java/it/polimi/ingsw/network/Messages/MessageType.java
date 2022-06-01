@@ -23,6 +23,7 @@ public enum MessageType {
     INFO_CLOUDS,
     MOVE_STUD,
     SCHOOLBOARD,
+    DISCONNECTION,
 
     GENERIC_MESSAGE,
     ERROR,

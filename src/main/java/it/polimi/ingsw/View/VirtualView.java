@@ -99,6 +99,11 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
+    public void showDisconnection(String nickName, String message) {
+        clientConnection.sendMessageToClient(new Disconnection(nickName,message));
+    }
+
+    @Override
     public void showLoginInfo(String nickName, boolean nickNameOk, boolean connectionOk) {
         clientConnection.sendMessageToClient(new LoginReply(nickNameOk,connectionOk));
     }

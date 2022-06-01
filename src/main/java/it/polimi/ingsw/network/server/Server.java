@@ -16,12 +16,14 @@ public class Server {
     public static final Logger LOGGER = Logger.getLogger(Server.class.getName());
     private final MainController mainController;
     private final Map<String, ClientConnection> clientsConnected;
+    private final List<String> nickNamesGame;
     private final Object locker;
 
     public Server(MainController mainController) {
         this.mainController = mainController;
         this.clientsConnected = Collections.synchronizedMap(new HashMap<>());
         this.locker = new Object();
+        this.nickNamesGame=new ArrayList<>();
     }
 
 
@@ -36,8 +38,8 @@ public class Server {
         VirtualView virtualView = new VirtualView(clientConnection);
 
         if(mainController.isGameStarted()){ //if the match has already started-->the client must disconnect
-            virtualView.showLoginInfo(null,true,false);
-            virtualView.showError("Sorry but the Game has already started!");
+            virtualView.showError("Sorry but the Game has already started!Connection Refused!");
+            //virtualView.showLoginInfo(null,true,false);
             clientConnection.disconnect();
         }
         else { //the client has possibilities to connect to the match
@@ -75,8 +77,8 @@ public class Server {
      *
      * @param nickname the client's nickname to be removed
      */
-    public void unregisterClientFromServer(String nickname /*, boolean notifyEnabled*/) { //notifyEnable non serve secondo me
-        //removing the client from the Map
+    public void unregisterClientFromServer(String nickname) {
+        //removing the client from the server
         clientsConnected.remove(nickname);
         mainController.removeVirtualView(nickname);
         LOGGER.info(nickname + " has been removed from the list of connected players!");
@@ -98,31 +100,29 @@ public class Server {
      *
      * @param clientConnection associated to the client disconnected
      */
+
     public void disconnectionManager(ClientConnection clientConnection) {
         synchronized (locker) {
             String nickname = getNickname(clientConnection);
 
-            /*if (nickname != null) {
+            if (nickname != null) {
 
-                boolean gameStarted = mainController.isGameStarted();
-                unregisterClientFromServer(nickname, !gameStarted); // enable lobby notifications only if the game didn't start yet.
+                unregisterClientFromServer(nickname);
 
+                /*
                 if(mainController.getTurnController() != null &&
                         !mainController.getTurnController().getNicknameQueue().contains(nickname)) {
                     return;
-                }
+                }*/
 
                 // Resets server status only if the game was already started.
                 // Otherwise the server will wait for a new player to connect.
-                if (gameStarted) {
-                    mainController.broadcastDisconnectionMessage(nickname, " disconnected from the server. GAME ENDED.");
-
-                    mainController.endGame();
+                if (mainController.isGameStarted()) {
+                    mainController.broadcastingDisconnection(nickname, " disconnected from the server. GAME ENDED.");
+                    //mainController.endedGame(); TODO
                     clientsConnected.clear();
                 }
             }
-
-             */
         }
     }
 

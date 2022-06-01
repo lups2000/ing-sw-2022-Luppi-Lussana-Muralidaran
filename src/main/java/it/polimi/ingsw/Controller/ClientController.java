@@ -143,6 +143,10 @@ public class ClientController implements Observer4View, Observer {
                 Islands islandsMessage=(Islands) message;
                 taskQueue.execute(()->view.showIslands(islandsMessage.getIslands()));
             }
+            case DISCONNECTION -> {
+                Disconnection disconnectionMessage=(Disconnection) message;
+                taskQueue.execute(()->view.showDisconnection(disconnectionMessage.getNickName(), disconnectionMessage.getMessage()));
+            }
         }
     }
 

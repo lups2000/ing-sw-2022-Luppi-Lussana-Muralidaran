@@ -1,40 +1,41 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Model.*;
+import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.Exceptions.NoTowersException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.Model.Exceptions.TooManyTowersException;
+import it.polimi.ingsw.Utils.StoreGame;
 import it.polimi.ingsw.View.VirtualView;
 import it.polimi.ingsw.network.Messages.ClientSide.*;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.server.Server;
+import it.polimi.ingsw.network.server.SocketServer;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * This class represents the main controller
  * It receives messages from the server, reads them and responds to them after checks executed by all the controllers
  */
-public class MainController {
+public class MainController implements Serializable {
 
+    private static final long serialVersionUID= 8347814763959357381L;
     private final Game game;
     private transient Map<String, VirtualView> virtualViewsMap;
-    private final MessageController messageController;
+    private MessageController messageController;
     private TurnController turnController;
+    private List<String> nickNameList;
     private int maxNumPlayers;
     private boolean expertVariant;
-    private boolean flag=false;
-    private final Object lock;
 
     public MainController(){
         this.game = new Game();
         this.virtualViewsMap = Collections.synchronizedMap(new HashMap<>());
         this.messageController = new MessageController(this,virtualViewsMap);
-        //this.gameState = GameState.LOGGING;
-        this.lock=new Object();
+        this.nickNameList=new ArrayList<>();
     }
 
     public Game getGame() {
@@ -45,8 +46,13 @@ public class MainController {
         return turnController;
     }
 
+    public List<String> getNickNameList() {return nickNameList;}
 
     public MessageController getMessageController() {return messageController;}
+
+    public Map<String, VirtualView> getVirtualViewsMap() {return virtualViewsMap;}
+
+    public void setVirtualViewsMap(Map<String, VirtualView> virtualViewsMap) {this.virtualViewsMap = virtualViewsMap;}
 
 
     /**
@@ -212,6 +218,7 @@ public class MainController {
         if(virtualViewsMap.size() == 0){    //it means it is the first player ever to connect
 
             virtualViewsMap.put(nickname,virtualView);
+            nickNameList.add(nickname);
             game.addObserver(virtualView);
             //        game.getBoard().addObserver(virtualView);
             virtualView.showLoginInfo("SERVER",true,true);
@@ -225,14 +232,26 @@ public class MainController {
         else if(virtualViewsMap.size() < game.getMaxNumPlayers()){
 
             virtualViewsMap.put(nickname,virtualView);
+            nickNameList.add(nickname);
             game.addObserver(virtualView);
             //        game.getBoard().addObserver(virtualView);
             game.addPlayer(nickname); //add the player to the model
-
             virtualView.showLoginInfo("SERVER",true,true);
-            virtualView.askAssistantSeed(game.getSeedsAvailable());
 
+            if(maxNumPlayers==game.getPlayers().size()){ //the lobby is full
 
+                StoreGame storeGame =new StoreGame(this);
+                MainController mainControllerPreviousMatch= storeGame.getPreviousMatch();
+
+                if(mainControllerPreviousMatch!=null && game.getAllPlayersNickName().size() == mainControllerPreviousMatch.getNickNameList().size() && game.getAllPlayersNickName().containsAll(mainControllerPreviousMatch.getNickNameList())){
+
+                    broadcastingMessage("\nThe server went down!Now you can continue the match...");
+                    replaceMainController(mainControllerPreviousMatch);
+                }
+                else{
+                    virtualView.askAssistantSeed(game.getSeedsAvailable());
+                }
+            }
         }
         //a questo else teoricamente non ci arrivo mai
         else{
@@ -253,7 +272,7 @@ public class MainController {
 
         game.changeStatus(GameState.PLAYING); //gameStatus==PLAYING set in the model
 
-        this.turnController = new TurnController(game,virtualViewsMap);
+        this.turnController = new TurnController(game,virtualViewsMap,this);
 
         Thread threadRoundManager=new Thread(() -> turnController.roundManager());
         threadRoundManager.start();
@@ -268,6 +287,12 @@ public class MainController {
     public void broadcastingMessage(String message){
         for(VirtualView virtualView : virtualViewsMap.values()){
             virtualView.showGenericMessage(message);
+        }
+    }
+
+    public void broadcastingDisconnection(String nickName,String message){
+        for(VirtualView virtualView : virtualViewsMap.values()){
+            virtualView.showDisconnection(nickName,message);
         }
     }
 
@@ -296,34 +321,51 @@ public class MainController {
      * @param nickname the nickname of the player removed
      */
     public void removeVirtualView(String nickname){
-        VirtualView toRemove = virtualViewsMap.remove(nickname);
+        VirtualView toRemove = virtualViewsMap.get(nickname);
+        this.game.removeObserver(toRemove);
+        this.virtualViewsMap.remove(nickname);
 
-        //game.removeObserver(toRemove);
         //game.getBoard().removeObserver(toRemove);
     }
 
     /**
      * method to call at the end of the game to show the final messages to each player (a win or a lose message) and to end the game
      */
-    /*
-    public void endedGame(){
-        Player winningPlayer = null;    //forse possiamo evitare questo primo for per cercare il winning player
-        for (Player player : game.getPlayers()){
-            if((player.getStatus()).equals(PlayerStatus.WINNER)){
-                winningPlayer = player;
-                break;
-            }
-        }
 
-        for(Player player : game.getPlayers()){
-            VirtualView view = virtualViewsMap.get(player.getNickname());
-            if (player.equals(winningPlayer)) {
-                view.showWinMessage(winningPlayer);
-            }
-            else{
-                view.showLoseMessage(winningPlayer);
-            }
-        }
+    public void endedGame(){
+
+        //devo terminare tutto e cancellare il contenuto del file savedGame
+        /*
+        riga 339 snegrini
+         */
     }
-     */
+
+    public void replaceMainController(MainController mainControllerPreviousMatch){
+
+        List<Player> players =mainControllerPreviousMatch.getGame().getPlayers();
+        int numMaxPlayers=mainControllerPreviousMatch.getGame().getMaxNumPlayers();
+        boolean expertVariant=mainControllerPreviousMatch.getGame().getExpertsVariant();
+        List<AssistantSeed> seedsAvailable=mainControllerPreviousMatch.getGame().getSeedsAvailable();
+        List<Island> islands=mainControllerPreviousMatch.getGame().getIslands();
+        List<CloudTile> cloudTiles=mainControllerPreviousMatch.getGame().getCloudTiles();
+        List<CharacterCard> characterCards=mainControllerPreviousMatch.getGame().getCharacterCards();
+        GameState gameState=mainControllerPreviousMatch.getGame().getStatus();
+        StudentBag studentBag=mainControllerPreviousMatch.getGame().getStudentBag();
+        int motherNature=mainControllerPreviousMatch.getGame().getMotherNature();
+        int noEntryTilesCounter=mainControllerPreviousMatch.getGame().getNoEntryTilesCounter();
+        Map<Player,AssistantCard> currentHand=mainControllerPreviousMatch.getGame().getCurrentHand();
+
+
+        this.game.replaceGame(players,numMaxPlayers,expertVariant,islands,cloudTiles,characterCards,gameState,studentBag,motherNature,currentHand,seedsAvailable,noEntryTilesCounter);
+        Island.setNumIslands(islands.size());
+
+        this.turnController=mainControllerPreviousMatch.getTurnController();
+        this.turnController.setModel(this.game);
+        this.turnController.setVirtualViewMap(this.virtualViewsMap);
+        this.messageController=new MessageController(this,this.virtualViewsMap);
+
+        Thread threadRoundManager=new Thread(() -> turnController.roundManager());
+        threadRoundManager.start();
+    }
+
 }

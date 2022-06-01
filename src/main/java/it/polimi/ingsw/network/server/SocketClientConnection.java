@@ -29,8 +29,8 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         this.clientSocket = clientSocket;
         this.isConnected = true;
 
-        this.inputLock = new Object(); // serve?
-        this.outputLock = new Object(); // serve?
+        this.inputLock = new Object();
+        this.outputLock = new Object();
 
         try {
             this.out = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -48,9 +48,9 @@ public class SocketClientConnection implements ClientConnection, Runnable {
             handleClientConnection();
 
         } catch (IOException e) {
-            Server.LOGGER.severe("The connection of the Client " + clientSocket.getInetAddress() + " has dropped.");
+            Server.LOGGER.severe("Client " + clientSocket.getInetAddress() + " connection dropped.");
             disconnect();
-            //e.printStackTrace();
+
         }
     }
 
@@ -76,7 +76,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
                     if (message != null && message.getMessageType() != MessageType.PING) {
                         //if I receive a message of Type LOGIN
                         if (message.getMessageType() == MessageType.REQUEST_LOGIN) {
-                            Server.LOGGER.info(() -> "Message (loginRequest) Received from " + message.getNickName() + ": "+message);
+                            Server.LOGGER.info(() -> "Message (LoginRequest) Received from " + message.getNickName() + ": "+message);
                             socketServer.addClient(message.getNickName(), this);
                         }
                         //other messages that comes from the client
