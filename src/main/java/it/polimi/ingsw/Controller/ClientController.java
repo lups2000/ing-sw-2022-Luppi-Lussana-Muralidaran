@@ -91,6 +91,11 @@ public class ClientController implements Observer4View, Observer {
                 taskQueue.execute(() -> view.askMoveMotherNature(motherNatureMoveRequest.getIslands(), motherNatureMoveRequest.getMaxSteps()));
             }
 
+            case REQUEST_STUDENT_OR_STOP -> {
+                StudentOrStopRequest studentOrStopRequest = (StudentOrStopRequest) message;
+                taskQueue.execute(() -> view.askStudOrStop(studentOrStopRequest.getStudents()));
+            }
+
             case ERROR -> {
                 Error errorMessage = (Error) message;
                 taskQueue.execute(() -> view.showError(errorMessage.getMessageError()));
@@ -358,6 +363,17 @@ public class ClientController implements Observer4View, Observer {
     @Override
     public void sendChosenColor(PawnColor chosenColor) {
         client.sendMessage(new ColorReply(this.nickname,chosenColor));
+    }
+
+    /**
+     * This method sends a message to the server to communicate which pawn color the client has chosen
+     *
+     * @param chosenColor the chosen color, null if the user decided to stop to switch students
+     * @param stop a boolean to indicate if the user wants to stop switching students
+     */
+    @Override
+    public void sendChosenColorOrStop(PawnColor chosenColor,boolean stop){
+        client.sendMessage(new StudentOrStopReply(this.nickname,chosenColor,stop));
     }
 
 }

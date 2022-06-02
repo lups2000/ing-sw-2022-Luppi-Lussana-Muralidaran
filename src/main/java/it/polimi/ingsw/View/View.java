@@ -75,5 +75,7 @@ public interface View {
 
     void askColor(Map<PawnColor,Integer> availableStudents);
 
-    void showCharacterCard(Map<PawnColor,Integer> students);
+    void showStudents(Map<PawnColor,Integer> students);
+
+    void askStudOrStop(Map<PawnColor,Integer> students);
 }

@@ -140,7 +140,7 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void showCharacterCard(Map<PawnColor,Integer> students){
+    public void showStudents(Map<PawnColor,Integer> students){
         clientConnection.sendMessageToClient(new ShowCharacterCard(students));
     }
 
@@ -159,6 +159,10 @@ public class VirtualView implements View, Observer {
         clientConnection.sendMessageToClient(new ColorRequest(availableStudents));
     }
 
+    @Override
+    public void askStudOrStop(Map<PawnColor,Integer> students){
+        clientConnection.sendMessageToClient(new StudentOrStopRequest(students));
+    }
     @Override
     public void update(Message message) {
         clientConnection.sendMessageToClient(message);

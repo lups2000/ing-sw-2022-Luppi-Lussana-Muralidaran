@@ -97,10 +97,17 @@ public interface Observer4View {
     /**
      * This method sends a message to the server to communicate which pawn color the client has chosen
      *
-     * @param chosencolor the chosen color
+     * @param chosenColor the chosen color
      */
-    void sendChosenColor(PawnColor chosencolor);
+    void sendChosenColor(PawnColor chosenColor);
 
+    /**
+     * This method sends a message to the server to communicate which pawn color the client has chosen
+     *
+     * @param chosenColor the chosen color, null if the user decided to stop to switch students
+     * @param stop a boolean to indicate if the user wants to stop switching students
+     */
+    void sendChosenColorOrStop(PawnColor chosenColor,boolean stop);
     /*
      * Handles a disconnection wanted by the user.
      * (e.g. a click on the back button into the GUI).

@@ -195,6 +195,27 @@ public class MessageController implements Serializable {
                 chosenColor.equals(PawnColor.RED) || chosenColor.equals(PawnColor.YELLOW));
     }
 
+
+    /**
+     * to check if the chosen color is legit, pawncolor = null means the user decided to stop switching the students
+     *
+     * @param message the message received to check
+     * @return the result of the check, true or false
+     */
+    public boolean checkStudentOrStop(Message message){
+        StudentOrStopReply studentOrStopReply = (StudentOrStopReply) message;
+        PawnColor chosenColor = studentOrStopReply.getPawnColor();
+        boolean stop = studentOrStopReply.isStop();
+        if(stop) {
+            return true;
+        }
+        else {
+            return (chosenColor.equals(PawnColor.BLUE) || chosenColor.equals(PawnColor.GREEN) || chosenColor.equals(PawnColor.PINK) ||
+                    chosenColor.equals(PawnColor.RED) || chosenColor.equals(PawnColor.YELLOW));
+        }
+    }
+
+
     /**
      * to check if the chosen is cloud tile exists in the current game and was not already picked by some other player before
      *

@@ -27,7 +27,6 @@ public class ColorToStudentBag extends CharacterCard implements Serializable {
             int removed = player.getSchoolBoard().removeStudents(chosen);
             game.getStudentBag().addStudents(chosen,removed);
         }
-        game.allocateProfessors();
         used();
     }
 

@@ -634,7 +634,7 @@ public class Cli extends Observable4View implements View {
         do{
             out.print(Colors.RESET);
             out.print("\033[38;2;255;255;0m");
-            out.print("Select one color(ex. red,blue...) to move the student to an Island : ");
+            out.print("Select one color(ex. red,blue...): ");
             answerColor= readLine.nextLine();
 
             if(answerColor.equalsIgnoreCase("red") || answerColor.equalsIgnoreCase("blue") || answerColor.equalsIgnoreCase("pink") ||
@@ -807,14 +807,68 @@ public class Cli extends Observable4View implements View {
     }
 
     @Override
-    public void showCharacterCard(Map<PawnColor,Integer> students){
+    public void showStudents(Map<PawnColor,Integer> students){
         out.print(Colors.RESET);
-        out.println("\nSTUDENTS to pick from this character card: ");
+        out.println("\nSTUDENTS to pick: ");
         for (PawnColor pawnColor: PawnColor.values()){
             for (int i=0; i<students.get(pawnColor); i++){
                 out.print(pawnColor.getVisualColor()+"X "+Colors.RESET);
             }
         }
         out.print("\033[38;2;255;255;0m");
+    }
+
+    @Override
+    public void askStudOrStop(Map<PawnColor,Integer> availableStudents){
+        boolean validInput=false;
+        PawnColor pawnColorChosen=null;
+        String answerColor;
+        boolean stop = false;
+        do{
+            out.print(Colors.RESET);
+            out.print("\033[38;2;255;255;0m");
+            out.print("Select one color(ex. red,blue...) or press 'x' to stop: ");
+            answerColor= readLine.nextLine();
+
+            if(answerColor.equalsIgnoreCase("red") || answerColor.equalsIgnoreCase("blue") || answerColor.equalsIgnoreCase("pink") ||
+                    answerColor.equalsIgnoreCase("green") || answerColor.equalsIgnoreCase("yellow") || answerColor.equalsIgnoreCase("x")){
+
+                if(answerColor.equalsIgnoreCase("red")){
+                    pawnColorChosen=PawnColor.RED;
+                }
+                else if(answerColor.equalsIgnoreCase("blue")){
+                    pawnColorChosen=PawnColor.BLUE;
+                }
+                else if(answerColor.equalsIgnoreCase("pink")){
+                    pawnColorChosen=PawnColor.PINK;
+                }
+                else if(answerColor.equalsIgnoreCase("yellow")){
+                    pawnColorChosen=PawnColor.YELLOW;
+                }
+                else if(answerColor.equalsIgnoreCase("green")){
+                    pawnColorChosen=PawnColor.GREEN;
+                }
+                else{
+                    stop = true;
+                }
+
+                if(pawnColorChosen != null && availableStudents.get(pawnColorChosen)<=0){
+                    out.println(INVALID_INPUT);
+                    clearCli();
+                }
+                else{
+                    validInput=true;
+                }
+            }
+            else{
+                out.println(INVALID_INPUT);
+                clearCli();
+            }
+        }while(!validInput);
+
+        out.print("\033[38;2;255;255;0m");
+        PawnColor finalPawnColorChosen = pawnColorChosen;
+        boolean finalStop = stop;
+        notifyObserver(obs->obs.sendChosenColorOrStop(finalPawnColorChosen, finalStop));
     }
 }

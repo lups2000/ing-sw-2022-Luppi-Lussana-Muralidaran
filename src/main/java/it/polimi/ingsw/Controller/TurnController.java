@@ -42,6 +42,7 @@ public class TurnController implements Serializable {
     private PawnColor currentStudent;
     private int currentIslandIndex;
     private int currentStepsMotherNature;
+    private boolean currentStop  = false;
     private boolean winner=false;
     private boolean hasAnswered=false;
 
@@ -127,6 +128,17 @@ public class TurnController implements Serializable {
                 ColorReply colorReply = (ColorReply) message;
                 currentStudent = colorReply.getChosenColor();
                 hasAnswered=true;
+            }
+
+            case REPLY_STUDENT_OR_STOP -> {
+                StudentOrStopReply studentOrStopReply = (StudentOrStopReply) message;
+                if(studentOrStopReply.isStop()){
+                    currentStop = true;
+                }
+                else{
+                    currentStudent = studentOrStopReply.getPawnColor();
+                }
+                hasAnswered = true;
             }
 
         }
@@ -330,7 +342,7 @@ public class TurnController implements Serializable {
      *
      * @param currentView the virtual view of the player who just played the character card
      */
-    private void playCharacterCard(VirtualView currentView) throws NoPawnPresentException, TooManyPawnsPresent {
+    private void playCharacterCard(VirtualView currentView,Player player) throws NoPawnPresentException, TooManyPawnsPresent {
         //far vedere l'effetto della carta anche agli altri giocatori? TODO
 
         switch (currentCharacterCard.getType()) {
@@ -382,6 +394,7 @@ public class TurnController implements Serializable {
                 currentView.askColor(students);
                 waitAnswer();
                 colorToStudentBag.effect(currentStudent);
+                model.allocateProfessors();
             }
 
             //the user chooses a color
@@ -402,36 +415,127 @@ public class TurnController implements Serializable {
             //the user chooses a color
             case STUDENT_TO_DINING -> {
                 StudentToDining studentToDining = (StudentToDining) currentCharacterCard;
-                currentView.showCharacterCard(studentToDining.getStudents());
+                currentView.showStudents(studentToDining.getStudents());
                 currentView.showSchoolBoardPlayers(model.getPlayers());
                 currentView.askColor(studentToDining.getStudents());
+                waitAnswer();
                 studentToDining.effect(currentStudent);
+                model.allocateProfessors();
             }
 
             //the user chooses an island and a color
             case ONE_STUDENT_TO_ISLAND -> {
                 OneStudentToIsland oneStudentToIsland = (OneStudentToIsland) currentCharacterCard;
-                currentView.showCharacterCard(oneStudentToIsland.getStudents());
+                currentView.showStudents(oneStudentToIsland.getStudents());
                 currentView.showSchoolBoardPlayers(model.getPlayers());
                 currentView.askColor(oneStudentToIsland.getStudents());
+                waitAnswer();
                 currentView.askIsland(model.getIslands());
+                waitAnswer();
                 Island island = model.getIslands().get(currentIslandIndex);
                 oneStudentToIsland.effect(island,currentStudent);
             }
 
             case SWITCH_STUDENTS -> {
                 SwitchStudents switchStudents = (SwitchStudents) currentCharacterCard;
-                currentView.showCharacterCard(switchStudents.getStudents());
                 currentView.showSchoolBoardPlayers(model.getPlayers());
-                //mostra i 6 studenti su questa carta e fai selezionare 3 da pickare e 3 da depositare
-                switchStudents.effect();
+                Map<PawnColor,Integer> availableWaiting = player.getSchoolBoard().getStudentsWaiting();
+                Map<PawnColor,Integer> availableCard = switchStudents.getStudents();
+                Map<PawnColor,Integer> fromEntrance = new HashMap<>();
+                fromEntrance.put(PawnColor.RED,0);
+                fromEntrance.put(PawnColor.BLUE,0);
+                fromEntrance.put(PawnColor.YELLOW,0);
+                fromEntrance.put(PawnColor.PINK,0);
+                fromEntrance.put(PawnColor.GREEN,0);
+                Map<PawnColor,Integer> fromCharacterCard = new HashMap<>();
+                fromCharacterCard.put(PawnColor.RED,0);
+                fromCharacterCard.put(PawnColor.BLUE,0);
+                fromCharacterCard.put(PawnColor.YELLOW,0);
+                fromCharacterCard.put(PawnColor.PINK,0);
+                fromCharacterCard.put(PawnColor.GREEN,0);
+                int i;
+                currentView.showSchoolBoardPlayers(model.getPlayers());
+
+                currentView.showGenericMessage("Select UP TO 3 students to pick from your entrance: ");
+                for(i=0;i<3;i++){
+                    currentView.showGenericMessage(i+1 + "/3 ");
+                    currentView.showStudents(availableWaiting);
+                    currentView.askStudOrStop(availableWaiting);
+                    waitAnswer();
+                    if(currentStop){
+                        break;
+                    }
+                    else{
+                        availableWaiting.put(currentStudent,availableWaiting.get(currentStudent)-1);
+                        fromEntrance.put(currentStudent,fromEntrance.get(currentStudent)+1);
+                    }
+                }
+
+                currentStop = false;
+
+                currentView.showGenericMessage("Select " + i+1 + " students to pick from this character card: ");
+                for(int j=0;j<i+1;j++){
+                    currentView.showGenericMessage(j+1 + "/" + i+1);
+                    currentView.showStudents(availableCard);
+                    currentView.askColor(availableCard);
+                    waitAnswer();
+                    availableCard.put(currentStudent,availableCard.get(currentStudent)-1);
+                    fromCharacterCard.put(currentStudent,fromCharacterCard.get(currentStudent)+1);
+                }
+
+                switchStudents.effect(fromCharacterCard,fromEntrance);
+                model.allocateProfessors();
             }
 
             case SWITCH_DINING_WAITING -> {
                 SwitchDiningWaiting switchDiningWaiting = (SwitchDiningWaiting) currentCharacterCard;
+                int i;
                 currentView.showSchoolBoardPlayers(model.getPlayers());
-                //mostra la propria schoolboard e chiedi max due switch
-                switchDiningWaiting.effect();
+                Map<PawnColor,Integer> availableWaiting = player.getSchoolBoard().getStudentsWaiting();
+                Map<PawnColor,Integer> availableDining = player.getSchoolBoard().getStudentsDining();
+                Map<PawnColor,Integer> exWaiting = new HashMap<>();
+                exWaiting.put(PawnColor.RED,0);
+                exWaiting.put(PawnColor.BLUE,0);
+                exWaiting.put(PawnColor.YELLOW,0);
+                exWaiting.put(PawnColor.PINK,0);
+                exWaiting.put(PawnColor.GREEN,0);
+                Map<PawnColor,Integer> exDining = new HashMap<>();
+                exDining.put(PawnColor.RED,0);
+                exDining.put(PawnColor.BLUE,0);
+                exDining.put(PawnColor.YELLOW,0);
+                exDining.put(PawnColor.PINK,0);
+                exDining.put(PawnColor.GREEN,0);
+
+                currentView.showGenericMessage("Select UP TO 2 students to pick from your entrance and place them on your dining room: ");
+                currentView.showGenericMessage("ENTRANCE -> DINING ROOM");
+                for(i=0;i<2;i++){
+                    currentView.showGenericMessage(i+1 + "/2 ");
+                    currentView.showStudents(availableWaiting);
+                    currentView.askStudOrStop(availableWaiting);
+                    waitAnswer();
+                    if(currentStop){
+                        break;
+                    }
+                    else{
+                        availableWaiting.put(currentStudent,availableWaiting.get(currentStudent)-1);
+                        exWaiting.put(currentStudent,exWaiting.get(currentStudent)+1);
+                    }
+                }
+
+                currentStop = false;
+
+                currentView.showGenericMessage("Select " + i+1 + " students to pick from your dining room and place them on your entrance: ");
+                currentView.showGenericMessage("DINING ROOM -> ENTRANCE");
+                for(int j=0;j<i+1;j++){
+                    currentView.showGenericMessage(j+1 + "/" + i+1);
+                    currentView.showStudents(availableDining);
+                    currentView.askColor(availableDining);
+                    waitAnswer();
+                    availableDining.put(currentStudent,availableDining.get(currentStudent)-1);
+                    exDining.put(currentStudent,exDining.get(currentStudent)+1);
+                }
+                switchDiningWaiting.effect(exWaiting,exDining);
+                model.allocateProfessors();
             }
         }
     }
@@ -476,7 +580,7 @@ public class TurnController implements Serializable {
 
                 if(currentCharacterCard != null) {
                     try {
-                        playCharacterCard(virtualViewCurrentPlayer);
+                        playCharacterCard(virtualViewCurrentPlayer,player);
                         virtualViewCurrentPlayer.showGenericMessage("Character card activated succesfully!");
                     } catch (NoPawnPresentException | TooManyPawnsPresent e) {
                         e.printStackTrace();

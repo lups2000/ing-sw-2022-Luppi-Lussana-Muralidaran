@@ -212,6 +212,15 @@ public class MainController implements Serializable {
                 }
             }
 
+            case REPLY_STUDENT_OR_STOP -> {
+                if(messageController.checkStudentOrStop(message)){
+                    turnController.messageFromMainController(message);
+                }
+                else {
+                    Server.LOGGER.warning("The format of the message sent by the client is incorrect!");
+                }
+            }
+
             case GENERIC_MESSAGE -> turnController.messageFromMainController(message);
 
             default -> Server.LOGGER.warning("Wrong message received from client.");
