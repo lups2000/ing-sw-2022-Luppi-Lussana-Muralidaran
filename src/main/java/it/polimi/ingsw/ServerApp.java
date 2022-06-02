@@ -5,8 +5,6 @@ import it.polimi.ingsw.network.server.Server;
 import it.polimi.ingsw.network.server.SocketServer;
 
 import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Application to launch the server

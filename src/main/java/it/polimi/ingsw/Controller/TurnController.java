@@ -3,7 +3,6 @@ package it.polimi.ingsw.Controller;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.*;
 import it.polimi.ingsw.Model.Exceptions.*;
-import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.Exceptions.NoTowersException;

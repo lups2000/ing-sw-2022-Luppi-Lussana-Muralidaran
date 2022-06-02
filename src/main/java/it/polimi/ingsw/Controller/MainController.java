@@ -2,16 +2,11 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
-import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
-import it.polimi.ingsw.Model.Exceptions.NoTowersException;
-import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
-import it.polimi.ingsw.Model.Exceptions.TooManyTowersException;
 import it.polimi.ingsw.Utils.StoreGame;
 import it.polimi.ingsw.View.VirtualView;
 import it.polimi.ingsw.network.Messages.ClientSide.*;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.server.Server;
-import it.polimi.ingsw.network.server.SocketServer;
 
 import java.io.Serializable;
 import java.util.*;

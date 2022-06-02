@@ -2,8 +2,6 @@ package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
-import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
-import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 
 import java.util.ArrayList;
 import java.util.List;

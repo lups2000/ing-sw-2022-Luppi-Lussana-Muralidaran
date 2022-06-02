@@ -1,11 +1,8 @@
 package it.polimi.ingsw.network.Messages.ClientSide;
 
-import it.polimi.ingsw.Model.AssistantSeed;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.MessageType;
 import it.polimi.ingsw.Model.AssistantCard;
-
-import java.util.List;
 
 /**
  * This message is used by the client and it's sent to the server

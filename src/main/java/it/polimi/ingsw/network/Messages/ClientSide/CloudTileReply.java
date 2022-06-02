@@ -1,10 +1,7 @@
 package it.polimi.ingsw.network.Messages.ClientSide;
 
-import it.polimi.ingsw.Model.CloudTile;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.MessageType;
-
-import java.util.List;
 
 public class CloudTileReply extends Message {
 

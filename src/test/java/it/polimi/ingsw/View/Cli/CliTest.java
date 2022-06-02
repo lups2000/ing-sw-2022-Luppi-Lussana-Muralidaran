@@ -1,10 +1,7 @@
 package it.polimi.ingsw.View.Cli;
 
 import it.polimi.ingsw.Model.Game;
-import it.polimi.ingsw.Model.SchoolBoard;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CliTest {
 

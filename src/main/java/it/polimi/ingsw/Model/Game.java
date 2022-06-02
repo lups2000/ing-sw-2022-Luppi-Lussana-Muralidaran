@@ -3,7 +3,6 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Model.CharacterCards.*;
 import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.network.Messages.ServerSide.*;
-import it.polimi.ingsw.network.server.Server;
 import it.polimi.ingsw.observer.Observable;
 
 import java.io.Serial;
@@ -557,7 +556,7 @@ public class Game extends Observable implements Serializable {
         return playersNickNames;
     }
 
-    public void useCharacterCard(CharacterCard characterCard){
+    public void useCharacterCard(CharacterCard characterCard) throws NoPawnPresentException, TooManyPawnsPresent {
         characterCard.effect();
     }
 

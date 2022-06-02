@@ -1,7 +1,6 @@
 package it.polimi.ingsw.observer;
 
 import it.polimi.ingsw.Model.*;
-import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 
 import java.io.IOException;
 import java.util.Map;

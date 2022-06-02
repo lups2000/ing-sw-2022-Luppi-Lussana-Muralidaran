@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model.CharacterCards;
 
+import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
+import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.Model.Game;
 
 import java.io.Serial;
@@ -16,7 +18,7 @@ public abstract class CharacterCard implements Serializable {
 
     public int getCost() {return cost;}
 
-    public void effect(){
+    public void effect() throws NoPawnPresentException, TooManyPawnsPresent {
 
     }
 

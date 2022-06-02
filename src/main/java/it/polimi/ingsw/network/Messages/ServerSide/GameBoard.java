@@ -3,7 +3,6 @@ package it.polimi.ingsw.network.Messages.ServerSide;
 import it.polimi.ingsw.Model.CloudTile;
 import it.polimi.ingsw.Model.Island;
 import it.polimi.ingsw.Model.Player;
-import it.polimi.ingsw.Model.SchoolBoard;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.MessageType;
 

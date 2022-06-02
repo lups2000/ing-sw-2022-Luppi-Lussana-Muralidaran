@@ -2,7 +2,6 @@ package it.polimi.ingsw.Model.CharacterCards;
 
 import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Exceptions.*;
-import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.PlayerStatus;
 

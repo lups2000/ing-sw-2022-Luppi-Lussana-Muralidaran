@@ -1,6 +1,5 @@
 package it.polimi.ingsw.network.Messages.ClientSide;
 
-import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.MessageType;
 

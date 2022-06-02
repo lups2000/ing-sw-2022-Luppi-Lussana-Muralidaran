@@ -2,7 +2,6 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.Controller.ClientController;
 import it.polimi.ingsw.View.Cli.Cli;
-import javafx.application.Application;
 
 /**
  * Application to launch a client

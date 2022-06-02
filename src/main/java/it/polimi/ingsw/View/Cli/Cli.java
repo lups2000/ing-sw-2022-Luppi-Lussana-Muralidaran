@@ -4,13 +4,9 @@ package it.polimi.ingsw.View.Cli;
 import it.polimi.ingsw.Controller.ClientController;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
-import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
-import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.View.View;
-import it.polimi.ingsw.network.Messages.ServerSide.Islands;
 import it.polimi.ingsw.observer.Observable4View;
 
-import javax.swing.*;
 import java.io.PrintStream;
 import java.util.*;
 
