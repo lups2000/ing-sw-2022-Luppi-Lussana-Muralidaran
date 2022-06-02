@@ -34,14 +34,24 @@ public interface Observer4View {
     void sendNumPlayers(int numPlayers);
 
     /**
-     * This method sends a message to the server to communicate which assistant card he chose
+     * This method sends a message to the server to communicate which assistant card has been chosen
      *
      * @param chosenCard the assistant card chosen
      */
     void sendAssistantCard(AssistantCard chosenCard);
 
+    /**
+     * This method sends a message to the server to communicate which character card has been chosen
+     *
+     * @param idCharacterCard the character card chosen
+     */
     void sendCharacterCard(Integer idCharacterCard);
 
+    /**
+     * This method sends a message to the server to send a generic textual message
+     *
+     * @param message the string of the message
+     */
     void sendGenericMessage(String message);
 
     /**

@@ -343,8 +343,6 @@ public class TurnController implements Serializable {
      * @param currentView the virtual view of the player who just played the character card
      */
     private void playCharacterCard(VirtualView currentView,Player player) throws NoPawnPresentException, TooManyPawnsPresent {
-        //far vedere l'effetto della carta anche agli altri giocatori? TODO
-
         switch (currentCharacterCard.getType()) {
             //for these character cards no choice from the user is required
             case NO_COUNT_TOWER, CONTROL_ON_PROFESSOR, TWO_ADDITIONAL_POINTS, MOVE_MORE_MOTHER_NATURE -> currentCharacterCard.effect();
@@ -362,7 +360,11 @@ public class TurnController implements Serializable {
                 } catch (NoTowersException | TooManyTowersException e) {
                     e.printStackTrace();
                 }
-                //mostro il risultato dell'influenza sull'isola, con gli observer del model fa già in automatico?
+                notifyOtherPlayers(player.getNickname() + " chose to compute the influence on the island with index " + currentIslandIndex,player);
+
+                for(VirtualView virtualView : virtualViewMap.values()){
+                    virtualView.showIslands(model.getIslands());
+                }
             }
 
             //the user chooses an island
@@ -378,38 +380,52 @@ public class TurnController implements Serializable {
                 } catch (NoNoEntryTilesException e) {
                     e.printStackTrace();
                 }
-                //mostro il risultato dell'influenza sull'isola, con gli observer del model fa già in automatico?
+                notifyOtherPlayers(player.getNickname() + " chose to put a no entry tile on the island with index " + currentIslandIndex,player);
+
+                for(VirtualView virtualView : virtualViewMap.values()){
+                    virtualView.showIslands(model.getIslands());
+                }
             }
 
             //the user chooses a color
             case COLOR_TO_STUDENT_BAG -> {
                 ColorToStudentBag colorToStudentBag = (ColorToStudentBag) currentCharacterCard;
                 currentView.showSchoolBoardPlayers(model.getPlayers());
-                Map<PawnColor,Integer> students = new HashMap<>();
-                students.put(PawnColor.RED,1);
-                students.put(PawnColor.BLUE,1);
-                students.put(PawnColor.YELLOW,1);
-                students.put(PawnColor.PINK,1);
-                students.put(PawnColor.GREEN,1);
-                currentView.askColor(students);
+                Map<PawnColor,Integer> availableStudents = new HashMap<>();
+                availableStudents.put(PawnColor.RED,1);
+                availableStudents.put(PawnColor.BLUE,1);
+                availableStudents.put(PawnColor.YELLOW,1);
+                availableStudents.put(PawnColor.PINK,1);
+                availableStudents.put(PawnColor.GREEN,1);
+                currentView.askColor(availableStudents);
                 waitAnswer();
                 colorToStudentBag.effect(currentStudent);
                 model.allocateProfessors();
+
+                String colorToString = colorToString(currentStudent);
+
+                notifyOtherPlayers(player.getNickname() + " chose the color " + colorToString,player);
+                notifyOtherPlayers("\033[38;2;255;255;0m",player);
             }
 
             //the user chooses a color
             case COLOR_NO_INFLUENCE -> {
                 ColorNoInfluence colorNoInfluence = (ColorNoInfluence) currentCharacterCard;
                 currentView.showSchoolBoardPlayers(model.getPlayers());
-                Map<PawnColor,Integer> students = new HashMap<>();
-                students.put(PawnColor.RED,1);
-                students.put(PawnColor.BLUE,1);
-                students.put(PawnColor.YELLOW,1);
-                students.put(PawnColor.PINK,1);
-                students.put(PawnColor.GREEN,1);
-                currentView.askColor(students);
+                Map<PawnColor,Integer> availableStudents = new HashMap<>();
+                availableStudents.put(PawnColor.RED,1);
+                availableStudents.put(PawnColor.BLUE,1);
+                availableStudents.put(PawnColor.YELLOW,1);
+                availableStudents.put(PawnColor.PINK,1);
+                availableStudents.put(PawnColor.GREEN,1);
+                currentView.askColor(availableStudents);
                 waitAnswer();
                 colorNoInfluence.effect(currentStudent);
+
+                String colorToString = colorToString(currentStudent);
+
+                notifyOtherPlayers(player.getNickname() + " chose the color " + colorToString,player);
+                notifyOtherPlayers("\033[38;2;255;255;0m",player);
             }
 
             //the user chooses a color
@@ -421,6 +437,13 @@ public class TurnController implements Serializable {
                 waitAnswer();
                 studentToDining.effect(currentStudent);
                 model.allocateProfessors();
+
+                List<Player> players = null;
+                players.add(0,player);
+
+                for(VirtualView virtualView : virtualViewMap.values()){
+                    virtualView.showSchoolBoardPlayers(players);
+                }
             }
 
             //the user chooses an island and a color
@@ -434,6 +457,15 @@ public class TurnController implements Serializable {
                 waitAnswer();
                 Island island = model.getIslands().get(currentIslandIndex);
                 oneStudentToIsland.effect(island,currentStudent);
+
+                String colorToString = colorToString(currentStudent);
+
+                notifyOtherPlayers(player.getNickname() + " put a " + colorToString + " student on the island with index " + currentIslandIndex,player);
+                notifyOtherPlayers("\033[38;2;255;255;0m",player);
+
+                for(VirtualView virtualView : virtualViewMap.values()){
+                    virtualView.showIslands(model.getIslands());
+                }
             }
 
             case SWITCH_STUDENTS -> {
@@ -485,6 +517,13 @@ public class TurnController implements Serializable {
 
                 switchStudents.effect(fromCharacterCard,fromEntrance);
                 model.allocateProfessors();
+
+                List<Player> players = null;
+                players.add(0,player);
+
+                for(VirtualView virtualView : virtualViewMap.values()){
+                    virtualView.showSchoolBoardPlayers(players);
+                }
             }
 
             case SWITCH_DINING_WAITING -> {
@@ -536,10 +575,44 @@ public class TurnController implements Serializable {
                 }
                 switchDiningWaiting.effect(exWaiting,exDining);
                 model.allocateProfessors();
+
+                List<Player> players = null;
+                players.add(0,player);
+
+                for(VirtualView virtualView : virtualViewMap.values()){
+                    virtualView.showSchoolBoardPlayers(players);
+                }
             }
         }
     }
 
+    /**
+     * this method converts an object PawnColor into a colored string
+     *
+     * @param pawnColor the pawncolor to convert
+     * @return the string converted
+     */
+    private String colorToString(PawnColor pawnColor){
+        String colorToString = null;
+        switch (pawnColor){
+            case RED -> {
+                colorToString = pawnColor.getVisualColor()+"red"+Colors.RESET;
+            }
+            case BLUE -> {
+                colorToString = pawnColor.getVisualColor()+"blue"+Colors.RESET;
+            }
+            case PINK -> {
+                colorToString = pawnColor.getVisualColor()+"pink"+Colors.RESET;
+            }
+            case GREEN -> {
+                colorToString = pawnColor.getVisualColor()+"green"+Colors.RESET;
+            }
+            case YELLOW -> {
+                colorToString = pawnColor.getVisualColor() + "yellow" + Colors.RESET;
+            }
+        }
+        return colorToString;
+    }
 
     /**
      * This is the method which represents the first step of the action phase where the player must move X students
