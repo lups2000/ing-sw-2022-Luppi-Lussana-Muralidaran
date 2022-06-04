@@ -6,6 +6,8 @@ import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.View.VirtualView;
 import it.polimi.ingsw.network.Messages.ClientSide.*;
 import it.polimi.ingsw.network.Messages.Message;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
 
@@ -15,8 +17,8 @@ import java.util.Map;
  */
 public class MessageController implements Serializable {
 
-    //id serialization
-
+    @Serial
+    private static final long serialVersionUID=-2882272847827482742L;
     private final MainController mainController;
     private transient Map<String, VirtualView> virtualViewsMap;
     private final Game model;

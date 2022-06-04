@@ -466,10 +466,11 @@ public class TurnController implements Serializable {
                     virtualView.showIslands(model.getIslands());
                 }
             }
-
+            //questo va riguardato,ha qualche problema
             case SWITCH_STUDENTS -> {
                 SwitchStudents switchStudents = (SwitchStudents) currentCharacterCard;
                 currentView.showSchoolBoardPlayers(model.getPlayers());
+                //io gli mostrerei l'entrance e basta,mi sembra eccessivo mostrare tutte le schoolboard dei giocatori
                 Map<PawnColor,Integer> availableWaiting = player.getSchoolBoard().getStudentsWaiting();
                 Map<PawnColor,Integer> availableCard = switchStudents.getStudents();
                 Map<PawnColor,Integer> fromEntrance = new HashMap<>();
@@ -485,7 +486,7 @@ public class TurnController implements Serializable {
                 fromCharacterCard.put(PawnColor.PINK,0);
                 fromCharacterCard.put(PawnColor.GREEN,0);
                 int i;
-                currentView.showSchoolBoardPlayers(model.getPlayers());
+                //currentView.showSchoolBoardPlayers(model.getPlayers()); gia fatto sopra
 
                 currentView.showGenericMessage("Select UP TO 3 students to pick from your entrance: ");
                 for(i=0;i<3;i++){
@@ -653,7 +654,7 @@ public class TurnController implements Serializable {
                 if(currentCharacterCard != null) {
                     try {
                         playCharacterCard(virtualViewCurrentPlayer,player);
-                        virtualViewCurrentPlayer.showGenericMessage("Character card activated succesfully!");
+                        //virtualViewCurrentPlayer.showGenericMessage("Character card activated succesfully!"); commenterei,esce gia fuori che a carta X è stata giocata da player Y
                     } catch (NoPawnPresentException | TooManyPawnsPresent e) {
                         e.printStackTrace();
                     }

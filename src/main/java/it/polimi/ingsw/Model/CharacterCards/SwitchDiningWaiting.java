@@ -26,14 +26,22 @@ public class SwitchDiningWaiting extends CharacterCard implements Serializable {
         for(Player player : game.getPlayers()){
             if((player.getStatus()).equals(PlayerStatus.PLAYING_ACTION)){
                 for(PawnColor color : PawnColor.values()){
+                    /*
                     if(exWaiting.get(color) == 1){
                         player.getSchoolBoard().moveStudToDining(color);
                     }
                     else if(exWaiting.get(color) == 2){
                         player.getSchoolBoard().moveStudToDining(color);
                         player.getSchoolBoard().moveStudToDining(color);
+                    }*/
+                    while(exWaiting.get(color)>0){
+                        player.getSchoolBoard().moveStudToDining(color);
                     }
-
+                    while(exDining.get(color)>0){
+                        player.getSchoolBoard().removeStudents(color);
+                        player.getSchoolBoard().addStudToWaiting(color);
+                    }
+                    /*
                     if(exDining.get(color) == 1){
                         player.getSchoolBoard().removeStudents(color);
                         player.getSchoolBoard().addStudToWaiting(color);
@@ -43,7 +51,7 @@ public class SwitchDiningWaiting extends CharacterCard implements Serializable {
                         player.getSchoolBoard().removeStudents(color);
                         player.getSchoolBoard().addStudToWaiting(color);
                         player.getSchoolBoard().addStudToWaiting(color);
-                    }
+                    }*/
                 }
             }
         }

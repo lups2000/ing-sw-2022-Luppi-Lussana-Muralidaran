@@ -38,8 +38,6 @@ public class Player implements Serializable {
             case 2 -> this.colorTower = ColorTower.GRAY;
         }
         this.playerStatus = PlayerStatus.WAITING;
-        //this.schoolBoard = schoolBoard;
-        //this.deckAssistantCard = new DeckAssistantCard(seed);
         this.twoAdditionalPoints = false;
         this.controlOnProfessor = false;
     }

@@ -450,6 +450,7 @@ public class Cli extends Observable4View implements View {
     @Override
     public void showSchoolBoardPlayers(List<Player> players){
         out.print(Colors.RESET);
+        out.println("\nSCHOOLBOARDS:\n");
         for(Player player : players){
             out.println("\033[38;2;255;255;0m"+player.getNickname()+"'s school board:"+Colors.RESET);
             out.println("Dining Room:");

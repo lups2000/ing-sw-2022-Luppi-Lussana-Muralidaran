@@ -21,7 +21,8 @@ public class StoreGame implements Serializable {
 
     public void saveMatch(MainController mainController){
 
-        try(FileOutputStream fileOutputStream = new FileOutputStream("savedGame.txt")){
+        this.mainController=mainController;
+        try(FileOutputStream fileOutputStream = new FileOutputStream("savedGame.bin")){
 
             ObjectOutputStream objectOutputStream=new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(mainController);
@@ -34,7 +35,7 @@ public class StoreGame implements Serializable {
 
     public MainController getPreviousMatch(){
 
-        try(FileInputStream fileInputStream =new FileInputStream("savedGame.txt")){
+        try(FileInputStream fileInputStream =new FileInputStream("savedGame.bin")){
 
             ObjectInputStream objectInputStream=new ObjectInputStream(fileInputStream);
             mainController=(MainController) objectInputStream.readObject();

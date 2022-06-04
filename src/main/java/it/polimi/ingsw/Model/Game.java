@@ -311,7 +311,7 @@ public class Game extends Observable implements Serializable {
             }
             else{
                 notifyObserver(new Generic("SERVER","\nISLANDS UPDATE:\n"));
-                notifyObserver(new Generic("SERVER", "<  No Player has influence on the island with index: "+islandIndex+"  >\n"));
+                notifyObserver(new Generic("SERVER", "<  No Player has more influence on the island with index: "+islandIndex+"  >\n"));
                 notifyObserver(new Islands(islands));
             }
         }

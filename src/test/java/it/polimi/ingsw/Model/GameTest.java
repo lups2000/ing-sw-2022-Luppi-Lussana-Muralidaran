@@ -7,6 +7,9 @@ import it.polimi.ingsw.Model.Exceptions.TooManyTowersException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -650,6 +653,37 @@ class GameTest {
         assertEquals(game.getPlayers().get(0).getStatus(),PlayerStatus.WINNER); //Teo wins because has more professors
         assertEquals(game.getPlayers().get(1).getStatus(),PlayerStatus.WAITING);
 
+    }
+
+    @Test
+    void isNickAvailable(){
+        Game game=new Game();
+        game.addPlayer("Teo");
+        game.addPlayer("Paolo");
+
+        assertFalse(game.isNickNameAvailable("Teo"));
+        assertTrue(game.isNickNameAvailable("Pradee"));
+    }
+
+    @Test
+    void getPlayerByNickName(){
+        Game game=new Game();
+        game.addPlayer("Teo");
+        game.addPlayer("Paolo");
+
+        assertEquals(game.getPlayerByNickName("Teo").getId(),game.getPlayers().get(0).getId());
+    }
+
+    @Test
+    void getAllPlayersNickName(){
+        Game game=new Game();
+        List<String> nickNames=new ArrayList<>();
+        nickNames.add("Paolo");
+        nickNames.add("Teo");
+        game.addPlayer("Teo");
+        game.addPlayer("Paolo");
+
+        assertTrue(game.getAllPlayersNickName().containsAll(nickNames));
     }
 
 }
