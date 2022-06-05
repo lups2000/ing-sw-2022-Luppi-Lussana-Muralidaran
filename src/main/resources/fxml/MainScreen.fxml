@@ -13,7 +13,7 @@
          <children>
             <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Button layoutX="210.0" layoutY="182.0" mnemonicParsing="false" text="Click here to start">
+                  <Button fx:id="startbutton" layoutX="210.0" layoutY="182.0" mnemonicParsing="false" text="Click here to start">
                      <font>
                         <Font name="Comic Sans MS Bold Italic" size="17.0" />
                      </font>
@@ -22,8 +22,8 @@
             </Pane>
          </children>
          <stylesheets>
-            <URL value="@../Images/CSS%20Files/LoadingScreenBG.css" />
-            <URL value="@../Images/CSS%20Files/LoadingScreenBG.css" />
+            <URL value="@../Images/CSS/LoadingScreenBG.css" />
+            <URL value="@../Images/CSS/LoadingScreenBG.css" />
          </stylesheets>
       </VBox>
    </children>

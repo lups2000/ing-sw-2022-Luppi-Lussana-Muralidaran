@@ -1,4 +1,4 @@
-package it.polimi.ingsw.View.Gui;
+package it.polimi.ingsw.View.Gui.Scenes;
 import it.polimi.ingsw.network.server.Server;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,10 +10,9 @@ import java.io.IOException;
 
 /**
  * @author Pradeeban Muralidaran
- * */
-public class Gui extends Application {
+ */
+public class LoadingScreen extends Application {
 
-    //Button button;
     Stage window;
     Scene scene1, scene2;
 
@@ -27,7 +26,6 @@ public class Gui extends Application {
         FXMLLoader fxmlLoader=new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/fxml/MainScreen.fxml"));
         Parent root=null;
-
         try{
             root=fxmlLoader.load();
         }
