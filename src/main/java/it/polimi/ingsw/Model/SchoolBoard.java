@@ -4,6 +4,8 @@ import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Model.Exceptions.NoTowersException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.Model.Exceptions.TooManyTowersException;
+import it.polimi.ingsw.network.Messages.ServerSide.Generic;
+import it.polimi.ingsw.observer.Observable;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -14,7 +16,7 @@ import java.util.Map;
  * Class SchoolBoard
  * @author Matteo Luppi,Paolo Lussana
  */
-public class SchoolBoard implements Serializable {
+public class SchoolBoard extends Observable implements Serializable {
     @Serial
     private static final long serialVersionUID = 7151174979897245763L;
     private Map<PawnColor, Boolean> professors;
@@ -111,6 +113,7 @@ public class SchoolBoard implements Serializable {
             numStudentsWaiting--;
             if(studentsDining.get(pawnColor)%3 == 0 && experts){
                 numCoins++;
+                notifyObserver(new Generic("SERVER","\nNew coin added!"));
             }
         }
     }

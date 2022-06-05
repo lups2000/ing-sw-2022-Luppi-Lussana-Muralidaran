@@ -349,8 +349,9 @@ public class TurnController implements Serializable {
             //the user chooses the island
             case CHOOSE_ISLAND -> {
                 ChooseIsland chooseIsland = (ChooseIsland) currentCharacterCard;
-                currentView.showSchoolBoardPlayers(model.getPlayers());
-                currentView.showIslands(model.getIslands());
+                //currentView.showSchoolBoardPlayers(model.getPlayers());
+                //currentView.showIslands(model.getIslands());
+                currentView.showGenericMessage("You have chosen to compute the influence on an Island...");
                 currentView.askIsland(model.getIslands());
                 waitAnswer();
                 Island chosenIsland = model.getIslands().get(currentIslandIndex);
@@ -361,16 +362,18 @@ public class TurnController implements Serializable {
                 }
                 notifyOtherPlayers(player.getNickname() + " chose to compute the influence on the island with index " + currentIslandIndex,player);
 
+                /*
                 for(VirtualView virtualView : virtualViewMap.values()){
                     virtualView.showIslands(model.getIslands());
-                }
+                }*/
             }
 
             //the user chooses an island
             case PUT_NO_ENTRY_TILES -> {
                 PutNoEntryTiles putNoEntryTiles = (PutNoEntryTiles) currentCharacterCard;
-                currentView.showSchoolBoardPlayers(model.getPlayers());
-                currentView.showIslands(model.getIslands());
+                //currentView.showSchoolBoardPlayers(model.getPlayers());
+                //currentView.showIslands(model.getIslands());
+                currentView.showGenericMessage("You have chosen to put a NoEntryTile on an Island...");
                 currentView.askIsland(model.getIslands());
                 waitAnswer();
                 Island chosenIsland = model.getIslands().get(currentIslandIndex);
@@ -381,9 +384,10 @@ public class TurnController implements Serializable {
                 }
                 notifyOtherPlayers(player.getNickname() + " chose to put a no entry tile on the island with index " + currentIslandIndex,player);
 
+                /*
                 for(VirtualView virtualView : virtualViewMap.values()){
                     virtualView.showIslands(model.getIslands());
-                }
+                }*/
             }
 
             //the user chooses a color
@@ -398,13 +402,13 @@ public class TurnController implements Serializable {
                 availableStudents.put(PawnColor.GREEN,1);
                 currentView.askColor(availableStudents);
                 waitAnswer();
-                colorToStudentBag.effect(currentStudent);
-                model.allocateProfessors();
 
                 String colorToString = colorToString(currentStudent);
-
                 notifyOtherPlayers(player.getNickname() + " chose the color " + colorToString,player);
                 notifyOtherPlayers("\033[38;2;255;255;0m",player);
+
+                colorToStudentBag.effect(currentStudent);
+                model.allocateProfessors();
             }
 
             //the user chooses a color
@@ -419,15 +423,17 @@ public class TurnController implements Serializable {
                 availableStudents.put(PawnColor.GREEN,1);
                 currentView.askColor(availableStudents);
                 waitAnswer();
-                colorNoInfluence.effect(currentStudent);
 
                 String colorToString = colorToString(currentStudent);
-
                 notifyOtherPlayers(player.getNickname() + " chose the color " + colorToString,player);
                 notifyOtherPlayers("\033[38;2;255;255;0m",player);
+
+                colorNoInfluence.effect(currentStudent);
+
             }
 
             //the user chooses a color
+            //TODO arrivato qui a controllare
             case STUDENT_TO_DINING -> {
                 StudentToDining studentToDining = (StudentToDining) currentCharacterCard;
                 currentView.showStudents(studentToDining.getStudents());
@@ -767,8 +773,11 @@ public class TurnController implements Serializable {
             if(player.getStatus()==PlayerStatus.WINNER){
                 winner=player;
                 virtualViewMap.get(player.getNickname()).showWinMessage(player);
+                break;
             }
-            else{
+        }
+        for(Player player : model.getPlayers()){
+            if(player.getId()!= winner.getId()){
                 virtualViewMap.get(player.getNickname()).showLoseMessage(winner);
             }
         }

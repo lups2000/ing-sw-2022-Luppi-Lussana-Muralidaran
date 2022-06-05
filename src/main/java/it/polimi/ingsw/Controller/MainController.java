@@ -241,7 +241,6 @@ public class MainController implements Serializable {
             virtualViewsMap.put(nickname,virtualView);
             nickNameList.add(nickname);
             game.addObserver(virtualView);
-            //        game.getBoard().addObserver(virtualView);
             virtualView.showLoginInfo("SERVER",true,true);
             game.addPlayer(nickname); //add the player to the model
 
@@ -255,7 +254,6 @@ public class MainController implements Serializable {
             virtualViewsMap.put(nickname,virtualView);
             nickNameList.add(nickname);
             game.addObserver(virtualView);
-            //        game.getBoard().addObserver(virtualView);
             game.addPlayer(nickname); //add the player to the model
             virtualView.showLoginInfo("SERVER",true,true);
 

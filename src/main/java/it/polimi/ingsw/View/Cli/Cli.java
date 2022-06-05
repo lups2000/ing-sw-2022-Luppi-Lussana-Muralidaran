@@ -17,7 +17,7 @@ import java.util.*;
 public class Cli extends Observable4View implements View {
     private final PrintStream out;
     private static final String CANCEL_INPUT = "User input has been canceled";
-    private static final String INVALID_INPUT = "The entered input is not valid!";
+    private static final String INVALID_INPUT = Colors.RED_PAWN+"The entered input is not valid!"+"\033[38;2;255;255;0m";
     private String welcomeMessage = "\n\n\033[38;2;255;255;0m Hey there! Welcome to Eriantys! ";
 
 
@@ -194,7 +194,7 @@ public class Cli extends Observable4View implements View {
                     id=Integer.parseInt(readLine.nextLine());
                 }
                 catch (NumberFormatException e){
-                    out.println(INVALID_INPUT);
+                    id=-1;
                     clearCli();
                 }
 
@@ -243,7 +243,7 @@ public class Cli extends Observable4View implements View {
                     id= Integer.parseInt(readLine.nextLine());
                 }
                 catch (NumberFormatException e){
-                    out.println(INVALID_INPUT);
+                    id=-1;
                     clearCli();
                 }
 
@@ -281,7 +281,7 @@ public class Cli extends Observable4View implements View {
                 inputSteps=Integer.parseInt(readLine.nextLine());
             }
             catch (NumberFormatException e){
-                out.println(INVALID_INPUT);
+                inputSteps=-1;
                 clearCli();
             }
             if (inputSteps <= maxSteps && inputSteps > 0) {
@@ -535,7 +535,7 @@ public class Cli extends Observable4View implements View {
      */
     @Override
     public void showLoseMessage(Player winner) {
-        out.println("Sorry, you have lost the game! The winner is " + winner.getNickname() + "!Game finished.");
+        out.println("\n\nSorry but you have lost! The winner is " + winner.getNickname() + "!Game finished.");
         System.exit(0);
     }
 
@@ -712,8 +712,7 @@ public class Cli extends Observable4View implements View {
                 clearCli();
             }
         }while(!validIndex);
-
-        out.print("\033[38;2;255;255;0m");
+        //out.print("\033[38;2;255;255;0m");
         int finalIndexIsland = indexIsland;
         notifyObserver(obs->obs.sendChosenIsland(finalIndexIsland));
     }

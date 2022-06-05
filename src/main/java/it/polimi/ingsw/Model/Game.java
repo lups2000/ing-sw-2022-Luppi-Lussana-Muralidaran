@@ -434,7 +434,7 @@ public class Game extends Observable implements Serializable {
                 player.setControlOnProfessor(false);
             }
         }
-        notifyObserver(new Generic("SERVER","\nUPDATE SCHOOLBOARD:\n"));
+        notifyObserver(new Generic("SERVER","\nUPDATE SCHOOLBOARD:"));
         notifyObserver(new SchoolBoardPlayers(players));
     }
 
