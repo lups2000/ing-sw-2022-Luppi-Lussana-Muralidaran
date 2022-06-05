@@ -311,7 +311,7 @@ public class Game extends Observable implements Serializable {
             }
             else{
                 notifyObserver(new Generic("SERVER","\nISLANDS UPDATE:\n"));
-                notifyObserver(new Generic("SERVER", "<  No Player has more influence on the island with index: "+islandIndex+"  >\n"));
+                notifyObserver(new Generic("SERVER", "<  No Change on the island with index: "+islandIndex+"  >\n"));
                 notifyObserver(new Islands(islands));
             }
         }
@@ -328,18 +328,19 @@ public class Game extends Observable implements Serializable {
     private void checkArchipelago(Island island){
         int index=island.getIndex();
         if(islands.get(index).getTower().equals(islands.get((index+1)%(Island.getNumIslands())).getTower())){
-            islands.get(index).setMotherNature(islands.get((index+1)%(Island.getNumIslands())).isMotherNature());
+            //islands.get(index).setMotherNature(islands.get((index+1)%(Island.getNumIslands())).isMotherNature());
+            islands.get(index).setMotherNature(true);
             islands.get((index+1)%(Island.getNumIslands())).setMotherNature(false);
             islands.get(index).merge(islands.get((index+1)%(Island.getNumIslands())));
             this.motherNature=index;
-            notifyObserver(new Generic("SERVER","<  Merge between island with index '"+index+"' and island with index '"+(index+1)%(Island.getNumIslands())+"'  >\n"));
+            notifyObserver(new Generic("SERVER","<  Merge between island with index '"+index+"' and island with index '"+(index+1)%(Island.getNumIslands()+1)+"'  >\n"));
             updateIndexes((index+1)%(Island.getNumIslands()));
         }
         if(islands.get(index).getTower().equals(islands.get((index-1+Island.getNumIslands())%(Island.getNumIslands())).getTower())){
-            islands.get((index-1+Island.getNumIslands())%(Island.getNumIslands())).setMotherNature(islands.get(index).isMotherNature());
+            islands.get((index-1+Island.getNumIslands())%(Island.getNumIslands())).setMotherNature(true);
             islands.get(index).setMotherNature(false);
             islands.get((index-1+Island.getNumIslands())%(Island.getNumIslands())).merge(islands.get(index));
-            this.motherNature=index-1;
+            this.motherNature=(index-1+Island.getNumIslands())%(Island.getNumIslands());
             notifyObserver(new Generic("SERVER","<  Merge between island with index '"+(index-1+Island.getNumIslands())%(Island.getNumIslands())+"' and island with index '"+index+"'  >\n"));
             updateIndexes(index);
         }

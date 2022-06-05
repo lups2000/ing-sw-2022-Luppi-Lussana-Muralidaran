@@ -8,6 +8,7 @@ import it.polimi.ingsw.network.Messages.ClientSide.*;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.server.Server;
 
+import javax.sound.midi.Soundbank;
 import java.io.Serializable;
 import java.util.*;
 
@@ -348,17 +349,11 @@ public class MainController implements Serializable {
         //game.getBoard().removeObserver(toRemove);
     }
 
-    /*
-    /**
-     * method to call at the end of the game to show the final messages to each player (a win or a lose message) and to end the game
-     */
-
     public void endedGame(){
 
-        //devo terminare tutto e cancellare il contenuto del file savedGame
-        /*
-        riga 339 snegrini
-         */
+        StoreGame storeGame=new StoreGame(this);
+        storeGame.deleteGame();
+
     }
 
     public void replaceMainController(MainController mainControllerPreviousMatch){
@@ -372,14 +367,22 @@ public class MainController implements Serializable {
         List<CharacterCard> characterCards=mainControllerPreviousMatch.getGame().getCharacterCards();
         GameState gameState=mainControllerPreviousMatch.getGame().getStatus();
         StudentBag studentBag=mainControllerPreviousMatch.getGame().getStudentBag();
-        int motherNature=mainControllerPreviousMatch.getGame().getMotherNature();
         int noEntryTilesCounter=mainControllerPreviousMatch.getGame().getNoEntryTilesCounter();
         Map<Player,AssistantCard> currentHand=mainControllerPreviousMatch.getGame().getCurrentHand();
+        int motherNature=0;
+        for(Island island :islands){
+            if(island.isMotherNature()){
+                motherNature= island.getIndex();
+                break;
+            }
+        }
 
+        //System.out.println("MainController: MN-->"+motherNature);
 
         this.game.replaceGame(players,numMaxPlayers,expertVariant,islands,cloudTiles,characterCards,gameState,studentBag,motherNature,currentHand,seedsAvailable,noEntryTilesCounter);
         Island.setNumIslands(islands.size());
-
+        //System.out.println("MainController: NumIsland-->"+Island.getNumIslands());
+        //System.out.println("Game Now: MN-->"+game.getMotherNature());
         this.turnController=mainControllerPreviousMatch.getTurnController();
         this.turnController.setModel(this.game);
         this.turnController.setVirtualViewMap(this.virtualViewsMap);

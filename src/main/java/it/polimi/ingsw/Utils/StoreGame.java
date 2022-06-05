@@ -4,6 +4,7 @@ import it.polimi.ingsw.Controller.MainController;
 import it.polimi.ingsw.network.server.Server;
 
 import java.io.*;
+import java.nio.file.Files;
 
 /**
  * This class allows to store and to restore a single match. (Persistence)
@@ -46,6 +47,16 @@ public class StoreGame implements Serializable {
             Server.LOGGER.severe("File not Found.");
         }
         return null;
+    }
+
+    public void deleteGame(){
+        File fileToDelete=new File("savedGame.bin");
+        try{
+            Files.deleteIfExists(fileToDelete.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+            Server.LOGGER.info("File deleted!");
+        }
     }
 
     private String getJarDirectory(){

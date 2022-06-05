@@ -696,7 +696,6 @@ public class TurnController implements Serializable {
                     }
                 }
                 else{ //non ci vado mai teoricamente
-                    //messaggio di errore tramite la view
                     i--; //cosi da rifare ancora la mossa
                 }
             }
@@ -716,7 +715,10 @@ public class TurnController implements Serializable {
             waitAnswer();
 
             try {
+                System.out.println("Model: "+model.getMotherNature());
+                System.out.println("current steps: "+currentStepsMotherNature);
                 int newIndex=(model.getMotherNature()+currentStepsMotherNature)%Island.getNumIslands();
+                System.out.println("New index: "+newIndex);
                 model.moveMotherNature(model.getIslands().get(newIndex));
             } catch (TooManyTowersException | NoTowersException e) {
                 e.printStackTrace();
@@ -743,8 +745,6 @@ public class TurnController implements Serializable {
             } catch (TooManyPawnsPresent e) {
                 e.printStackTrace();
             }
-            //virtualViewPlayer.showGenericMessage("\nYour schoolboard...\n");
-            //virtualViewPlayer.showSchoolBoard(player.getSchoolBoard());
             player.setStatus(PlayerStatus.WAITING);
             turnPhase = TurnPhase.PLANNING2;//in order to come back to the next player's action
         }
@@ -762,15 +762,18 @@ public class TurnController implements Serializable {
 
     private void endGame(){
         //show to the players the result of the match
+        Player winner=null;
         for(Player player : model.getPlayers()){
             if(player.getStatus()==PlayerStatus.WINNER){
+                winner=player;
                 virtualViewMap.get(player.getNickname()).showWinMessage(player);
             }
             else{
-                virtualViewMap.get(player.getNickname()).showLoseMessage(player);
+                virtualViewMap.get(player.getNickname()).showLoseMessage(winner);
             }
         }
         model.changeStatus(GameState.ENDED);
+        mainController.endedGame();
         Server.LOGGER.info("Game Ended!Server ready for a new match...");
     }
 

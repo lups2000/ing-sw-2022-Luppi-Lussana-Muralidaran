@@ -317,7 +317,7 @@ public class Cli extends Observable4View implements View {
                     idCloudTile= Integer.parseInt(readLine.nextLine());
                 }
                 catch (NumberFormatException e){
-                    out.println(INVALID_INPUT);
+                    idCloudTile=-1;
                     clearCli();
                 }
 
@@ -390,7 +390,7 @@ public class Cli extends Observable4View implements View {
                         idCharacterCard=Integer.parseInt(readLine.nextLine());
                     }
                     catch (NumberFormatException e){
-                        out.println(INVALID_INPUT);
+                        idCharacterCard=-1;
                         clearCli();
                     }
                     if(idCharacterCard<=0 || idCharacterCard>characterCards.size()){
@@ -658,25 +658,25 @@ public class Cli extends Observable4View implements View {
                 out.println(INVALID_INPUT);
                 clearCli();
             }
-
-            do{
-                out.println("Please type the corresponding index to select one of the Islands: ");
-                this.showIslands(islands);
-                try{
-                    indexIsland=Integer.parseInt(readLine.nextLine());
-                }catch (NumberFormatException e){
-                    out.println(INVALID_INPUT);
-                    clearCli();
-                }
-                if(indexIsland>=0 && indexIsland<islands.size()){ //da controllare bene qua
-                    validIndex=true;
-                }
-                else{
-                    out.println(INVALID_INPUT);
-                    clearCli();
-                }
-            }while(!validIndex);
-
+            if (validInput) {
+                do{
+                    out.println("Please type the corresponding index to select one of the Islands: ");
+                    this.showIslands(islands);
+                    try{
+                        indexIsland=Integer.parseInt(readLine.nextLine());
+                    }catch (NumberFormatException e){
+                        indexIsland=-1;
+                        clearCli();
+                    }
+                    if(indexIsland>=0 && indexIsland<islands.size()){ //da controllare bene qua
+                        validIndex=true;
+                    }
+                    else{
+                        out.println(INVALID_INPUT);
+                        clearCli();
+                    }
+                }while(!validIndex);
+            }
         }while(!validInput);
         out.print("\033[38;2;255;255;0m");
         PawnColor finalPawnColorChosen = pawnColorChosen;
@@ -701,7 +701,7 @@ public class Cli extends Observable4View implements View {
             try{
                 indexIsland=Integer.parseInt(readLine.nextLine());
             }catch (NumberFormatException e){
-                out.println(INVALID_INPUT);
+                indexIsland=-1;
                 clearCli();
             }
             if(indexIsland>=0 && indexIsland<islands.size()){ //da controllare bene qua
