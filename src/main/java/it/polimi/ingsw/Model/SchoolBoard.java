@@ -16,7 +16,7 @@ import java.util.Map;
  * Class SchoolBoard
  * @author Matteo Luppi,Paolo Lussana
  */
-public class SchoolBoard extends Observable implements Serializable {
+public class SchoolBoard implements Serializable {
     @Serial
     private static final long serialVersionUID = 7151174979897245763L;
     private Map<PawnColor, Boolean> professors;
@@ -113,7 +113,6 @@ public class SchoolBoard extends Observable implements Serializable {
             numStudentsWaiting--;
             if(studentsDining.get(pawnColor)%3 == 0 && experts){
                 numCoins++;
-                notifyObserver(new Generic("SERVER","\nNew coin added!"));
             }
         }
     }

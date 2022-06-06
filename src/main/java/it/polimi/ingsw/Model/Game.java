@@ -429,11 +429,13 @@ public class Game extends Observable implements Serializable {
                 }
             }
         }
+
+        /* non va bene perche cosi l'effetto finisce dopo aver mosso uno studente
         for (Player player : players){
             if (player.getControlOnProfessor()){
                 player.setControlOnProfessor(false);
             }
-        }
+        }*/
         notifyObserver(new Generic("SERVER","\nUPDATE SCHOOLBOARD:"));
         notifyObserver(new SchoolBoardPlayers(players));
     }

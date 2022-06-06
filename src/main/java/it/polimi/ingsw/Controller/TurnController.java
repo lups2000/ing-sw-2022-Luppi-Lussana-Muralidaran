@@ -344,7 +344,11 @@ public class TurnController implements Serializable {
     private void playCharacterCard(VirtualView currentView,Player player) throws NoPawnPresentException, TooManyPawnsPresent {
         switch (currentCharacterCard.getType()) {
             //for these character cards no choice from the user is required
-            case NO_COUNT_TOWER, CONTROL_ON_PROFESSOR, TWO_ADDITIONAL_POINTS, MOVE_MORE_MOTHER_NATURE -> currentCharacterCard.effect();
+            case NO_COUNT_TOWER, CONTROL_ON_PROFESSOR, TWO_ADDITIONAL_POINTS, MOVE_MORE_MOTHER_NATURE ->
+                    {
+                        player.getSchoolBoard().decreaseNumCoins(currentCharacterCard.getCost()); //da verificare
+                        currentCharacterCard.effect();
+                    }
 
             //the user chooses the island
             case CHOOSE_ISLAND -> {
@@ -355,14 +359,13 @@ public class TurnController implements Serializable {
                 currentView.askIsland(model.getIslands());
                 waitAnswer();
                 Island chosenIsland = model.getIslands().get(currentIslandIndex);
+                player.getSchoolBoard().decreaseNumCoins(chooseIsland.getCost());
                 try {
                     chooseIsland.effect(chosenIsland);
-                    player.getSchoolBoard().decreaseNumCoins(chooseIsland.getCost());
                 } catch (NoTowersException | TooManyTowersException e) {
                     e.printStackTrace();
                 }
                 notifyOtherPlayers(player.getNickname() + " chose to compute the influence on the island with index " + currentIslandIndex,player);
-
                 /*
                 for(VirtualView virtualView : virtualViewMap.values()){
                     virtualView.showIslands(model.getIslands());
@@ -378,9 +381,9 @@ public class TurnController implements Serializable {
                 currentView.askIsland(model.getIslands());
                 waitAnswer();
                 Island chosenIsland = model.getIslands().get(currentIslandIndex);
+                player.getSchoolBoard().decreaseNumCoins(putNoEntryTiles.getCost());
                 try {
                     putNoEntryTiles.effect(chosenIsland);
-                    player.getSchoolBoard().decreaseNumCoins(putNoEntryTiles.getCost());
                 } catch (NoNoEntryTilesException e) {
                     e.printStackTrace();
                 }
@@ -405,12 +408,10 @@ public class TurnController implements Serializable {
                 currentView.askColor(availableStudents);
                 waitAnswer();
 
-                String colorToString = colorToString(currentStudent);
-                notifyOtherPlayers(player.getNickname() + " chose the color " + colorToString,player);
-                notifyOtherPlayers("\033[38;2;255;255;0m",player);
+                player.getSchoolBoard().decreaseNumCoins(colorToStudentBag.getCost());
+                notifyOtherPlayers(player.getNickname() + " chose the color " + currentStudent,player);
 
                 colorToStudentBag.effect(currentStudent);
-                player.getSchoolBoard().decreaseNumCoins(colorToStudentBag.getCost());
                 model.allocateProfessors();
             }
 
@@ -427,12 +428,11 @@ public class TurnController implements Serializable {
                 currentView.askColor(availableStudents);
                 waitAnswer();
 
-                String colorToString = colorToString(currentStudent);
-                notifyOtherPlayers(player.getNickname() + " chose the color " + colorToString,player);
-                notifyOtherPlayers("\033[38;2;255;255;0m",player);
+                player.getSchoolBoard().decreaseNumCoins(colorNoInfluence.getCost());
+
+                notifyOtherPlayers(player.getNickname() + " chose the color " + currentStudent,player);
 
                 colorNoInfluence.effect(currentStudent);
-                player.getSchoolBoard().decreaseNumCoins(colorNoInfluence.getCost());
 
             }
 
@@ -444,22 +444,18 @@ public class TurnController implements Serializable {
                 currentView.askColor(studentToDining.getStudents());
                 waitAnswer();
 
-                String colorToString = colorToString(currentStudent);
-                notifyOtherPlayers(player.getNickname() + " pick the " + colorToString+" student from the CharacterCard",player);
-                notifyOtherPlayers("\033[38;2;255;255;0m",player);
+                player.getSchoolBoard().decreaseNumCoins(studentToDining.getCost());
+                notifyOtherPlayers(player.getNickname() + " pick the " + currentStudent +" student from the CharacterCard",player);
 
                 studentToDining.effect(currentStudent);
-                player.getSchoolBoard().decreaseNumCoins(studentToDining.getCost());
                 model.allocateProfessors();
 
-                /* a che serve sta roba?
-                List<Player> players = null;
+                List<Player> players = new ArrayList<>();
                 players.add(0,player);
-                */
-                /*
+
                 for(VirtualView virtualView : virtualViewMap.values()){
                     virtualView.showSchoolBoardPlayers(players);
-                }*/
+                }
             }
 
             //the user chooses an island and a color
@@ -473,9 +469,9 @@ public class TurnController implements Serializable {
                 currentView.askIsland(model.getIslands());
                 waitAnswer();
 
+                player.getSchoolBoard().decreaseNumCoins(oneStudentToIsland.getCost());
                 Island island = model.getIslands().get(currentIslandIndex);
                 oneStudentToIsland.effect(island,currentStudent);
-                player.getSchoolBoard().decreaseNumCoins(oneStudentToIsland.getCost());
 
                 notifyOtherPlayers("\n<  "+player.getNickname() + " put a " + currentStudent + " student on the island with index " + currentIslandIndex+"  >\n",player);
 
@@ -531,12 +527,11 @@ public class TurnController implements Serializable {
                     availableCard.put(currentStudent,availableCard.get(currentStudent)-1);
                     fromCharacterCard.put(currentStudent,fromCharacterCard.get(currentStudent)+1);
                 }
-
-                switchStudents.effect(fromCharacterCard,fromEntrance);
                 player.getSchoolBoard().decreaseNumCoins(switchStudents.getCost());
+                switchStudents.effect(fromCharacterCard,fromEntrance);
                 model.allocateProfessors();
 
-                List<Player> players = null;
+                List<Player> players = new ArrayList<>();
                 players.add(0,player);
 
                 /*
@@ -592,11 +587,11 @@ public class TurnController implements Serializable {
                     availableDining.put(currentStudent,availableDining.get(currentStudent)-1);
                     exDining.put(currentStudent,exDining.get(currentStudent)+1);
                 }
-                switchDiningWaiting.effect(exWaiting,exDining);
                 player.getSchoolBoard().decreaseNumCoins(switchDiningWaiting.getCost());
+                switchDiningWaiting.effect(exWaiting,exDining);
                 model.allocateProfessors();
 
-                List<Player> players = null;
+                List<Player> players = new ArrayList<>();
                 players.add(0,player);
 
                 for(VirtualView virtualView : virtualViewMap.values()){
@@ -667,7 +662,7 @@ public class TurnController implements Serializable {
                         characterCardOk=true;
                     }
                     else{
-                        virtualViewCurrentPlayer.showError("Invalid characterCard!You do not have enough coins to activate it...");
+                        virtualViewCurrentPlayer.showGenericMessage("Invalid characterCard!You do not have enough coins to activate it...");
                     }
                 }
 
@@ -721,6 +716,11 @@ public class TurnController implements Serializable {
                 }
                 else{ //non ci vado mai teoricamente
                     i--; //cosi da rifare ancora la mossa
+                }
+            }
+            for (Player player1 : model.getPlayers()){
+                if (player1.getControlOnProfessor()){
+                    player1.setControlOnProfessor(false);
                 }
             }
             turnPhase = TurnPhase.ACTION1;
