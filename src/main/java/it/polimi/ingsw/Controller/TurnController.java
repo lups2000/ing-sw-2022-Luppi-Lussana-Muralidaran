@@ -357,6 +357,7 @@ public class TurnController implements Serializable {
                 Island chosenIsland = model.getIslands().get(currentIslandIndex);
                 try {
                     chooseIsland.effect(chosenIsland);
+                    player.getSchoolBoard().decreaseNumCoins(chooseIsland.getCost());
                 } catch (NoTowersException | TooManyTowersException e) {
                     e.printStackTrace();
                 }
@@ -379,6 +380,7 @@ public class TurnController implements Serializable {
                 Island chosenIsland = model.getIslands().get(currentIslandIndex);
                 try {
                     putNoEntryTiles.effect(chosenIsland);
+                    player.getSchoolBoard().decreaseNumCoins(putNoEntryTiles.getCost());
                 } catch (NoNoEntryTilesException e) {
                     e.printStackTrace();
                 }
@@ -408,6 +410,7 @@ public class TurnController implements Serializable {
                 notifyOtherPlayers("\033[38;2;255;255;0m",player);
 
                 colorToStudentBag.effect(currentStudent);
+                player.getSchoolBoard().decreaseNumCoins(colorToStudentBag.getCost());
                 model.allocateProfessors();
             }
 
@@ -429,53 +432,61 @@ public class TurnController implements Serializable {
                 notifyOtherPlayers("\033[38;2;255;255;0m",player);
 
                 colorNoInfluence.effect(currentStudent);
+                player.getSchoolBoard().decreaseNumCoins(colorNoInfluence.getCost());
 
             }
 
             //the user chooses a color
-            //TODO arrivato qui a controllare
             case STUDENT_TO_DINING -> {
                 StudentToDining studentToDining = (StudentToDining) currentCharacterCard;
-                currentView.showStudents(studentToDining.getStudents());
+                //currentView.showStudents(studentToDining.getStudents());
                 currentView.showSchoolBoardPlayers(model.getPlayers());
                 currentView.askColor(studentToDining.getStudents());
                 waitAnswer();
+
+                String colorToString = colorToString(currentStudent);
+                notifyOtherPlayers(player.getNickname() + " pick the " + colorToString+" student from the CharacterCard",player);
+                notifyOtherPlayers("\033[38;2;255;255;0m",player);
+
                 studentToDining.effect(currentStudent);
+                player.getSchoolBoard().decreaseNumCoins(studentToDining.getCost());
                 model.allocateProfessors();
 
+                /* a che serve sta roba?
                 List<Player> players = null;
                 players.add(0,player);
-
+                */
+                /*
                 for(VirtualView virtualView : virtualViewMap.values()){
                     virtualView.showSchoolBoardPlayers(players);
-                }
+                }*/
             }
 
             //the user chooses an island and a color
             case ONE_STUDENT_TO_ISLAND -> {
                 OneStudentToIsland oneStudentToIsland = (OneStudentToIsland) currentCharacterCard;
-                currentView.showStudents(oneStudentToIsland.getStudents());
+                //currentView.showStudents(oneStudentToIsland.getStudents());
                 currentView.showSchoolBoardPlayers(model.getPlayers());
                 currentView.askColor(oneStudentToIsland.getStudents());
                 waitAnswer();
+
                 currentView.askIsland(model.getIslands());
                 waitAnswer();
+
                 Island island = model.getIslands().get(currentIslandIndex);
                 oneStudentToIsland.effect(island,currentStudent);
+                player.getSchoolBoard().decreaseNumCoins(oneStudentToIsland.getCost());
 
-                String colorToString = colorToString(currentStudent);
-
-                notifyOtherPlayers(player.getNickname() + " put a " + colorToString + " student on the island with index " + currentIslandIndex,player);
-                notifyOtherPlayers("\033[38;2;255;255;0m",player);
+                notifyOtherPlayers("\n<  "+player.getNickname() + " put a " + currentStudent + " student on the island with index " + currentIslandIndex+"  >\n",player);
 
                 for(VirtualView virtualView : virtualViewMap.values()){
                     virtualView.showIslands(model.getIslands());
                 }
             }
-            //questo va riguardato,ha qualche problema
+            //questo va riguardato,ha qualche problema TODO
             case SWITCH_STUDENTS -> {
                 SwitchStudents switchStudents = (SwitchStudents) currentCharacterCard;
-                currentView.showSchoolBoardPlayers(model.getPlayers());
+                //currentView.showSchoolBoardPlayers(model.getPlayers());
                 //io gli mostrerei l'entrance e basta,mi sembra eccessivo mostrare tutte le schoolboard dei giocatori
                 Map<PawnColor,Integer> availableWaiting = player.getSchoolBoard().getStudentsWaiting();
                 Map<PawnColor,Integer> availableCard = switchStudents.getStudents();
@@ -492,7 +503,7 @@ public class TurnController implements Serializable {
                 fromCharacterCard.put(PawnColor.PINK,0);
                 fromCharacterCard.put(PawnColor.GREEN,0);
                 int i;
-                //currentView.showSchoolBoardPlayers(model.getPlayers()); gia fatto sopra
+                currentView.showSchoolBoardPlayers(model.getPlayers());
 
                 currentView.showGenericMessage("Select UP TO 3 students to pick from your entrance: ");
                 for(i=0;i<3;i++){
@@ -522,16 +533,18 @@ public class TurnController implements Serializable {
                 }
 
                 switchStudents.effect(fromCharacterCard,fromEntrance);
+                player.getSchoolBoard().decreaseNumCoins(switchStudents.getCost());
                 model.allocateProfessors();
 
                 List<Player> players = null;
                 players.add(0,player);
 
+                /*
                 for(VirtualView virtualView : virtualViewMap.values()){
                     virtualView.showSchoolBoardPlayers(players);
-                }
+                }*/
             }
-
+            //TODO
             case SWITCH_DINING_WAITING -> {
                 SwitchDiningWaiting switchDiningWaiting = (SwitchDiningWaiting) currentCharacterCard;
                 int i;
@@ -580,6 +593,7 @@ public class TurnController implements Serializable {
                     exDining.put(currentStudent,exDining.get(currentStudent)+1);
                 }
                 switchDiningWaiting.effect(exWaiting,exDining);
+                player.getSchoolBoard().decreaseNumCoins(switchDiningWaiting.getCost());
                 model.allocateProfessors();
 
                 List<Player> players = null;
@@ -653,7 +667,7 @@ public class TurnController implements Serializable {
                         characterCardOk=true;
                     }
                     else{
-                        virtualViewCurrentPlayer.showGenericMessage("Invalid characterCard!You do not have enough coins to activate it");
+                        virtualViewCurrentPlayer.showError("Invalid characterCard!You do not have enough coins to activate it...");
                     }
                 }
 
@@ -672,7 +686,7 @@ public class TurnController implements Serializable {
                 int numStud=model.getMaxNumPlayers()+1-i;
                 int numTot=model.getMaxNumPlayers()+1;
 
-                virtualViewCurrentPlayer.showGenericMessage("It's time to move your students: "+numStud+" / "+numTot+" available");
+                virtualViewCurrentPlayer.showGenericMessage("\nIt's time to move your students: "+numStud+" / "+numTot+" available");
                 virtualViewCurrentPlayer.askMoveStud();
                 waitAnswer();
 
@@ -699,6 +713,10 @@ public class TurnController implements Serializable {
                         player.getSchoolBoard().moveStudToIsland(currentStudent,model.getIslands().get(currentIslandIndex));
                     } catch (NoPawnPresentException e) {
                         e.printStackTrace();
+                    }
+                    notifyOtherPlayers("\n<  "+player.getNickname() + " put a " + currentStudent+ " student on the island with index " + currentIslandIndex+"  >\n",player);
+                    for(VirtualView virtualView : virtualViewMap.values()){
+                        virtualView.showIslands(model.getIslands());
                     }
                 }
                 else{ //non ci vado mai teoricamente

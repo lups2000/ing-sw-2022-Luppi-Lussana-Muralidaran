@@ -483,7 +483,7 @@ public class Cli extends Observable4View implements View {
      */
     @Override
     public void showGenericMessage(String genericMessage) {
-        out.println(genericMessage);
+        out.println(Colors.RESET+genericMessage+"\033[38;2;255;255;0m");
     }
 
     /**
@@ -729,8 +729,9 @@ public class Cli extends Observable4View implements View {
         String answerColor;
         do{
             out.print(Colors.RESET);
+            this.showStudents(availableStudents);
             out.print("\033[38;2;255;255;0m");
-            out.print("Select one color(ex. red,blue...): ");
+            out.print("\nSelect one color(ex. red,blue...): ");
             answerColor= readLine.nextLine();
 
             if(answerColor.equalsIgnoreCase("red") || answerColor.equalsIgnoreCase("blue") || answerColor.equalsIgnoreCase("pink") ||
@@ -765,7 +766,7 @@ public class Cli extends Observable4View implements View {
             }
         }while(!validInput);
 
-        out.print("\033[38;2;255;255;0m");
+        //out.print("\033[38;2;255;255;0m");
         PawnColor finalPawnColorChosen = pawnColorChosen;
         notifyObserver(obs->obs.sendChosenColor(finalPawnColorChosen));
     }

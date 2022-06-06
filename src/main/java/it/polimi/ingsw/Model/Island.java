@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.network.Messages.ServerSide.Islands;
+import it.polimi.ingsw.observer.Observable;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
