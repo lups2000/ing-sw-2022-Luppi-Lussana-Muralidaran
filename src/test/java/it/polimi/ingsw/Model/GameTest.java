@@ -338,7 +338,7 @@ class GameTest {
         game.getIslands().get(0).addStudent(PawnColor.PINK);
         game.getIslands().get(0).addStudent(PawnColor.BLUE);
         //effect
-        game.setNoCountTower();
+        game.setNoCountTower(true);
 
         game.moveMotherNature(game.getIslands().get(0)); //this method calls influence indirectly
 
@@ -412,7 +412,7 @@ class GameTest {
 
         //effect
         game.setNoColorInfluence(PawnColor.RED);
-        game.setNoCountTower();
+        game.setNoCountTower(true);
         game.moveMotherNature(game.getIslands().get(0)); //this method calls influence indirectly
 
         assertNotNull(game.getIslands().get(0).getTower());

@@ -15,7 +15,7 @@ EFFECT: when resolving a conquering on an island, towers do not count towards in
 public class NoCountTower extends CharacterCard implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 1872733231237478717L;
+    private static final long serialVersionUID = 1828328347674672817L;
 
     public NoCountTower(Game game){
         cost = 3;
@@ -25,9 +25,10 @@ public class NoCountTower extends CharacterCard implements Serializable {
     }
 
     public void effect(){
-        game.setNoCountTower();
+        game.setNoCountTower(true);
         used();
     }
+
 
     @Override
     public String toString() {

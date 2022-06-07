@@ -30,7 +30,6 @@ public class Game extends Observable implements Serializable {
     private int noEntryTilesCounter; //counter used in the PutNoEntryTiles character card
     private List<CloudTile> cloudTiles; //2-4
     private Player firstPlayer;
-    //private List<SchoolBoard> schoolBoards;
     private boolean noCountTower;   //flag used for the NoCountTower character card
     private PawnColor noColorInfluence; //used for the NoColorInfluence character card
     private Map<Player,AssistantCard> currentHand;    //list for the assistant cards chosen in this turn
@@ -44,7 +43,6 @@ public class Game extends Observable implements Serializable {
         fillIslands();
         this.studentBag = new StudentBag();
         this.motherNature = 0;
-        //this.schoolBoards=new ArrayList<>();
         this.characterCards=new ArrayList<>();
         this.currentHand = new HashMap();
     }
@@ -73,7 +71,6 @@ public class Game extends Observable implements Serializable {
                     } catch (TooManyPawnsPresent e) {
                         e.printStackTrace();
                     }
-                    //schoolBoards.add(i,new SchoolBoard(max,true)); //a schoolboard passo il numero max di studenti e experts=true
                 }
                 try {
                     pickThreeRandomCards();
@@ -90,7 +87,6 @@ public class Game extends Observable implements Serializable {
                     } catch (TooManyPawnsPresent e) {
                         e.printStackTrace();
                     }
-                    //schoolBoards.add(i,new SchoolBoard(max,false)); //a schoolboard passo il numero max di studenti e experts=true
                 }
             }
 
@@ -125,7 +121,8 @@ public class Game extends Observable implements Serializable {
     public void changeStatus(GameState status){this.status = status;}
     public StudentBag getStudentBag() {return studentBag;}
     public List<CloudTile> getCloudTiles() {return cloudTiles;}
-    public void setNoCountTower(){this.noCountTower = true;}
+    public void setNoCountTower(boolean noCountTower) {this.noCountTower = noCountTower;}
+    public boolean isNoCountTower() {return noCountTower;}
     public void setNoColorInfluence(PawnColor picked){this.noColorInfluence = picked;}
     public int getNoEntryTilesCounter(){return noEntryTilesCounter;}
     public void setNoEntryTilesCounter(int newNoEntryTilesNumber){this.noEntryTilesCounter = newNoEntryTilesNumber;}
@@ -137,6 +134,7 @@ public class Game extends Observable implements Serializable {
     public Map<Player, AssistantCard> getCurrentHand() {return currentHand;}
     public int getMaxNumPlayers() {return maxNumPlayers;}
     public void setMaxNumPlayers(int maxNumPlayers) {this.maxNumPlayers = maxNumPlayers;}
+
 
     /**
      * method invoked one time for each player at the start of the game that fills his school board
@@ -310,8 +308,8 @@ public class Game extends Observable implements Serializable {
                 checkArchipelago(island);
             }
             else{
-                notifyObserver(new Generic("SERVER","\nISLANDS UPDATE:\n"));
                 notifyObserver(new Generic("SERVER", "<  No Change on the island with index: "+islandIndex+"  >\n"));
+                notifyObserver(new Generic("SERVER","\nISLANDS UPDATE:\n"));
                 notifyObserver(new Islands(islands));
             }
         }
@@ -334,7 +332,7 @@ public class Game extends Observable implements Serializable {
             islands.get(index).merge(islands.get((index+1)%(Island.getNumIslands())));
             this.motherNature=index;
             notifyObserver(new Generic("SERVER","<  Merge between island with index '"+index+"' and island with index '"+(index+1)%(Island.getNumIslands()+1)+"'  >\n"));
-            updateIndexes((index+1)%(Island.getNumIslands()));
+            updateIndexes((index+1)%(Island.getNumIslands()+1));
         }
         if(islands.get(index).getTower().equals(islands.get((index-1+Island.getNumIslands())%(Island.getNumIslands())).getTower())){
             islands.get((index-1+Island.getNumIslands())%(Island.getNumIslands())).setMotherNature(true);

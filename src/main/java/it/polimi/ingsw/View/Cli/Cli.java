@@ -7,8 +7,10 @@ import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.observer.Observable4View;
 
+import java.awt.*;
 import java.io.PrintStream;
 import java.util.*;
+import java.util.List;
 
 
 /**
@@ -413,7 +415,6 @@ public class Cli extends Observable4View implements View {
                 validInput = false;
             }
         } while (!validInput);
-        //qua devo mandare l'id quindi è da cambiare un po di roba
         int finalIdCharacterCard = idCharacterCard;
         notifyObserver(obs->obs.sendCharacterCard(finalIdCharacterCard));
     }
@@ -869,8 +870,10 @@ public class Cli extends Observable4View implements View {
                 out.print(currentIsland.getTower().getVisualColor()+" T ");
             }
             out.print(Colors.RESET);
-            if(currentIsland.getNoEntryTiles() > 0){
-                out.print(currentIsland.getNoEntryTiles() + " no entry tiles ");
+            if(currentIsland.getNoEntryTiles()>0){
+                for(int j=0;j<currentIsland.getNoEntryTiles();j++){
+                    out.print(Colors.RED_PAWN+" NET"+Colors.RESET);
+                }
             }
             if(currentIsland.isMotherNature()){
                 out.print(" MotherNature here");

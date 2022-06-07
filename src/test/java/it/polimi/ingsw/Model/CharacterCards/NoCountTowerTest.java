@@ -39,6 +39,7 @@ class NoCountTowerTest {
 
         NoCountTower noCountTower=new NoCountTower(game);
         noCountTower.effect();
+        assertTrue(game.isNoCountTower());
         assertEquals(noCountTower.getCost(),4);
 
         game.moveMotherNature(game.getIslands().get(6));
