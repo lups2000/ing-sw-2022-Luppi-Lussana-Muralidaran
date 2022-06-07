@@ -28,6 +28,8 @@ public abstract class CharacterCard implements Serializable {
 
     public Game getGame() {return game;}
 
+    public void setGame(Game game) {this.game = game;}
+
     /**
      * method invoked every time a character card is invoked
      * the first time this will happen the cost of the character card will increment and the boolean "used" will be set = true

@@ -2,6 +2,7 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
+import it.polimi.ingsw.Model.Exceptions.NoPawnPresentException;
 import it.polimi.ingsw.Utils.StoreGame;
 import it.polimi.ingsw.View.VirtualView;
 import it.polimi.ingsw.network.Messages.ClientSide.*;
@@ -375,12 +376,14 @@ public class MainController implements Serializable {
             }
         }
 
-        //System.out.println("MainController: MN-->"+motherNature);
 
-        this.game.replaceGame(players,numMaxPlayers,expertVariant,islands,cloudTiles,characterCards,gameState,studentBag,motherNature,currentHand,seedsAvailable,noEntryTilesCounter);
+        try {
+            this.game.replaceGame(players,numMaxPlayers,expertVariant,islands,cloudTiles,characterCards,gameState,studentBag,motherNature,currentHand,seedsAvailable,noEntryTilesCounter);
+        } catch (NoPawnPresentException e) {
+            e.printStackTrace();
+        }
         Island.setNumIslands(islands.size());
-        //System.out.println("MainController: NumIsland-->"+Island.getNumIslands());
-        //System.out.println("Game Now: MN-->"+game.getMotherNature());
+
         this.turnController=mainControllerPreviousMatch.getTurnController();
         this.turnController.setModel(this.game);
         this.turnController.setVirtualViewMap(this.virtualViewsMap);

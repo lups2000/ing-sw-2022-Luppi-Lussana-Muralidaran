@@ -959,8 +959,9 @@ public class Cli extends Observable4View implements View {
         String answerColor;
         boolean stop = false;
         do{
-            out.print(Colors.RESET);
-            out.print("\033[38;2;255;255;0m");
+            //out.print(Colors.RESET);
+            this.showStudents(availableStudents);
+            //out.print("\033[38;2;255;255;0m");
             out.print("Select one color(ex. red,blue...) or press 'x' to stop: ");
             answerColor= readLine.nextLine();
 
@@ -1000,7 +1001,7 @@ public class Cli extends Observable4View implements View {
             }
         }while(!validInput);
 
-        out.print("\033[38;2;255;255;0m");
+        //out.print("\033[38;2;255;255;0m");
         PawnColor finalPawnColorChosen = pawnColorChosen;
         boolean finalStop = stop;
         notifyObserver(obs->obs.sendChosenColorOrStop(finalPawnColorChosen, finalStop));

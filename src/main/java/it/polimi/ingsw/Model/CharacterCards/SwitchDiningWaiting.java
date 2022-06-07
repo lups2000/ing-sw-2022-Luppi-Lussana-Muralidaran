@@ -38,7 +38,7 @@ public class SwitchDiningWaiting extends CharacterCard implements Serializable {
                         player.getSchoolBoard().moveStudToDining(color);
                     }
                     while(exDining.get(color)>0){
-                        player.getSchoolBoard().removeStudents(color);
+                        //player.getSchoolBoard().removeStudents(color);
                         player.getSchoolBoard().addStudToWaiting(color);
                     }
                     /*

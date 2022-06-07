@@ -82,6 +82,8 @@ public class SchoolBoard implements Serializable {
     public int getNumMaxPlayers() {return numMaxPlayers;}
     public boolean isExperts() {return experts;}
     public int getNumCoins() {return numCoins;}
+    public void setNumStudentsWaiting(int numStudentsWaiting) {this.numStudentsWaiting = numStudentsWaiting;}
+
     public void decreaseNumCoins(int numCoins){
         if(numCoins<=0){
             throw new IllegalArgumentException("Parameter cannot be negative!");

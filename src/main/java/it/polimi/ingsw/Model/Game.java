@@ -123,6 +123,7 @@ public class Game extends Observable implements Serializable {
     public List<CloudTile> getCloudTiles() {return cloudTiles;}
     public void setNoCountTower(boolean noCountTower) {this.noCountTower = noCountTower;}
     public boolean isNoCountTower() {return noCountTower;}
+    public PawnColor getNoColorInfluence() {return noColorInfluence;}
     public void setNoColorInfluence(PawnColor picked){this.noColorInfluence = picked;}
     public int getNoEntryTilesCounter(){return noEntryTilesCounter;}
     public void setNoEntryTilesCounter(int newNoEntryTilesNumber){this.noEntryTilesCounter = newNoEntryTilesNumber;}
@@ -562,7 +563,7 @@ public class Game extends Observable implements Serializable {
     }
 
     public void replaceGame(List<Player> players,int numPlayers,boolean expertVariant,List<Island> islands,List<CloudTile> cloudTiles,List<CharacterCard> characterCards,
-                            GameState gameState,StudentBag studentBag,int motherNature,Map<Player,AssistantCard> currentHand,List<AssistantSeed> seedsAvailable,int noEntryTilesCounter){
+                            GameState gameState,StudentBag studentBag,int motherNature,Map<Player,AssistantCard> currentHand,List<AssistantSeed> seedsAvailable,int noEntryTilesCounter) throws NoPawnPresentException {
 
         this.players=players;
         this.maxNumPlayers=numPlayers;
@@ -570,11 +571,14 @@ public class Game extends Observable implements Serializable {
         this.seedsAvailable=seedsAvailable;
         this.islands=islands;
         this.cloudTiles=cloudTiles;
-        this.characterCards=characterCards;
         this.status=gameState;
         this.studentBag=studentBag;
         this.motherNature=motherNature;
         this.noEntryTilesCounter=noEntryTilesCounter;
         this.currentHand=currentHand;
+        for(CharacterCard characterCard : characterCards){
+            characterCard.setGame(this);
+        }
+        this.characterCards=characterCards;
     }
 }
