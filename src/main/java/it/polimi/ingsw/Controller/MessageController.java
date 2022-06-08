@@ -20,7 +20,7 @@ public class MessageController implements Serializable {
     @Serial
     private static final long serialVersionUID=-2882272847827482742L;
     private final MainController mainController;
-    private transient Map<String, VirtualView> virtualViewsMap;
+    private final transient Map<String, VirtualView> virtualViewsMap;
     private final Game model;
 
     public MessageController(MainController mainController, Map<String,VirtualView> virtualViewMap){

@@ -10,6 +10,7 @@ import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.server.Server;
 
 import javax.sound.midi.Soundbank;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
@@ -19,12 +20,13 @@ import java.util.*;
  */
 public class MainController implements Serializable {
 
+    @Serial
     private static final long serialVersionUID= 8347814763959357381L;
     private final Game game;
-    private transient Map<String, VirtualView> virtualViewsMap;
+    private final transient Map<String, VirtualView> virtualViewsMap;
     private MessageController messageController;
     private TurnController turnController;
-    private List<String> nickNameList;
+    private final List<String> nickNameList;
     private int maxNumPlayers;
     private boolean expertVariant;
 
@@ -38,18 +40,11 @@ public class MainController implements Serializable {
     public Game getGame() {
         return game;
     }
-
     public TurnController getTurnController() {
         return turnController;
     }
-
     public List<String> getNickNameList() {return nickNameList;}
-
     public MessageController getMessageController() {return messageController;}
-
-    public Map<String, VirtualView> getVirtualViewsMap() {return virtualViewsMap;}
-
-    public void setVirtualViewsMap(Map<String, VirtualView> virtualViewsMap) {this.virtualViewsMap = virtualViewsMap;}
 
 
     /**
@@ -59,25 +54,11 @@ public class MainController implements Serializable {
      */
     public void messageFromServer(Message message) {
 
-        VirtualView virtualView = virtualViewsMap.get(message.getNickName());
-
         switch (game.getStatus()) {
-
-            case LOGGING:
-                messageWhileLogging(message);
-                break;
-
-            case PLAYING:
-                messageWhilePlaying(message);
-                break;
-
-            case ENDED:
-                break;
+            case LOGGING -> messageWhileLogging(message);
+            case PLAYING -> messageWhilePlaying(message);
         }
     }
-
-    //macchina a stati qui
-
 
     /**
      * Messages received while still creating the game and waiting for all the players to log
@@ -92,8 +73,8 @@ public class MainController implements Serializable {
                 if(messageController.checkNumPlayers(message)){ //message format ok
                     NumPlayersReply numPlayersReply = (NumPlayersReply) message;
                     maxNumPlayers = numPlayersReply.getNumPlayers(); //save the max number of players
-                    game.setMaxNumPlayers(maxNumPlayers); //brutto ma se no non posso aggiungere i player prima di fare initGame
-                    broadcastingMessage("Waiting for players...");        //questo mi mandava un messaggio generic null
+                    game.setMaxNumPlayers(maxNumPlayers);
+                    broadcastingMessage("Waiting for players...");
                 }
                 else {
                     Server.LOGGER.warning("The format of the message sent by the client is incorrect!");
@@ -316,21 +297,6 @@ public class MainController implements Serializable {
         }
     }
 
-    /**
-     * to send a textual generic message to all the clients connected to the server, except one
-     * used to let the other players know of a move of the "excluded" player
-     *
-     * @param message the message to be sent
-     * @param nickName the "excluded" player
-     */
-    public void broadcastingMessageExceptOne(String message,String nickName){
-        for(String nick : virtualViewsMap.keySet()){
-            if(!nick.equals(nickName)){
-                virtualViewsMap.get(nick).showGenericMessage(message);
-            }
-        }
-    }
-
     public boolean isGameStarted(){
         return game.getStatus()!=GameState.LOGGING;
     }
@@ -344,8 +310,6 @@ public class MainController implements Serializable {
         VirtualView toRemove = virtualViewsMap.get(nickname);
         this.game.removeObserver(toRemove);
         this.virtualViewsMap.remove(nickname);
-
-        //game.getBoard().removeObserver(toRemove);
     }
 
     public void endedGame(){
@@ -375,7 +339,6 @@ public class MainController implements Serializable {
                 break;
             }
         }
-
 
         try {
             this.game.replaceGame(players,numMaxPlayers,expertVariant,islands,cloudTiles,characterCards,gameState,studentBag,motherNature,currentHand,seedsAvailable,noEntryTilesCounter);

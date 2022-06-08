@@ -28,14 +28,11 @@ public class ClientController implements Observer4View, Observer {
 
     private Client client;
     private String nickname;
-
-    private final ExecutorService taskQueue;
-
-    public static final int UNDO_TIME = 5000;
+    private final ExecutorService executorService;
 
     public ClientController(View view){
         this.view = view;
-        taskQueue = Executors.newSingleThreadExecutor();
+        executorService = Executors.newSingleThreadExecutor();
     }
 
     /**
@@ -48,117 +45,117 @@ public class ClientController implements Observer4View, Observer {
         switch (message.getMessageType()) {
             case REPLY_LOGIN -> {
                 LoginReply loginReply = (LoginReply) message;
-                taskQueue.execute(() -> view.showLoginInfo(nickname, loginReply.isNickAccepted(), loginReply.isConnAccepted()));
+                executorService.execute(() -> view.showLoginInfo(nickname, loginReply.isNickAccepted(), loginReply.isConnAccepted()));
             }
 
-            case REQUEST_PLAYER_NUM -> taskQueue.execute(view::askNumPlayers);
+            case REQUEST_PLAYER_NUM -> executorService.execute(view::askNumPlayers);
 
 
             case LOBBY -> {
                 Lobby lobbyMessage = (Lobby) message;
-                taskQueue.execute(() -> view.showLobby(lobbyMessage.getPlayersLobby(), lobbyMessage.getNumMaxPlayersLobby()));
+                executorService.execute(() -> view.showLobby(lobbyMessage.getPlayersLobby(), lobbyMessage.getNumMaxPlayersLobby()));
             }
 
             case GAME_BOARD -> {
                 GameBoard gameBoard=(GameBoard) message;
-                taskQueue.execute(()->view.showGameBoard(gameBoard.getIslands(),gameBoard.getCloudTiles(),gameBoard.getPlayers()));
+                executorService.execute(()->view.showGameBoard(gameBoard.getIslands(),gameBoard.getCloudTiles(),gameBoard.getPlayers()));
             }
 
             case SCHOOLBOARD -> {
                 SchoolBoardPlayers schoolBoardPlayers =(SchoolBoardPlayers) message;
-                taskQueue.execute(()->view.showSchoolBoardPlayers(schoolBoardPlayers.getPlayers()));
+                executorService.execute(()->view.showSchoolBoardPlayers(schoolBoardPlayers.getPlayers()));
             }
 
-            case REQUEST_EXPERT_VARIANT -> taskQueue.execute(view::askExpertVariant);
+            case REQUEST_EXPERT_VARIANT -> executorService.execute(view::askExpertVariant);
 
             case REQUEST_ASSISTANT_SEED -> {
                 AssistantSeedRequest assistantSeedRequest = (AssistantSeedRequest) message;
-                taskQueue.execute(() -> view.askAssistantSeed(assistantSeedRequest.getAssistantSeedAvailable()));
+                executorService.execute(() -> view.askAssistantSeed(assistantSeedRequest.getAssistantSeedAvailable()));
             }
 
             case REQUEST_ASSISTANT_CARD -> {
                 AssistantCardRequest assistantCardRequest = (AssistantCardRequest) message;
-                taskQueue.execute(() -> view.askAssistantCard(assistantCardRequest.getAssistantCards()));
+                executorService.execute(() -> view.askAssistantCard(assistantCardRequest.getAssistantCards()));
             }
 
             case REQUEST_CHARACTER_CARD -> {
                 CharacterCardRequest characterCardRequest=(CharacterCardRequest) message;
-                taskQueue.execute(()->view.askPlayCharacterCard(characterCardRequest.getCharacterCards()));
+                executorService.execute(()->view.askPlayCharacterCard(characterCardRequest.getCharacterCards()));
             }
 
             case REQUEST_MOVE_MOTHER_NATURE -> {
                 MotherNatureMoveRequest motherNatureMoveRequest = (MotherNatureMoveRequest) message;
-                taskQueue.execute(() -> view.askMoveMotherNature(motherNatureMoveRequest.getIslands(), motherNatureMoveRequest.getMaxSteps()));
+                executorService.execute(() -> view.askMoveMotherNature(motherNatureMoveRequest.getIslands(), motherNatureMoveRequest.getMaxSteps()));
             }
 
             case REQUEST_STUDENT_OR_STOP -> {
                 StudentOrStopRequest studentOrStopRequest = (StudentOrStopRequest) message;
-                taskQueue.execute(() -> view.askStudOrStop(studentOrStopRequest.getStudents()));
+                executorService.execute(() -> view.askStudOrStop(studentOrStopRequest.getStudents()));
             }
 
             case ERROR -> {
                 Error errorMessage = (Error) message;
-                taskQueue.execute(() -> view.showError(errorMessage.getMessageError()));
+                executorService.execute(() -> view.showError(errorMessage.getMessageError()));
             }
             case GENERIC_MESSAGE -> {
                 Generic genericMessage = (Generic) message;
-                taskQueue.execute(() -> view.showGenericMessage(genericMessage.getMessage()));
+                executorService.execute(() -> view.showGenericMessage(genericMessage.getMessage()));
             }
 
             case MOVE_STUD -> {
                 MoveStud moveStud=(MoveStud) message;
-                taskQueue.execute(view::askMoveStud);
+                executorService.execute(view::askMoveStud);
             }
 
             case WIN -> {
                 Win winMessage = (Win) message;
                 client.disconnect();
-                taskQueue.execute(() -> view.showWinMessage(winMessage.getWinner()));
+                executorService.execute(() -> view.showWinMessage(winMessage.getWinner()));
             }
 
             case LOSE -> {
                 Lose loseMessage = (Lose) message;
                 client.disconnect();
-                taskQueue.execute(() -> view.showLoseMessage(loseMessage.getWinner()));
+                executorService.execute(() -> view.showLoseMessage(loseMessage.getWinner()));
             }
 
             case REQUEST_ISLAND -> {
                 IslandRequest islandRequest = (IslandRequest) message;
-                taskQueue.execute(() -> view.askIsland(islandRequest.getIslands()));
+                executorService.execute(() -> view.askIsland(islandRequest.getIslands()));
             }
 
             case REQUEST_COLOR -> {
                 ColorRequest colorRequest = (ColorRequest) message;
-                taskQueue.execute(() -> view.askColor(colorRequest.getAvailableStudents()));
+                executorService.execute(() -> view.askColor(colorRequest.getAvailableStudents()));
             }
 
             case REQUEST_CLOUD_TILE -> {
                 CloudTileRequest cloudTileRequest = (CloudTileRequest) message;
-                taskQueue.execute(() -> view.askChooseCloudTile(cloudTileRequest.getCloudTiles()));
+                executorService.execute(() -> view.askChooseCloudTile(cloudTileRequest.getCloudTiles()));
             }
 
             case REQUEST_MOVE_STUD_DINING -> {
                 StudentToDiningRequest studentToDiningRequest = (StudentToDiningRequest) message;
-                taskQueue.execute(() -> view.askMoveStudToDining(studentToDiningRequest.getSchoolBoard()));
+                executorService.execute(() -> view.askMoveStudToDining(studentToDiningRequest.getSchoolBoard()));
             }
 
             case REQUEST_MOVE_STUD_ISLAND -> {
                 StudentToIslandRequest studentToIslandRequest = (StudentToIslandRequest) message;
-                taskQueue.execute(() -> view.askMoveStudToIsland(studentToIslandRequest.getStudentsWaiting(),studentToIslandRequest.getIslands()));
+                executorService.execute(() -> view.askMoveStudToIsland(studentToIslandRequest.getStudentsWaiting(),studentToIslandRequest.getIslands()));
             }
 
             case INFO_MATCH -> {
                 InfoMatch infoMatch = (InfoMatch) message;
-                taskQueue.execute(() -> view.showMatchInfo(infoMatch.getPlayers(), infoMatch.isExperts(), infoMatch.getNumPlayers()));
+                executorService.execute(() -> view.showMatchInfo(infoMatch.getPlayers(), infoMatch.isExperts(), infoMatch.getNumPlayers()));
             }
 
             case INFO_ISLANDS -> {
                 Islands islandsMessage=(Islands) message;
-                taskQueue.execute(()->view.showIslands(islandsMessage.getIslands()));
+                executorService.execute(()->view.showIslands(islandsMessage.getIslands()));
             }
             case DISCONNECTION -> {
                 Disconnection disconnectionMessage=(Disconnection) message;
-                taskQueue.execute(()->view.showDisconnection(disconnectionMessage.getNickName(), disconnectionMessage.getMessage()));
+                executorService.execute(()->view.showDisconnection(disconnectionMessage.getNickName(), disconnectionMessage.getMessage()));
             }
         }
     }
@@ -175,9 +172,9 @@ public class ClientController implements Observer4View, Observer {
             client.addObserver(this);
             client.readMessage();
             client.sendPingMessage(true);
-            taskQueue.execute(view::askNickName);
+            executorService.execute(view::askNickName);
         } catch (IOException e){
-            taskQueue.execute(() -> view.showLoginInfo(null,false,false));
+            executorService.execute(() -> view.showLoginInfo(null,false,false));
         }
     }
 
@@ -235,9 +232,9 @@ public class ClientController implements Observer4View, Observer {
             client.addObserver(this);
             client.readMessage();
             client.sendPingMessage(true);
-            taskQueue.execute(view::askNickName);
+            executorService.execute(view::askNickName);
         } catch (IOException e){
-            taskQueue.execute(() -> view.showLoginInfo(null,false,false));
+            executorService.execute(() -> view.showLoginInfo(null,false,false));
         }
     }
 

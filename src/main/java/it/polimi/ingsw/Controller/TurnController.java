@@ -57,11 +57,7 @@ public class TurnController implements Serializable {
         this.mainController=mainController;
     }
 
-    public Player getFirstPlayerToPlayAssistant() {
-        return firstPlayerToPlayAssistant;
-    }
     public void setVirtualViewMap(Map<String, VirtualView> virtualViewMap) {this.virtualViewMap = virtualViewMap;}
-    public Map<String, VirtualView> getVirtualViewMap() {return virtualViewMap;}
     public void setModel(Game model) {this.model = model;}
 
     public void messageFromMainController(Message message){
@@ -144,7 +140,6 @@ public class TurnController implements Serializable {
 
     }
 
-
     /**
      * This method calls planningPhase1(),planningPhase2(),choosePlayerToPlayAction(),action1(),action2(),action3() respectively!
      * After each player's turn we check if there is a winner;otherwise we call another time the method roundManager
@@ -164,6 +159,11 @@ public class TurnController implements Serializable {
 
             planningPhase2();
 
+            if(checkWinner()){ //if there is a player that has finished his assistantCards
+                winner=true;
+                turnPhase=TurnPhase.END;
+                break; //exit from the while
+            }
             //I put the players.size() because if a player is disconnected the round continues
             for(int i=0;i<model.getPlayers().size();i++){
                 Player currentActionPlayer=choosePlayerToPlayAction();
@@ -193,7 +193,7 @@ public class TurnController implements Serializable {
     /**
      * This method represents the first part of the planning phase, where the cloud tiles are filled
      */
-    private void planningPhase1(){ //attenzione perche ora in game riempiamo le cloud al primo giro
+    private void planningPhase1(){
         if(turnPhase == TurnPhase.START){
             for(CloudTile cloudTile : model.getCloudTiles()){
                 try {
@@ -231,41 +231,49 @@ public class TurnController implements Serializable {
 
                     while(!assistantOk){
 
-                        virtualViewCurrentPlayer.askAssistantCard(currentPlayerToPlayAssistant.getDeckAssistantCard().getCards()); //this must be contained in a loop
-
-                        waitAnswer(); //wait for the answer of the current Player
-
-                        if(checkAssistantCard(currentAssistantCard)){ //assistantCard ok
-                            virtualViewCurrentPlayer.showGenericMessage("AssistantCard played: < Value: "+currentAssistantCard.getValue()+", MaxStepsMotherNature: "+currentAssistantCard.getMaxStepsMotherNature()+" > ");
-                            notifyOtherPlayers(currentPlayerToPlayAssistant.getNickname()+" has played the following AssistantCard: <  Value: "+currentAssistantCard.getValue()+", MaxStepsMotherNature: "+currentAssistantCard.getMaxStepsMotherNature()+" > ",currentPlayerToPlayAssistant);
-
-                            currentPlayerToPlayAssistant.pickAssistantCard(currentAssistantCard);
-                            currentPlayerToPlayAssistant.setStatus(PlayerStatus.PLAYING_ASSISTANT);
-                            model.getCurrentHand().put(currentPlayerToPlayAssistant, currentPlayerToPlayAssistant.getCurrentAssistant());
+                        //if the assistant cards of the current player are finished, call model.checkWinner()
+                        if(currentPlayerToPlayAssistant.getDeckAssistantCard().getCards().size()==0){
+                            model.checkWinner();
                             assistantOk=true;
+                            i=1000;
                         }
+                        //otherwise
                         else{
-                            //if the assistantCard is invalid
-                            virtualViewCurrentPlayer.showGenericMessage("Assistant Card invalid!Please Retry...");
+                            virtualViewCurrentPlayer.askAssistantCard(currentPlayerToPlayAssistant.getDeckAssistantCard().getCards()); //this must be contained in a loop
+
+                            waitAnswer(); //wait for the answer of the current Player
+
+                            if(checkAssistantCard(currentAssistantCard)){ //assistantCard ok
+                                virtualViewCurrentPlayer.showGenericMessage("AssistantCard played: < Value: "+currentAssistantCard.getValue()+", MaxStepsMotherNature: "+currentAssistantCard.getMaxStepsMotherNature()+" > ");
+                                notifyOtherPlayers(currentPlayerToPlayAssistant.getNickname()+" has played the following AssistantCard: <  Value: "+currentAssistantCard.getValue()+", MaxStepsMotherNature: "+currentAssistantCard.getMaxStepsMotherNature()+" > ",currentPlayerToPlayAssistant);
+
+                                currentPlayerToPlayAssistant.pickAssistantCard(currentAssistantCard);
+                                currentPlayerToPlayAssistant.setStatus(PlayerStatus.PLAYING_ASSISTANT);
+                                model.getCurrentHand().put(currentPlayerToPlayAssistant, currentPlayerToPlayAssistant.getCurrentAssistant());
+                                assistantOk=true;
+                            }
+                            else{
+                                //if the assistantCard is invalid
+                                virtualViewCurrentPlayer.showGenericMessage("Assistant Card invalid!Please Retry...");
+                            }
                         }
                     }
                     assistantOk=false;
-
-                    //if the assistant cards of the current player are finished I could call model.checkWinner() (the one written by Paolo)
-                    //TODO
 
                     turnPhase = TurnPhase.PLANNING2;
                 }
                 else{
                     break; //exit from the loop
                 }
-                if(i>=model.getPlayers().size()-1){
+                if(i>=model.getPlayers().size()-1 && i!=1000){
                     i=-1;
                 }
             }
             //each player has played his assistant card,now everybody waits for his turn in the action phase
             for(Player player : model.getCurrentHand().keySet()){
-                player.setStatus(PlayerStatus.WAITING_ACTION);
+                if(player.getStatus()!=PlayerStatus.WINNER){
+                    player.setStatus(PlayerStatus.WAITING_ACTION);
+                }
             }
         }
     }

@@ -554,10 +554,6 @@ public class Game extends Observable implements Serializable {
         return playersNickNames;
     }
 
-    public void useCharacterCard(CharacterCard characterCard) throws NoPawnPresentException, TooManyPawnsPresent {
-        characterCard.effect();
-    }
-
     public void replaceGame(List<Player> players,int numPlayers,boolean expertVariant,List<Island> islands,List<CloudTile> cloudTiles,List<CharacterCard> characterCards,
                             GameState gameState,StudentBag studentBag,int motherNature,Map<Player,AssistantCard> currentHand,List<AssistantSeed> seedsAvailable,int noEntryTilesCounter) throws NoPawnPresentException {
 
