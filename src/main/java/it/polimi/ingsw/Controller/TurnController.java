@@ -496,8 +496,8 @@ public class TurnController implements Serializable {
                     virtualView.showIslands(model.getIslands());
                 }
             }
-            //questo va riguardato,ha qualche problema TODO
-            case SWITCH_STUDENTS -> {
+
+            case SWITCH_STUDENTS -> { //OK
                 SwitchStudents switchStudents = (SwitchStudents) currentCharacterCard;
                 Map<PawnColor,Integer> availableWaiting = player.getSchoolBoard().getStudentsWaiting();
                 Map<PawnColor,Integer> availableCard = switchStudents.getStudents();
@@ -552,13 +552,16 @@ public class TurnController implements Serializable {
                 model.allocateProfessors();
 
             }
-            //TODO
-            case SWITCH_DINING_WAITING -> {
+
+            case SWITCH_DINING_WAITING -> { //OK
+                boolean flagNoStudDining=true;
                 SwitchDiningWaiting switchDiningWaiting = (SwitchDiningWaiting) currentCharacterCard;
                 int i;
                 currentView.showSchoolBoardPlayers(model.getPlayers());
+
                 Map<PawnColor,Integer> availableWaiting = player.getSchoolBoard().getStudentsWaiting();
                 Map<PawnColor,Integer> availableDining = player.getSchoolBoard().getStudentsDining();
+
                 Map<PawnColor,Integer> exWaiting = new HashMap<>();
                 exWaiting.put(PawnColor.RED,0);
                 exWaiting.put(PawnColor.BLUE,0);
@@ -572,11 +575,10 @@ public class TurnController implements Serializable {
                 exDining.put(PawnColor.PINK,0);
                 exDining.put(PawnColor.GREEN,0);
 
-                currentView.showGenericMessage("Select UP TO 2 students to pick from your entrance and place them on your dining room: ");
-                currentView.showGenericMessage("ENTRANCE -> DINING ROOM");
                 for(i=0;i<2;i++){
-                    currentView.showGenericMessage(i+1 + "/2 ");
-                    currentView.showStudents(availableWaiting);
+                    int temp=i+1;
+                    currentView.showGenericMessage("Select UP TO 2 students to pick from your entrance and place them on your dining room: "+temp+"/2");
+                    currentView.showGenericMessage("\nENTRANCE -> DINING ROOM:");
                     currentView.askStudOrStop(availableWaiting);
                     waitAnswer();
                     if(currentStop){
@@ -584,62 +586,42 @@ public class TurnController implements Serializable {
                     }
                     else{
                         availableWaiting.put(currentStudent,availableWaiting.get(currentStudent)-1);
+                        player.getSchoolBoard().setNumStudentsWaiting(player.getSchoolBoard().getNumStudentsWaiting()-1);
                         exWaiting.put(currentStudent,exWaiting.get(currentStudent)+1);
                     }
                 }
 
                 currentStop = false;
 
-                currentView.showGenericMessage("Select " + i+1 + " students to pick from your dining room and place them on your entrance: ");
-                currentView.showGenericMessage("DINING ROOM -> ENTRANCE");
-                for(int j=0;j<i+1;j++){
-                    currentView.showGenericMessage(j+1 + "/" + i+1);
-                    currentView.showStudents(availableDining);
-                    currentView.askColor(availableDining);
-                    waitAnswer();
-                    availableDining.put(currentStudent,availableDining.get(currentStudent)-1);
-                    exDining.put(currentStudent,exDining.get(currentStudent)+1);
+                for(PawnColor pawnColor : availableDining.keySet()){
+                    if(availableDining.get(pawnColor)>0){
+                        flagNoStudDining=false;
+                        break;
+                    }
+                }
+                if(flagNoStudDining){
+                    currentView.showGenericMessage("You cannot play this card because you do not have enough students in your dining");
+                }
+                else{
+
+                    for(int j=0;j<i;j++){
+                        int temp=i;
+                        int tmp=j+1;
+                        currentView.showGenericMessage("\nSelect " + temp + " students to pick from your dining room and place them on your entrance: "+tmp+"/"+temp);
+                        currentView.showGenericMessage("\nDINING ROOM -> ENTRANCE");
+
+                        currentView.askColor(availableDining);
+                        waitAnswer();
+
+                        availableDining.put(currentStudent,availableDining.get(currentStudent)-1);
+                        exDining.put(currentStudent,exDining.get(currentStudent)+1);
+                    }
                 }
                 player.getSchoolBoard().decreaseNumCoins(switchDiningWaiting.getCost());
                 switchDiningWaiting.effect(exWaiting,exDining);
                 model.allocateProfessors();
-
-                List<Player> players = new ArrayList<>();
-                players.add(0,player);
-
-                for(VirtualView virtualView : virtualViewMap.values()){
-                    virtualView.showSchoolBoardPlayers(players);
-                }
             }
         }
-    }
-
-    /**
-     * this method converts an object PawnColor into a colored string
-     *
-     * @param pawnColor the pawncolor to convert
-     * @return the string converted
-     */
-    private String colorToString(PawnColor pawnColor){
-        String colorToString = null;
-        switch (pawnColor){
-            case RED -> {
-                colorToString = pawnColor.getVisualColor()+"red"+Colors.RESET;
-            }
-            case BLUE -> {
-                colorToString = pawnColor.getVisualColor()+"blue"+Colors.RESET;
-            }
-            case PINK -> {
-                colorToString = pawnColor.getVisualColor()+"pink"+Colors.RESET;
-            }
-            case GREEN -> {
-                colorToString = pawnColor.getVisualColor()+"green"+Colors.RESET;
-            }
-            case YELLOW -> {
-                colorToString = pawnColor.getVisualColor() + "yellow" + Colors.RESET;
-            }
-        }
-        return colorToString;
     }
 
     /**

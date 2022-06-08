@@ -417,7 +417,9 @@ public class Game extends Observable implements Serializable {
             if(previousOwner != null) {
                 if (!draw && !(winner.equals(previousOwner))) {
                     previousOwner.getSchoolBoard().removeProfessor(color);
-                    winner.getSchoolBoard().addProfessor(color);
+                    if(maxStudents!=0){ //parte aggiunta per evitare che se entrambi hanno 0 studenti ad uno venga assegnato il professore
+                        winner.getSchoolBoard().addProfessor(color);
+                    }
                 }
 
             }
@@ -429,12 +431,6 @@ public class Game extends Observable implements Serializable {
             }
         }
 
-        /* non va bene perche cosi l'effetto finisce dopo aver mosso uno studente
-        for (Player player : players){
-            if (player.getControlOnProfessor()){
-                player.setControlOnProfessor(false);
-            }
-        }*/
         notifyObserver(new Generic("SERVER","\nUPDATE SCHOOLBOARD:"));
         notifyObserver(new SchoolBoardPlayers(players));
     }

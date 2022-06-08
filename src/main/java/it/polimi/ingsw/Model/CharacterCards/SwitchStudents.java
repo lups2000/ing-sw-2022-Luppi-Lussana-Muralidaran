@@ -44,14 +44,6 @@ public class SwitchStudents extends CharacterCard implements Serializable {
     public void effect(Map<PawnColor,Integer> toPick, Map<PawnColor,Integer> toDeposit) throws TooManyPawnsPresent, NoPawnPresentException {
         for(Player player : game.getPlayers()){
             if((player.getStatus()).equals(PlayerStatus.PLAYING_ACTION)){
-                /*for(PawnColor color : PawnColor.values()){
-                    if(toDeposit.get(color) > 0){
-                        for(int i=0;i<toDeposit.get(color);i++){
-                            students.put(color,students.get(color)+1);
-                            player.getSchoolBoard().removeStudFromWaiting(color);
-                        }
-                    }
-                }*/ //li ho gia tolti nel turn controller!
                 for(PawnColor pawnColor : PawnColor.values()){
                     if(toPick.get(pawnColor) > 0){
                         for(int i=0;i<toPick.get(pawnColor);i++){
@@ -60,8 +52,6 @@ public class SwitchStudents extends CharacterCard implements Serializable {
                         }
                     }
                 }
-                System.out.println(player.getSchoolBoard().getNumStudentsWaiting());
-                System.out.println(player.getSchoolBoard().getStudentsWaiting());
             }
         }
 

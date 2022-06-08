@@ -962,7 +962,7 @@ public class Cli extends Observable4View implements View {
             //out.print(Colors.RESET);
             this.showStudents(availableStudents);
             //out.print("\033[38;2;255;255;0m");
-            out.print("Select one color(ex. red,blue...) or press 'x' to stop: ");
+            out.print("\nSelect one color(ex. red,blue...) or press 'x' to stop: ");
             answerColor= readLine.nextLine();
 
             if(answerColor.equalsIgnoreCase("red") || answerColor.equalsIgnoreCase("blue") || answerColor.equalsIgnoreCase("pink") ||
