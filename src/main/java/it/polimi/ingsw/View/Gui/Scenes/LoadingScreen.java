@@ -24,7 +24,7 @@ public class LoadingScreen extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         FXMLLoader fxmlLoader=new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("/fxml/MainScreen.fxml"));
+        fxmlLoader.setLocation(getClass().getResource("/fxml/InitialScreen.fxml"));
         Parent root=null;
         try{
             root=fxmlLoader.load();

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.View.Gui.Scenes;
 
-import it.polimi.ingsw.View.Gui.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.*;
