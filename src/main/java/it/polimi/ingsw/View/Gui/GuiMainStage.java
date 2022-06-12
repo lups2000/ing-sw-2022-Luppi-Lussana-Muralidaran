@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -28,13 +29,12 @@ public class GuiMainStage extends Application {
 
         Scene scene = new Scene(baseLayout);
         stage.setScene(scene);
-        stage.setHeight(400);
-        stage.setWidth(600);
+        stage.setHeight(1280d);
+        stage.setWidth(700d);
         stage.setResizable(false);
         stage.setMaximized(true);
-        //stage.setFullScreen(true);
+        stage.getIcons().add(new Image("/Images/logocranio.png"));// All Stages have this icon
         stage.setFullScreenExitHint("");
-        //stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         stage.setTitle("Eriantys");
         stage.show();
 
