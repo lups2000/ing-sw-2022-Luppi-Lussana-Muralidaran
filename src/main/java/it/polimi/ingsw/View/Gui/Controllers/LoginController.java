@@ -1,6 +1,7 @@
 package it.polimi.ingsw.View.Gui.Controllers;
 
 import it.polimi.ingsw.Controller.ClientController;
+import it.polimi.ingsw.View.Gui.Scenes.ErrorAlert;
 import it.polimi.ingsw.observer.Observable4View;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -42,6 +43,9 @@ public class LoginController extends Observable4View implements GuiGenericContro
         if(okIp && okPort){
             connectionButton.setDisable(true);
             new Thread(() -> notifyObserver(obs -> obs.connectClientToServer(ipAddress,portNumber))).start();
+        }
+        else{
+            ErrorAlert.display("Error","Address or Port invalid!");
         }
 
 

@@ -2,3 +2,7 @@
     -fx-background-image: url("../LoadingImage.png");
     -fx-background-size: 100% 100%;
 }
+.loginbg{
+    -fx-background-image: url("../Wallpaper.png");
+    -fx-background-size: 100% 100%;
+}

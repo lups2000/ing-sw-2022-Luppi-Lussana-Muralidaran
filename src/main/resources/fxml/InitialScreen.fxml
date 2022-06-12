@@ -23,7 +23,6 @@
          </children>
          <stylesheets>
             <URL value="@../Images/CSS/LoadingScreenBG.css" />
-            <URL value="@../Images/CSS/LoadingScreenBG.css" />
          </stylesheets>
       </VBox>
    </children>

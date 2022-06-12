@@ -28,7 +28,6 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void askAssistantSeed(List<AssistantSeed> assistantSeedAvailable) {
-
     }
 
     @Override

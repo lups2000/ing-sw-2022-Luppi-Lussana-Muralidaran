@@ -25,6 +25,10 @@ public class NicknameController extends Observable4View implements GuiGenericCon
     }
 
     private void onConfermButtonClick (Event event) {
+        String nickName=nicknameField.getText();
+        confermButton.setDisable(true);
+        //solo buttato giu ma devo guardare bene
+        //new Thread(() -> notifyObserver(obs -> obs.sendNickname(nickName))).start();
         //o matchCreation (se è il primo player) o chiedere direttamente l'assistant seed TODO
     }
 }
