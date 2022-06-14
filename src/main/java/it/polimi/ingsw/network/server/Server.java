@@ -47,9 +47,10 @@ public class Server {
                 clientsConnected.put(nickname, clientConnection);
                 mainController.loginToTheGame(nickname,virtualView);
             }
+            /*
             else{
                 virtualView.askNickName();
-            }
+            }*/
         }
     }
 

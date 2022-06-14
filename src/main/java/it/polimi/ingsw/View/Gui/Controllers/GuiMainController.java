@@ -76,7 +76,7 @@ public class GuiMainController extends Observable4View {
         nextPane(guiGenericController,currentScene,fxml);
     }
 
-    public static void showAlert(String message) {
+    public static void showAlert(String title,String message) {
         /*FXMLLoader loader = new FXMLLoader(GuiMainController.class.getResource("/fxml/alert_scene.fxml"));
         Parent parent;
         try {
@@ -87,6 +87,6 @@ public class GuiMainController extends Observable4View {
         }*/
         //ErrorAlert errorAlert = loader.getController();
         //Scene alertScene = new Scene(parent);
-        ErrorAlert.display("Error",message);
+        ErrorAlert.display(title,message);
     }
 }

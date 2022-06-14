@@ -571,6 +571,12 @@ public class Cli extends Observable4View implements View {
             System.exit(1);
         }
         else if(connectionOk){
+            if(nickName==null){
+                out.println(Colors.RESET+"Missing Information!"+"\033[38;2;255;255;0m");
+            }
+            else{
+                out.println(Colors.RESET+"Sorry, nickName already taken!"+"\033[38;2;255;255;0m");
+            }
             askNickName();
         }
         else{

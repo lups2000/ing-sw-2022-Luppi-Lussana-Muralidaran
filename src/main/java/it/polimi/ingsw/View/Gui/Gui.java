@@ -25,20 +25,18 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void askNumPlayers() {
-
-        CreateMatchController createMatchController = new CreateMatchController();
-        createMatchController.addAllObservers(observers);
-        createMatchController.setMinMaxPlayersNumber(2,3);
-        Platform.runLater(()-> GuiMainController.nextPane(createMatchController,"MatchCreation.fxml"));
+        Platform.runLater(()-> GuiMainController.nextPane(observers,"MatchCreation.fxml"));
     }
 
+    //c'è un problema perche si richiamano in sequenza askNumPlayers,askExpertVariant e askSeed (nel MainController)
+    //questo non causa problemi nella CLI ma nella GUI sembra di si
     @Override
     public void askAssistantSeed(List<AssistantSeed> assistantSeedAvailable) {
+        //Platform.runLater(()->GuiMainController.nextPane(observers,"SeedSelector.fxml"));
     }
 
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards) {
-
     }
 
     @Override
@@ -68,13 +66,13 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void showGenericMessage(String genericMessage) {
-
+        Platform.runLater(()->GuiMainController.showAlert("Generic",genericMessage));
     }
 
     @Override
     public void showError(String error) {
         Platform.runLater(() -> {
-            GuiMainController.showAlert(error);
+            GuiMainController.showAlert("Error",error);
             GuiMainController.nextPane(observers, "InitialScreen.fxml");
         });
     }
@@ -101,7 +99,28 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void showLoginInfo(String nickName, boolean nickNameOk, boolean connectionOk) {
-
+        if(!nickNameOk || !connectionOk){
+            if(nickNameOk){
+                Platform.runLater(()->{
+                    GuiMainController.showAlert("Error","Sorry, error to reach the server!");
+                    GuiMainController.nextPane(observers,"InitialScreen.fxml");
+                });
+            }
+            else{
+                if(nickName==null || nickName.isEmpty()){
+                    Platform.runLater(()->{
+                        GuiMainController.showAlert("Error","Missing Information!");
+                        GuiMainController.nextPane(observers,"NickName.fxml");
+                    });
+                }
+                else{
+                    Platform.runLater(()->{
+                        GuiMainController.showAlert("Error","Sorry, nickName already taken!");
+                        GuiMainController.nextPane(observers,"NickName.fxml");
+                    });
+                }
+            }
+        }
     }
 
     @Override

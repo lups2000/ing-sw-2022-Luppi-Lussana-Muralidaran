@@ -18,7 +18,7 @@ public class ErrorAlert {
 
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
-        window.setWidth(600);
+        window.setWidth(400);
         window.setHeight(400);
         window.setResizable(false);
         window.getIcons().add(new Image("/Images/errorX.png"));

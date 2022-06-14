@@ -256,8 +256,7 @@ public class ClientController implements Observer4View, Observer {
      * @param numPlayers the number of players
      */
     @Override
-    public void sendNumPlayers(int numPlayers) {
-        client.sendMessage(new NumPlayersReply(this.nickname,numPlayers));
+    public void sendNumPlayers(int numPlayers) {client.sendMessage(new NumPlayersReply(this.nickname,numPlayers));
     }
 
     /**
