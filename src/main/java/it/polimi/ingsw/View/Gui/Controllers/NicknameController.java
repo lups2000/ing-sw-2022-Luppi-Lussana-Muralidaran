@@ -17,18 +17,18 @@ public class NicknameController extends Observable4View implements GuiGenericCon
     @FXML
     public Pane pane;
     @FXML
-    public Button confermButton;
+    public Button confirmButton;
 
     @FXML
     public void initialize() {
-        confermButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfermButtonClick);
+        confirmButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmButtonClick);
     }
 
-    private void onConfermButtonClick (Event event) {
+    private void onConfirmButtonClick (Event event) {
+
         String nickName=nicknameField.getText();
-        confermButton.setDisable(true);
-        //solo buttato giu ma devo guardare bene
-        //new Thread(() -> notifyObserver(obs -> obs.sendNickname(nickName))).start();
-        //o matchCreation (se è il primo player) o chiedere direttamente l'assistant seed TODO
+        confirmButton.setDisable(true);
+        new Thread(() -> notifyObserver(obs -> obs.sendNickname(nickName))).start();
+
     }
 }

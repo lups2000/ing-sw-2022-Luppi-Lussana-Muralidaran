@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
@@ -7,22 +8,25 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1300.0" style="-fx-background-radius: 10;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1300.0" style="-fx-background-radius: 10;" styleClass="loginbg" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.View.Gui.Controllers.CreateMatchController">
    <children>
-      <Label layoutX="546.0" layoutY="211.0" text="Choose number of players">
+      <Label layoutX="530.0" layoutY="214.0" text="Choose the number of players">
          <font>
             <Font size="18.0" />
          </font></Label>
-      <ChoiceBox layoutX="536.0" layoutY="251.0" prefHeight="36.0" prefWidth="229.0" style="-fx-background-radius: 10;" />
-      <CheckBox layoutX="567.0" layoutY="321.0" mnemonicParsing="false" text="Experts variant">
+      <ChoiceBox fx:id="choiceBox" layoutX="536.0" layoutY="251.0" prefHeight="36.0" prefWidth="229.0" style="-fx-background-radius: 10;" />
+      <CheckBox fx:id="checkBox" layoutX="567.0" layoutY="321.0" mnemonicParsing="false" text="Experts variant">
          <font>
             <Font size="20.0" />
          </font></CheckBox>
-      <Label layoutX="485.0" layoutY="113.0" text="Match Settings" textFill="RED">
+      <Button fx:id="confirmButton" layoutX="567.0" layoutY="380.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="165.0" style="-fx-background-radius: 10;" text="Create Match" />
+      <Label layoutX="528.0" layoutY="141.0" text="Game Settings">
          <font>
-            <Font name="Arial" size="50.0" />
+            <Font name="Comic Sans MS" size="35.0" />
          </font>
       </Label>
-      <Button layoutX="567.0" layoutY="426.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="165.0" style="-fx-background-radius: 10;" text="Create Match" />
    </children>
+   <stylesheets>
+      <URL value="@../Images/CSS/LoadingScreenBG.css" />
+   </stylesheets>
 </Pane>

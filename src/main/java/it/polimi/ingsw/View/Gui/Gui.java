@@ -1,7 +1,9 @@
 package it.polimi.ingsw.View.Gui;
 
+import it.polimi.ingsw.Controller.MainController;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
+import it.polimi.ingsw.View.Gui.Controllers.CreateMatchController;
 import it.polimi.ingsw.View.Gui.Controllers.GuiMainController;
 import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.observer.Observable4View;
@@ -24,6 +26,10 @@ public class Gui extends Observable4View implements View {
     @Override
     public void askNumPlayers() {
 
+        CreateMatchController createMatchController = new CreateMatchController();
+        createMatchController.addAllObservers(observers);
+        createMatchController.setMinMaxPlayersNumber(2,3);
+        Platform.runLater(()-> GuiMainController.nextPane(createMatchController,"MatchCreation.fxml"));
     }
 
     @Override
@@ -42,7 +48,7 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void askExpertVariant() {
-
+        //empty method because we ask the expertVariant when we ask the number of players
     }
 
     @Override
@@ -67,7 +73,10 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void showError(String error) {
-
+        Platform.runLater(() -> {
+            GuiMainController.showAlert(error);
+            GuiMainController.nextPane(observers, "InitialScreen.fxml");
+        });
     }
 
     @Override

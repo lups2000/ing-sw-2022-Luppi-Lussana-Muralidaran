@@ -9,10 +9,10 @@
 
 <Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1300.0" styleClass="loginbg" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.View.Gui.Controllers.LoginController">
    <children>
-      <TextField fx:id="ipAddressField" alignment="CENTER" layoutX="590.0" layoutY="213.0" promptText="Insert IP Address" style="-fx-background-radius: 10;" text="127.0.0.1" />
-      <TextField fx:id="portNumberField" alignment="CENTER" layoutX="590.0" layoutY="261.0" promptText="Insert port number" style="-fx-background-radius: 10;" text="12345" />
-      <Button fx:id="connectionButton" layoutX="600.0" layoutY="310.0" mnemonicParsing="false" text="Connect to the server" />
-      <Label alignment="CENTER" layoutX="636.0" layoutY="193.0" text="Address">
+      <TextField fx:id="ipAddressField" alignment="CENTER" layoutX="579.0" layoutY="213.0" promptText="Insert IP Address" style="-fx-background-radius: 10;" text="127.0.0.1" />
+      <TextField fx:id="portNumberField" alignment="CENTER" layoutX="579.0" layoutY="261.0" promptText="Insert port number" style="-fx-background-radius: 10;" text="12345" />
+      <Button fx:id="connectionButton" layoutX="589.0" layoutY="310.0" mnemonicParsing="false" text="Connect to the server" />
+      <Label alignment="CENTER" layoutX="630.0" layoutY="193.0" text="Address">
          <font>
             <Font name="Comic Sans MS" size="12.0" />
          </font></Label>
@@ -21,7 +21,7 @@
             <Font name="Comic Sans MS" size="35.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="648.0" layoutY="241.0" text="Port">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="641.0" layoutY="241.0" text="Port">
          <font>
             <Font name="Comic Sans MS" size="12.0" />
          </font></Label>
