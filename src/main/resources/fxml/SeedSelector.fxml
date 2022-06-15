@@ -6,11 +6,10 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1300.0" fx:controller="it.polimi.ingsw.View.Gui.Controllers.AssistantSeedController" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.View.Gui.Controllers.AssistantSeedController">
    <children>
       <Button layoutX="566.0" layoutY="409.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="171.0" text="Confirm Seed" />
-      <ChoiceBox layoutX="538.0" layoutY="304.0" prefHeight="39.0" prefWidth="226.0" />
+      <ChoiceBox fx:id="seedChoice" layoutX="538.0" layoutY="304.0" prefHeight="39.0" prefWidth="226.0" />
       <Label layoutX="516.0" layoutY="125.0" text="Select Seed" textFill="RED">
          <font>
             <Font name="Arial" size="50.0" />
