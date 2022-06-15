@@ -1,4 +1,4 @@
-package it.polimi.ingsw.View.Gui.Scenes.SeedChoiceBoxSelections;
+package it.polimi.ingsw.View.Gui.Scenes;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
