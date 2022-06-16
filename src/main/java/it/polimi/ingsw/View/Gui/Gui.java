@@ -3,6 +3,7 @@ package it.polimi.ingsw.View.Gui;
 import it.polimi.ingsw.Controller.MainController;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
+import it.polimi.ingsw.View.Gui.Controllers.AssistantSeedController;
 import it.polimi.ingsw.View.Gui.Controllers.CreateMatchController;
 import it.polimi.ingsw.View.Gui.Controllers.GuiMainController;
 import it.polimi.ingsw.View.View;
@@ -20,7 +21,7 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void askNickName() {
-        Platform.runLater(() -> GuiMainController.nextPane(observers,"Nickname.fxml"));
+        Platform.runLater(() -> GuiMainController.nextPane(observers,"NickName.fxml"));
     }
 
     @Override
@@ -32,7 +33,10 @@ public class Gui extends Observable4View implements View {
     //questo non causa problemi nella CLI ma nella GUI sembra di si
     @Override
     public void askAssistantSeed(List<AssistantSeed> assistantSeedAvailable) {
-        //Platform.runLater(()->GuiMainController.nextPane(observers,"SeedSelector.fxml"));
+        AssistantSeedController assistantSeedController = new AssistantSeedController();
+        assistantSeedController.addAllObservers(observers);
+        assistantSeedController.setAssistantSeedsAvailable(assistantSeedAvailable);
+        Platform.runLater(()->GuiMainController.nextPane(assistantSeedController,"DeckSeedSelector.fxml"));
     }
 
     @Override
