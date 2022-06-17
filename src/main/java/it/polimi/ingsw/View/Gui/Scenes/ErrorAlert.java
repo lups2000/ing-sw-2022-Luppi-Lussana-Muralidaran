@@ -21,12 +21,16 @@ public class ErrorAlert {
         window.setWidth(400);
         window.setHeight(400);
         window.setResizable(false);
-        window.getIcons().add(new Image("/Images/errorX.png"));
-
+        if(title.equalsIgnoreCase("error")){
+            window.getIcons().add(new Image("/Images/errorX.png"));
+        }
+        else if(title.equalsIgnoreCase("generic")){
+            window.getIcons().add(new Image("/Images/warning.png"));
+        }
         Label label = new Label();
         label.setText(message);
 
-        Button closeButton = new Button("Return Back");
+        Button closeButton = new Button("Close");
         closeButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {

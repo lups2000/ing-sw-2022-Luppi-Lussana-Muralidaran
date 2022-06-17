@@ -29,8 +29,6 @@ public class Gui extends Observable4View implements View {
         Platform.runLater(()-> GuiMainController.nextPane(observers,"MatchCreation.fxml"));
     }
 
-    //c'è un problema perche si richiamano in sequenza askNumPlayers,askExpertVariant e askSeed (nel MainController)
-    //questo non causa problemi nella CLI ma nella GUI sembra di si
     @Override
     public void askAssistantSeed(List<AssistantSeed> assistantSeedAvailable) {
         AssistantSeedController assistantSeedController = new AssistantSeedController();

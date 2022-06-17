@@ -74,7 +74,7 @@ public class MainController implements Serializable {
                     NumPlayersReply numPlayersReply = (NumPlayersReply) message;
                     maxNumPlayers = numPlayersReply.getNumPlayers(); //save the max number of players
                     game.setMaxNumPlayers(maxNumPlayers);
-                    broadcastingMessage("Waiting for players...");
+                    virtualViewsMap.get(message.getNickName()).askExpertVariant();
                 }
                 else {
                     Server.LOGGER.warning("The format of the message sent by the client is incorrect!");
@@ -85,6 +85,7 @@ public class MainController implements Serializable {
                 if(messageController.checkExpertVariant(message)){ //message format ok
                     ExpertVariantReply expertVariantReply = (ExpertVariantReply) message;
                     expertVariant=expertVariantReply.isExpertVariant();
+                    virtualViewsMap.get(message.getNickName()).askAssistantSeed(game.getSeedsAvailable());
                 }
                 else {
                     Server.LOGGER.warning("The format of the message sent by the client is incorrect!");
@@ -97,7 +98,10 @@ public class MainController implements Serializable {
                     game.getPlayerByNickName(message.getNickName()).chooseDeck(assistantSeedReply.getAssistantSeed());
                     game.getSeedsAvailable().remove(assistantSeedReply.getAssistantSeed()); //removing the seed chosen from the list
 
-                    if(game.getPlayers().size() == game.getMaxNumPlayers()){
+                    if(game.getPlayers().size() < game.getMaxNumPlayers()){
+                        broadcastingMessage("Waiting for players...");
+                    }
+                    else if(game.getPlayers().size() == game.getMaxNumPlayers()){
                         //the match can start only when the Assistant seeds of all players are received
                         startMatch(maxNumPlayers,expertVariant);
                     }
@@ -227,8 +231,8 @@ public class MainController implements Serializable {
             game.addPlayer(nickname); //add the player to the model
 
             virtualView.askNumPlayers();
-            virtualView.askExpertVariant();
-            virtualView.askAssistantSeed(game.getSeedsAvailable());
+            //virtualView.askExpertVariant();
+            //virtualView.askAssistantSeed(game.getSeedsAvailable());
 
         }
         else if(virtualViewsMap.size() < game.getMaxNumPlayers()){
@@ -238,6 +242,7 @@ public class MainController implements Serializable {
             game.addObserver(virtualView);
             game.addPlayer(nickname); //add the player to the model
             virtualView.showLoginInfo("SERVER",true,true);
+            virtualView.askAssistantSeed(game.getSeedsAvailable());
 
             if(maxNumPlayers==game.getPlayers().size()){ //the lobby is full
 
@@ -249,9 +254,10 @@ public class MainController implements Serializable {
                     broadcastingMessage("\nThe server went down!Now you can continue the match...");
                     replaceMainController(mainControllerPreviousMatch);
                 }
+                /*
                 else{
                     virtualView.askAssistantSeed(game.getSeedsAvailable());
-                }
+                }*/
             }
         }
         //a questo else teoricamente non ci arrivo mai
