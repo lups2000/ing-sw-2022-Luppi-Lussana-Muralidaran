@@ -10,7 +10,7 @@
 
 <Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1300.0" styleClass="loginbg" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.View.Gui.Controllers.NicknameController">
     <children>
-        <Label layoutX="458.0" layoutY="171.0" text="Choose Your NickName">
+        <Label layoutX="459.0" layoutY="171.0" text="Choose Your Nickname" textFill="WHITE">
             <font>
                 <Font name="Comic Sans MS" size="35.0" />
             </font>

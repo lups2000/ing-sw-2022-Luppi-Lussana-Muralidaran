@@ -20,7 +20,7 @@
             <Font size="20.0" />
          </font></CheckBox>
       <Button fx:id="confirmButton" layoutX="567.0" layoutY="380.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="165.0" style="-fx-background-radius: 10;" text="Create Match" />
-      <Label layoutX="528.0" layoutY="141.0" text="Game Settings">
+      <Label layoutX="528.0" layoutY="141.0" text="Game Settings" textFill="WHITE">
          <font>
             <Font name="Comic Sans MS" size="35.0" />
          </font>
