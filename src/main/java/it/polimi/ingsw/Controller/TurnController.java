@@ -244,7 +244,7 @@ public class TurnController implements Serializable {
                             waitAnswer(); //wait for the answer of the current Player
 
                             if(checkAssistantCard(currentAssistantCard)){ //assistantCard ok
-                                virtualViewCurrentPlayer.showGenericMessage("AssistantCard played: < Value: "+currentAssistantCard.getValue()+", MaxStepsMotherNature: "+currentAssistantCard.getMaxStepsMotherNature()+" > ");
+                                //virtualViewCurrentPlayer.showGenericMessage("AssistantCard played: < Value: "+currentAssistantCard.getValue()+", MaxStepsMotherNature: "+currentAssistantCard.getMaxStepsMotherNature()+" > ");
                                 notifyOtherPlayers(currentPlayerToPlayAssistant.getNickname()+" has played the following AssistantCard: <  Value: "+currentAssistantCard.getValue()+", MaxStepsMotherNature: "+currentAssistantCard.getMaxStepsMotherNature()+" > ",currentPlayerToPlayAssistant);
 
                                 currentPlayerToPlayAssistant.pickAssistantCard(currentAssistantCard);

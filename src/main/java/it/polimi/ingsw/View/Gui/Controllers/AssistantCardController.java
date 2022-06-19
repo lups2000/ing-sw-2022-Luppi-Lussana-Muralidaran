@@ -85,6 +85,17 @@ public class AssistantCardController extends Observable4View implements GuiGener
 
     private void onAssistantCardClicked(AssistantCard assistantCard){
 
+        assistant1.setDisable(true);
+        assistant2.setDisable(true);
+        assistant3.setDisable(true);
+        assistant4.setDisable(true);
+        assistant5.setDisable(true);
+        assistant6.setDisable(true);
+        assistant7.setDisable(true);
+        assistant8.setDisable(true);
+        assistant9.setDisable(true);
+        assistant10.setDisable(true);
+
         new Thread(()->notifyObserver(obs->obs.sendAssistantCard(assistantCard))).start();
     }
 

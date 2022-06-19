@@ -126,6 +126,11 @@ public class Gui extends Observable4View implements View {
                 }
             }
         }
+        else{
+            Platform.runLater(()->{
+                GuiMainController.showAlert("Generic","Nice to meet you "+nickName+", now you are connected!");
+            });
+        }
     }
 
     @Override
