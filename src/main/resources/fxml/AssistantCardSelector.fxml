@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="760.0" prefWidth="1300.0" styleClass="loginbg" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+
+    <children>
+        <Label layoutX="465.0" layoutY="137.0" text="Play one AssistantCard">
+            <font>
+                <Font name="Comic Sans MS" size="35.0" />
+            </font>
+        </Label>
+      <HBox layoutX="250.0" layoutY="261.0" prefHeight="200.0" prefWidth="801.0" spacing="20.0">
+         <children>
+            <Button fx:id="assistant1" alignment="CENTER" mnemonicParsing="false" prefHeight="200.0" prefWidth="112.0">
+               <graphic>
+                  <ImageView fitHeight="192.0" fitWidth="179.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/AssistantCards/x2Size/Assistente(1).png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="assistant2" mnemonicParsing="false" prefHeight="200.0" prefWidth="115.0">
+               <graphic>
+                  <ImageView fitHeight="192.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/AssistantCards/x2Size/Assistente(2).png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="assistant3" mnemonicParsing="false" prefHeight="200.0" prefWidth="79.0">
+               <graphic>
+                  <ImageView fitHeight="192.0" fitWidth="281.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/AssistantCards/x2Size/Assistente(3).png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="assistant4" mnemonicParsing="false" prefHeight="200.0" prefWidth="83.0">
+               <graphic>
+                  <ImageView fitHeight="192.0" fitWidth="138.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/AssistantCards/x2Size/Assistente(4).png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="assistant5" mnemonicParsing="false" prefHeight="200.0" prefWidth="79.0">
+               <graphic>
+                  <ImageView fitHeight="192.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/AssistantCards/x2Size/Assistente(5).png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+         </children>
+      </HBox>
+      <HBox layoutX="250.0" layoutY="482.0" prefHeight="200.0" prefWidth="801.0" spacing="20.0">
+         <children>
+            <Button fx:id="assistant6" alignment="CENTER" mnemonicParsing="false" prefHeight="200.0" prefWidth="112.0">
+               <graphic>
+                  <ImageView fitHeight="192.0" fitWidth="179.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/AssistantCards/x2Size/Assistente(6).png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="assistant7" mnemonicParsing="false" prefHeight="200.0" prefWidth="115.0">
+               <graphic>
+                  <ImageView fitHeight="192.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/AssistantCards/x2Size/Assistente(7).png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="assistant8" mnemonicParsing="false" prefHeight="200.0" prefWidth="79.0">
+               <graphic>
+                  <ImageView fitHeight="192.0" fitWidth="281.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/AssistantCards/x2Size/Assistente(8).png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="assistant9" mnemonicParsing="false" prefHeight="200.0" prefWidth="83.0">
+               <graphic>
+                  <ImageView fitHeight="192.0" fitWidth="138.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/AssistantCards/x2Size/Assistente(9).png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="assistant10" mnemonicParsing="false" prefHeight="200.0" prefWidth="79.0">
+               <graphic>
+                  <ImageView fitHeight="192.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/AssistantCards/x2Size/Assistente(10).png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </HBox>
+    </children>
+    <stylesheets>
+        <URL value="@../Images/CSS/LoadingScreenBG.css" />
+    </stylesheets>
+</AnchorPane>

@@ -4,9 +4,7 @@ import it.polimi.ingsw.Model.AssistantSeed;
 import it.polimi.ingsw.observer.Observable4View;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.image.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 

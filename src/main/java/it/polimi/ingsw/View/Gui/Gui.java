@@ -1,10 +1,9 @@
 package it.polimi.ingsw.View.Gui;
 
-import it.polimi.ingsw.Controller.MainController;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
+import it.polimi.ingsw.View.Gui.Controllers.AssistantCardController;
 import it.polimi.ingsw.View.Gui.Controllers.AssistantSeedController;
-import it.polimi.ingsw.View.Gui.Controllers.CreateMatchController;
 import it.polimi.ingsw.View.Gui.Controllers.GuiMainController;
 import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.observer.Observable4View;
@@ -39,6 +38,10 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards) {
+        AssistantCardController assistantCardController = new AssistantCardController();
+        assistantCardController.addAllObservers(observers);
+        assistantCardController.setAssistantCardsAvailable(assistantCards);
+        Platform.runLater(()->GuiMainController.nextPane(assistantCardController,"AssistantCardSelector.fxml"));
     }
 
     @Override
