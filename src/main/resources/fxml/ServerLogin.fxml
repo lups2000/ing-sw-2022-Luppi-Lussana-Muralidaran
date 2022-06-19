@@ -16,7 +16,7 @@
          <font>
             <Font name="Comic Sans MS" size="12.0" />
          </font></Label>
-      <Label layoutX="319.0" layoutY="98.0" text="Welcome! Please connect to the Server!" textFill="WHITE">
+      <Label layoutX="319.0" layoutY="98.0" text="Welcome! Please connect to the Server!" >
          <font>
             <Font name="Comic Sans MS" size="35.0" />
          </font>

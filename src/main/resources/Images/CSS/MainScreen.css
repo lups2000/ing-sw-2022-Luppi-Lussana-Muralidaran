@@ -1,0 +1,4 @@
+.schoolboardBG{
+    -fx-background-image: url("../SchoolBoard.png");
+    -fx-background-size: 100% 100%;
+}
