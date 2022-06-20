@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -19,27 +20,59 @@
             <Image url="@../Images/BackgroundSky.jpg" />
          </image>
       </ImageView>
-      <VBox alignment="CENTER" layoutY="-1.0" prefHeight="735.0" prefWidth="153.0" spacing="15.0">
+      <VBox alignment="CENTER" layoutY="-1.0" prefHeight="760.0" prefWidth="154.0" spacing="40.0">
          <children>
-            <ImageView fx:id="assistantPlayer2" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Images/AssistantCards/x2Size/Assistente(1).png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="assistantPlayer1" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Images/AssistantCards/x2Size/Assistente(2).png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="assistantCurrentPlayer" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Images/AssistantCards/x2Size/Assistente(3).png" />
-               </image>
-            </ImageView>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label fx:id="labelPlayer1" text="Player1" textFill="#0900ff">
+                     <font>
+                        <Font name="Matura MT Script Capitals" size="16.0" />
+                     </font>
+                  </Label>
+                  <ImageView fx:id="assistantPlayer1" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/AssistantCards/x2Size/Assistente(2).png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label fx:id="labelPlayer2" text="Player2" textFill="#0900ff">
+                     <font>
+                        <Font name="Matura MT Script Capitals" size="16.0" />
+                     </font>
+                  </Label>
+                  <ImageView fx:id="assistantPlayer2" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/AssistantCards/x2Size/Assistente(1).png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label text="You've played:" textFill="#468c46">
+                     <font>
+                        <Font name="Matura MT Script Capitals" size="16.0" />
+                     </font>
+                  </Label>
+                  <ImageView fx:id="assistantCurrentPlayer" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/AssistantCards/x2Size/Assistente(3).png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </VBox>
          </children>
       </VBox>
       <VBox alignment="CENTER" layoutX="1129.0" prefHeight="735.0" prefWidth="153.0" spacing="10.0">
          <children>
+            <Label text="Character Cards" textFill="#ff00dc">
+               <font>
+                  <Font name="Matura MT Script Capitals" size="20.0" />
+               </font>
+            </Label>
             <Button mnemonicParsing="false">
                <graphic>
                   <ImageView fitHeight="410.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
@@ -72,14 +105,23 @@
       <AnchorPane fx:id="schoolBoardCurrentPlayer" layoutX="389.0" layoutY="565.0" prefHeight="180.0" prefWidth="500.0" styleClass="schoolboardBG" />
       <AnchorPane fx:id="schoolBoardPlayer1" layoutX="210.0" layoutY="30.0" prefHeight="140.0" prefWidth="400.0" styleClass="schoolboardBG" />
       <AnchorPane fx:id="schoolBoardPlayer2" layoutX="665.0" layoutY="30.0" prefHeight="140.0" prefWidth="400.0" styleClass="schoolboardBG" />
-      <Label fx:id="labelPlayer1" alignment="CENTER" layoutX="388.0" layoutY="5.0" text="Player1" />
-      <Label fx:id="labelPlayer2" layoutX="844.0" layoutY="6.0" text="Player2" />
-      <ImageView fitHeight="81.0" fitWidth="89.0" layoutX="317.0" layoutY="621.0" pickOnBounds="true" preserveRatio="true">
+      <Label fx:id="labelPlayer1" alignment="CENTER" layoutX="386.0" text="Player1" textFill="#0076ff">
+         <font>
+            <Font name="Matura MT Script Capitals" size="14.0" />
+         </font></Label>
+      <Label fx:id="labelPlayer2" layoutX="841.0" text="Player2" textFill="#0076ff">
+         <font>
+            <Font name="Matura MT Script Capitals" size="14.0" />
+         </font></Label>
+      <ImageView fitHeight="81.0" fitWidth="89.0" layoutX="315.0" layoutY="600.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Images/Coin.png" />
          </image>
       </ImageView>
-      <Label fx:id="numCoinsCurrentPlayer" layoutX="350.0" layoutY="616.0" text="0" />
+      <Label fx:id="numCoinsCurrentPlayer" layoutX="345.0" layoutY="694.0" text="0" textFill="#bf3131">
+         <font>
+            <Font name="Matura MT Script Capitals" size="14.0" />
+         </font></Label>
       <AnchorPane layoutX="147.0" layoutY="177.0" prefHeight="380.0" prefWidth="996.0">
          <children>
             <ImageView fitHeight="70.0" fitWidth="100.0" layoutX="657.0" layoutY="112.0" pickOnBounds="true" preserveRatio="true">
@@ -87,7 +129,11 @@
                   <Image url="@../Images/WoodenPieces/deny_island_icon.png" />
                </image>
             </ImageView>
-            <Label fx:id="numNoEntryTiles" layoutX="725.0" layoutY="112.0" text="4" />
+            <Label fx:id="numNoEntryTiles" layoutX="686.0" layoutY="179.0" text="4" textFill="RED">
+               <font>
+                  <Font name="Matura MT Script Capitals" size="18.0" />
+               </font>
+            </Label>
             <GridPane fx:id="cloud2" alignment="CENTER" layoutX="246.0" layoutY="107.0" prefHeight="90.0" prefWidth="100.0" styleClass="cloudBG">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="84.33329264322916" minWidth="10.0" prefWidth="48.999979654947914" />
@@ -284,6 +330,16 @@
             </GridPane>
          </children>
       </AnchorPane>
+      <Label fx:id="labelPlayer21" layoutX="850.0" layoutY="642.0" rotate="90.0" text="Your Board" textFill="#0076ff">
+         <font>
+            <Font name="Matura MT Script Capitals" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="329.0" layoutY="667.0" text="Coins:" textFill="#bf3131">
+         <font>
+            <Font name="Matura MT Script Capitals" size="14.0" />
+         </font>
+      </Label>
    </children>
    <stylesheets>
       <URL value="@../Images/CSS/MainScreen.css" />
