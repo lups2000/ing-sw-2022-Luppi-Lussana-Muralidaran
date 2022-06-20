@@ -4,6 +4,7 @@ import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 import it.polimi.ingsw.View.Gui.Controllers.AssistantCardController;
 import it.polimi.ingsw.View.Gui.Controllers.AssistantSeedController;
+import it.polimi.ingsw.View.Gui.Controllers.BoardController;
 import it.polimi.ingsw.View.Gui.Controllers.GuiMainController;
 import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.observer.Observable4View;
@@ -159,8 +160,12 @@ public class Gui extends Observable4View implements View {
     }
 
     @Override
-    public void showGameBoard(List<Island> islands, List<CloudTile> cloudTiles, List<Player> players) {
-
+    public void showGameBoard(Game game,List<Island> islands, List<CloudTile> cloudTiles, List<Player> players) {
+        BoardController boardController = new BoardController();
+        boardController.addAllObservers(observers);
+        boardController.setCharacterCards(game.getCharacterCards());
+        boardController.setAssistantCards(game.getCurrentHand().values().stream().toList());
+        Platform.runLater(()->GuiMainController.nextPane(boardController,"Board.fxml"));
     }
 
     @Override

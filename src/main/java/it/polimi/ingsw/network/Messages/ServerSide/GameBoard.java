@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.Messages.ServerSide;
 
 import it.polimi.ingsw.Model.CloudTile;
+import it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Island;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.network.Messages.Message;
@@ -12,12 +13,14 @@ import java.util.List;
 public class GameBoard extends Message implements Serializable {
 
     private static final long serialVersionUID = 2817470917497248728L;
+    private Game game;
     private List<Island> islands;
     private List<Player> players;
     private List<CloudTile> cloudTiles;
 
-    public GameBoard(List<Island> islands,List<CloudTile> cloudTiles,List<Player> players){
+    public GameBoard(Game game,List<Island> islands,List<CloudTile> cloudTiles,List<Player> players){
         super("SERVER", MessageType.GAME_BOARD);
+        this.game=game;
         this.islands=islands;
         this.players=players;
         this.cloudTiles = cloudTiles;
@@ -31,10 +34,13 @@ public class GameBoard extends Message implements Serializable {
         return cloudTiles;
     }
 
+    public Game getGame() {return game;}
+
     @Override
     public String toString() {
         return "GameBoard{" +
                 "nickName="+getNickName()+", "+
+                "game="+game+
                 "islands=" + islands +
                 ", players=" + players +
                 '}';

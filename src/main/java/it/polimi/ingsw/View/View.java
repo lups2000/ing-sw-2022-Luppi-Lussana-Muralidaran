@@ -65,7 +65,7 @@ public interface View {
 
     void showIslands(List<Island> islands);
 
-    void showGameBoard(List<Island> islands,List<CloudTile> cloudTiles,List<Player> players);
+    void showGameBoard(Game game,List<Island> islands,List<CloudTile> cloudTiles,List<Player> players);
 
     void showCloudTiles(List<CloudTile> cloudTiles);
 
