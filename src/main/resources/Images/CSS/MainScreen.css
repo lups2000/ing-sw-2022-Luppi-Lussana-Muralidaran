@@ -6,3 +6,7 @@
     -fx-background-image: url("../WoodenPieces/cloud_card.png");
     -fx-background-size: 100% 100%;
 }
+.islandBG{
+    -fx-background-image: url("../WoodenPieces/island1.png");
+    -fx-background-size: 100% 100%;
+}
