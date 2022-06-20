@@ -5,6 +5,10 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
@@ -16,17 +20,17 @@
       </ImageView>
       <VBox alignment="CENTER" layoutY="-1.0" prefHeight="735.0" prefWidth="153.0" spacing="15.0">
          <children>
-            <ImageView fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="assistantPlayer2" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Images/AssistantCards/x2Size/Assistente(1).png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="assistantPlayer1" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Images/AssistantCards/x2Size/Assistente(2).png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="assistantCurrentPlayer" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Images/AssistantCards/x2Size/Assistente(3).png" />
                </image>
@@ -35,36 +39,166 @@
       </VBox>
       <VBox alignment="CENTER" layoutX="1140.0" prefHeight="735.0" prefWidth="153.0" spacing="15.0">
          <children>
-            <ImageView fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="character1" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Images/CharacterCards/CarteTOT_front.jpg" />
                </image>
             </ImageView>
-            <ImageView fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="character2" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Images/CharacterCards/CarteTOT_front2.jpg" />
                </image>
             </ImageView>
-            <ImageView fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="character3" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Images/CharacterCards/CarteTOT_front3.jpg" />
                </image>
             </ImageView>
          </children>
       </VBox>
-      <AnchorPane layoutX="389.0" layoutY="565.0" prefHeight="180.0" prefWidth="500.0" styleClass="schoolboardBG" />
-      <AnchorPane layoutX="210.0" layoutY="30.0" prefHeight="140.0" prefWidth="400.0" styleClass="schoolboardBG" />
-      <AnchorPane layoutX="665.0" layoutY="30.0" prefHeight="140.0" prefWidth="400.0" styleClass="schoolboardBG" />
-      <Label alignment="CENTER" layoutX="396.0" layoutY="5.0" text="Player1" />
-      <Label layoutX="851.0" layoutY="6.0" text="Player2" />
+      <AnchorPane fx:id="schoolBoardCurrentPlayer" layoutX="389.0" layoutY="565.0" prefHeight="180.0" prefWidth="500.0" styleClass="schoolboardBG" />
+      <AnchorPane fx:id="schoolBoardPlayer1" layoutX="210.0" layoutY="30.0" prefHeight="140.0" prefWidth="400.0" styleClass="schoolboardBG" />
+      <AnchorPane fx:id="schoolBoardPlayer2" layoutX="665.0" layoutY="30.0" prefHeight="140.0" prefWidth="400.0" styleClass="schoolboardBG" />
+      <Label alignment="CENTER" layoutX="388.0" layoutY="5.0" text="Player1" />
+      <Label layoutX="844.0" layoutY="6.0" text="Player2" />
       <ImageView fitHeight="81.0" fitWidth="89.0" layoutX="317.0" layoutY="621.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Images/Coin.png" />
          </image>
       </ImageView>
       <Label layoutX="350.0" layoutY="616.0" text="0" />
-      <VBox layoutX="158.0" layoutY="188.0" prefHeight="370.0" prefWidth="490.0" />
-      <VBox layoutX="651.0" layoutY="186.0" prefHeight="370.0" prefWidth="490.0" />
+      <AnchorPane layoutX="147.0" layoutY="177.0" prefHeight="380.0" prefWidth="996.0">
+         <children>
+            <ImageView fx:id="island6" fitHeight="100.0" fitWidth="130.0" layoutX="30.0" layoutY="192.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/WoodenPieces/island2.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="island7" fitHeight="100.0" fitWidth="130.0" layoutX="30.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/WoodenPieces/island2.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="island8" fitHeight="100.0" fitWidth="130.0" layoutX="140.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/WoodenPieces/island2.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="island5" fitHeight="100.0" fitWidth="130.0" layoutX="140.0" layoutY="277.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/WoodenPieces/island2.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="island9" fitHeight="100.0" fitWidth="130.0" layoutX="310.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/WoodenPieces/island2.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="island4" fitHeight="100.0" fitWidth="130.0" layoutX="310.0" layoutY="277.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/WoodenPieces/island2.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="island10" fitHeight="100.0" fitWidth="130.0" layoutX="488.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/WoodenPieces/island2.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="island3" fitHeight="100.0" fitWidth="130.0" layoutX="488.0" layoutY="277.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/WoodenPieces/island2.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="island11" fitHeight="100.0" fitWidth="130.0" layoutX="664.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/WoodenPieces/island2.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="island2" fitHeight="100.0" fitWidth="130.0" layoutX="664.0" layoutY="277.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/WoodenPieces/island2.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="island0" fitHeight="100.0" fitWidth="130.0" layoutX="816.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/WoodenPieces/island2.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="island1" fitHeight="100.0" fitWidth="130.0" layoutX="816.0" layoutY="192.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/WoodenPieces/island2.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="noEntryTiles" fitHeight="70.0" fitWidth="100.0" layoutX="657.0" layoutY="112.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/WoodenPieces/deny_island_icon.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="725.0" layoutY="112.0" text="0" />
+            <GridPane fx:id="cloud2" layoutX="246.0" layoutY="107.0" prefHeight="90.0" prefWidth="100.0" styleClass="cloudBG">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="10.0" prefWidth="62.3333740234375" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="79.6666259765625" minWidth="10.0" prefWidth="67.6666259765625" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+            <GridPane fx:id="cloud1" layoutX="385.0" layoutY="107.0" prefHeight="90.0" prefWidth="100.0" styleClass="cloudBG">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="10.0" prefWidth="62.3333740234375" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="79.6666259765625" minWidth="10.0" prefWidth="67.6666259765625" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+            <GridPane fx:id="cloud0" layoutX="523.0" layoutY="107.0" prefHeight="90.0" prefWidth="100.0" styleClass="cloudBG">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="10.0" prefWidth="62.3333740234375" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="79.6666259765625" minWidth="10.0" prefWidth="67.6666259765625" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+            <HBox layoutX="340.0" layoutY="216.0" prefHeight="41.0" prefWidth="225.0" spacing="10.0">
+               <children>
+                  <ImageView fitHeight="40.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/WoodenPieces/teacher_red.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="40.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/WoodenPieces/teacher_blue.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="40.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/WoodenPieces/teacher_green.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="40.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/WoodenPieces/teacher_yellow.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="40.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/WoodenPieces/teacher_pink.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
    </children>
    <stylesheets>
       <URL value="@../Images/CSS/MainScreen.css" />
