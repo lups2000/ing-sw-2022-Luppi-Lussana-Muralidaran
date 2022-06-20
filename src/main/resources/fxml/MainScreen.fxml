@@ -24,7 +24,7 @@
          <children>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Label fx:id="labelPlayer1" text="Player1" textFill="#0900ff">
+                  <Label fx:id="labelAssistantCardPlayer1" text="Player1" textFill="#0900ff">
                      <font>
                         <Font name="Matura MT Script Capitals" size="16.0" />
                      </font>
@@ -38,7 +38,7 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Label fx:id="labelPlayer2" text="Player2" textFill="#0900ff">
+                  <Label fx:id="labelAssistantCardPlayer2" text="Player2" textFill="#0900ff">
                      <font>
                         <Font name="Matura MT Script Capitals" size="16.0" />
                      </font>
@@ -340,6 +340,11 @@
             <Font name="Matura MT Script Capitals" size="14.0" />
          </font>
       </Label>
+      <ImageView fx:id="motherNaturePawn" fitHeight="81.0" fitWidth="70.0" layoutX="979.0" layoutY="585.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/WoodenPieces/mother_nature.png" />
+         </image>
+      </ImageView>
    </children>
    <stylesheets>
       <URL value="@../Images/CSS/MainScreen.css" />
