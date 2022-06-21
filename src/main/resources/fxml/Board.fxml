@@ -29,11 +29,7 @@
                         <Font name="Matura MT Script Capitals" size="16.0" />
                      </font>
                   </Label>
-                  <ImageView fx:id="assistantPlayer1" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Images/AssistantCards/x2Size/Assistente(2).png" />
-                     </image>
-                  </ImageView>
+                  <ImageView fx:id="assistantPlayer1" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
@@ -43,11 +39,7 @@
                         <Font name="Matura MT Script Capitals" size="16.0" />
                      </font>
                   </Label>
-                  <ImageView fx:id="assistantPlayer2" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Images/AssistantCards/x2Size/Assistente(1).png" />
-                     </image>
-                  </ImageView>
+                  <ImageView fx:id="assistantPlayer2" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
@@ -57,11 +49,7 @@
                         <Font name="Matura MT Script Capitals" size="16.0" />
                      </font>
                   </Label>
-                  <ImageView fx:id="assistantCurrentPlayer" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Images/AssistantCards/x2Size/Assistente(3).png" />
-                     </image>
-                  </ImageView>
+                  <ImageView fx:id="assistantCurrentPlayer" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </VBox>
          </children>
@@ -73,33 +61,9 @@
                   <Font name="Matura MT Script Capitals" size="20.0" />
                </font>
             </Label>
-            <Button mnemonicParsing="false">
-               <graphic>
-                  <ImageView fitHeight="410.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Images/CharacterCards/CarteTOT_front2.jpg" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button mnemonicParsing="false">
-               <graphic>
-                  <ImageView fitHeight="410.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Images/CharacterCards/CarteTOT_front.jpg" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button mnemonicParsing="false">
-               <graphic>
-                  <ImageView fitHeight="410.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Images/CharacterCards/CarteTOT_front3.jpg" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
+            <Button fx:id="character1" mnemonicParsing="false" />
+            <Button fx:id="character2" mnemonicParsing="false" />
+            <Button fx:id="character3" mnemonicParsing="false" />
          </children>
       </VBox>
       <AnchorPane fx:id="schoolBoardCurrentPlayer" layoutX="389.0" layoutY="565.0" prefHeight="180.0" prefWidth="500.0" styleClass="schoolboardBG" />
@@ -134,39 +98,6 @@
                   <Font name="Matura MT Script Capitals" size="18.0" />
                </font>
             </Label>
-            <GridPane fx:id="cloud2" alignment="CENTER" layoutX="246.0" layoutY="107.0" prefHeight="90.0" prefWidth="100.0" styleClass="cloudBG">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="84.33329264322916" minWidth="10.0" prefWidth="48.999979654947914" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="79.6666259765625" minWidth="10.0" prefWidth="51.66668701171874" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-            </GridPane>
-            <GridPane fx:id="cloud1" layoutX="385.0" layoutY="107.0" prefHeight="90.0" prefWidth="100.0" styleClass="cloudBG">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="10.0" prefWidth="62.3333740234375" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="79.6666259765625" minWidth="10.0" prefWidth="67.6666259765625" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-            <GridPane fx:id="cloud0" layoutX="523.0" layoutY="107.0" prefHeight="90.0" prefWidth="100.0" styleClass="cloudBG">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="10.0" prefWidth="62.3333740234375" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="79.6666259765625" minWidth="10.0" prefWidth="67.6666259765625" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
             <HBox layoutX="351.0" layoutY="216.0" prefHeight="41.0" prefWidth="225.0" spacing="10.0">
                <children>
                   <ImageView fx:id="redProf" fitHeight="40.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
@@ -328,6 +259,9 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
+            <AnchorPane fx:id="cloud0" layoutX="520.0" layoutY="107.0" prefHeight="90.0" prefWidth="100.0" styleClass="cloudBG" />
+            <AnchorPane fx:id="cloud1" layoutX="383.0" layoutY="107.0" prefHeight="90.0" prefWidth="100.0" styleClass="cloudBG" />
+            <AnchorPane fx:id="cloud2" layoutX="239.0" layoutY="107.0" prefHeight="90.0" prefWidth="100.0" styleClass="cloudBG" />
          </children>
       </AnchorPane>
       <Label fx:id="labelPlayer21" layoutX="850.0" layoutY="642.0" rotate="90.0" text="Your Board" textFill="#0076ff">

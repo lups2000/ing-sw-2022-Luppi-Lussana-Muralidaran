@@ -899,7 +899,7 @@ public class Cli extends Observable4View implements View {
      * @param players the players of the game, we show theirs school boards
      */
     @Override
-    public void showGameBoard(List<Island> islands, List<CloudTile> cloudTiles, List<Player> players) {
+    public void showGameBoard(Game game,List<Island> islands, List<CloudTile> cloudTiles, List<Player> players) {
         this.clearCli();
         out.println("\n"+Colors.RED_PAWN+"CURRENT GAME SITUATION: "+Colors.RESET);
         this.showIslands(islands);

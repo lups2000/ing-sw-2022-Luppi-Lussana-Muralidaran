@@ -154,7 +154,7 @@ public class TurnController implements Serializable {
             //notifyPlayers("The cloud tiles have been filled!"); //meglio cosi piuttosto che notificare la modifica nel model
 
             for(VirtualView virtualView: virtualViewMap.values()){ //show to the players the current situation
-                virtualView.showGameBoard(model.getIslands(),model.getCloudTiles(),model.getPlayers());
+                virtualView.showGameBoard(model,model.getIslands(),model.getCloudTiles(),model.getPlayers());
             }
 
             planningPhase2();

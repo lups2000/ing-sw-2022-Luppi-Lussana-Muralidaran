@@ -58,7 +58,7 @@ public class ClientController implements Observer4View, Observer {
 
             case GAME_BOARD -> {
                 GameBoard gameBoard=(GameBoard) message;
-                executorService.execute(()->view.showGameBoard(gameBoard.getIslands(),gameBoard.getCloudTiles(),gameBoard.getPlayers()));
+                executorService.execute(()->view.showGameBoard(gameBoard.getGame(),gameBoard.getIslands(),gameBoard.getCloudTiles(),gameBoard.getPlayers()));
             }
 
             case SCHOOLBOARD -> {
