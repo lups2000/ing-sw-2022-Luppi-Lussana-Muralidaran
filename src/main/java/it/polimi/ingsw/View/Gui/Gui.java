@@ -163,6 +163,8 @@ public class Gui extends Observable4View implements View {
     public void showGameBoard(Game game,List<Island> islands, List<CloudTile> cloudTiles, List<Player> players) {
         BoardController boardController = new BoardController();
         boardController.addAllObservers(observers);
+        boardController.setGame(game);
+        boardController.setPlayers(players);
         boardController.setCharacterCards(game.getCharacterCards());
         boardController.setAssistantCards(game.getCurrentHand().values().stream().toList());
         Platform.runLater(()->GuiMainController.nextPane(boardController,"Board.fxml"));

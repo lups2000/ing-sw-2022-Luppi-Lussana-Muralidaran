@@ -6,10 +6,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -44,19 +41,19 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Label text="You've played:" textFill="#468c46">
+                  <Label fx:id="labelAssistantCardPlayer0" text="Player0" textFill="#0900ff">
                      <font>
                         <Font name="Matura MT Script Capitals" size="16.0" />
                      </font>
                   </Label>
-                  <ImageView fx:id="assistantCurrentPlayer" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="assistantCurrentPlayer0" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </VBox>
          </children>
       </VBox>
       <VBox alignment="CENTER" layoutX="1129.0" prefHeight="735.0" prefWidth="153.0" spacing="10.0">
          <children>
-            <Label text="Character Cards" textFill="#ff00dc">
+            <Label fx:id="labelCharacterCards" text="Character Cards" textFill="#ff00dc">
                <font>
                   <Font name="Matura MT Script Capitals" size="20.0" />
                </font>
@@ -66,7 +63,6 @@
             <Button fx:id="character3" mnemonicParsing="false" />
          </children>
       </VBox>
-      <AnchorPane fx:id="schoolBoardCurrentPlayer" layoutX="389.0" layoutY="565.0" prefHeight="180.0" prefWidth="500.0" styleClass="schoolboardBG" />
       <AnchorPane fx:id="schoolBoardPlayer1" layoutX="210.0" layoutY="30.0" prefHeight="140.0" prefWidth="400.0" styleClass="schoolboardBG" />
       <AnchorPane fx:id="schoolBoardPlayer2" layoutX="665.0" layoutY="30.0" prefHeight="140.0" prefWidth="400.0" styleClass="schoolboardBG" />
       <Label fx:id="labelPlayer1" alignment="CENTER" layoutX="386.0" text="Player1" textFill="#0076ff">
@@ -77,12 +73,12 @@
          <font>
             <Font name="Matura MT Script Capitals" size="14.0" />
          </font></Label>
-      <ImageView fitHeight="81.0" fitWidth="89.0" layoutX="315.0" layoutY="600.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="coinImagePlayer0" fitHeight="60.0" fitWidth="60.0" layoutX="395.0" layoutY="600.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Images/Coin.png" />
          </image>
       </ImageView>
-      <Label fx:id="numCoinsCurrentPlayer" layoutX="345.0" layoutY="694.0" text="0" textFill="#bf3131">
+      <Label fx:id="numCoinsPlayer0" layoutX="417.0" layoutY="644.0" text="0" textFill="#bf3131">
          <font>
             <Font name="Matura MT Script Capitals" size="14.0" />
          </font></Label>
@@ -127,158 +123,54 @@
                   </ImageView>
                </children>
             </HBox>
-            <GridPane layoutX="810.0" layoutY="80.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-            </GridPane>
-            <GridPane layoutX="810.0" layoutY="208.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-            <GridPane layoutX="658.0" layoutY="275.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-            <GridPane layoutX="481.0" layoutY="275.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-            <GridPane layoutX="303.0" layoutY="275.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-            <GridPane layoutX="135.0" layoutY="275.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-            <GridPane layoutX="10.0" layoutY="208.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-            <GridPane layoutX="10.0" layoutY="80.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-            <GridPane layoutX="135.0" layoutY="4.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-            <GridPane layoutX="303.0" layoutY="4.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-            <GridPane layoutX="481.0" layoutY="4.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-            <GridPane layoutX="658.0" layoutY="4.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
             <AnchorPane fx:id="cloud0" layoutX="520.0" layoutY="107.0" prefHeight="90.0" prefWidth="100.0" styleClass="cloudBG" />
             <AnchorPane fx:id="cloud1" layoutX="383.0" layoutY="107.0" prefHeight="90.0" prefWidth="100.0" styleClass="cloudBG" />
             <AnchorPane fx:id="cloud2" layoutX="239.0" layoutY="107.0" prefHeight="90.0" prefWidth="100.0" styleClass="cloudBG" />
+            <AnchorPane fx:id="island0" layoutX="810.0" layoutY="80.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
+            <AnchorPane fx:id="island1" layoutX="810.0" layoutY="208.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
+            <AnchorPane fx:id="island2" layoutX="658.0" layoutY="275.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
+            <AnchorPane fx:id="island3" layoutX="481.0" layoutY="275.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
+            <AnchorPane fx:id="island4" layoutX="301.0" layoutY="275.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
+            <AnchorPane fx:id="island5" layoutX="135.0" layoutY="275.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
+            <AnchorPane fx:id="island6" layoutX="10.0" layoutY="208.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
+            <AnchorPane fx:id="island7" layoutX="10.0" layoutY="80.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
+            <AnchorPane fx:id="island8" layoutX="135.0" layoutY="4.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
+            <AnchorPane fx:id="island9" layoutX="301.0" layoutY="4.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
+            <AnchorPane fx:id="island10" layoutX="481.0" layoutY="4.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
+            <AnchorPane fx:id="island11" layoutX="658.0" layoutY="4.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
          </children>
       </AnchorPane>
-      <Label fx:id="labelPlayer21" layoutX="850.0" layoutY="642.0" rotate="90.0" text="Your Board" textFill="#0076ff">
-         <font>
-            <Font name="Matura MT Script Capitals" size="20.0" />
-         </font>
-      </Label>
-      <Label layoutX="329.0" layoutY="667.0" text="Coins:" textFill="#bf3131">
-         <font>
-            <Font name="Matura MT Script Capitals" size="14.0" />
-         </font>
-      </Label>
-      <ImageView fx:id="motherNaturePawn" fitHeight="81.0" fitWidth="70.0" layoutX="979.0" layoutY="585.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="motherNaturePawn" fitHeight="70.0" fitWidth="60.0" layoutX="1012.0" layoutY="234.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Images/WoodenPieces/mother_nature.png" />
          </image>
       </ImageView>
+      <AnchorPane fx:id="schoolBoardPlayer0" layoutX="447.0" layoutY="584.0" prefHeight="140.0" prefWidth="400.0" styleClass="schoolboardBG" />
+      <Label fx:id="labelPlayer0" alignment="CENTER" layoutX="625.0" layoutY="549.0" text="Player0" textFill="#0076ff">
+         <font>
+            <Font name="Matura MT Script Capitals" size="14.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="coinImagePlayer1" fitHeight="60.0" fitWidth="60.0" layoutX="156.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/Coin.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="numCoinsPlayer1" layoutX="178.0" layoutY="93.0" text="0" textFill="#bf3131">
+         <font>
+            <Font name="Matura MT Script Capitals" size="14.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="coinImagePlayer2" fitHeight="60.0" fitWidth="60.0" layoutX="1067.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/Coin.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="numCoinsPlayer2" layoutX="1089.0" layoutY="93.0" text="0" textFill="#bf3131">
+         <font>
+            <Font name="Matura MT Script Capitals" size="14.0" />
+         </font>
+      </Label>
    </children>
    <stylesheets>
       <URL value="@../Images/CSS/MainScreen.css" />
