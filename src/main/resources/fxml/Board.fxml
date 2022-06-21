@@ -140,11 +140,6 @@
             <AnchorPane fx:id="island11" layoutX="658.0" layoutY="4.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
          </children>
       </AnchorPane>
-      <ImageView fx:id="motherNaturePawn" fitHeight="70.0" fitWidth="60.0" layoutX="1012.0" layoutY="234.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Images/WoodenPieces/mother_nature.png" />
-         </image>
-      </ImageView>
       <AnchorPane fx:id="schoolBoardPlayer0" layoutX="447.0" layoutY="584.0" prefHeight="140.0" prefWidth="400.0" styleClass="schoolboardBG" />
       <Label fx:id="labelPlayer0" alignment="CENTER" layoutX="625.0" layoutY="549.0" text="Player0" textFill="#0076ff">
          <font>

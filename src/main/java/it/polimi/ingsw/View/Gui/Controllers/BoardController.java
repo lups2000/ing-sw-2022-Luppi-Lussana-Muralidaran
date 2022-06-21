@@ -3,17 +3,15 @@ package it.polimi.ingsw.View.Gui.Controllers;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 import it.polimi.ingsw.observer.Observable4View;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
-
+import javafx.scene.paint.Color;
 import java.util.*;
+import java.util.List;
 
 
 public class BoardController extends Observable4View implements GuiGenericController {
@@ -21,12 +19,14 @@ public class BoardController extends Observable4View implements GuiGenericContro
     private List<AssistantCard> assistantCards;
     private List<CharacterCard> characterCards;
     private List<Player> players;
+    private List<Island> islands;
     private Game game;
 
     public BoardController(){
         assistantCards=new ArrayList<>();
         characterCards=new ArrayList<>();
         players=new ArrayList<>();
+        islands=new ArrayList<>();
         game=new Game();
     }
 
@@ -107,6 +107,32 @@ public class BoardController extends Observable4View implements GuiGenericContro
     private AnchorPane cloud2;
 
     //islands
+    @FXML
+    private AnchorPane island0;
+    @FXML
+    private AnchorPane island1;
+    @FXML
+    private AnchorPane island2;
+    @FXML
+    private AnchorPane island3;
+    @FXML
+    private AnchorPane island4;
+    @FXML
+    private AnchorPane island5;
+    @FXML
+    private AnchorPane island6;
+    @FXML
+    private AnchorPane island7;
+    @FXML
+    private AnchorPane island8;
+    @FXML
+    private AnchorPane island9;
+    @FXML
+    private AnchorPane island10;
+    @FXML
+    private AnchorPane island11;
+
+
 
     @FXML
     public void initialize(){
@@ -118,8 +144,9 @@ public class BoardController extends Observable4View implements GuiGenericContro
     public void setAssistantCards(List<AssistantCard> assistantCards) {this.assistantCards = assistantCards;}
     public void setGame(Game game) {this.game = game;}
     public void setPlayers(List<Player> players) {this.players = players;}
+    public void setIslands(List<Island> islands) {this.islands = islands;}
 
-    private void initialDisplay(int numPlayers,boolean expertVariant){
+    private void initialDisplay(int numPlayers, boolean expertVariant){
 
         if(numPlayers==2){
 
@@ -221,6 +248,8 @@ public class BoardController extends Observable4View implements GuiGenericContro
         labelAssistantCardPlayer1.setVisible(false);
         labelAssistantCardPlayer2.setVisible(false);
 
+        displayIslands();
+
     }
 
     private void displayEntireSchoolBoards(){
@@ -253,6 +282,87 @@ public class BoardController extends Observable4View implements GuiGenericContro
         }
     }
 
+    private void displayIslands(){
+        displayIsland(island0, islands.get(0));
+        displayIsland(island1, islands.get(1));
+        displayIsland(island2, islands.get(2));
+        displayIsland(island3, islands.get(3));
+        displayIsland(island4, islands.get(4));
+        displayIsland(island5, islands.get(5));
+        displayIsland(island6, islands.get(6));
+        displayIsland(island7, islands.get(7));
+        displayIsland(island8, islands.get(8));
+        displayIsland(island9, islands.get(9));
+        displayIsland(island10, islands.get(10));
+        displayIsland(island11, islands.get(11));
+
+    }
+
+    private void displayIsland(AnchorPane anchorPane,Island island){
+        List<Integer> layoutsX=Arrays.asList(27,19,45,63,72); //order: B,G,R,P,Y
+        List<Integer> layoutsY=Arrays.asList(26,46,41,56,35); //order: B,G,R,P,Y
+        List<Integer> layoutsXLabel=Arrays.asList(33,25,51,69,78); //order: B,G,R,P,Y
+        List<Integer> layoutsYLabel=Arrays.asList(26,47,41,55,34); //order: B,G,R,P,Y
+        Map<ImageView,Label> imageLabelMap =new HashMap<>();
+        ImageView student;
+        Label counter=null;
+        int pos=0;
+
+        for(PawnColor pawnColor : PawnColor.values()){
+            int temp=0;
+            student=null;
+            while(temp<island.getStudents().get(pawnColor)){
+                student = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + pawnColor + ".png"))));
+                student.setFitWidth(20);
+                student.setFitHeight(20);
+                temp++;
+            }
+            if(student!=null){
+                student.setLayoutX(layoutsX.get(pos));
+                student.setLayoutY(layoutsY.get(pos));
+                counter = new Label();
+                counter.setText(Integer.toString(temp));
+                counter.setStyle("-fx-font-weight: bold");
+                //counter.setStyle("-fx-font-size: 14");
+                counter.setLayoutX(layoutsXLabel.get(pos));
+                counter.setLayoutY(layoutsYLabel.get(pos));
+                pos++;
+                imageLabelMap.put(student,counter);
+            }
+        }
+        for(ImageView imageView : imageLabelMap.keySet()){
+            anchorPane.getChildren().addAll(imageView,imageLabelMap.get(imageView));
+        }
+        if(island.isMotherNature()){
+            ImageView mama = new ImageView(new Image("/Images/WoodenPieces/mother_nature.png"));
+            mama.setFitHeight(70);
+            mama.setFitWidth(60);
+            mama.setLayoutX(57);
+            mama.setLayoutY(-24);
+            anchorPane.getChildren().add(mama);
+        }
+        if(island.getTower()!=null){
+            ImageView tower = new ImageView(new Image("/Images/WoodenPieces/"+island.getTower().getNameColor()+"_tower.png"));
+            tower.setFitHeight(50);
+            tower.setFitWidth(50);
+            tower.setLayoutX(22);
+            tower.setLayoutY(-21);
+            anchorPane.getChildren().add(tower);
+
+            Label cnt=new Label();
+            cnt.setText(Integer.toString(island.getNumTowers()));
+            cnt.setStyle("-fx-font-weight: bold");
+            cnt.setStyle("-fx-font-size: 14");
+            if(island.getTower()==ColorTower.BLACK){
+                cnt.setTextFill(Color.rgb(255,255,255));
+            }
+            cnt.setLayoutX(43);
+            cnt.setLayoutY(3);
+            anchorPane.getChildren().add(cnt);
+        }
+
+    }
+
     private void displayCloudStudents(AnchorPane cloud,CloudTile cloudTile){
         List<Integer> layoutsX=Arrays.asList(21,55,45,40);
         List<Integer> layoutsY=Arrays.asList(45,41,16,63);
@@ -282,7 +392,6 @@ public class BoardController extends Observable4View implements GuiGenericContro
                 counter.setLayoutY(layoutsYLabel.get(pos));
                 pos++;
                 imageLabelMap.put(student,counter);
-
             }
         }
         for(ImageView imageView : imageLabelMap.keySet()){
