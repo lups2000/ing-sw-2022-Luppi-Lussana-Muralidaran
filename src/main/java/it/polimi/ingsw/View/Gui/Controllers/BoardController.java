@@ -9,40 +9,41 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+
 import java.util.*;
 import java.util.List;
 
 
 public class BoardController extends Observable4View implements GuiGenericController {
 
-    private List<AssistantCard> assistantCards;
+    private Map<Player,AssistantCard> currentHand;
     private List<CharacterCard> characterCards;
     private List<Player> players;
     private List<Island> islands;
     private Game game;
 
     public BoardController(){
-        assistantCards=new ArrayList<>();
+        currentHand=new HashMap<>();
         characterCards=new ArrayList<>();
         players=new ArrayList<>();
         islands=new ArrayList<>();
         game=new Game();
     }
 
+    //externalAnchorPane
+    @FXML
+    private AnchorPane externalAnchorPane;
+
+    //mainAnchorPane
+    @FXML
+    private AnchorPane mainAnchorPane;
+
     //assistantCards
     @FXML
-    private ImageView assistantPlayer0;
-    @FXML
-    private ImageView assistantPlayer1;
-    @FXML
-    private ImageView assistantPlayer2;
-    @FXML
-    private Label labelAssistantCardPlayer0;
-    @FXML
-    private Label labelAssistantCardPlayer1;
-    @FXML
-    private Label labelAssistantCardPlayer2;
+    private VBox assistantCards;
 
     //characterCards
     @FXML
@@ -53,34 +54,6 @@ public class BoardController extends Observable4View implements GuiGenericContro
     private Button character3;
     @FXML
     private Label labelCharacterCards;
-
-    //schoolBoards
-    @FXML
-    private AnchorPane schoolBoardPlayer0;
-    @FXML
-    private AnchorPane schoolBoardPlayer1;
-    @FXML
-    private AnchorPane schoolBoardPlayer2;
-    @FXML
-    private Label labelPlayer0;
-    @FXML
-    private Label labelPlayer1;
-    @FXML
-    private Label labelPlayer2;
-
-    //Coins
-    @FXML
-    private ImageView coinImagePlayer0;
-    @FXML
-    private ImageView coinImagePlayer1;
-    @FXML
-    private ImageView coinImagePlayer2;
-    @FXML
-    private Label numCoinsPlayer0;
-    @FXML
-    private Label numCoinsPlayer1;
-    @FXML
-    private Label numCoinsPlayer2;
 
     //noEntryTiles
     @FXML
@@ -97,14 +70,6 @@ public class BoardController extends Observable4View implements GuiGenericContro
     private ImageView yellowProf;
     @FXML
     private ImageView pinkProf;
-
-    //clouds
-    @FXML
-    private AnchorPane cloud0;
-    @FXML
-    private AnchorPane cloud1;
-    @FXML
-    private AnchorPane cloud2;
 
     //islands
     @FXML
@@ -141,7 +106,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
     }
     public void setCharacterCards(List<CharacterCard> characterCards) {this.characterCards = characterCards;}
-    public void setAssistantCards(List<AssistantCard> assistantCards) {this.assistantCards = assistantCards;}
+    public void setCurrentHand(Map<Player, AssistantCard> currentHand) {this.currentHand = currentHand;}
     public void setGame(Game game) {this.game = game;}
     public void setPlayers(List<Player> players) {this.players = players;}
     public void setIslands(List<Island> islands) {this.islands = islands;}
@@ -150,39 +115,11 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
         if(numPlayers==2){
 
-            //schoolBoards
-            //label SchoolBoard
-            labelPlayer0.setText(players.get(0).getNickname());
-            labelPlayer1.setText(players.get(1).getNickname());
-            labelPlayer1.setLayoutX(625);
-            schoolBoardPlayer1.setLayoutX(447);
-            schoolBoardPlayer2.setVisible(false);
-            labelPlayer2.setVisible(false);
-
             displayEntireSchoolBoards();
 
-            //label Assistant
-            labelAssistantCardPlayer0.setText(players.get(0).getNickname());
-            labelAssistantCardPlayer1.setText(players.get(1).getNickname());
-            labelAssistantCardPlayer2.setVisible(false);
-
-            //clouds
-            cloud0.setVisible(true);
-            cloud1.setVisible(true);
-            cloud2.setVisible(false);
             displayCloudTiles();
 
             if(expertVariant){
-                labelCharacterCards.setVisible(true);
-                //coins
-                numCoinsPlayer0.setStyle("-fx-font-weight: bold");
-                numCoinsPlayer0.setText("1");
-                numCoinsPlayer1.setStyle("-fx-font-weight: bold");
-                coinImagePlayer1.setLayoutX(395);
-                numCoinsPlayer1.setLayoutX(417);
-                numCoinsPlayer1.setText("1");
-                coinImagePlayer2.setVisible(false);
-                numCoinsPlayer2.setVisible(false);
                 //characterCards
                 displayCharacterCards();
             }
@@ -191,41 +128,17 @@ public class BoardController extends Observable4View implements GuiGenericContro
                 character1.setVisible(false);
                 character2.setVisible(false);
                 character3.setVisible(false);
-                coinImagePlayer0.setVisible(false);
-                coinImagePlayer1.setVisible(false);
-                coinImagePlayer2.setVisible(false);
-                numCoinsPlayer0.setVisible(false);
-                numCoinsPlayer1.setVisible(false);
-                numCoinsPlayer2.setVisible(false);
             }
         }
         else if(players.size()==3){
 
-            //schoolBoards
-            //label SchoolBoard
-            labelPlayer0.setText(players.get(0).getNickname());
-            labelPlayer1.setText(players.get(1).getNickname());
-            labelPlayer2.setText(players.get(2).getNickname());
-
             displayEntireSchoolBoards();
-
-            //label Assistant
-            labelAssistantCardPlayer0.setText(players.get(0).getNickname());
-            labelAssistantCardPlayer1.setText(players.get(1).getNickname());
-            labelAssistantCardPlayer2.setText(players.get(2).getNickname());
 
             //clouds
             displayCloudTiles();
 
             if(game.getExpertsVariant()){
-                labelCharacterCards.setVisible(true);
-                //coins
-                numCoinsPlayer0.setStyle("-fx-font-weight: bold");
-                numCoinsPlayer0.setText("1");
-                numCoinsPlayer1.setStyle("-fx-font-weight: bold");
-                numCoinsPlayer1.setText("1");
-                numCoinsPlayer2.setStyle("-fx-font-weight: bold");
-                numCoinsPlayer2.setText("1");
+
                 //characterCards
                 displayCharacterCards();
             }
@@ -234,68 +147,121 @@ public class BoardController extends Observable4View implements GuiGenericContro
                 character1.setVisible(false);
                 character2.setVisible(false);
                 character3.setVisible(false);
-                coinImagePlayer0.setVisible(false);
-                coinImagePlayer1.setVisible(false);
-                coinImagePlayer2.setVisible(false);
-                numCoinsPlayer0.setVisible(false);
-                numCoinsPlayer1.setVisible(false);
-                numCoinsPlayer2.setVisible(false);
-
             }
         }
-        //labelAssistant
-        labelAssistantCardPlayer0.setVisible(false);
-        labelAssistantCardPlayer1.setVisible(false);
-        labelAssistantCardPlayer2.setVisible(false);
 
         displayIslands();
-
+        displayAssistantCards();
     }
 
     private void displayEntireSchoolBoards(){
-        if(players.size()==2){
-            displayTowersPlayer(schoolBoardPlayer0,players.get(0));
-            displayTowersPlayer(schoolBoardPlayer1,players.get(1));
-            displayStudentWaitingPlayer(schoolBoardPlayer0,players.get(0));
-            displayStudentWaitingPlayer(schoolBoardPlayer1,players.get(1));
+        List<Integer> layoutsX;
+        List<Integer> layoutsY;
+        List<Integer> labelLayoutX;
+        List<Integer> labelLayoutY;
+        List<Integer> labelCoinLayoutX;
+        List<Integer> labelCoinLayoutY;
+        List<Integer> imageCoinLayoutX;
+        List<Integer> imageCoinLayoutY;
+        if(game.getPlayers().size()==2){
+            layoutsX=Arrays.asList(447,447);
+            layoutsY=Arrays.asList(584,30);
+            labelLayoutX=Arrays.asList(625,625);
+            labelLayoutY=Arrays.asList(550,0);
+            imageCoinLayoutX=Arrays.asList(395,395);
+            imageCoinLayoutY=Arrays.asList(600,48);
+            labelCoinLayoutX=Arrays.asList(421,421);
+            labelCoinLayoutY=Arrays.asList(644,93);
         }
-        else {
-            displayTowersPlayer(schoolBoardPlayer0,players.get(0));
-            displayTowersPlayer(schoolBoardPlayer1,players.get(1));
-            displayStudentWaitingPlayer(schoolBoardPlayer0,players.get(0));
-            displayStudentWaitingPlayer(schoolBoardPlayer1,players.get(1));
-            displayTowersPlayer(schoolBoardPlayer2,players.get(2));
-            displayStudentWaitingPlayer(schoolBoardPlayer2,players.get(2));
+        else{
+            layoutsX=Arrays.asList(447,210,665);
+            layoutsY=Arrays.asList(584,30,30);
+            labelLayoutX=Arrays.asList(625,388,843);
+            labelLayoutY=Arrays.asList(550,0,0);
+            imageCoinLayoutX=Arrays.asList(395,156,1067);
+            imageCoinLayoutY=Arrays.asList(600,48,48);
+            labelCoinLayoutX=Arrays.asList(421,182,1093);
+            labelCoinLayoutY=Arrays.asList(644,93,93);
+        }
+        int pos=0;
+        for(Player player : game.getPlayers()){
+            AnchorPane schoolBoard = new AnchorPane();
+            schoolBoard.setPrefWidth(400);
+            schoolBoard.setPrefHeight(140);
+            schoolBoard.setId(Integer.toString(player.getId()));
+            schoolBoard.getStyleClass().add("schoolboardBG");
+            schoolBoard.setLayoutX(layoutsX.get(pos));
+            schoolBoard.setLayoutY(layoutsY.get(pos));
 
+            displayTowersPlayer(schoolBoard,player);
+            displayStudentWaitingPlayer(schoolBoard,player);
+
+            Label nickName=new Label();
+            nickName.setText(player.getNickname());
+            nickName.setFont(new Font("Matura MT Script Capitals",16));
+            nickName.setTextFill(Color.rgb(0,118,255));
+            nickName.setLayoutX(labelLayoutX.get(pos));
+            nickName.setLayoutY(labelLayoutY.get(pos));
+
+            ImageView coin=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/Coin.png"))));
+            coin.setFitWidth(60);
+            coin.setFitHeight(60);
+            coin.setLayoutX(imageCoinLayoutX.get(pos));
+            coin.setLayoutY(imageCoinLayoutY.get(pos));
+
+            Label numCoins = new Label();
+            numCoins.setText(Integer.toString(player.getSchoolBoard().getNumCoins()));
+            numCoins.setFont(new Font("Matura MT Script Capitals",14));
+            numCoins.setStyle("-fx-font-weight: bold");
+            numCoins.setTextFill(Color.rgb(100,5,13));
+            numCoins.setLayoutX(labelCoinLayoutX.get(pos));
+            numCoins.setLayoutY(labelCoinLayoutY.get(pos));
+            pos++;
+            if(game.getExpertsVariant()){
+                externalAnchorPane.getChildren().addAll(nickName,schoolBoard,coin,numCoins);
+            }
+            else {
+                externalAnchorPane.getChildren().addAll(nickName,schoolBoard);
+            }
         }
+
     }
 
     private void displayCloudTiles(){
-        if(players.size()==2){
-            displayCloudStudents(cloud0,game.getCloudTiles().get(0));
-            displayCloudStudents(cloud1,game.getCloudTiles().get(1));
-        }
-        else{
-            displayCloudStudents(cloud0,game.getCloudTiles().get(0));
-            displayCloudStudents(cloud1,game.getCloudTiles().get(1));
-            displayCloudStudents(cloud2,game.getCloudTiles().get(2));
+        List<Integer> layoutsX=Arrays.asList(526,383,240);
+        List<Integer> layoutsY=Arrays.asList(107,107,107);
+        int pos=0;
+        for(CloudTile cloudTile : game.getCloudTiles()){
+            AnchorPane anchorPane = new AnchorPane();
+            anchorPane.setPrefWidth(100);
+            anchorPane.setPrefHeight(90);
+            anchorPane.setId(Integer.toString(cloudTile.getId()));
+            anchorPane.getStyleClass().add("cloudBG");
+            anchorPane.setLayoutX(layoutsX.get(pos));
+            anchorPane.setLayoutY(layoutsY.get(pos));
+            pos++;
+            displayCloudStudents(anchorPane,cloudTile);
+            mainAnchorPane.getChildren().add(anchorPane);
         }
     }
 
     private void displayIslands(){
-        displayIsland(island0, islands.get(0));
-        displayIsland(island1, islands.get(1));
-        displayIsland(island2, islands.get(2));
-        displayIsland(island3, islands.get(3));
-        displayIsland(island4, islands.get(4));
-        displayIsland(island5, islands.get(5));
-        displayIsland(island6, islands.get(6));
-        displayIsland(island7, islands.get(7));
-        displayIsland(island8, islands.get(8));
-        displayIsland(island9, islands.get(9));
-        displayIsland(island10, islands.get(10));
-        displayIsland(island11, islands.get(11));
 
+        List<Integer> layoutsX=Arrays.asList(810,810,658,481,301,135,10,10,135,301,481,658);
+        List<Integer> layoutsY=Arrays.asList(80,208,275,275,275,275,208,80,4,4,4,4);
+        int pos=0;
+        for(Island island : game.getIslands()){
+            AnchorPane islandAnchor = new AnchorPane();
+            islandAnchor.setPrefWidth(120);
+            islandAnchor.setPrefHeight(100);
+            islandAnchor.setId(Integer.toString(island.getIndex()));
+            islandAnchor.getStyleClass().add("islandBG");
+            islandAnchor.setLayoutX(layoutsX.get(pos));
+            islandAnchor.setLayoutY(layoutsY.get(pos));
+            displayIsland(islandAnchor,island);
+            pos++;
+            mainAnchorPane.getChildren().add(islandAnchor);
+        }
     }
 
     private void displayIsland(AnchorPane anchorPane,Island island){
@@ -323,7 +289,6 @@ public class BoardController extends Observable4View implements GuiGenericContro
                 counter = new Label();
                 counter.setText(Integer.toString(temp));
                 counter.setStyle("-fx-font-weight: bold");
-                //counter.setStyle("-fx-font-size: 14");
                 counter.setLayoutX(layoutsXLabel.get(pos));
                 counter.setLayoutY(layoutsYLabel.get(pos));
                 pos++;
@@ -494,33 +459,24 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
     }
 
-    /*
     private void displayAssistantCards(){
         int temp=-1;
         Image assistant=null;
-        List<Image> tempAssistants=new ArrayList<>();
-        for (AssistantCard assistantCard : assistantCards) {
-            temp = assistantCard.getValue();
+
+        for (Player player : currentHand.keySet()) {
+            temp = currentHand.get(player).getValue();
             assistant = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/AssistantCards/x2Size/Assistente(" + temp + ").png")));
-            tempAssistants.add(assistant);
+            ImageView assistantCardImage = new ImageView();
+            assistantCardImage.setImage(assistant);
+            assistantCardImage.setFitWidth(120);
+            assistantCardImage.setFitHeight(180);
+            Label assistantCardPlayer = new Label();
+            assistantCardPlayer.setText(player.getNickname());
+            assistantCardPlayer.setFont(new Font("Matura MT Script Capitals",16));
+            assistantCardPlayer.setTextFill(Color.rgb(0,0,255));
+            assistantCards.getChildren().addAll(assistantCardPlayer,assistantCardImage);
         }
-        if(assistantCards.size()>=2){
-            assistantCurrentPlayer.setImage(tempAssistants.get(0));
-            assistantCurrentPlayer.setFitWidth(120);
-            assistantCurrentPlayer.setFitWidth(180);
-            assistantCurrentPlayer.setVisible(true);
-            assistantPlayer1.setImage(tempAssistants.get(1));
-            assistantPlayer1.setFitWidth(120);
-            assistantPlayer1.setFitWidth(180);
-            assistantPlayer1.setVisible(true);
-            if(assistantCards.size()==3){
-                assistantPlayer2.setImage(tempAssistants.get(2));
-                assistantPlayer2.setFitWidth(120);
-                assistantPlayer2.setFitWidth(180);
-                assistantPlayer2.setVisible(true);
-            }
-        }
-    }*/
+    }
 
 
 }

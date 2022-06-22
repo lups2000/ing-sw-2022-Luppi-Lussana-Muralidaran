@@ -159,6 +159,10 @@ public class TurnController implements Serializable {
 
             planningPhase2();
 
+            for(VirtualView virtualView: virtualViewMap.values()){ //show to the players the current situation
+                virtualView.showGameBoard(model,model.getIslands(),model.getCloudTiles(),model.getPlayers());
+            }
+
             if(checkWinner()){ //if there is a player that has finished his assistantCards
                 winner=true;
                 turnPhase=TurnPhase.END;

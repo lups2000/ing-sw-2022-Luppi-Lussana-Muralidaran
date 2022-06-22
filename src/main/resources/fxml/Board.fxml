@@ -10,47 +10,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="externalAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="760.0" fitWidth="1300.0" nodeOrientation="INHERIT" pickOnBounds="true">
          <image>
             <Image url="@../Images/BackgroundSky.jpg" />
          </image>
       </ImageView>
-      <VBox alignment="CENTER" layoutY="-1.0" prefHeight="760.0" prefWidth="154.0" spacing="40.0">
-         <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <Label fx:id="labelAssistantCardPlayer1" text="Player1" textFill="#0900ff">
-                     <font>
-                        <Font name="Matura MT Script Capitals" size="16.0" />
-                     </font>
-                  </Label>
-                  <ImageView fx:id="assistantPlayer1" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-               </children>
-            </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <Label fx:id="labelAssistantCardPlayer2" text="Player2" textFill="#0900ff">
-                     <font>
-                        <Font name="Matura MT Script Capitals" size="16.0" />
-                     </font>
-                  </Label>
-                  <ImageView fx:id="assistantPlayer2" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-               </children>
-            </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <Label fx:id="labelAssistantCardPlayer0" text="Player0" textFill="#0900ff">
-                     <font>
-                        <Font name="Matura MT Script Capitals" size="16.0" />
-                     </font>
-                  </Label>
-                  <ImageView fx:id="assistantCurrentPlayer0" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-               </children>
-            </VBox>
-         </children>
-      </VBox>
+      <VBox fx:id="assistantCards" alignment="CENTER" layoutY="-1.0" prefHeight="761.0" prefWidth="154.0" spacing="15.0" />
       <VBox alignment="CENTER" layoutX="1129.0" prefHeight="735.0" prefWidth="153.0" spacing="10.0">
          <children>
             <Label fx:id="labelCharacterCards" text="Character Cards" textFill="#ff00dc">
@@ -63,26 +30,7 @@
             <Button fx:id="character3" mnemonicParsing="false" />
          </children>
       </VBox>
-      <AnchorPane fx:id="schoolBoardPlayer1" layoutX="210.0" layoutY="30.0" prefHeight="140.0" prefWidth="400.0" styleClass="schoolboardBG" />
-      <AnchorPane fx:id="schoolBoardPlayer2" layoutX="665.0" layoutY="30.0" prefHeight="140.0" prefWidth="400.0" styleClass="schoolboardBG" />
-      <Label fx:id="labelPlayer1" alignment="CENTER" layoutX="386.0" text="Player1" textFill="#0076ff">
-         <font>
-            <Font name="Matura MT Script Capitals" size="14.0" />
-         </font></Label>
-      <Label fx:id="labelPlayer2" layoutX="841.0" text="Player2" textFill="#0076ff">
-         <font>
-            <Font name="Matura MT Script Capitals" size="14.0" />
-         </font></Label>
-      <ImageView fx:id="coinImagePlayer0" fitHeight="60.0" fitWidth="60.0" layoutX="395.0" layoutY="600.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Images/Coin.png" />
-         </image>
-      </ImageView>
-      <Label fx:id="numCoinsPlayer0" layoutX="417.0" layoutY="644.0" text="0" textFill="#bf3131">
-         <font>
-            <Font name="Matura MT Script Capitals" size="14.0" />
-         </font></Label>
-      <AnchorPane layoutX="147.0" layoutY="177.0" prefHeight="380.0" prefWidth="996.0">
+      <AnchorPane fx:id="mainAnchorPane" layoutX="147.0" layoutY="177.0" prefHeight="380.0" prefWidth="996.0">
          <children>
             <ImageView fitHeight="70.0" fitWidth="100.0" layoutX="657.0" layoutY="112.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -123,49 +71,8 @@
                   </ImageView>
                </children>
             </HBox>
-            <AnchorPane fx:id="cloud0" layoutX="520.0" layoutY="107.0" prefHeight="90.0" prefWidth="100.0" styleClass="cloudBG" />
-            <AnchorPane fx:id="cloud1" layoutX="383.0" layoutY="107.0" prefHeight="90.0" prefWidth="100.0" styleClass="cloudBG" />
-            <AnchorPane fx:id="cloud2" layoutX="239.0" layoutY="107.0" prefHeight="90.0" prefWidth="100.0" styleClass="cloudBG" />
-            <AnchorPane fx:id="island0" layoutX="810.0" layoutY="80.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
-            <AnchorPane fx:id="island1" layoutX="810.0" layoutY="208.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
-            <AnchorPane fx:id="island2" layoutX="658.0" layoutY="275.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
-            <AnchorPane fx:id="island3" layoutX="481.0" layoutY="275.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
-            <AnchorPane fx:id="island4" layoutX="301.0" layoutY="275.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
-            <AnchorPane fx:id="island5" layoutX="135.0" layoutY="275.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
-            <AnchorPane fx:id="island6" layoutX="10.0" layoutY="208.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
-            <AnchorPane fx:id="island7" layoutX="10.0" layoutY="80.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
-            <AnchorPane fx:id="island8" layoutX="135.0" layoutY="4.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
-            <AnchorPane fx:id="island9" layoutX="301.0" layoutY="4.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
-            <AnchorPane fx:id="island10" layoutX="481.0" layoutY="4.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
-            <AnchorPane fx:id="island11" layoutX="658.0" layoutY="4.0" prefHeight="100.0" prefWidth="120.0" styleClass="islandBG" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="schoolBoardPlayer0" layoutX="447.0" layoutY="584.0" prefHeight="140.0" prefWidth="400.0" styleClass="schoolboardBG" />
-      <Label fx:id="labelPlayer0" alignment="CENTER" layoutX="625.0" layoutY="549.0" text="Player0" textFill="#0076ff">
-         <font>
-            <Font name="Matura MT Script Capitals" size="14.0" />
-         </font>
-      </Label>
-      <ImageView fx:id="coinImagePlayer1" fitHeight="60.0" fitWidth="60.0" layoutX="156.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Images/Coin.png" />
-         </image>
-      </ImageView>
-      <Label fx:id="numCoinsPlayer1" layoutX="178.0" layoutY="93.0" text="0" textFill="#bf3131">
-         <font>
-            <Font name="Matura MT Script Capitals" size="14.0" />
-         </font>
-      </Label>
-      <ImageView fx:id="coinImagePlayer2" fitHeight="60.0" fitWidth="60.0" layoutX="1067.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Images/Coin.png" />
-         </image>
-      </ImageView>
-      <Label fx:id="numCoinsPlayer2" layoutX="1089.0" layoutY="93.0" text="0" textFill="#bf3131">
-         <font>
-            <Font name="Matura MT Script Capitals" size="14.0" />
-         </font>
-      </Label>
    </children>
    <stylesheets>
       <URL value="@../Images/CSS/MainScreen.css" />
