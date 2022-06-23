@@ -157,6 +157,11 @@ public class ClientController implements Observer4View, Observer {
                 Disconnection disconnectionMessage=(Disconnection) message;
                 executorService.execute(()->view.showDisconnection(disconnectionMessage.getNickName(), disconnectionMessage.getMessage()));
             }
+            case UPDATEFX -> {
+                UpdateFX updateFX =(UpdateFX) message;
+                executorService.execute(()->view.updateFX(updateFX.getGame()));
+            }
+
         }
     }
 

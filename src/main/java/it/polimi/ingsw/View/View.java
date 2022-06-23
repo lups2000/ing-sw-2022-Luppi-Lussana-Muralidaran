@@ -76,4 +76,6 @@ public interface View {
     void showStudents(Map<PawnColor,Integer> students);
 
     void askStudOrStop(Map<PawnColor,Integer> students);
+
+    void updateFX(Game game);
 }

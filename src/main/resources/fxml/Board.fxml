@@ -42,35 +42,7 @@
                   <Font name="Matura MT Script Capitals" size="18.0" />
                </font>
             </Label>
-            <HBox layoutX="351.0" layoutY="216.0" prefHeight="41.0" prefWidth="225.0" spacing="10.0">
-               <children>
-                  <ImageView fx:id="redProf" fitHeight="40.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Images/WoodenPieces/teacher_red.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="blueProf" fitHeight="40.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Images/WoodenPieces/teacher_blue.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="greenProf" fitHeight="40.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Images/WoodenPieces/teacher_green.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="yellowProf" fitHeight="40.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Images/WoodenPieces/teacher_yellow.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="pinkProf" fitHeight="40.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Images/WoodenPieces/teacher_pink.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </HBox>
+            <HBox fx:id="professors" layoutX="382.0" layoutY="216.0" prefHeight="41.0" prefWidth="225.0" spacing="10.0" />
          </children>
       </AnchorPane>
    </children>

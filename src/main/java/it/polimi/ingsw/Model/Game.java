@@ -433,6 +433,7 @@ public class Game extends Observable implements Serializable {
 
         notifyObserver(new Generic("SERVER","\nUPDATE SCHOOLBOARD:"));
         notifyObserver(new SchoolBoardPlayers(players));
+        notifyObserver(new UpdateFX(this));
     }
 
     /**

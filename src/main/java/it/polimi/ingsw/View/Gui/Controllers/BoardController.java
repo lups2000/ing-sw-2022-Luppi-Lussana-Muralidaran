@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -25,12 +26,12 @@ public class BoardController extends Observable4View implements GuiGenericContro
     private List<Island> islands;
     private Game game;
 
-    public BoardController(){
-        currentHand=new HashMap<>();
-        characterCards=new ArrayList<>();
-        players=new ArrayList<>();
-        islands=new ArrayList<>();
-        game=new Game();
+    public BoardController(Game game){
+        this.game=game;
+        currentHand=game.getCurrentHand();
+        characterCards=game.getCharacterCards();
+        players=game.getPlayers();
+        islands=game.getIslands();
     }
 
     //externalAnchorPane
@@ -44,6 +45,10 @@ public class BoardController extends Observable4View implements GuiGenericContro
     //assistantCards
     @FXML
     private VBox assistantCards;
+
+    //professors
+    @FXML
+    private HBox professors;
 
     //characterCards
     @FXML
@@ -59,45 +64,6 @@ public class BoardController extends Observable4View implements GuiGenericContro
     @FXML
     private Label numNoEntryTiles;
 
-    //professors
-    @FXML
-    private ImageView redProf;
-    @FXML
-    private ImageView blueProf;
-    @FXML
-    private ImageView greenProf;
-    @FXML
-    private ImageView yellowProf;
-    @FXML
-    private ImageView pinkProf;
-
-    //islands
-    @FXML
-    private AnchorPane island0;
-    @FXML
-    private AnchorPane island1;
-    @FXML
-    private AnchorPane island2;
-    @FXML
-    private AnchorPane island3;
-    @FXML
-    private AnchorPane island4;
-    @FXML
-    private AnchorPane island5;
-    @FXML
-    private AnchorPane island6;
-    @FXML
-    private AnchorPane island7;
-    @FXML
-    private AnchorPane island8;
-    @FXML
-    private AnchorPane island9;
-    @FXML
-    private AnchorPane island10;
-    @FXML
-    private AnchorPane island11;
-
-
 
     @FXML
     public void initialize(){
@@ -111,7 +77,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
     public void setPlayers(List<Player> players) {this.players = players;}
     public void setIslands(List<Island> islands) {this.islands = islands;}
 
-    private void initialDisplay(int numPlayers, boolean expertVariant){
+    public void initialDisplay(int numPlayers, boolean expertVariant){
 
         if(numPlayers==2){
 
@@ -150,8 +116,43 @@ public class BoardController extends Observable4View implements GuiGenericContro
             }
         }
 
+        displayProfessors();
         displayIslands();
         displayAssistantCards();
+    }
+
+    private void displayProfessors(){
+        boolean flag;
+        ImageView profSchoolBoard=null;
+        for(PawnColor pawnColor : PawnColor.values()){
+            flag=false;
+            for(Player player : game.getPlayers()){
+                if(player.getSchoolBoard().getProfessors().get(pawnColor)) {
+                    profSchoolBoard = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/teacher_" + pawnColor + ".png"))));
+                    profSchoolBoard.setFitWidth(20);
+                    profSchoolBoard.setFitHeight(20);
+                    flag=true;
+                    break;
+                }
+            }
+            if(!flag) {
+                ImageView profMainScreen = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/teacher_" + pawnColor + ".png"))));
+                profMainScreen.setFitWidth(36);
+                profMainScreen.setFitHeight(40);
+                professors.getChildren().add(profMainScreen);
+            }
+            else{
+                profSchoolBoard.setLayoutX(282);
+                switch (pawnColor){
+                    case GREEN -> profSchoolBoard.setLayoutY(13);
+                    case RED -> profSchoolBoard.setLayoutY(37);
+                    case YELLOW -> profSchoolBoard.setLayoutY(59);
+                    case PINK -> profSchoolBoard.setLayoutY(82);
+                    case BLUE -> profSchoolBoard.setLayoutY(105);
+                }
+                professors.getChildren().add(profSchoolBoard);
+            }
+        }
     }
 
     private void displayEntireSchoolBoards(){
@@ -195,6 +196,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
             displayTowersPlayer(schoolBoard,player);
             displayStudentWaitingPlayer(schoolBoard,player);
+            displayStudentDiningPlayer(schoolBoard,player);
 
             Label nickName=new Label();
             nickName.setText(player.getNickname());
@@ -365,6 +367,43 @@ public class BoardController extends Observable4View implements GuiGenericContro
     }
 
 
+    private void displayStudentDiningPlayer(AnchorPane anchorPane,Player player){
+        List<Integer> layoutsX=Arrays.asList(75,95,114,133,152,171,190,209,228,247);
+        int layoutY=0;
+        List<ImageView> imageViewList = new ArrayList<>();
+        ImageView student;
+
+        for(PawnColor pawnColor : PawnColor.values()){
+            int temp=0;
+            student=null;
+            imageViewList.clear(); //da verificare
+            while (temp<player.getSchoolBoard().getStudentsDining().get(pawnColor)){
+                student = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + pawnColor + ".png"))));
+                student.setFitWidth(15);
+                student.setFitHeight(15);
+                imageViewList.add(student);
+                temp++;
+            }
+            if(student!=null){
+                //qua ho le x immagini degli studenti di un certo colore
+                switch (pawnColor){
+                    case GREEN -> layoutY=17;
+                    case RED -> layoutY=40;
+                    case YELLOW -> layoutY=63;
+                    case PINK -> layoutY=85;
+                    case BLUE -> layoutY=108;
+                }
+                ImageView studentImage =null;
+                for(int j=0;j<temp;j++){
+                    studentImage = imageViewList.get(j);
+                    studentImage.setLayoutX(layoutsX.get(j));
+                    studentImage.setLayoutY(layoutY);
+                    anchorPane.getChildren().add(studentImage);
+                }
+            }
+        }
+    }
+
     private void displayStudentWaitingPlayer(AnchorPane anchorPane,Player player){
         List<Integer> layoutsX=Arrays.asList(14,37);
         List<Integer> layoutsY=Arrays.asList(16,39,62,84,108);
@@ -386,7 +425,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
         for(int j=0;j<5;j++){
             for(int i=0;i<2;i++){
                 if(i!=0 || j!=0){
-                    if(tmp<player.getSchoolBoard().getNumMaxStudentsWaiting()){
+                    if(tmp<player.getSchoolBoard().getNumStudentsWaiting()){
                         imageView=imageViewList.get(tmp);
                         imageView.setLayoutX(layoutsX.get(i));
                         imageView.setLayoutY(layoutsY.get(j));
@@ -394,7 +433,6 @@ public class BoardController extends Observable4View implements GuiGenericContro
                         tmp++;
                     }
                 }
-
             }
         }
     }

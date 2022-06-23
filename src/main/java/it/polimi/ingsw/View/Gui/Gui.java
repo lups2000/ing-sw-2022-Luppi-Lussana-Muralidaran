@@ -19,6 +19,8 @@ import java.util.Map;
  */
 public class Gui extends Observable4View implements View {
 
+    private Game game;
+
     @Override
     public void askNickName() {
         Platform.runLater(() -> GuiMainController.nextPane(observers,"NickName.fxml"));
@@ -161,14 +163,9 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void showGameBoard(Game game,List<Island> islands, List<CloudTile> cloudTiles, List<Player> players) {
-        BoardController boardController = new BoardController();
-        boardController.addAllObservers(observers);
-        boardController.setGame(game);
-        boardController.setPlayers(players);
-        boardController.setIslands(islands);
-        boardController.setCharacterCards(game.getCharacterCards());
-        boardController.setCurrentHand(game.getCurrentHand());
-        Platform.runLater(()->GuiMainController.nextPane(boardController,"Board.fxml"));
+        BoardController boardController = getBoardController(game);
+        this.game=game;
+        //Platform.runLater(()->GuiMainController.nextPane(boardController,"Board.fxml"));
     }
 
     @Override
@@ -194,5 +191,24 @@ public class Gui extends Observable4View implements View {
     @Override
     public void askStudOrStop(Map<PawnColor, Integer> students) {
 
+    }
+
+    @Override
+    public void updateFX(Game game) {
+       BoardController boardController = getBoardController(game);
+       Platform.runLater(boardController::initialize);
+    }
+
+    private BoardController getBoardController(Game game){
+        BoardController boardController;
+        try {
+            boardController = (BoardController) GuiMainController.getCurrentController();
+        } catch (ClassCastException e) {
+            boardController = new BoardController(game);
+            boardController.addAllObservers(observers);
+            BoardController finalBsc = boardController;
+            Platform.runLater(() -> GuiMainController.nextPane(finalBsc, "Board.fxml"));
+        }
+        return boardController;
     }
 }

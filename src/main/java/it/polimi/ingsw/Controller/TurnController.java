@@ -61,6 +61,7 @@ public class TurnController implements Serializable {
     public void setModel(Game model) {this.model = model;}
 
     public void messageFromMainController(Message message){
+
         switch (message.getMessageType()) {
 
             case REPLY_ASSISTANT_CARD -> {
@@ -137,6 +138,7 @@ public class TurnController implements Serializable {
             }
 
         }
+        //this.update(model);
 
     }
 
@@ -224,7 +226,6 @@ public class TurnController implements Serializable {
             for(int i= firstPlayerToPlayAssistant.getId();i<model.getPlayers().size();i++){
                 if(model.getPlayers().get(i).getStatus()==PlayerStatus.WAITING){
 
-                    //List<AssistantCard> assistantCardsAvailable=new ArrayList<>(model.getPlayers().get(i).getDeckAssistantCard().getCards());
                     currentPlayerToPlayAssistant=model.getPlayers().get(i);
                     //notify to other players that it's the turn of the current player
                     this.notifyOtherPlayers("\nNow it's the Turn of "+currentPlayerToPlayAssistant.getNickname()+" who plays the Assistant Card! Please Wait...",currentPlayerToPlayAssistant);
@@ -819,6 +820,12 @@ public class TurnController implements Serializable {
     public void notifyPlayers(String message){
         for(String nickname : virtualViewMap.keySet()){
             virtualViewMap.get(nickname).showGenericMessage(message);
+        }
+    }
+
+    private void update(Game game){
+        for(VirtualView virtualView : virtualViewMap.values()){
+            virtualView.updateFX(game);
         }
     }
 }

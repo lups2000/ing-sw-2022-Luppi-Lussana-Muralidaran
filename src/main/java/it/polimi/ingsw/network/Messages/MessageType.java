@@ -28,6 +28,7 @@ public enum MessageType {
     SCHOOLBOARD,
     SHOW_CHARACTER_CARD,
     DISCONNECTION,
+    UPDATEFX,
 
     GENERIC_MESSAGE,
     ERROR,

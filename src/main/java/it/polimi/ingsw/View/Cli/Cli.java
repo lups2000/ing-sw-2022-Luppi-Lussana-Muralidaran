@@ -1012,4 +1012,9 @@ public class Cli extends Observable4View implements View {
         boolean finalStop = stop;
         notifyObserver(obs->obs.sendChosenColorOrStop(finalPawnColorChosen, finalStop));
     }
+
+    @Override
+    public void updateFX(Game game) {
+
+    }
 }

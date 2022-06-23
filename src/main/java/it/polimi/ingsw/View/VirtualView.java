@@ -163,6 +163,12 @@ public class VirtualView implements View, Observer {
     public void askStudOrStop(Map<PawnColor,Integer> students){
         clientConnection.sendMessageToClient(new StudentOrStopRequest(students));
     }
+
+    @Override
+    public void updateFX(Game game) {
+        //empty
+    }
+
     @Override
     public void update(Message message) {
         clientConnection.sendMessageToClient(message);
