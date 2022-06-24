@@ -345,6 +345,7 @@ public class Game extends Observable implements Serializable {
         }
         notifyObserver(new Generic("SERVER","\nISLANDS UPDATE:\n"));
         notifyObserver(new Islands(islands));
+        notifyObserver(new UpdateFX(this));
         if(Island.getNumIslands() <= 3){
             checkWinner();
         }

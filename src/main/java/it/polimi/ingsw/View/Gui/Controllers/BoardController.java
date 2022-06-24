@@ -68,7 +68,11 @@ public class BoardController extends Observable4View implements GuiGenericContro
     @FXML
     public void initialize(){
 
-        initialDisplay(game.getMaxNumPlayers(),game.getExpertsVariant());
+        numNoEntryTiles.setVisible(false);
+        labelCharacterCards.setVisible(false);
+        character1.setVisible(false);
+        character2.setVisible(false);
+        character3.setVisible(false);
 
     }
     public void setCharacterCards(List<CharacterCard> characterCards) {this.characterCards = characterCards;}
@@ -77,7 +81,10 @@ public class BoardController extends Observable4View implements GuiGenericContro
     public void setPlayers(List<Player> players) {this.players = players;}
     public void setIslands(List<Island> islands) {this.islands = islands;}
 
+
     public void initialDisplay(int numPlayers, boolean expertVariant){
+
+        mainAnchorPane.getChildren().clear();
 
         if(numPlayers==2){
 
@@ -116,21 +123,18 @@ public class BoardController extends Observable4View implements GuiGenericContro
             }
         }
 
-        displayProfessors();
+        displayProfessorsMainScreen();
         displayIslands();
         displayAssistantCards();
     }
 
-    private void displayProfessors(){
+    private void displayProfessorsMainScreen(){
         boolean flag;
-        ImageView profSchoolBoard=null;
+
         for(PawnColor pawnColor : PawnColor.values()){
             flag=false;
             for(Player player : game.getPlayers()){
                 if(player.getSchoolBoard().getProfessors().get(pawnColor)) {
-                    profSchoolBoard = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/teacher_" + pawnColor + ".png"))));
-                    profSchoolBoard.setFitWidth(20);
-                    profSchoolBoard.setFitHeight(20);
                     flag=true;
                     break;
                 }
@@ -141,7 +145,18 @@ public class BoardController extends Observable4View implements GuiGenericContro
                 profMainScreen.setFitHeight(40);
                 professors.getChildren().add(profMainScreen);
             }
-            else{
+        }
+    }
+
+    private void displayProfessorsOnSchoolBoard(AnchorPane anchorPane,Player player){
+        boolean flag;
+        ImageView profSchoolBoard=null;
+
+        for(PawnColor pawnColor : PawnColor.values()){
+            if(player.getSchoolBoard().getProfessors().get(pawnColor)){
+                profSchoolBoard = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/teacher_" + pawnColor + ".png"))));
+                profSchoolBoard.setFitWidth(20);
+                profSchoolBoard.setFitHeight(20);
                 profSchoolBoard.setLayoutX(282);
                 switch (pawnColor){
                     case GREEN -> profSchoolBoard.setLayoutY(13);
@@ -150,7 +165,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
                     case PINK -> profSchoolBoard.setLayoutY(82);
                     case BLUE -> profSchoolBoard.setLayoutY(105);
                 }
-                professors.getChildren().add(profSchoolBoard);
+                anchorPane.getChildren().add(profSchoolBoard);
             }
         }
     }
@@ -197,6 +212,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
             displayTowersPlayer(schoolBoard,player);
             displayStudentWaitingPlayer(schoolBoard,player);
             displayStudentDiningPlayer(schoolBoard,player);
+            displayProfessorsOnSchoolBoard(schoolBoard,player);
 
             Label nickName=new Label();
             nickName.setText(player.getNickname());
@@ -376,7 +392,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
         for(PawnColor pawnColor : PawnColor.values()){
             int temp=0;
             student=null;
-            imageViewList.clear(); //da verificare
+            imageViewList.clear();
             while (temp<player.getSchoolBoard().getStudentsDining().get(pawnColor)){
                 student = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + pawnColor + ".png"))));
                 student.setFitWidth(15);
@@ -467,23 +483,23 @@ public class BoardController extends Observable4View implements GuiGenericContro
     private void displayCharacterCards(){
         ImageView character=null;
         List<ImageView> tempCharacters=new ArrayList<>();
-        for(int i=0;i<characterCards.size();i++){
-            int temp=-1;
-            switch (characterCards.get(i).getType()){
-                case ONE_STUDENT_TO_ISLAND->temp=1;
-                case CONTROL_ON_PROFESSOR -> temp=2;
-                case CHOOSE_ISLAND->temp=3;
-                case MOVE_MORE_MOTHER_NATURE -> temp=4;
-                case PUT_NO_ENTRY_TILES -> temp=5;
-                case NO_COUNT_TOWER -> temp=6;
-                case SWITCH_STUDENTS -> temp=7;
-                case TWO_ADDITIONAL_POINTS -> temp=8;
-                case COLOR_NO_INFLUENCE -> temp=9;
-                case SWITCH_DINING_WAITING ->temp=10;
-                case STUDENT_TO_DINING -> temp=11;
-                case COLOR_TO_STUDENT_BAG -> temp=12;
+        for (CharacterCard characterCard : characterCards) {
+            int temp = -1;
+            switch (characterCard.getType()) {
+                case ONE_STUDENT_TO_ISLAND -> temp = 1;
+                case CONTROL_ON_PROFESSOR -> temp = 2;
+                case CHOOSE_ISLAND -> temp = 3;
+                case MOVE_MORE_MOTHER_NATURE -> temp = 4;
+                case PUT_NO_ENTRY_TILES -> temp = 5;
+                case NO_COUNT_TOWER -> temp = 6;
+                case SWITCH_STUDENTS -> temp = 7;
+                case TWO_ADDITIONAL_POINTS -> temp = 8;
+                case COLOR_NO_INFLUENCE -> temp = 9;
+                case SWITCH_DINING_WAITING -> temp = 10;
+                case STUDENT_TO_DINING -> temp = 11;
+                case COLOR_TO_STUDENT_BAG -> temp = 12;
             }
-            character=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/CharacterCards/CarteTOT_front" + temp + ".jpg"))));
+            character = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/CharacterCards/CarteTOT_front" + temp + ".jpg"))));
             character.setFitWidth(120);
             character.setFitHeight(190);
             tempCharacters.add(character);
@@ -491,6 +507,10 @@ public class BoardController extends Observable4View implements GuiGenericContro
         character1.setGraphic(tempCharacters.get(0));
         character2.setGraphic(tempCharacters.get(1));
         character3.setGraphic(tempCharacters.get(2));
+        labelCharacterCards.setVisible(true);
+        character1.setVisible(true);
+        character2.setVisible(true);
+        character3.setVisible(true);
         character1.setDisable(true);
         character2.setDisable(true);
         character3.setDisable(true);

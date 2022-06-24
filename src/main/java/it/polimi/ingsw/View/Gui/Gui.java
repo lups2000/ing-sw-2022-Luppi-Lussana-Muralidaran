@@ -165,7 +165,10 @@ public class Gui extends Observable4View implements View {
     public void showGameBoard(Game game,List<Island> islands, List<CloudTile> cloudTiles, List<Player> players) {
         BoardController boardController = getBoardController(game);
         this.game=game;
-        //Platform.runLater(()->GuiMainController.nextPane(boardController,"Board.fxml"));
+        System.out.println("showGameBoard: before");
+        Platform.runLater(()->boardController.initialDisplay(game.getMaxNumPlayers(),game.getExpertsVariant()));
+        System.out.println("showGameBoard: after");
+
     }
 
     @Override
@@ -195,15 +198,19 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void updateFX(Game game) {
-       BoardController boardController = getBoardController(game);
-       Platform.runLater(boardController::initialize);
+        // BoardController boardController = new BoardController(game);
+        //this.game=game;
+        //Platform.runLater(()-> getBoardController(game).initialDisplay(game.getMaxNumPlayers(),game.getExpertsVariant()));
     }
 
     private BoardController getBoardController(Game game){
         BoardController boardController;
         try {
             boardController = (BoardController) GuiMainController.getCurrentController();
+            System.out.println("vecchio");
+
         } catch (ClassCastException e) {
+            System.out.println("nuovo");
             boardController = new BoardController(game);
             boardController.addAllObservers(observers);
             BoardController finalBsc = boardController;
