@@ -82,17 +82,17 @@ public class BoardController extends Observable4View implements GuiGenericContro
     public void setIslands(List<Island> islands) {this.islands = islands;}
 
 
-    public void initialDisplay(int numPlayers, boolean expertVariant){
+    public void initialDisplay(Game game){
 
         mainAnchorPane.getChildren().clear();
 
-        if(numPlayers==2){
+        if(game.getMaxNumPlayers()==2){
 
             displayEntireSchoolBoards();
 
             displayCloudTiles();
 
-            if(expertVariant){
+            if(game.getExpertsVariant()){
                 //characterCards
                 displayCharacterCards();
             }
@@ -518,6 +518,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
     }
 
     private void displayAssistantCards(){
+        assistantCards.getChildren().clear();
         int temp=-1;
         Image assistant=null;
 

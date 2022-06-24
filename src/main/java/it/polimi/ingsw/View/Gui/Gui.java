@@ -158,17 +158,12 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void showIslands(List<Island> islands) {
-
     }
 
     @Override
-    public void showGameBoard(Game game,List<Island> islands, List<CloudTile> cloudTiles, List<Player> players) {
-        BoardController boardController = getBoardController(game);
-        this.game=game;
-        System.out.println("showGameBoard: before");
-        Platform.runLater(()->boardController.initialDisplay(game.getMaxNumPlayers(),game.getExpertsVariant()));
-        System.out.println("showGameBoard: after");
-
+    public void showGameBoard(Game model,List<Island> islands, List<CloudTile> cloudTiles, List<Player> players) {
+        BoardController boardController = getBoardController(model);
+        Platform.runLater(()->boardController.initialDisplay(model));
     }
 
     @Override
@@ -197,20 +192,18 @@ public class Gui extends Observable4View implements View {
     }
 
     @Override
-    public void updateFX(Game game) {
-        // BoardController boardController = new BoardController(game);
-        //this.game=game;
-        //Platform.runLater(()-> getBoardController(game).initialDisplay(game.getMaxNumPlayers(),game.getExpertsVariant()));
+    public void updateFX(Game model) {
+        BoardController boardController = getBoardController(model);
+        this.game=model;
+        Platform.runLater(()-> boardController.initialDisplay(model));
     }
 
     private BoardController getBoardController(Game game){
         BoardController boardController;
         try {
             boardController = (BoardController) GuiMainController.getCurrentController();
-            System.out.println("vecchio");
-
+            boardController.setGame(game);
         } catch (ClassCastException e) {
-            System.out.println("nuovo");
             boardController = new BoardController(game);
             boardController.addAllObservers(observers);
             BoardController finalBsc = boardController;
