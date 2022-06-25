@@ -3,6 +3,7 @@ package it.polimi.ingsw.View.Gui;
 import it.polimi.ingsw.Controller.ClientController;
 import it.polimi.ingsw.View.Gui.Controllers.InitialScreenController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -37,6 +38,11 @@ public class GuiMainStage extends Application {
         stage.setFullScreenExitHint("");
         stage.setTitle("Eriantys");
         stage.show();
+    }
 
+    @Override
+    public void stop() throws Exception {
+        Platform.exit();
+        System.exit(0);
     }
 }

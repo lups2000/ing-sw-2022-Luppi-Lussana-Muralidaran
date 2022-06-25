@@ -20,6 +20,7 @@ import java.util.Map;
 public class Gui extends Observable4View implements View {
 
     private Game game;
+    private BoardController boardController;
 
     @Override
     public void askNickName() {
@@ -69,7 +70,12 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void showSchoolBoardPlayers(List<Player> players) {
-
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Platform.runLater(()->this.boardController.displayEntireSchoolBoards(players));
     }
 
     @Override
@@ -158,14 +164,23 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void showIslands(List<Island> islands) {
-
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Platform.runLater(()->this.boardController.displayIslands(islands));
     }
 
     @Override
-    public void showGameBoard(Game game,List<Island> islands, List<CloudTile> cloudTiles, List<Player> players) {
-        BoardController boardController = getBoardController(game);
-        this.game=game;
-        //Platform.runLater(()->GuiMainController.nextPane(boardController,"Board.fxml"));
+    public void showGameBoard(Game model,List<Island> islands, List<CloudTile> cloudTiles, List<Player> players) {
+
+        BoardController boardController = getBoardController(model);
+        this.game=model;
+        Platform.runLater(()->
+        {
+            boardController.initialDisplay(model);
+        });
     }
 
     @Override
@@ -194,21 +209,40 @@ public class Gui extends Observable4View implements View {
     }
 
     @Override
-    public void updateFX(Game game) {
-       BoardController boardController = getBoardController(game);
-       Platform.runLater(boardController::initialize);
+    public void updateFX(Game model) {
+        this.game=model;
+
+        //BoardController boardController = getBoardController(model);
+        //this.boardController=boardController;
+        /*
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("5 sec passati");
+        BoardController boardController = getBoardController(model);
+        Platform.runLater(()->
+        {
+            boardController.initialDisplay(model);
+        });*/
+
     }
 
     private BoardController getBoardController(Game game){
         BoardController boardController;
         try {
             boardController = (BoardController) GuiMainController.getCurrentController();
+            boardController.setGame(game);
+            this.game=game;
+            this.boardController=boardController;
         } catch (ClassCastException e) {
             boardController = new BoardController(game);
             boardController.addAllObservers(observers);
-            BoardController finalBsc = boardController;
-            Platform.runLater(() -> GuiMainController.nextPane(finalBsc, "Board.fxml"));
+            BoardController finalBoardController = boardController;
+            Platform.runLater(() -> GuiMainController.nextPane(finalBoardController, "Board.fxml"));
         }
+        this.boardController=boardController;
         return boardController;
     }
 }

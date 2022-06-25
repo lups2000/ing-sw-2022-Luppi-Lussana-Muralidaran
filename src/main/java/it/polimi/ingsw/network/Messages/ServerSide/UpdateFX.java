@@ -11,7 +11,7 @@ import java.util.List;
 
 public class UpdateFX extends Message {
 
-    private static final long serialVersionUID = 2817470917497248728L;
+    private static final long serialVersionUID = 2813744867719462728L;
     private Game game;
 
     public UpdateFX(Game game){

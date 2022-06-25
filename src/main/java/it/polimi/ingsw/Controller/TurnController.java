@@ -9,6 +9,7 @@ import it.polimi.ingsw.Model.Exceptions.NoTowersException;
 import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.Model.Exceptions.TooManyTowersException;
 import it.polimi.ingsw.Utils.StoreGame;
+import it.polimi.ingsw.View.Gui.Controllers.GuiMainController;
 import it.polimi.ingsw.View.VirtualView;
 import it.polimi.ingsw.network.Messages.ClientSide.*;
 import it.polimi.ingsw.network.Messages.Message;
@@ -679,7 +680,6 @@ public class TurnController implements Serializable {
                     }
                 }
             }
-
             for(int i=0;i<model.getMaxNumPlayers()+1;i++){ // the player must move numPlayers+1 students
                 int numStud=model.getMaxNumPlayers()+1-i;
                 int numTot=model.getMaxNumPlayers()+1;
@@ -698,8 +698,6 @@ public class TurnController implements Serializable {
                     } catch (NoPawnPresentException | TooManyPawnsPresent e) {
                         e.printStackTrace();
                     }
-
-                    //virtualViewCurrentPlayer.showSchoolBoardPlayers(model.getPlayers());
                 }
                 else if(currentMessageMoveStud.equalsIgnoreCase("i")){
                     //we ask the player where he wants to move the student
@@ -767,6 +765,9 @@ public class TurnController implements Serializable {
                 player.pickCloudTile(currentCloudTile);
             } catch (TooManyPawnsPresent e) {
                 e.printStackTrace();
+            }
+            for(VirtualView virtualView : virtualViewMap.values()){
+                virtualView.showGameBoard(model,model.getIslands(),model.getCloudTiles(),model.getPlayers());
             }
             player.setStatus(PlayerStatus.WAITING);
             turnPhase = TurnPhase.PLANNING2;//in order to come back to the next player's action

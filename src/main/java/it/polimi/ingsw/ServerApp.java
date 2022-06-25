@@ -29,8 +29,5 @@ public class ServerApp {
         Thread thread = new Thread(socketServer, "SocketServer");
         thread.start();
 
-        /*
-        ExecutorService executor= Executors.newCachedThreadPool();
-        executor.submit(socketServer);*/ //sostituisco?
     }
 }

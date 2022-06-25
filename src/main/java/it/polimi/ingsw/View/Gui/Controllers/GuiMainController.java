@@ -7,6 +7,7 @@ import it.polimi.ingsw.observer.Observer4View;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -62,8 +63,9 @@ public class GuiMainController extends Observable4View {
         try{
             FXMLLoader fxmlLoader = new FXMLLoader(GuiMainController.class.getResource("/fxml/" +fxml));
             fxmlLoader.setController(guiGenericController);
-            Parent root = fxmlLoader.load();
             currentController=guiGenericController;
+
+            Parent root = fxmlLoader.load();
             currentScene=scene;
             currentScene.setRoot(root);
 
@@ -76,17 +78,26 @@ public class GuiMainController extends Observable4View {
         nextPane(guiGenericController,currentScene,fxml);
     }
 
+    /*
     public static void showAlert(String title,String message) {
-        /*FXMLLoader loader = new FXMLLoader(GuiMainController.class.getResource("/fxml/alert_scene.fxml"));
+        ErrorAlert.display(title,message);
+    }*/
+
+    public static void showAlert(String title, String message) {
+        FXMLLoader loader = new FXMLLoader(GuiMainController.class.getResource("/fxml/Alert.fxml"));
+
         Parent parent;
         try {
             parent = loader.load();
         } catch (IOException e) {
             e.printStackTrace();
             return;
-        }*/
-        //ErrorAlert errorAlert = loader.getController();
-        //Scene alertScene = new Scene(parent);
-        ErrorAlert.display(title,message);
+        }
+        AlertController alertController = loader.getController();
+        Scene alertScene = new Scene(parent);
+        alertController.setScene(alertScene);
+        alertController.setAlertTitle(title);
+        alertController.setAlertMessage(message);
+        alertController.displayAlert();
     }
 }
