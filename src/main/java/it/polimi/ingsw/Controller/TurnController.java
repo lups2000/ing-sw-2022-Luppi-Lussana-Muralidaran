@@ -161,7 +161,6 @@ public class TurnController implements Serializable {
 
             planningPhase2();
 
-
             for(VirtualView virtualView: virtualViewMap.values()){ //show to the players the current situation
                 virtualView.showGameBoard(model,model.getIslands(),model.getCloudTiles(),model.getPlayers());
             }
@@ -699,6 +698,7 @@ public class TurnController implements Serializable {
                     } catch (NoPawnPresentException | TooManyPawnsPresent e) {
                         e.printStackTrace();
                     }
+
                     //virtualViewCurrentPlayer.showSchoolBoardPlayers(model.getPlayers());
                 }
                 else if(currentMessageMoveStud.equalsIgnoreCase("i")){

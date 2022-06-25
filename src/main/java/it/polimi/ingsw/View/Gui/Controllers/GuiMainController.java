@@ -62,10 +62,8 @@ public class GuiMainController extends Observable4View {
         try{
             FXMLLoader fxmlLoader = new FXMLLoader(GuiMainController.class.getResource("/fxml/" +fxml));
             fxmlLoader.setController(guiGenericController);
-            currentController=guiGenericController;
-
             Parent root = fxmlLoader.load();
-
+            currentController=guiGenericController;
             currentScene=scene;
             currentScene.setRoot(root);
 
