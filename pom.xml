@@ -24,31 +24,29 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-graphics</artifactId>
       <version>RELEASE</version>
-      <scope>test</scope>
+      <classifier>win</classifier>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
-      <artifactId>javafx-controls</artifactId>
+      <artifactId>javafx-graphics</artifactId>
       <version>RELEASE</version>
+      <classifier>linux</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-graphics</artifactId>
+      <version>RELEASE</version>
+      <classifier>mac</classifier>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
       <version>RELEASE</version>
     </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.5</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.7.5</version>
-    </dependency>
+
   </dependencies>
 
   <build>
@@ -77,7 +75,7 @@
         <version>3.2.4</version>
         <executions>
           <execution>
-            <id>server</id>
+            <id>${project.name}-server</id>
             <phase>package</phase>
             <goals>
               <goal>shade</goal>
@@ -90,8 +88,9 @@
               </transformers>
             </configuration>
           </execution>
+
           <execution>
-            <id>gui</id>
+            <id>${project.name}-client</id>
             <phase>package</phase>
             <goals>
               <goal>shade</goal>
@@ -99,25 +98,12 @@
             <configuration>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>it.polimi.ingsw.GUIApp</mainClass>
+                  <mainClass>it.polimi.ingsw.ClientApp</mainClass>
                 </transformer>
               </transformers>
             </configuration>
           </execution>
-          <execution>
-            <id>cli</id>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <transformers>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>it.polimi.ingsw.CLIApp</mainClass>
-                </transformer>
-              </transformers>
-            </configuration>
-          </execution>
+
         </executions>
       </plugin>
     </plugins>
