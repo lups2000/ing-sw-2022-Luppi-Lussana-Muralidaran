@@ -5,12 +5,6 @@ Eriantys Board Game is the final test of **"Software Engineering"**, course of *
 ## Project specification
 The project consists in a Java version of the board game *Eriantys*, made by Leo Colovini.
 
-The final version includes:
-* initial UML diagram;
-* final UML diagram, generated from the code by automated tools(intellij);
-* source code of the implementation;
-* tests generated with JUNIT5
-
 ## Implemented Functionalities
 | Functionality | Status |
 |:-----------------------|:------------------------------------:|
@@ -26,3 +20,16 @@ The final version includes:
 | Connection resilience | [⛔]() |
 #### Legend
 [⛔]() Not Implemented &nbsp;&nbsp;&nbsp;&nbsp;[⚠️]() Implementing&nbsp;&nbsp;&nbsp;&nbsp;[✅]() Implemented
+
+## Documentation
+
+### UML
+The following class diagrams represent the initial diagram and the one generated as final product with the use of Intellij.
+- [Initial UML]
+- [Final UML]
+
+### JavaDoc
+The following documentation includes a description of the main classes and methods.
+
+### Coverage report
+We use JUNIT5 to test our components.In particular we focus a lot on the Model. The controller was difficult to test because of the network.
