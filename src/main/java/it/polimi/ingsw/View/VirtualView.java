@@ -166,7 +166,7 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void updateFX(Game game) {
-        //empty
+        clientConnection.sendMessageToClient(new UpdateFX(game));
     }
 
     @Override

@@ -30,21 +30,20 @@
             <Button fx:id="character3" mnemonicParsing="false" />
          </children>
       </VBox>
-      <AnchorPane fx:id="mainAnchorPane" layoutX="147.0" layoutY="177.0" prefHeight="380.0" prefWidth="996.0">
-         <children>
-            <ImageView fitHeight="70.0" fitWidth="100.0" layoutX="657.0" layoutY="112.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Images/WoodenPieces/deny_island_icon.png" />
-               </image>
-            </ImageView>
-            <Label fx:id="numNoEntryTiles" layoutX="686.0" layoutY="179.0" text="4" textFill="RED">
-               <font>
-                  <Font name="Matura MT Script Capitals" size="18.0" />
-               </font>
-            </Label>
-            <HBox fx:id="professors" layoutX="382.0" layoutY="216.0" prefHeight="41.0" prefWidth="225.0" spacing="10.0" />
-         </children>
-      </AnchorPane>
+      <ImageView fitHeight="70.0" fitWidth="100.0" layoutX="1032.0" layoutY="585.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/WoodenPieces/deny_island_icon.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="numNoEntryTiles" layoutX="1061.0" layoutY="652.0" text="4" textFill="RED">
+         <font>
+            <Font name="Matura MT Script Capitals" size="18.0" />
+         </font>
+      </Label>
+      <HBox fx:id="Hbox1Islands" alignment="CENTER" layoutX="153.0" layoutY="197.0" prefHeight="100.0" prefWidth="940.0" spacing="10.0" />
+      <HBox fx:id="Hbox2Islands" alignment="CENTER" layoutX="153.0" layoutY="303.0" prefHeight="100.0" prefWidth="940.0" spacing="10.0" />
+      <HBox fx:id="professors" layoutX="269.0" layoutY="450.0" prefHeight="61.0" prefWidth="300.0" spacing="10.0" />
+      <HBox fx:id="clouds" layoutX="663.0" layoutY="431.0" prefHeight="100.0" prefWidth="425.0" spacing="10.0" />
    </children>
    <stylesheets>
       <URL value="@../Images/CSS/MainScreen.css" />

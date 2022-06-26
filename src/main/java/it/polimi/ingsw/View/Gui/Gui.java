@@ -13,6 +13,8 @@ import javafx.application.Platform;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * class that implements the methods of View interface, used for GUI
@@ -70,12 +72,17 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void showSchoolBoardPlayers(List<Player> players) {
+
+        /*
         try {
-            Thread.sleep(5000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Platform.runLater(()->this.boardController.displayEntireSchoolBoards(players));
+        Platform.runLater(()->
+        {
+            this.boardController.displayEntireSchoolBoards(players);
+        });*/
     }
 
     @Override
@@ -164,12 +171,19 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void showIslands(List<Island> islands) {
+
+        /*
         try {
-            Thread.sleep(5000);
+            Thread.sleep(4000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Platform.runLater(()->this.boardController.displayIslands(islands));
+        Platform.runLater(()->
+        {
+            this.boardController.displayIslands(islands);
+            //this.boardController.displayEntireSchoolBoards(this.game.getPlayers());
+        }
+        );*/
     }
 
     @Override
@@ -180,6 +194,9 @@ public class Gui extends Observable4View implements View {
         Platform.runLater(()->
         {
             boardController.initialDisplay(model);
+            //boardController.displayEntireSchoolBoards(players);
+            //boardController.displayIslands(islands);
+            //boardController.displayCloudTiles(cloudTiles);
         });
     }
 
@@ -210,22 +227,22 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void updateFX(Game model) {
+        BoardController boardController = getBoardController(model);
+        this.boardController=boardController;
         this.game=model;
-
-        //BoardController boardController = getBoardController(model);
-        //this.boardController=boardController;
-        /*
         try {
-            Thread.sleep(5000);
+            Thread.sleep(2500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("5 sec passati");
-        BoardController boardController = getBoardController(model);
         Platform.runLater(()->
         {
             boardController.initialDisplay(model);
-        });*/
+            //boardController.displayCloudTiles(model.getCloudTiles());
+            //boardController.displayEntireSchoolBoards(model.getPlayers());
+            //boardController.displayIslands(model.getIslands());
+        });
+
 
     }
 
@@ -234,7 +251,6 @@ public class Gui extends Observable4View implements View {
         try {
             boardController = (BoardController) GuiMainController.getCurrentController();
             boardController.setGame(game);
-            this.game=game;
             this.boardController=boardController;
         } catch (ClassCastException e) {
             boardController = new BoardController(game);

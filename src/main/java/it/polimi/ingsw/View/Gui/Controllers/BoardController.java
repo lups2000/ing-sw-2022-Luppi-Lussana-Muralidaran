@@ -2,6 +2,7 @@ package it.polimi.ingsw.View.Gui.Controllers;
 
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
+import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.observer.Observable4View;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -38,17 +39,23 @@ public class BoardController extends Observable4View implements GuiGenericContro
     @FXML
     private AnchorPane externalAnchorPane;
 
-    //mainAnchorPane
-    @FXML
-    private AnchorPane mainAnchorPane;
-
     //assistantCards
     @FXML
     private VBox assistantCards;
 
+    //islands
+    @FXML
+    private HBox Hbox1Islands;
+    @FXML
+    private HBox Hbox2Islands;
+
     //professors
     @FXML
     private HBox professors;
+
+    //clouds
+    @FXML
+    private HBox clouds;
 
     //characterCards
     @FXML
@@ -90,13 +97,12 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
     public void initialDisplay(Game game){
 
-        //mainAnchorPane.getChildren().clear();
 
         if(game.getMaxNumPlayers()==2){
 
             displayEntireSchoolBoards(game.getPlayers());
 
-            displayCloudTiles();
+            displayCloudTiles(game.getCloudTiles());
 
             if(game.getExpertsVariant()){
                 //characterCards
@@ -114,7 +120,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
             displayEntireSchoolBoards(game.getPlayers());
 
             //clouds
-            displayCloudTiles();
+            displayCloudTiles(game.getCloudTiles());
 
             if(game.getExpertsVariant()){
 
@@ -129,13 +135,21 @@ public class BoardController extends Observable4View implements GuiGenericContro
             }
         }
 
-        //displayProfessorsMainScreen();
+        displayProfessorsMainScreen();
         displayIslands(game.getIslands());
         displayAssistantCards();
     }
 
     private void displayProfessorsMainScreen(){
         boolean flag;
+        Map<PawnColor,Image> pawnColorImageMap = new HashMap<>();
+        pawnColorImageMap.put(PawnColor.RED,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/teacher_" + PawnColor.RED + ".png"))));
+        pawnColorImageMap.put(PawnColor.BLUE,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/teacher_" + PawnColor.BLUE + ".png"))));
+        pawnColorImageMap.put(PawnColor.YELLOW,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/teacher_" + PawnColor.YELLOW + ".png"))));
+        pawnColorImageMap.put(PawnColor.GREEN,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/teacher_" + PawnColor.GREEN + ".png"))));
+        pawnColorImageMap.put(PawnColor.PINK,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/teacher_" + PawnColor.PINK + ".png"))));
+
+        professors.getChildren().clear();
 
         for(PawnColor pawnColor : PawnColor.values()){
             flag=false;
@@ -146,7 +160,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
                 }
             }
             if(!flag) {
-                ImageView profMainScreen = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/teacher_" + pawnColor + ".png"))));
+                ImageView profMainScreen = new ImageView(pawnColorImageMap.get(pawnColor));
                 profMainScreen.setFitWidth(36);
                 profMainScreen.setFitHeight(40);
                 professors.getChildren().add(profMainScreen);
@@ -155,14 +169,19 @@ public class BoardController extends Observable4View implements GuiGenericContro
     }
 
     private void displayProfessorsOnSchoolBoard(AnchorPane anchorPane,Player player){
-        boolean flag;
         ImageView profSchoolBoard=null;
+        Map<PawnColor,Image> pawnColorImageMap = new HashMap<>();
+        pawnColorImageMap.put(PawnColor.RED,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/teacher_" + PawnColor.RED + ".png"))));
+        pawnColorImageMap.put(PawnColor.BLUE,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/teacher_" + PawnColor.BLUE + ".png"))));
+        pawnColorImageMap.put(PawnColor.YELLOW,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/teacher_" + PawnColor.YELLOW + ".png"))));
+        pawnColorImageMap.put(PawnColor.GREEN,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/teacher_" + PawnColor.GREEN + ".png"))));
+        pawnColorImageMap.put(PawnColor.PINK,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/teacher_" + PawnColor.PINK + ".png"))));
 
         for(PawnColor pawnColor : PawnColor.values()){
             if(player.getSchoolBoard().getProfessors().get(pawnColor)){
-                profSchoolBoard = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/teacher_" + pawnColor + ".png"))));
-                profSchoolBoard.setFitWidth(20);
-                profSchoolBoard.setFitHeight(20);
+                profSchoolBoard = new ImageView(pawnColorImageMap.get(pawnColor));
+                profSchoolBoard.setFitWidth(23);
+                profSchoolBoard.setFitHeight(23);
                 profSchoolBoard.setLayoutX(282);
                 switch (pawnColor){
                     case GREEN -> profSchoolBoard.setLayoutY(13);
@@ -215,10 +234,10 @@ public class BoardController extends Observable4View implements GuiGenericContro
             schoolBoard.setLayoutX(layoutsX.get(pos));
             schoolBoard.setLayoutY(layoutsY.get(pos));
 
-            displayTowersPlayer(schoolBoard,player);
             displayStudentWaitingPlayer(schoolBoard,player);
             displayStudentDiningPlayer(schoolBoard,player);
             displayProfessorsOnSchoolBoard(schoolBoard,player);
+            displayTowersPlayer(schoolBoard,player);
 
             Label nickName=new Label();
             nickName.setText(player.getNickname());
@@ -252,21 +271,22 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
     }
 
-    private void displayCloudTiles(){
+    public void displayCloudTiles(List<CloudTile> cloudTiles){
         List<Integer> layoutsX=Arrays.asList(526,383,240);
         List<Integer> layoutsY=Arrays.asList(107,107,107);
+        clouds.getChildren().clear();
         int pos=0;
-        for(CloudTile cloudTile : game.getCloudTiles()){
+        for(CloudTile cloudTile : cloudTiles){
             AnchorPane anchorPane = new AnchorPane();
             anchorPane.setPrefWidth(100);
             anchorPane.setPrefHeight(90);
             anchorPane.setId(Integer.toString(cloudTile.getId()));
             anchorPane.getStyleClass().add("cloudBG");
-            anchorPane.setLayoutX(layoutsX.get(pos));
-            anchorPane.setLayoutY(layoutsY.get(pos));
+            //anchorPane.setLayoutX(layoutsX.get(pos));
+            //anchorPane.setLayoutY(layoutsY.get(pos));
             pos++;
             displayCloudStudents(anchorPane,cloudTile);
-            mainAnchorPane.getChildren().add(anchorPane);
+            clouds.getChildren().add(anchorPane);
         }
     }
 
@@ -274,19 +294,27 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
         List<Integer> layoutsX=Arrays.asList(810,810,658,481,301,135,10,10,135,301,481,658);
         List<Integer> layoutsY=Arrays.asList(80,208,275,275,275,275,208,80,4,4,4,4);
+        Hbox1Islands.getChildren().clear();
+        Hbox2Islands.getChildren().clear();
         int pos=0;
-        mainAnchorPane.getChildren().clear();
+        int i=0;
         for(Island island : islands){
             AnchorPane islandAnchor = new AnchorPane();
             islandAnchor.setPrefWidth(120);
             islandAnchor.setPrefHeight(100);
             islandAnchor.setId(Integer.toString(island.getIndex()));
             islandAnchor.getStyleClass().add("islandBG");
-            islandAnchor.setLayoutX(layoutsX.get(pos));
-            islandAnchor.setLayoutY(layoutsY.get(pos));
+            //islandAnchor.setLayoutX(layoutsX.get(pos));
+            //islandAnchor.setLayoutY(layoutsY.get(pos));
             displayIsland(islandAnchor,island);
-            pos++;
-            mainAnchorPane.getChildren().add(islandAnchor);
+            //pos++;
+            if(i<islands.size()/2){
+                Hbox1Islands.getChildren().add(islandAnchor);
+            }
+            else{
+                Hbox2Islands.getChildren().add(islandAnchor);
+            }
+            i++;
         }
     }
 
@@ -299,12 +327,18 @@ public class BoardController extends Observable4View implements GuiGenericContro
         ImageView student;
         Label counter=null;
         int pos=0;
+        Map<PawnColor,Image> pawnColorImageMap = new HashMap<>();
+        pawnColorImageMap.put(PawnColor.RED,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + PawnColor.RED + ".png"))));
+        pawnColorImageMap.put(PawnColor.BLUE,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + PawnColor.BLUE + ".png"))));
+        pawnColorImageMap.put(PawnColor.YELLOW,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + PawnColor.YELLOW + ".png"))));
+        pawnColorImageMap.put(PawnColor.GREEN,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + PawnColor.GREEN + ".png"))));
+        pawnColorImageMap.put(PawnColor.PINK,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + PawnColor.PINK + ".png"))));
 
         for(PawnColor pawnColor : PawnColor.values()){
             int temp=0;
             student=null;
             while(temp<island.getStudents().get(pawnColor)){
-                student = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + pawnColor + ".png"))));
+                student = new ImageView(pawnColorImageMap.get(pawnColor));
                 student.setFitWidth(20);
                 student.setFitHeight(20);
                 temp++;
@@ -362,13 +396,20 @@ public class BoardController extends Observable4View implements GuiGenericContro
         Map<ImageView,Label> imageLabelMap =new HashMap<>();
         ImageView student;
         Label counter=null;
+        Map<PawnColor,Image> pawnColorImageMap = new HashMap<>();
+        pawnColorImageMap.put(PawnColor.RED,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + PawnColor.RED + ".png"))));
+        pawnColorImageMap.put(PawnColor.BLUE,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + PawnColor.BLUE + ".png"))));
+        pawnColorImageMap.put(PawnColor.YELLOW,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + PawnColor.YELLOW + ".png"))));
+        pawnColorImageMap.put(PawnColor.GREEN,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + PawnColor.GREEN + ".png"))));
+        pawnColorImageMap.put(PawnColor.PINK,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + PawnColor.PINK + ".png"))));
+
         int pos=0;
         for(PawnColor pawnColor : PawnColor.values()){
             int temp=0;
             student=null;
             while(temp<cloudTile.getStudents().get(pawnColor)){
 
-                student = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + pawnColor + ".png"))));
+                student = new ImageView(pawnColorImageMap.get(pawnColor));
                 student.setFitWidth(20);
                 student.setFitHeight(20);
                 temp++;
@@ -396,13 +437,19 @@ public class BoardController extends Observable4View implements GuiGenericContro
         int layoutY=0;
         List<ImageView> imageViewList = new ArrayList<>();
         ImageView student;
+        Map<PawnColor,Image> pawnColorImageMap = new HashMap<>();
+        pawnColorImageMap.put(PawnColor.RED,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + PawnColor.RED + ".png"))));
+        pawnColorImageMap.put(PawnColor.BLUE,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + PawnColor.BLUE + ".png"))));
+        pawnColorImageMap.put(PawnColor.YELLOW,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + PawnColor.YELLOW + ".png"))));
+        pawnColorImageMap.put(PawnColor.GREEN,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + PawnColor.GREEN + ".png"))));
+        pawnColorImageMap.put(PawnColor.PINK,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + PawnColor.PINK + ".png"))));
 
         for(PawnColor pawnColor : PawnColor.values()){
             int temp=0;
             student=null;
             imageViewList.clear();
             while (temp<player.getSchoolBoard().getStudentsDining().get(pawnColor)){
-                student = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + pawnColor + ".png"))));
+                student = new ImageView(pawnColorImageMap.get(pawnColor));
                 student.setFitWidth(15);
                 student.setFitHeight(15);
                 imageViewList.add(student);
@@ -432,12 +479,19 @@ public class BoardController extends Observable4View implements GuiGenericContro
         List<Integer> layoutsX=Arrays.asList(14,37);
         List<Integer> layoutsY=Arrays.asList(16,39,62,84,108);
         List<ImageView> imageViewList = new ArrayList<>();
+        Map<PawnColor,Image> pawnColorImageMap = new HashMap<>();
+        pawnColorImageMap.put(PawnColor.RED,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + PawnColor.RED + ".png"))));
+        pawnColorImageMap.put(PawnColor.BLUE,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + PawnColor.BLUE + ".png"))));
+        pawnColorImageMap.put(PawnColor.YELLOW,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + PawnColor.YELLOW + ".png"))));
+        pawnColorImageMap.put(PawnColor.GREEN,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + PawnColor.GREEN + ".png"))));
+        pawnColorImageMap.put(PawnColor.PINK,new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + PawnColor.PINK + ".png"))));
+
         ImageView student;
         for(PawnColor pawnColor : PawnColor.values()){
             int temp=0;
             student=null;
             while (temp<player.getSchoolBoard().getStudentsWaiting().get(pawnColor)){
-                student = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + pawnColor + ".png"))));
+                student = new ImageView(pawnColorImageMap.get(pawnColor));
                 student.setFitWidth(16);
                 student.setFitHeight(16);
                 imageViewList.add(student);
@@ -466,25 +520,27 @@ public class BoardController extends Observable4View implements GuiGenericContro
         List<Integer> layoutsY=Arrays.asList(-4,19,43,66);
         List<ImageView> imageViewList = new ArrayList<>();
         String colorTower=player.getColorTower().getNameColor();
+        Image towerImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + colorTower + "_tower.png")));
         for(int i=0;i<player.getSchoolBoard().getNumTowers();i++){
-            ImageView tower = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/WoodenPieces/" + colorTower + "_tower.png"))));
+            ImageView tower = new ImageView(towerImage);
             tower.setFitWidth(50);
             tower.setFitHeight(50);
             imageViewList.add(tower);
         }
         int temp=0;
-        ImageView imageView=null;
+        ImageView imageView1=null;
         for(int j=0;j<4;j++){
             for(int i=0;i<2;i++){
                 if(temp<player.getSchoolBoard().getNumTowers()){
-                    imageView=imageViewList.get(temp);
-                    imageView.setLayoutX(layoutsX.get(i));
-                    imageView.setLayoutY(layoutsY.get(j));
-                    anchorPane.getChildren().add(imageView);
+                    imageView1=imageViewList.get(temp);
+                    imageView1.setLayoutX(layoutsX.get(i));
+                    imageView1.setLayoutY(layoutsY.get(j));
+                    anchorPane.getChildren().add(imageView1);
                     temp++;
                 }
             }
         }
+
     }
 
     //method to display the character cards

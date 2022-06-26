@@ -231,8 +231,6 @@ public class MainController implements Serializable {
             game.addPlayer(nickname); //add the player to the model
 
             virtualView.askNumPlayers();
-            //virtualView.askExpertVariant();
-            //virtualView.askAssistantSeed(game.getSeedsAvailable());
 
         }
         else if(virtualViewsMap.size() < game.getMaxNumPlayers()){
@@ -254,10 +252,6 @@ public class MainController implements Serializable {
                     broadcastingMessage("\nThe server went down!Now you can continue the match...");
                     replaceMainController(mainControllerPreviousMatch);
                 }
-                /*
-                else{
-                    virtualView.askAssistantSeed(game.getSeedsAvailable());
-                }*/
             }
         }
         //a questo else teoricamente non ci arrivo mai

@@ -312,6 +312,7 @@ public class Game extends Observable implements Serializable {
                 notifyObserver(new Generic("SERVER", "<  No Change on the island with index: "+islandIndex+"  >\n"));
                 notifyObserver(new Generic("SERVER","\nISLANDS UPDATE:\n"));
                 notifyObserver(new Islands(islands));
+                notifyObserver(new UpdateFX(this));
             }
         }
         else{
@@ -433,8 +434,9 @@ public class Game extends Observable implements Serializable {
         }
 
         notifyObserver(new Generic("SERVER","\nUPDATE SCHOOLBOARD:"));
-        notifyObserver(new SchoolBoardPlayers(players));
         notifyObserver(new UpdateFX(this));
+        notifyObserver(new SchoolBoardPlayers(players));
+
     }
 
     /**
