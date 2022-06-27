@@ -872,7 +872,15 @@ public class Cli extends Observable4View implements View {
                 }
             }
             for(int i=0;i<currentIsland.getNumTowers();i++){
-                out.print(currentIsland.getTower().getVisualColor()+" T ");
+                if(currentIsland.getTower()==ColorTower.BLACK){
+                    out.print(" TB");
+                }
+                else if(currentIsland.getTower()==ColorTower.WHITE){
+                    out.print(" TW");
+                }
+                else{
+                    out.print(" TG");
+                }
             }
             out.print(Colors.RESET);
             if(currentIsland.getNoEntryTiles()>0){
