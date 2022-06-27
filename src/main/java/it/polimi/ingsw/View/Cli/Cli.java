@@ -18,7 +18,6 @@ import java.util.List;
  */
 public class Cli extends Observable4View implements View {
     private final PrintStream out;
-    private static final String CANCEL_INPUT = "User input has been canceled";
     private static final String INVALID_INPUT = Colors.RED_PAWN+"The entered input is not valid!"+"\033[38;2;255;255;0m";
     private String welcomeMessage = "\n\n\033[38;2;255;255;0m Hey there! Welcome to Eriantys! ";
 
@@ -43,7 +42,7 @@ public class Cli extends Observable4View implements View {
                 \033[38;2;0;0;255m  ██████████   ███    ███ █▀     ███    █▀   ▀█   █▀     ▄████▀    ▀█████▀   ▄████████▀ \s
                 \033[38;2;127;0;255m               ███    ███                                                               \s
                 """);
-        welcomeMessage += new String(Character.toChars(0x1F604));
+        //welcomeMessage += new String(Character.toChars(0x1F604));
         out.println(welcomeMessage);
         connectToServer();
     }
@@ -891,22 +890,16 @@ public class Cli extends Observable4View implements View {
         out.println("\033[38;2;255;255;0m");
     }
 
-    /**
-     * method to show the whole current game board (islands, school boards and cloud tiles)
-     *
-     * @param islands the islands to be shown
-     * @param cloudTiles the cloud tiles to be shown
-     * @param players the players of the game, we show theirs school boards
-     */
+
     @Override
-    public void showGameBoard(Game game,List<Island> islands, List<CloudTile> cloudTiles, List<Player> players) {
+    public void showGameBoard(ReducedGame reducedGame) {
         this.clearCli();
         out.println("\n"+Colors.RED_PAWN+"CURRENT GAME SITUATION: "+Colors.RESET);
-        this.showIslands(islands);
+        this.showIslands(reducedGame.getIslands());
         out.print("");
-        this.showCloudTiles(cloudTiles);
+        this.showCloudTiles(reducedGame.getCloudTiles());
         out.println("\n");
-        this.showSchoolBoardPlayers(players);
+        this.showSchoolBoardPlayers(reducedGame.getPlayers());
 
         out.println("\033[38;2;255;255;0m");
     }
@@ -1014,7 +1007,7 @@ public class Cli extends Observable4View implements View {
     }
 
     @Override
-    public void updateFX(Game game) {
+    public void updateFX(ReducedGame reducedGame) {
 
     }
 }

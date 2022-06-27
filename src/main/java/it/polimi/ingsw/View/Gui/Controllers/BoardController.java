@@ -25,14 +25,17 @@ public class BoardController extends Observable4View implements GuiGenericContro
     private List<CharacterCard> characterCards;
     private List<Player> players;
     private List<Island> islands;
+    private List<CloudTile> cloudTiles;
     private Game game;
+    private boolean expertVariant;
 
-    public BoardController(Game game){
+    public BoardController(){
+        /*
         this.game=game;
         currentHand=game.getCurrentHand();
         characterCards=game.getCharacterCards();
         players=game.getPlayers();
-        islands=game.getIslands();
+        islands=game.getIslands();*/
     }
 
     //externalAnchorPane
@@ -85,26 +88,28 @@ public class BoardController extends Observable4View implements GuiGenericContro
     public void setCharacterCards(List<CharacterCard> characterCards) {this.characterCards = characterCards;}
     public void setCurrentHand(Map<Player, AssistantCard> currentHand) {this.currentHand = currentHand;}
     public void setGame(Game game) {
-        this.game = game;
-        currentHand=game.getCurrentHand();
-        characterCards=game.getCharacterCards();
-        players=game.getPlayers();
-        islands=game.getIslands();
+
     }
     public void setPlayers(List<Player> players) {this.players = players;}
     public void setIslands(List<Island> islands) {this.islands = islands;}
 
 
-    public void initialDisplay(Game game){
+    public void initialDisplay(ReducedGame reducedGame){
 
+        expertVariant=reducedGame.isExpertVariant();
+        characterCards=reducedGame.getCharacterCards();
+        islands=reducedGame.getIslands();
+        currentHand=reducedGame.getCurrentHand();
+        cloudTiles=reducedGame.getCloudTiles();
+        players=reducedGame.getPlayers();
 
-        if(game.getMaxNumPlayers()==2){
+        if(reducedGame.getPlayers().size()==2){
 
-            displayEntireSchoolBoards(game.getPlayers());
+            displayEntireSchoolBoards(reducedGame.getPlayers());
 
-            displayCloudTiles(game.getCloudTiles());
+            displayCloudTiles(reducedGame.getCloudTiles());
 
-            if(game.getExpertsVariant()){
+            if(reducedGame.isExpertVariant()){
                 //characterCards
                 displayCharacterCards();
             }
@@ -115,14 +120,14 @@ public class BoardController extends Observable4View implements GuiGenericContro
                 character3.setVisible(false);
             }
         }
-        else if(players.size()==3){
+        else if(reducedGame.getPlayers().size()==3){
 
-            displayEntireSchoolBoards(game.getPlayers());
+            displayEntireSchoolBoards(reducedGame.getPlayers());
 
             //clouds
-            displayCloudTiles(game.getCloudTiles());
+            displayCloudTiles(reducedGame.getCloudTiles());
 
-            if(game.getExpertsVariant()){
+            if(reducedGame.isExpertVariant()){
 
                 //characterCards
                 displayCharacterCards();
@@ -136,7 +141,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
         }
 
         displayProfessorsMainScreen();
-        displayIslands(game.getIslands());
+        displayIslands(reducedGame.getIslands());
         displayAssistantCards();
     }
 
@@ -153,7 +158,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
         for(PawnColor pawnColor : PawnColor.values()){
             flag=false;
-            for(Player player : game.getPlayers()){
+            for(Player player : players){
                 if(player.getSchoolBoard().getProfessors().get(pawnColor)) {
                     flag=true;
                     break;
@@ -261,7 +266,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
             numCoins.setLayoutY(labelCoinLayoutY.get(pos));
             pos++;
 
-            if(game.getExpertsVariant()){
+            if(expertVariant){
                 externalAnchorPane.getChildren().addAll(nickName,schoolBoard,coin,numCoins);
             }
             else {

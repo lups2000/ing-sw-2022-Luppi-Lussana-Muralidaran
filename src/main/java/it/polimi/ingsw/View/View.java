@@ -65,7 +65,7 @@ public interface View {
 
     void showIslands(List<Island> islands);
 
-    void showGameBoard(Game game,List<Island> islands,List<CloudTile> cloudTiles,List<Player> players);
+    void showGameBoard(ReducedGame reducedGame);
 
     void showCloudTiles(List<CloudTile> cloudTiles);
 
@@ -77,5 +77,5 @@ public interface View {
 
     void askStudOrStop(Map<PawnColor,Integer> students);
 
-    void updateFX(Game game);
+    void updateFX(ReducedGame reducedGame);
 }

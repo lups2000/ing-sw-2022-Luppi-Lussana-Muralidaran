@@ -7,11 +7,16 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.Cursor?>
 <Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1300.0" styleClass="loginbg" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.View.Gui.Controllers.LoginController">
    <children>
       <TextField fx:id="ipAddressField" alignment="CENTER" layoutX="579.0" layoutY="213.0" promptText="Insert IP Address" style="-fx-background-radius: 10;" text="127.0.0.1" />
       <TextField fx:id="portNumberField" alignment="CENTER" layoutX="579.0" layoutY="261.0" promptText="Insert port number" style="-fx-background-radius: 10;" text="12345" />
-      <Button fx:id="connectionButton" layoutX="589.0" layoutY="310.0" mnemonicParsing="false" text="Connect to the server" />
+      <Button fx:id="connectionButton" layoutX="589.0" layoutY="310.0" mnemonicParsing="false" text="Connect to the server">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
       <Label alignment="CENTER" layoutX="630.0" layoutY="193.0" text="Address">
          <font>
             <Font name="Comic Sans MS" size="12.0" />

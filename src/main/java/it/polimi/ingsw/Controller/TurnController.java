@@ -151,19 +151,27 @@ public class TurnController implements Serializable {
 
         while(turnPhase != TurnPhase.END){
 
+
             //nota bene: al primo giro le clouds sono gia piene!Quindi inizializzo turnPhase a PLANNING1
             planningPhase1();
 
             //notifyPlayers("The cloud tiles have been filled!"); //meglio cosi piuttosto che notificare la modifica nel model
-
+            ReducedGame reducedGame = new ReducedGame(model);
             for(VirtualView virtualView: virtualViewMap.values()){ //show to the players the current situation
-                virtualView.showGameBoard(model,model.getIslands(),model.getCloudTiles(),model.getPlayers());
+                virtualView.showGameBoard(reducedGame);
             }
 
             planningPhase2();
+            reducedGame.setCloudTiles(model.getCloudTiles());
+            reducedGame.setCharacterCards(model.getCharacterCards());
+            reducedGame.setCurrentHand(model.getCurrentHand());
+            reducedGame.setIslands(model.getIslands());
+            reducedGame.setPlayers(model.getPlayers());
+            reducedGame.setExpertVariant(model.getExpertsVariant());
+            reducedGame.setNoEntryTilesCounter(model.getNoEntryTilesCounter());
 
             for(VirtualView virtualView: virtualViewMap.values()){ //show to the players the current situation
-                virtualView.showGameBoard(model,model.getIslands(),model.getCloudTiles(),model.getPlayers());
+                virtualView.showGameBoard(reducedGame);
             }
 
             if(checkWinner()){ //if there is a player that has finished his assistantCards
@@ -766,8 +774,9 @@ public class TurnController implements Serializable {
             } catch (TooManyPawnsPresent e) {
                 e.printStackTrace();
             }
+            ReducedGame reducedGame = new ReducedGame(model);
             for(VirtualView virtualView : virtualViewMap.values()){
-                virtualView.showGameBoard(model,model.getIslands(),model.getCloudTiles(),model.getPlayers());
+                virtualView.updateFX(reducedGame);
             }
             player.setStatus(PlayerStatus.WAITING);
             turnPhase = TurnPhase.PLANNING2;//in order to come back to the next player's action
@@ -824,9 +833,4 @@ public class TurnController implements Serializable {
         }
     }
 
-    private void update(Game game){
-        for(VirtualView virtualView : virtualViewMap.values()){
-            virtualView.updateFX(game);
-        }
-    }
 }

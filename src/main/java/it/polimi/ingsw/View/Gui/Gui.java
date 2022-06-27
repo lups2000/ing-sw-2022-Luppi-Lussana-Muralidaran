@@ -73,16 +73,16 @@ public class Gui extends Observable4View implements View {
     @Override
     public void showSchoolBoardPlayers(List<Player> players) {
 
-        /*
+
         try {
-            Thread.sleep(3000);
+            Thread.sleep(2500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         Platform.runLater(()->
         {
             this.boardController.displayEntireSchoolBoards(players);
-        });*/
+        });
     }
 
     @Override
@@ -120,31 +120,36 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void showLoginInfo(String nickName, boolean nickNameOk, boolean connectionOk) {
-        if(!nickNameOk || !connectionOk){
-            if(nickNameOk){
+
+        if(nickNameOk && connectionOk ){
+            Platform.runLater(()->{
+                GuiMainController.showAlert("Generic","Nice to meet you "+nickName+", now you are connected!");
+            });
+        }
+        else if(nickNameOk){
+            Platform.runLater(()->{
+                GuiMainController.showAlert("Error","We are sorry but the connection has been refused!Try later!");
+                GuiMainController.nextPane(observers,"InitialScreen.fxml");
+            });
+        }
+        else if(connectionOk){
+            if(nickName==null){
                 Platform.runLater(()->{
-                    GuiMainController.showAlert("Error","Sorry, error to reach the server!");
-                    GuiMainController.nextPane(observers,"InitialScreen.fxml");
+                    GuiMainController.showAlert("Error","Missing Information!");
+                    GuiMainController.nextPane(observers,"NickName.fxml");
                 });
             }
             else{
-                if(nickName==null || nickName.isEmpty()){
-                    Platform.runLater(()->{
-                        GuiMainController.showAlert("Error","Missing Information!");
-                        GuiMainController.nextPane(observers,"NickName.fxml");
-                    });
-                }
-                else{
-                    Platform.runLater(()->{
-                        GuiMainController.showAlert("Error","Sorry, nickName already taken!");
-                        GuiMainController.nextPane(observers,"NickName.fxml");
-                    });
-                }
+                Platform.runLater(()->{
+                    GuiMainController.showAlert("Error","Sorry, nickName already taken!");
+                    GuiMainController.nextPane(observers,"NickName.fxml");
+                });
             }
         }
         else{
             Platform.runLater(()->{
-                GuiMainController.showAlert("Generic","Nice to meet you "+nickName+", now you are connected!");
+                GuiMainController.showAlert("Error","Sorry, error to reach the server!");
+                GuiMainController.nextPane(observers,"InitialScreen.fxml");
             });
         }
     }
@@ -172,28 +177,26 @@ public class Gui extends Observable4View implements View {
     @Override
     public void showIslands(List<Island> islands) {
 
-        /*
         try {
-            Thread.sleep(4000);
+            Thread.sleep(2500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         Platform.runLater(()->
         {
             this.boardController.displayIslands(islands);
-            //this.boardController.displayEntireSchoolBoards(this.game.getPlayers());
         }
-        );*/
+        );
     }
 
     @Override
-    public void showGameBoard(Game model,List<Island> islands, List<CloudTile> cloudTiles, List<Player> players) {
+    public void showGameBoard(ReducedGame reducedGame) {
 
-        BoardController boardController = getBoardController(model);
-        this.game=model;
+        BoardController boardController = getBoardController();
+        this.boardController=boardController;
         Platform.runLater(()->
         {
-            boardController.initialDisplay(model);
+            boardController.initialDisplay(reducedGame);
             //boardController.displayEntireSchoolBoards(players);
             //boardController.displayIslands(islands);
             //boardController.displayCloudTiles(cloudTiles);
@@ -226,34 +229,22 @@ public class Gui extends Observable4View implements View {
     }
 
     @Override
-    public void updateFX(Game model) {
-        BoardController boardController = getBoardController(model);
-        this.boardController=boardController;
-        this.game=model;
+    public void updateFX(ReducedGame reducedGame) {
+
         try {
-            Thread.sleep(2500);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Platform.runLater(()->
-        {
-            boardController.initialDisplay(model);
-            //boardController.displayCloudTiles(model.getCloudTiles());
-            //boardController.displayEntireSchoolBoards(model.getPlayers());
-            //boardController.displayIslands(model.getIslands());
-        });
-
-
+        Platform.runLater(()->showGameBoard(reducedGame));
     }
 
-    private BoardController getBoardController(Game game){
+    private BoardController getBoardController(){
         BoardController boardController;
         try {
             boardController = (BoardController) GuiMainController.getCurrentController();
-            boardController.setGame(game);
-            this.boardController=boardController;
         } catch (ClassCastException e) {
-            boardController = new BoardController(game);
+            boardController = new BoardController();
             boardController.addAllObservers(observers);
             BoardController finalBoardController = boardController;
             Platform.runLater(() -> GuiMainController.nextPane(finalBoardController, "Board.fxml"));

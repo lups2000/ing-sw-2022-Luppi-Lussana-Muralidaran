@@ -58,7 +58,7 @@ public class ClientController implements Observer4View, Observer {
 
             case GAME_BOARD -> {
                 GameBoard gameBoard=(GameBoard) message;
-                executorService.execute(()->view.showGameBoard(gameBoard.getGame(),gameBoard.getIslands(),gameBoard.getCloudTiles(),gameBoard.getPlayers()));
+                executorService.execute(()->view.showGameBoard(gameBoard.getReducedGame()));
             }
 
             case SCHOOLBOARD -> {
@@ -159,7 +159,7 @@ public class ClientController implements Observer4View, Observer {
             }
             case UPDATEFX -> {
                 UpdateFX updateFX =(UpdateFX) message;
-                executorService.execute(()->view.updateFX(updateFX.getGame()));
+                executorService.execute(()->view.updateFX(updateFX.getReducedGame()));
             }
 
         }

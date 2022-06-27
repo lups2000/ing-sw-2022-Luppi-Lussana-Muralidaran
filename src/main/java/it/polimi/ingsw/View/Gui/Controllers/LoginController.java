@@ -45,7 +45,7 @@ public class LoginController extends Observable4View implements GuiGenericContro
             new Thread(() -> notifyObserver(obs -> obs.connectClientToServer(ipAddress,portNumber))).start();
         }
         else{
-            ErrorAlert.display("Error","Address or Port invalid!");
+            GuiMainController.showAlert("Error","Address or Port invalid!");
         }
 
 

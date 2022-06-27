@@ -309,10 +309,11 @@ public class Game extends Observable implements Serializable {
                 checkArchipelago(island);
             }
             else{
+                ReducedGame reducedGame = new ReducedGame(this);
                 notifyObserver(new Generic("SERVER", "<  No Change on the island with index: "+islandIndex+"  >\n"));
                 notifyObserver(new Generic("SERVER","\nISLANDS UPDATE:\n"));
                 notifyObserver(new Islands(islands));
-                notifyObserver(new UpdateFX(this));
+                notifyObserver(new UpdateFX(reducedGame));
             }
         }
         else{
@@ -344,9 +345,10 @@ public class Game extends Observable implements Serializable {
             notifyObserver(new Generic("SERVER","<  Merge between island with index '"+(index-1+Island.getNumIslands())%(Island.getNumIslands())+"' and island with index '"+index+"'  >\n"));
             updateIndexes(index);
         }
+        ReducedGame reducedGame = new ReducedGame(this);
         notifyObserver(new Generic("SERVER","\nISLANDS UPDATE:\n"));
         notifyObserver(new Islands(islands));
-        notifyObserver(new UpdateFX(this));
+        notifyObserver(new UpdateFX(reducedGame));
         if(Island.getNumIslands() <= 3){
             checkWinner();
         }
@@ -432,9 +434,9 @@ public class Game extends Observable implements Serializable {
                 }
             }
         }
-
+        ReducedGame reducedGame = new ReducedGame(this);
         notifyObserver(new Generic("SERVER","\nUPDATE SCHOOLBOARD:"));
-        notifyObserver(new UpdateFX(this));
+        //notifyObserver(new UpdateFX(reducedGame));
         notifyObserver(new SchoolBoardPlayers(players));
 
     }

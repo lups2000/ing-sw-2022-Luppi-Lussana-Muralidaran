@@ -135,8 +135,8 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void showGameBoard(Game game,List<Island> islands,List<CloudTile> cloudTiles,List<Player> players) {
-        clientConnection.sendMessageToClient(new GameBoard(game,islands,cloudTiles,players));
+    public void showGameBoard(ReducedGame reducedGame) {
+        clientConnection.sendMessageToClient(new GameBoard(reducedGame));
     }
 
     @Override
@@ -165,8 +165,8 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void updateFX(Game game) {
-        clientConnection.sendMessageToClient(new UpdateFX(game));
+    public void updateFX(ReducedGame reducedGame) {
+        clientConnection.sendMessageToClient(new UpdateFX(reducedGame));
     }
 
     @Override
