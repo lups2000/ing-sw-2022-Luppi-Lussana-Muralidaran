@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * This class represents the deck of Assistant Cards.
  * @author Matteo Luppi
  */
 public class DeckAssistantCard implements Serializable {
@@ -16,10 +17,10 @@ public class DeckAssistantCard implements Serializable {
     private AssistantSeed seed;
 
     /**
-     * Constructor, creation of the Deck of Assistant Cards(10 cards in total)
-     * i-->value
-     * j-->maxStepsMotherNature(when i is even j is incremented by one)
-     * @param chosenSeed is the AssistantSeed chosen by the player at the beginning of the game
+     * Constructor, creation of the Deck of Assistant Cards(10 cards in total).
+     * i-->value.
+     * j-->maxStepsMotherNature(when i is even j is incremented by one).
+     * @param chosenSeed AssistantSeed chosen by the player at the beginning of the game.
      */
     public DeckAssistantCard(AssistantSeed chosenSeed){
         int j=1;
@@ -43,8 +44,8 @@ public class DeckAssistantCard implements Serializable {
 
 
     /**
-     * This method removes the card from the deck
-     * @param assistantCard is the card that has to be removed from the player's deck after his turn
+     * This method removes the card from the deck.
+     * @param assistantCard is the card that has to be removed from the player's deck after his turn.
      */
     public AssistantCard pick(AssistantCard assistantCard) throws IllegalArgumentException,IllegalStateException{
         if(cards.size()==0){

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * This class represents a Cloud Tile.
  * @author Paolo Lussana
  */
 public class CloudTile implements Serializable {
@@ -20,8 +21,10 @@ public class CloudTile implements Serializable {
     private int numMaxPlayers;//forse non serve
 
     /**
-     * constructor of the CloudTile class
-     * @param id is the id given to every cloud tiles, to differentiate them one with each other
+     * Constructor.
+     * @param id integer value that represents the single cloud Tile.
+     * @param numMaxPlayers integer value that represents the maximum number of players
+*    * which is an indicator of the capacity of students of the Tile.
      */
     public CloudTile(int id,int numMaxPlayers) {
         this.id = id;
@@ -47,9 +50,8 @@ public class CloudTile implements Serializable {
     public int getNumStudents() {return numStudents;}
 
     /**
-     * when a player chooses a cloud tile at the end of his round
-     *
-     * @return all the students presents on this cloud tile
+     * Method to pick the students from a cloud Tile.
+     * @return All the students presents on this cloud tile.
      */
     public Map<PawnColor,Integer> pickStudents(){
         Map<PawnColor,Integer> picked = new HashMap<>();
@@ -64,8 +66,8 @@ public class CloudTile implements Serializable {
     }
 
     /**
-     * method to refill the cloud tile
-     * @param drawn is the pawn color of the student drawn
+     * Method to refill the cloud tile.
+     * @param drawn is the pawn color of the student drawn from the Student Bag.
      */
     public void addStudent(PawnColor drawn) throws TooManyPawnsPresent {
         if(drawn==null ){

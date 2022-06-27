@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
+ * This class represents the player.
  * @author Matteo Luppi, Paolo Lussana, Pradeeban Muralidaran
  */
 public class Player implements Serializable {
@@ -23,13 +24,11 @@ public class Player implements Serializable {
     private AssistantCard currentAssistant; //current Assistant card
 
     /**
-     * constructor of the Player class
-     *
-     * @param id is the id given to every player (the first to register will be given id=0 and so on)
-     * @param nickname is the nickname the player chooses when he registers himself
-     // * @param seed is the wizard selected by this player for the choice of the assistant cards' deck
+     * Constructor
+     * @param id is the id given to every player (the first to register will be given id=0 and so on).
+     * @param nickname is the nickname the player chooses when he registers himself.
      */
-    public Player(int id,String nickname/*,AssistantSeed seed,SchoolBoard schoolBoard*/){
+    public Player(int id,String nickname){
         this.id = id;
         this.nickname = nickname;
         switch (id) {
@@ -58,6 +57,12 @@ public class Player implements Serializable {
     public void setControlOnProfessor (boolean controlSwitch){this.controlOnProfessor = controlSwitch;}
     public AssistantCard getCurrentAssistant(){return this.currentAssistant;}
     public void pickAssistantCard(AssistantCard picked)throws IllegalArgumentException,IllegalStateException{currentAssistant = deckAssistantCard.pick(picked);}
+
+    /**
+     * Method to pick a cloud Tile.
+     * @param cloudTile the cloud tile chosen
+     * @throws TooManyPawnsPresent
+     */
     public void pickCloudTile(CloudTile cloudTile) throws TooManyPawnsPresent {
         Map<PawnColor,Integer> picked=cloudTile.pickStudents();
 
@@ -68,6 +73,11 @@ public class Player implements Serializable {
             }
         }
     }
+
+    /**
+     * Method to choose the initial deck of Assistant Cards.
+     * @param assistantSeed is the wizard chosen initially.
+     */
     public void chooseDeck(AssistantSeed assistantSeed){
         this.deckAssistantCard=new DeckAssistantCard(assistantSeed);
     }

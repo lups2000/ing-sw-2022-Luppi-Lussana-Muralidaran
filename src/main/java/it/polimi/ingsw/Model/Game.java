@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * class Game
+ * This class represents the Game
  * @author Paolo Lussana,Matteo Luppi,Pradeeban Muralidaran
  */
 
@@ -34,6 +34,9 @@ public class Game extends Observable implements Serializable {
     private PawnColor noColorInfluence; //used for the NoColorInfluence character card
     private Map<Player,AssistantCard> currentHand;    //list for the assistant cards chosen in this turn
 
+    /**
+     * Constructor
+     */
     public Game(){
         this.maxNumPlayers = 3;
         this.players = new ArrayList<>();
@@ -48,9 +51,9 @@ public class Game extends Observable implements Serializable {
     }
 
     /**
-     * method to initialize the Game
-     * @param max indicates the max number of players chosen at the very start by the first player when he creates the match
-     * @param experts indicates if the first player chooses to play the game with the experts variant or not
+     * Method to initialize the Game.
+     * @param max indicates the max number of players chosen at the very start by the first player when he creates the match.
+     * @param experts indicates if the first player chooses to play the game with the experts variant or not.
      */
     public void initGame(int max,boolean experts){
         if(max<2 || max>4){
@@ -103,6 +106,10 @@ public class Game extends Observable implements Serializable {
         }
     }
 
+    /**
+     * Method to add a new player.
+     * @param nickName is the nickName of the player.
+     */
     public void addPlayer(String nickName){
         Player newPlayer = new Player(players.size(),nickName); //gli passo la schoolBoard,index playersize()
         players.add(players.size(),newPlayer);
@@ -138,8 +145,8 @@ public class Game extends Observable implements Serializable {
 
 
     /**
-     * method invoked one time for each player at the start of the game that fills his school board
-     * @param player is the player who just entered the match, his school board will be filled
+     * Method invoked one time for each player at the start of the game that fills his school board.
+     * @param player is the player who just entered the match, his school board will be filled.
      */
     private void fillBoard(Player player) throws TooManyPawnsPresent {
         for(int i=0;i<player.getSchoolBoard().getNumMaxStudentsWaiting();i++){
@@ -153,8 +160,8 @@ public class Game extends Observable implements Serializable {
     }
 
     /**
-     * method invoked when the cloud tiles need to be refilled
-     * @param cloud is the cloud tile to be filled
+     * Method invoked when the cloud tiles need to be refilled.
+     * @param cloud is the cloud tile to be filled.
      */
     public void fillCloudTile(CloudTile cloud) throws TooManyPawnsPresent {
 
@@ -170,8 +177,8 @@ public class Game extends Observable implements Serializable {
     }
 
     /**
-     * method to fill the islands at the beginning of the game
-     * it's needed to distribute a total of 10 students, 2 per color, in 10 islands (n.0 and n.6 excluded)
+     * Method to fill the islands at the beginning of the game.
+     * It's needed to distribute a total of 10 students, 2 per color, in 10 islands (n.0 and n.6 excluded).
      */
     private void fillIslands() {
         Map<PawnColor, Integer> availableStudents = new HashMap<>();
@@ -209,8 +216,8 @@ public class Game extends Observable implements Serializable {
     }
 
     /**
-     * Method to move MotherNature to an Island
-     * @param island is the island where I want to move Mother Nature on
+     * Method to move MotherNature to an Island.
+     * @param island is the island where I want to move Mother Nature on.
      */
     public void moveMotherNature(Island island) throws TooManyTowersException, NoTowersException {
         if(island==null){
@@ -230,8 +237,8 @@ public class Game extends Observable implements Serializable {
     }
 
     /**
-     * Method to compute which player has more influence on an island
-     * @param island is the one we are calculating the influence on
+     * Method to compute which player has more influence on an island.
+     * @param island is the one we are calculating the influence on.
      */
     public void influence(Island island) throws TooManyTowersException,NoTowersException{
         int islandIndex=island.getIndex();
@@ -323,8 +330,8 @@ public class Game extends Observable implements Serializable {
     }
 
     /**
-     * method to check if there is a union between two islands (or two group of islands)
-     * @param island is the one where a new tower has just been built
+     * Method to check if there is a union between two islands (or two group of islands).
+     * @param island is the one where a new tower has just been built.
      */
     private void checkArchipelago(Island island){
         int index=island.getIndex();
@@ -356,10 +363,10 @@ public class Game extends Observable implements Serializable {
 
 
     /**
-     * method to update the indexes of the ArrayList islands, with a left shift of  indexes removing the island
-     * that will be merged within the next one
-     * this method is invoked each time there is the creation of a new archipelago
-     * @param removedIndex is the index of the island that need to be merged (and so removed from the ArrayList)
+     * Method to update the indexes of the ArrayList islands, with a left shift of  indexes removing the island
+     * that will be merged within the next one.
+     * This method is invoked each time there is the creation of a new archipelago.
+     * @param removedIndex is the index of the island that need to be merged (and so removed from the ArrayList).
      */
     private void updateIndexes(int removedIndex){
         if(removedIndex<0 || removedIndex> islands.size()-1){
@@ -379,8 +386,8 @@ public class Game extends Observable implements Serializable {
     }
 
     /**
-     * method invoked each time there are movements in the players' school boards
-     * it checks if a new player has gained some professors with his recent moves
+     * Method invoked each time there are movements in the players' school boards.
+     * It checks if a new player has gained some professors with his recent moves.
      */
     public void allocateProfessors() throws NoPawnPresentException,TooManyPawnsPresent{
         for(PawnColor color : PawnColor.values()) {
@@ -442,9 +449,9 @@ public class Game extends Observable implements Serializable {
     }
 
     /**
-     * method invoked when the number of islands is 3 (or lower) or when the students in the student bag are finished
-     * it checks who is the winner of the just finished game by checking who has the most towers built in the islands
-     * and, in case of a draw with this first check, it checks who between them has the most professors
+     * Method invoked when the number of islands is 3 (or lower) or when the students in the student bag are finished.
+     * It checks who is the winner of the just finished game by checking who has the most towers built in the islands
+     * and, in case of a draw with this first check, it checks who between them has the most professors.
      */
     public void checkWinner(){
         //if there is a draw in the number of towers we have to check the number of professors owned
@@ -496,7 +503,7 @@ public class Game extends Observable implements Serializable {
     }
 
     /**
-     * method to extract three random (and different) character cards if the expert variant is chosen
+     * Method to extract three random (and different) character cards if the expert variant is chosen.
      */
     private void pickThreeRandomCards() throws NoPawnPresentException{
         int[] extracted = new int[3];
@@ -560,6 +567,23 @@ public class Game extends Observable implements Serializable {
         return playersNickNames;
     }
 
+    /**
+     * Method used to replace entirely the current game. This method is used
+     * for the Persistence Functionality.
+     * @param players
+     * @param numPlayers
+     * @param expertVariant
+     * @param islands
+     * @param cloudTiles
+     * @param characterCards
+     * @param gameState
+     * @param studentBag
+     * @param motherNature
+     * @param currentHand
+     * @param seedsAvailable
+     * @param noEntryTilesCounter
+     * @throws NoPawnPresentException
+     */
     public void replaceGame(List<Player> players,int numPlayers,boolean expertVariant,List<Island> islands,List<CloudTile> cloudTiles,List<CharacterCard> characterCards,
                             GameState gameState,StudentBag studentBag,int motherNature,Map<Player,AssistantCard> currentHand,List<AssistantSeed> seedsAvailable,int noEntryTilesCounter) throws NoPawnPresentException {
 

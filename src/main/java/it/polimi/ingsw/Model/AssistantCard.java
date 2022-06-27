@@ -5,6 +5,8 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
+ * This class represents an Assistant card.
+ *
  * @author Matteo Luppi
  */
 public class AssistantCard implements Serializable {

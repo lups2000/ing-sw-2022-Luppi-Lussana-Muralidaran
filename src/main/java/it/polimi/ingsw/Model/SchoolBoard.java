@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Class SchoolBoard
+ * This class represents the SchoolBoard.
  * @author Matteo Luppi,Paolo Lussana
  */
 public class SchoolBoard implements Serializable {
@@ -30,7 +30,11 @@ public class SchoolBoard implements Serializable {
     private int numMaxPlayers;
     private boolean experts;
 
-
+    /**
+     * Constructor
+     * @param numMaxPlayers is the maximum number of players of the game.
+     * @param experts is the expert variant.
+     */
     public SchoolBoard(int numMaxPlayers,boolean experts){
         this.professors = new HashMap<>();
         this.numMaxPlayers=numMaxPlayers;
@@ -84,6 +88,10 @@ public class SchoolBoard implements Serializable {
     public int getNumCoins() {return numCoins;}
     public void setNumStudentsWaiting(int numStudentsWaiting) {this.numStudentsWaiting = numStudentsWaiting;}
 
+    /**
+     * Method to decrease the number of coins.
+     * @param numCoins
+     */
     public void decreaseNumCoins(int numCoins){
         if(numCoins<=0){
             throw new IllegalArgumentException("Parameter cannot be negative!");
@@ -95,9 +103,8 @@ public class SchoolBoard implements Serializable {
     }
 
     /**
-     * Method to move a student from the Waiting Room(entrance) to the DiningRoom
-     *
-     * @param pawnColor corresponds to a Student
+     * Method to move a student from the Waiting Room(entrance) to the DiningRoom.
+     * @param pawnColor color of the respective student.
      */
     public void moveStudToDining(PawnColor pawnColor) throws NoPawnPresentException, TooManyPawnsPresent {
         if(pawnColor==null){
@@ -120,9 +127,9 @@ public class SchoolBoard implements Serializable {
     }
 
     /**
-     * Method to move a student from the Waiting Room(entrance) to an Island
-     * @param pawnColor corresponds to the Student
-     * @param island corresponds to the Island the player want to move the student on
+     * Method to move a student from the Waiting Room(entrance) to an Island.
+     * @param pawnColor pawnColor color of the respective student.
+     * @param island island where the player wants to move his student.
      */
     public void moveStudToIsland(PawnColor pawnColor,Island island) throws NoPawnPresentException {
         if(pawnColor==null || island==null){
@@ -138,6 +145,11 @@ public class SchoolBoard implements Serializable {
         }
     }
 
+    /**
+     * Method to add a professor to the SchoolBoard.
+     * @param pawnColor pawnColor of the respective professor.
+     * @throws TooManyPawnsPresent if there is already the professor of that color.
+     */
     public void addProfessor(PawnColor pawnColor) throws TooManyPawnsPresent {
         if(pawnColor==null){
             throw new NullPointerException("Parameter cannot be null!");
@@ -149,6 +161,12 @@ public class SchoolBoard implements Serializable {
             professors.put(pawnColor,true);
         }
     }
+
+    /**
+     * Method to remove a professor from the SchoolBoard.
+     * @param pawnColor pawnColor of the respective professor.
+     * @throws NoPawnPresentException if there is not the professor of that color.
+     */
     public void removeProfessor(PawnColor pawnColor) throws NoPawnPresentException {
         if(pawnColor==null){
             throw new NullPointerException("Parameter cannot be null!");
@@ -162,8 +180,8 @@ public class SchoolBoard implements Serializable {
     }
 
     /**
-     * method to add (or remove) towers from the school board
-     * @param num the number of towers to add (or remove if num is negative)
+     * Method to add (or remove) towers from the SchoolBoard.
+     * @param num the number of towers to add (or remove if num is negative).
      */
     public void updateNumberOfTowers(int num) throws TooManyTowersException, NoTowersException {
         if(numTowers+num > numMaxTowers){
@@ -178,8 +196,8 @@ public class SchoolBoard implements Serializable {
     }
 
     /**
-     * Method to add a Student to the Waiting Room (Entrance)
-     * @param pawnColor corresponds to the Student
+     * Method to add a Student to the Waiting Room (Entrance).
+     * @param pawnColor pawnColor of the student.
      */
     public void addStudToWaiting(PawnColor pawnColor) throws TooManyPawnsPresent {
         if(pawnColor==null) {
@@ -195,8 +213,8 @@ public class SchoolBoard implements Serializable {
     }
 
     /**
-     * Method to add a Student to the Dining Room, invoked by the StudentToDining character card
-     * @param pawnColor corresponds to the Student
+     * Method to add a Student to the Dining Room, invoked by the StudentToDining character card.
+     * @param pawnColor pawnColor of the student.
      */
     public void addStudToDining(PawnColor pawnColor) throws TooManyPawnsPresent {
         if(pawnColor==null){
@@ -211,10 +229,10 @@ public class SchoolBoard implements Serializable {
     }
 
     /**
-     * method to remove a maximum of 3 students of a certain color from the school board
-     * it's an effect of the ColorToStudentBag character card
-     * @param chosen is the pawn color to remove
-     * @return the students effectively removed
+     * Method to remove a maximum of 3 students of a certain color from the SchoolBoard.
+     * It's an effect of the ColorToStudentBag character card.
+     * @param chosen is the pawnColor to remove.
+     * @return the students effectively removed.
      */
     public int removeStudents(PawnColor chosen){
         if(chosen==null){

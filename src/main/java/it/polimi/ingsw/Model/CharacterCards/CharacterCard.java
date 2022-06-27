@@ -7,6 +7,9 @@ import it.polimi.ingsw.Model.Game;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * This is an abstract class that represents a Character Card.
+ */
 public abstract class CharacterCard implements Serializable {
 
     @Serial
@@ -18,6 +21,11 @@ public abstract class CharacterCard implements Serializable {
 
     public int getCost() {return cost;}
 
+    /**
+     * Method that represents the effect of the card.
+     * @throws NoPawnPresentException
+     * @throws TooManyPawnsPresent
+     */
     public void effect() throws NoPawnPresentException, TooManyPawnsPresent {
 
     }
@@ -31,8 +39,8 @@ public abstract class CharacterCard implements Serializable {
     public void setGame(Game game) {this.game = game;}
 
     /**
-     * method invoked every time a character card is invoked
-     * the first time this will happen the cost of the character card will increment and the boolean "used" will be set = true
+     * Method invoked every time a character card is played.
+     * The first time this will happen the cost of the character card will increment and the boolean "used" will be set = true.
      */
     public void used(){
         if(!used){

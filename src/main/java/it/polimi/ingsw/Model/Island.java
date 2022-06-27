@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * This class represent an Island.
  * @author Paolo Lussana,Matteo Luppi, Pradeeban Muralidaran
  */
 
@@ -25,8 +26,8 @@ public class Island implements Serializable {
     private static int numIslands = 12;
 
     /**
-     * constructor of the initial 12 islands
-     * @param index is the initial index of the island, from 0 to 11
+     * Constructor of the initial 12 islands.
+     * @param index Initial index of the island, from 0 to 11.
      */
     public Island(int index){
         this.index = index;
@@ -86,9 +87,9 @@ public class Island implements Serializable {
     }
 
     /**
-     * method to change the tower(s) on the island(s), if tower is null it means that there were no towers at all on the island and so we set numTowers to 1
-     * if tower is not null we don't add new towers, we simply replace them with another colorTower
-     * @param tower is the new colorTower to build on the island(s)
+     * Method to change the tower(s) on the island(s), if tower is null it means that there were no towers at all on the island and so we set numTowers to 1
+     * if tower is not null we don't add new towers, we simply replace them with another colorTower.
+     * @param tower is the new colorTower to build on the island(s).
      */
     public void changeTower(ColorTower tower){
         if(this.tower == null){ // no tower on the Island
@@ -98,8 +99,8 @@ public class Island implements Serializable {
     }
 
     /**
-     * method to add a student to the island
-     * @param toAdd is the color of the student to add
+     * Method to add a student to the island.
+     * @param toAdd is the color of the student to add.
      */
     public void addStudent(PawnColor toAdd){
         if(toAdd==null){
@@ -111,10 +112,10 @@ public class Island implements Serializable {
     }
 
     /**
-     * method to compute a player's influence on an island
-     * the method is divided in two sub-methods in order to differentiate the influence calculated by the towers and the students
-     * @param player indicates which player's influence we are computing
-     * @return the value of the player's influence on this island
+     * Method to compute a player's influence on an island.
+     * The method is divided in two sub-methods in order to differentiate the influence calculated by the towers and the students
+     * @param player indicates which player's influence we are computing.
+     * @return the value of the player's influence on this island.
      */
     public int computeTotalInfluence(Player player){
         if(player==null){
@@ -144,11 +145,11 @@ public class Island implements Serializable {
     }
 
     /**
-     * method to compute a player's influence on an island given by the only students
-     * it is invoked if the NoColorInfluence character card was activated
-     * @param player indicates which player's influence we are computing
-     * @param noColorInfluence is the color chosen whose students don't count in this round
-     * @return the value of the player's influence on this island
+     * Method to compute a player's influence on an island given by the only students
+     * it is invoked if the NoColorInfluence character card was activated.
+     * @param player indicates which player's influence we are computing.
+     * @param noColorInfluence is the color chosen whose students don't count in this round.
+     * @return the value of the player's influence on this island.
      */
     public int computeNoColorInfluence(Player player,PawnColor noColorInfluence){
         int influence = 0;
@@ -162,10 +163,10 @@ public class Island implements Serializable {
     }
 
     /**
-     * method to merge two near islands with the same ColorTower, we sum the attributes of the two islands
+     * Method to merge two near islands with the same ColorTower, we sum the attributes of the two islands
      * the two islands to merge can be both a single island or a group of islands, since we just sum the attributes
-     * every time a merge takes place we recalculate the other islands' indexes in the Game class
-     * @param toMerge is the island to merge with the current one
+     * every time a merge takes place we recalculate the other islands' indexes in the Game class.
+     * @param toMerge is the island to merge with the current one.
      */
     public void merge(Island toMerge){
         if(toMerge==null){

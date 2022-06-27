@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 
 /**
+ * This enum class represents the colors for students and professors
  * @author Matteo Luppi, Pradeeban Muralidaran
  */
 public enum PawnColor {
