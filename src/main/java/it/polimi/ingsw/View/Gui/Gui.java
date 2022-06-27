@@ -2,10 +2,7 @@ package it.polimi.ingsw.View.Gui;
 
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
-import it.polimi.ingsw.View.Gui.Controllers.AssistantCardController;
-import it.polimi.ingsw.View.Gui.Controllers.AssistantSeedController;
-import it.polimi.ingsw.View.Gui.Controllers.BoardController;
-import it.polimi.ingsw.View.Gui.Controllers.GuiMainController;
+import it.polimi.ingsw.View.Gui.Controllers.*;
 import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.observer.Observable4View;
 import javafx.application.Platform;
@@ -62,12 +59,14 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void askPlayCharacterCard(List<CharacterCard> characterCards) {
-
+        CharacterCardController characterCardController = new CharacterCardController(characterCards);
+        characterCardController.addAllObservers(observers);
+        Platform.runLater(()->GuiMainController.nextPane(characterCardController,"CharacterCardSelector.fxml"));
     }
 
     @Override
     public void askMoveStud() {
-
+        Platform.runLater(GuiMainController::showAskMoveStud);
     }
 
     @Override
@@ -178,7 +177,7 @@ public class Gui extends Observable4View implements View {
     public void showIslands(List<Island> islands) {
 
         try {
-            Thread.sleep(2500);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -197,9 +196,6 @@ public class Gui extends Observable4View implements View {
         Platform.runLater(()->
         {
             boardController.initialDisplay(reducedGame);
-            //boardController.displayEntireSchoolBoards(players);
-            //boardController.displayIslands(islands);
-            //boardController.displayCloudTiles(cloudTiles);
         });
     }
 

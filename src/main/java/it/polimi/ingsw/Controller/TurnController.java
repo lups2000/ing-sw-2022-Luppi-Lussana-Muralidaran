@@ -663,6 +663,12 @@ public class TurnController implements Serializable {
             if(model.getExpertsVariant()){ //if the expert Mode has been chosen
                 List<CharacterCard> characterCardsGame=model.getCharacterCards();
 
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
                 while(!characterCardOk){
 
                     virtualViewCurrentPlayer.askPlayCharacterCard(characterCardsGame);
@@ -688,12 +694,32 @@ public class TurnController implements Serializable {
                     }
                 }
             }
+
+            ReducedGame reducedGame = new ReducedGame(model);
+            for(VirtualView virtualView : virtualViewMap.values()){
+                virtualView.updateFX(reducedGame);
+            }
+
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             for(int i=0;i<model.getMaxNumPlayers()+1;i++){ // the player must move numPlayers+1 students
                 int numStud=model.getMaxNumPlayers()+1-i;
                 int numTot=model.getMaxNumPlayers()+1;
                 virtualViewCurrentPlayer.showGenericMessage("\nIt's time to move your students: "+numStud+" / "+numTot+" available");
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 virtualViewCurrentPlayer.askMoveStud();
+
                 waitAnswer();
+
+                System.out.println(currentMessageMoveStud);
 
                 if(currentMessageMoveStud.equalsIgnoreCase("s")){
                     //we ask the player which PawnColor he wants to move

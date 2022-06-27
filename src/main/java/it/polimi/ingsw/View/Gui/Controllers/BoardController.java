@@ -2,13 +2,13 @@ package it.polimi.ingsw.View.Gui.Controllers;
 
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
-import it.polimi.ingsw.Model.Exceptions.TooManyPawnsPresent;
 import it.polimi.ingsw.observer.Observable4View;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -17,6 +17,7 @@ import javafx.scene.text.Font;
 
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class BoardController extends Observable4View implements GuiGenericController {
@@ -62,11 +63,11 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
     //characterCards
     @FXML
-    private Button character1;
+    private ImageView character1;
     @FXML
-    private Button character2;
+    private ImageView character2;
     @FXML
-    private Button character3;
+    private ImageView character3;
     @FXML
     private Label labelCharacterCards;
 
@@ -550,32 +551,32 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
     //method to display the character cards
     private void displayCharacterCards(){
-        ImageView character=null;
-        List<ImageView> tempCharacters=new ArrayList<>();
+        Image character=null;
+        List<Image> tempCharacters=new ArrayList<>();
         for (CharacterCard characterCard : characterCards) {
             int temp = -1;
             switch (characterCard.getType()) {
                 case ONE_STUDENT_TO_ISLAND -> temp = 1;
-                case CONTROL_ON_PROFESSOR -> temp = 2;
-                case CHOOSE_ISLAND -> temp = 3;
-                case MOVE_MORE_MOTHER_NATURE -> temp = 4;
-                case PUT_NO_ENTRY_TILES -> temp = 5;
-                case NO_COUNT_TOWER -> temp = 6;
-                case SWITCH_STUDENTS -> temp = 7;
-                case TWO_ADDITIONAL_POINTS -> temp = 8;
-                case COLOR_NO_INFLUENCE -> temp = 9;
-                case SWITCH_DINING_WAITING -> temp = 10;
-                case STUDENT_TO_DINING -> temp = 11;
-                case COLOR_TO_STUDENT_BAG -> temp = 12;
+                case CHOOSE_ISLAND -> temp = 2;
+                case MOVE_MORE_MOTHER_NATURE -> temp = 3;
+                case PUT_NO_ENTRY_TILES -> temp = 4;
+                case NO_COUNT_TOWER -> temp = 5;
+                case SWITCH_STUDENTS -> temp = 6;
+                case TWO_ADDITIONAL_POINTS -> temp = 7;
+                case COLOR_NO_INFLUENCE -> temp = 8;
+                case SWITCH_DINING_WAITING -> temp = 9;
+                case STUDENT_TO_DINING -> temp = 10;
+                case COLOR_TO_STUDENT_BAG -> temp = 11;
+                case CONTROL_ON_PROFESSOR -> temp = 12;
             }
-            character = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/CharacterCards/CarteTOT_front" + temp + ".jpg"))));
-            character.setFitWidth(120);
-            character.setFitHeight(190);
+            character = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/CharacterCards/CarteTOT_front" + temp + ".jpg")));
+            //character.setFitWidth(120);
+            //character.setFitHeight(190);
             tempCharacters.add(character);
         }
-        character1.setGraphic(tempCharacters.get(0));
-        character2.setGraphic(tempCharacters.get(1));
-        character3.setGraphic(tempCharacters.get(2));
+        character1.setImage(tempCharacters.get(0));
+        character2.setImage(tempCharacters.get(1));
+        character3.setImage(tempCharacters.get(2));
         labelCharacterCards.setVisible(true);
         character1.setVisible(true);
         character2.setVisible(true);
@@ -585,6 +586,22 @@ public class BoardController extends Observable4View implements GuiGenericContro
         character3.setDisable(true);
 
     }
+
+    /*
+    public void askPlayCharacterCard(){
+        character1.setDisable(false);
+        character2.setDisable(false);
+        character3.setDisable(false);
+
+    }
+
+    private void onCharacterCardClicked(int id){
+        character1.setDisable(true);
+        character2.setDisable(true);
+        character3.setDisable(true);
+
+        new Thread(() -> notifyObserver(obs -> obs.sendCharacterCard(id))).start();
+    }*/
 
     private void displayAssistantCards(){
         assistantCards.getChildren().clear();
