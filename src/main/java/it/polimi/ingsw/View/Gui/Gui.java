@@ -1,9 +1,11 @@
 package it.polimi.ingsw.View.Gui;
 
+import com.sun.source.tree.IfTree;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 import it.polimi.ingsw.View.Gui.Controllers.*;
 import it.polimi.ingsw.View.View;
+import it.polimi.ingsw.network.Messages.ServerSide.InfoMatch;
 import it.polimi.ingsw.observer.Observable4View;
 import javafx.application.Platform;
 
@@ -54,7 +56,7 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void askExpertVariant() {
-        //empty method because we ask the expertVariant when we ask the number of players
+        //empty method because we ask the expertVariant when we ask the number of players during the creation of the match
     }
 
     @Override
@@ -104,17 +106,24 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void showWinMessage(Player winner) {
-
+        Platform.runLater(()-> {
+            GuiMainController.showAlert("End of the match!", "Congratulations, you're the winner!");
+        });
     }
 
     @Override
     public void showLoseMessage(Player winner) {
-
+        Platform.runLater(()-> {
+            GuiMainController.showAlert("End of the match!", "Unfortunately you lost the match...");
+        });
     }
 
     @Override
     public void showDisconnection(String nickName, String message) {
-
+        Platform.runLater(()-> {
+            GuiMainController.showAlert("Disconnection","You have been disconnected from the match");
+            GuiMainController.nextPane(observers,"InitialScreen.fxml");
+        });
     }
 
     @Override
@@ -122,12 +131,12 @@ public class Gui extends Observable4View implements View {
 
         if(nickNameOk && connectionOk ){
             Platform.runLater(()->{
-                GuiMainController.showAlert("Generic","Nice to meet you "+nickName+", now you are connected!");
+                GuiMainController.showAlert("Generic","Nice to meet you "+nickName+", you are now connected!");
             });
         }
         else if(nickNameOk){
             Platform.runLater(()->{
-                GuiMainController.showAlert("Error","We are sorry but the connection has been refused!Try later!");
+                GuiMainController.showAlert("Error","We are sorry but the connection has been refused! Try later!");
                 GuiMainController.nextPane(observers,"InitialScreen.fxml");
             });
         }
@@ -155,7 +164,8 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void showMatchInfo(ArrayList<Player> players, boolean experts, int numPlayers) {
-
+        InfoMatch infoMatch = new InfoMatch(players, experts, numPlayers);
+        //da finire
     }
 
     @Override
