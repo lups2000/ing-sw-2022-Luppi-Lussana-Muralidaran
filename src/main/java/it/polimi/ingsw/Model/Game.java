@@ -441,11 +441,8 @@ public class Game extends Observable implements Serializable {
                 }
             }
         }
-        ReducedGame reducedGame = new ReducedGame(this);
         notifyObserver(new Generic("SERVER","\nUPDATE SCHOOLBOARD:"));
-        //notifyObserver(new UpdateFX(reducedGame));
         notifyObserver(new SchoolBoardPlayers(players));
-
     }
 
     /**

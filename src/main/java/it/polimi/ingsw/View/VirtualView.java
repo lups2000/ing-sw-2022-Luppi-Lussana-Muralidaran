@@ -120,8 +120,8 @@ public class VirtualView implements View, Observer {
 
 
     @Override
-    public void askMoveStudToDining(SchoolBoard schoolBoard) {
-        clientConnection.sendMessageToClient(new StudentToDiningRequest(schoolBoard));
+    public void askMoveStudToDining(Player player) {
+        clientConnection.sendMessageToClient(new StudentToDiningRequest(player));
     }
 
     @Override

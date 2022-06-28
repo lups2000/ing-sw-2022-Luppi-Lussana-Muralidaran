@@ -22,10 +22,6 @@ public class CreateMatchController extends Observable4View implements GuiGeneric
 
     @FXML
     public void initialize(){
-        ObservableList<String> list = choiceBox.getItems();
-        list.add("2");
-        list.add("3");
-
         confirmButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmButtonClick);
     }
 

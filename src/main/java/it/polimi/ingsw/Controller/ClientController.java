@@ -136,7 +136,7 @@ public class ClientController implements Observer4View, Observer {
 
             case REQUEST_MOVE_STUD_DINING -> {
                 StudentToDiningRequest studentToDiningRequest = (StudentToDiningRequest) message;
-                executorService.execute(() -> view.askMoveStudToDining(studentToDiningRequest.getSchoolBoard()));
+                executorService.execute(() -> view.askMoveStudToDining(studentToDiningRequest.getPlayer()));
             }
 
             case REQUEST_MOVE_STUD_ISLAND -> {

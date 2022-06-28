@@ -16,14 +16,12 @@ public class Server {
     public static final Logger LOGGER = Logger.getLogger(Server.class.getName());
     private final MainController mainController;
     private final Map<String, ClientConnection> clientsConnected;
-    private final List<String> nickNamesGame;
     private final Object locker;
 
     public Server(MainController mainController) {
         this.mainController = mainController;
         this.clientsConnected = Collections.synchronizedMap(new HashMap<>());
         this.locker = new Object();
-        this.nickNamesGame=new ArrayList<>();
     }
 
 

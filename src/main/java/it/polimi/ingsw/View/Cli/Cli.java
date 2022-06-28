@@ -780,10 +780,10 @@ public class Cli extends Observable4View implements View {
     /**
      * method to ask the user which student he wants to move from his entrance to his dining room
      *
-     * @param schoolBoard the player's school board
+     * @param player the player
      */
     @Override
-    public void askMoveStudToDining(SchoolBoard schoolBoard) {
+    public void askMoveStudToDining(Player player) {
         boolean validInput=false;
         String answerColor;
         PawnColor pawnColorChosen=null;
@@ -792,9 +792,9 @@ public class Cli extends Observable4View implements View {
             out.print(Colors.RESET);
             out.println("YOUR SCHOOLBOARD:\n");
             out.println("Students in your Waiting Room/Entrance... ");
-            for(PawnColor pawnColor : schoolBoard.getStudentsWaiting().keySet()){
+            for(PawnColor pawnColor : player.getSchoolBoard().getStudentsWaiting().keySet()){
                 out.print(pawnColor.getVisualColor()+pawnColor+Colors.RESET+" students: ");
-                for(int i=0;i<schoolBoard.getStudentsWaiting().get(pawnColor);i++){
+                for(int i=0;i<player.getSchoolBoard().getStudentsWaiting().get(pawnColor);i++){
                     out.print(pawnColor.getVisualColor()+" X "+Colors.RESET);
                 }
                 out.println("");
@@ -802,10 +802,10 @@ public class Cli extends Observable4View implements View {
             out.println("Students in your Dining Room... ");
             for (PawnColor pawnColor: PawnColor.values()){
                 out.print(pawnColor.getVisualColor()+pawnColor+Colors.RESET+" students: ");
-                for (int i=0; i<schoolBoard.getStudentsDining().get(pawnColor); i++) {
+                for (int i=0; i<player.getSchoolBoard().getStudentsDining().get(pawnColor); i++) {
                     out.print(pawnColor.getVisualColor()+"X "+Colors.RESET);
                 }
-                if (schoolBoard.getProfessors().get(pawnColor)) {
+                if (player.getSchoolBoard().getProfessors().get(pawnColor)) {
                     out.print("  "+pawnColor.getVisualColor()+"P"+Colors.RESET);
                 }
                 out.println("");
@@ -834,7 +834,7 @@ public class Cli extends Observable4View implements View {
                     pawnColorChosen=PawnColor.GREEN;
                 }
 
-                if(schoolBoard.getStudentsWaiting().get(pawnColorChosen)<=0){
+                if(player.getSchoolBoard().getStudentsWaiting().get(pawnColorChosen)<=0){
                     out.println(INVALID_INPUT);
                     clearCli();
                 }

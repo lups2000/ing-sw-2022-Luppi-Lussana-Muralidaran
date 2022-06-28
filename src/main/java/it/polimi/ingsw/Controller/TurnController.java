@@ -139,8 +139,6 @@ public class TurnController implements Serializable {
             }
 
         }
-        //this.update(model);
-
     }
 
     /**
@@ -701,7 +699,7 @@ public class TurnController implements Serializable {
             }
 
             try {
-                Thread.sleep(5000);
+                Thread.sleep(3500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -710,20 +708,14 @@ public class TurnController implements Serializable {
                 int numStud=model.getMaxNumPlayers()+1-i;
                 int numTot=model.getMaxNumPlayers()+1;
                 virtualViewCurrentPlayer.showGenericMessage("\nIt's time to move your students: "+numStud+" / "+numTot+" available");
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+
                 virtualViewCurrentPlayer.askMoveStud();
-
                 waitAnswer();
-
-                System.out.println(currentMessageMoveStud);
 
                 if(currentMessageMoveStud.equalsIgnoreCase("s")){
                     //we ask the player which PawnColor he wants to move
-                    virtualViewCurrentPlayer.askMoveStudToDining(player.getSchoolBoard());
+                    virtualViewCurrentPlayer.askMoveStudToDining(player);
+
                     waitAnswer();
 
                     try {
@@ -736,6 +728,7 @@ public class TurnController implements Serializable {
                 else if(currentMessageMoveStud.equalsIgnoreCase("i")){
                     //we ask the player where he wants to move the student
                     virtualViewCurrentPlayer.askMoveStudToIsland(player.getSchoolBoard().getStudentsWaiting(),model.getIslands());
+
                     waitAnswer();
 
                     try {
@@ -770,6 +763,8 @@ public class TurnController implements Serializable {
         if(turnPhase == TurnPhase.ACTION1 && player.getStatus()==PlayerStatus.PLAYING_ACTION){
             //we ask the player on which island he wants to move mother nature
             VirtualView virtualViewPlayer=virtualViewMap.get(player.getNickname());
+            virtualViewPlayer.showGenericMessage("\nIt's time to move Mother Nature!");
+
             virtualViewPlayer.askMoveMotherNature(model.getIslands(),player.getCurrentAssistant().getMaxStepsMotherNature());
             waitAnswer();
 
@@ -850,12 +845,6 @@ public class TurnController implements Serializable {
             if(!nickname.equals(currentPlayer.getNickname())){
                 virtualViewMap.get(nickname).showGenericMessage(message);
             }
-        }
-    }
-
-    public void notifyPlayers(String message){
-        for(String nickname : virtualViewMap.keySet()){
-            virtualViewMap.get(nickname).showGenericMessage(message);
         }
     }
 

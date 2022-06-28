@@ -9,13 +9,21 @@
 <?import javafx.scene.text.Font?>
 
 <?import javafx.scene.Cursor?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1300.0" style="-fx-background-radius: 10;" styleClass="loginbg" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.View.Gui.Controllers.CreateMatchController">
    <children>
       <Label layoutX="530.0" layoutY="214.0" text="Choose the number of players">
          <font>
             <Font size="18.0" />
          </font></Label>
-      <ChoiceBox fx:id="choiceBox" layoutX="536.0" layoutY="251.0" prefHeight="36.0" prefWidth="229.0" style="-fx-background-radius: 10;" >
+      <ChoiceBox value="2" fx:id="choiceBox" layoutX="536.0" layoutY="251.0" prefHeight="36.0" prefWidth="229.0" style="-fx-background-radius: 10;" >
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="2" />
+               <String fx:value="3" />
+            </FXCollections>
+         </items>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>

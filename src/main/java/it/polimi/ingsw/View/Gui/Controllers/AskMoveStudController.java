@@ -43,9 +43,7 @@ public class AskMoveStudController extends Observable4View implements GuiGeneric
 
     @FXML
     public void initialize() {
-        ObservableList<String> list = choiceBox.getItems();
-        list.add("SchoolBoard");
-        list.add("Island");
+
         rootPane.addEventHandler(MouseEvent.MOUSE_PRESSED, this::onRootPaneMousePressed);
         rootPane.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::onRootPaneMouseDragged);
 

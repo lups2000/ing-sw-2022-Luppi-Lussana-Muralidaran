@@ -8,12 +8,9 @@ import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.network.Messages.ServerSide.InfoMatch;
 import it.polimi.ingsw.observer.Observable4View;
 import javafx.application.Platform;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * class that implements the methods of View interface, used for GUI
@@ -68,12 +65,16 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void askMoveStud() {
-        Platform.runLater(GuiMainController::showAskMoveStud);
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Platform.runLater(()->GuiMainController.showAskMoveStud(observers));
     }
 
     @Override
     public void showSchoolBoardPlayers(List<Player> players) {
-
 
         try {
             Thread.sleep(2500);
@@ -84,6 +85,7 @@ public class Gui extends Observable4View implements View {
         {
             this.boardController.displayEntireSchoolBoards(players);
         });
+        this.boardController.setPlayers(players);
     }
 
     @Override
@@ -174,13 +176,27 @@ public class Gui extends Observable4View implements View {
     }
 
     @Override
-    public void askMoveStudToDining(SchoolBoard schoolBoard) {
-
+    public void askMoveStudToDining(Player player) {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Platform.runLater(()->{
+            this.boardController.moveStudToDining(player);
+        });
     }
 
     @Override
     public void askMoveMotherNature(List<Island> islands, int maxSteps) {
-
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Platform.runLater(()->{
+            this.boardController.moveMotherNature(islands,maxSteps);
+        });
     }
 
     @Override

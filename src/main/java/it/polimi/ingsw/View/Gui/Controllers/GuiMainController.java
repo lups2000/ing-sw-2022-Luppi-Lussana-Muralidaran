@@ -101,7 +101,7 @@ public class GuiMainController extends Observable4View {
         alertController.displayAlert();
     }
 
-    public static void showAskMoveStud(){
+    public static void showAskMoveStud(List<Observer4View> observerList){
         FXMLLoader loader = new FXMLLoader(GuiMainController.class.getResource("/fxml/AskMoveStudent.fxml"));
 
         Parent parent;
@@ -112,8 +112,9 @@ public class GuiMainController extends Observable4View {
             return;
         }
         AskMoveStudController askMoveStudController = loader.getController();
-        Scene alertScene = new Scene(parent);
-        askMoveStudController.setScene(alertScene);
+        askMoveStudController.addAllObservers(observerList);
+        Scene scene = new Scene(parent);
+        askMoveStudController.setScene(scene);
         askMoveStudController.display();
     }
 }

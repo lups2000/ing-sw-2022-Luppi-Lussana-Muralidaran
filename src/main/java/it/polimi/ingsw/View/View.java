@@ -59,7 +59,7 @@ public interface View {
 
     void askMoveStudToIsland(Map<PawnColor,Integer> studentsWaiting,List<Island> islands);
 
-    void askMoveStudToDining(SchoolBoard schoolBoard);
+    void askMoveStudToDining(Player player);
 
     void askMoveMotherNature(List<Island> islands,int maxSteps);
 
