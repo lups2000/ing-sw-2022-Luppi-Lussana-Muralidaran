@@ -255,7 +255,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
             Label numCoins = new Label();
             numCoins.setText(Integer.toString(player.getSchoolBoard().getNumCoins()));
-            numCoins.setFont(new Font("Matura MT Script Capitals",14));
+            numCoins.setFont(new Font("Matura MT",14));
             numCoins.setStyle("-fx-font-weight: bold");
             numCoins.setTextFill(Color.rgb(100,5,13));
             numCoins.setLayoutX(labelCoinLayoutX.get(pos));
@@ -273,19 +273,13 @@ public class BoardController extends Observable4View implements GuiGenericContro
     }
 
     public void displayCloudTiles(List<CloudTile> cloudTiles){
-        List<Integer> layoutsX=Arrays.asList(526,383,240);
-        List<Integer> layoutsY=Arrays.asList(107,107,107);
         clouds.getChildren().clear();
-        int pos=0;
         for(CloudTile cloudTile : cloudTiles){
             AnchorPane anchorPane = new AnchorPane();
             anchorPane.setPrefWidth(100);
             anchorPane.setPrefHeight(90);
             anchorPane.setId(Integer.toString(cloudTile.getId()));
             anchorPane.getStyleClass().add("cloudBG");
-            //anchorPane.setLayoutX(layoutsX.get(pos));
-            //anchorPane.setLayoutY(layoutsY.get(pos));
-            pos++;
             displayCloudStudents(anchorPane,cloudTile);
             clouds.getChildren().add(anchorPane);
         }
@@ -607,6 +601,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
     public void moveStudToDining(Player currentPlayer){
 
+
         List<Integer> layoutsX;
         List<Integer> layoutsY;
         List<Integer> labelLayoutX;
@@ -665,7 +660,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
             Label numCoins = new Label();
             numCoins.setText(Integer.toString(player.getSchoolBoard().getNumCoins()));
-            numCoins.setFont(new Font("Matura MT Script Capitals",14));
+            numCoins.setFont(new Font("Matura MT",14));
             numCoins.setStyle("-fx-font-weight: bold");
             numCoins.setTextFill(Color.rgb(100,5,13));
             numCoins.setLayoutX(labelCoinLayoutX.get(pos));
@@ -687,26 +682,25 @@ public class BoardController extends Observable4View implements GuiGenericContro
         List<Integer> layoutsY=Arrays.asList(80,208,275,275,275,275,208,80,4,4,4,4);
         Hbox1Islands.getChildren().clear();
         Hbox2Islands.getChildren().clear();
+        List<AnchorPane> islandAnchorPanes = new ArrayList<>();
         int pos=0;
         int i=0;
         int indexMother=0;
 
-        /*
+
         for(Island island : islands){
             if(island.isMotherNature()){
                 indexMother=island.getIndex();
                 break;
             }
         }
-
-        int temp=0;
-        for(int j=1;j<=steps && temp<steps;j++){
-
-            if(j+indexMother>=islands.size()){
-                j=-indexMother;
+        int tempIndex=0;
+        for(int j=1;j<=steps;j++){
+            tempIndex = indexMother + j;
+            if(tempIndex >= islands.size()){
+                tempIndex = tempIndex % islands.size();
             }
-
-            Island island = islands.get(j+indexMother);
+            Island island = islands.get(tempIndex);
             AnchorPane islandAnchor = new AnchorPane();
             islandAnchor.setPrefWidth(120);
             islandAnchor.setPrefHeight(100);
@@ -715,14 +709,16 @@ public class BoardController extends Observable4View implements GuiGenericContro
             islandAnchor.setId(Integer.toString(island.getIndex()));
             islandsMap.put(islandAnchor.getId(),island);
             displayIsland(islandAnchor,island);
-
             makeDraggableIsland(islandAnchor);
-
-            temp++;
+            islandAnchorPanes.add(islandAnchor);
         }
-
-        for(int j=temp-1;j<=indexMother;j++){
-            Island island = islands.get(j+indexMother);
+        int tmp=0;
+        for(int j = 1; j<=islands.size()-steps;j++){
+            tmp = tempIndex + j;
+            if(tmp >= islands.size()){
+                tmp = tmp%islands.size();
+            }
+            Island island = islands.get(tmp);
             AnchorPane islandAnchor = new AnchorPane();
             islandAnchor.setPrefWidth(120);
             islandAnchor.setPrefHeight(100);
@@ -734,45 +730,48 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
             islandAnchor.setOpacity(0.5);
             islandAnchor.setDisable(true);
-
+            islandAnchorPanes.add(islandAnchor);
         }
 
-        for(int j=0;j<islands.size();j++){
-            Island island = islands.get(j);
-            AnchorPane islandAnchor = new AnchorPane();
-            islandAnchor.setPrefWidth(120);
-            islandAnchor.setPrefHeight(100);
-            islandAnchor.setId(Integer.toString(island.getIndex()));
-            islandAnchor.getStyleClass().add("islandBG");
-            islandAnchor.setId(Integer.toString(island.getIndex()));
-            islandsMap.put(islandAnchor.getId(),island);
-            displayIsland(islandAnchor,island);
 
-            if(island.isMotherNature()){
-                islandAnchor.setOpacity(0.5);
-                islandAnchor.setDisable(true);
+        islandAnchorPanes.sort((o1, o2) -> {
+            if(Integer.parseInt(o1.getId())>Integer.parseInt(o2.getId())){
+                return 1;
             }
             else{
-
-                if(island.getIndex()>indexMother  && island.getIndex()<=(indexMother+steps)%islands.size()){
-                    makeDraggableIsland(islandAnchor);
-                }
-                else{
-                    islandAnchor.setOpacity(0.5);
-                    islandAnchor.setDisable(true);
-                }
+                return -1;
             }
-
-
-
-            if(i<islands.size()/2){
-                Hbox1Islands.getChildren().add(islandAnchor);
+        });
+        i=0;
+        for(AnchorPane anchorPane : islandAnchorPanes){
+            if(i<islandAnchorPanes.size()/2){
+                Hbox1Islands.getChildren().add(anchorPane);
             }
             else{
-                Hbox2Islands.getChildren().add(islandAnchor);
+                Hbox2Islands.getChildren().add(anchorPane);
             }
             i++;
-        }*/
+        }
+    }
+
+    public void chooseCloudTile(List<CloudTile> cloudTiles){
+        clouds.getChildren().clear();
+        for(CloudTile cloudTile : cloudTiles){
+            AnchorPane anchorPane = new AnchorPane();
+            anchorPane.setPrefWidth(100);
+            anchorPane.setPrefHeight(90);
+            anchorPane.setId(Integer.toString(cloudTile.getId()));
+            anchorPane.getStyleClass().add("cloudBG");
+            if(cloudTile.getNumStudents()>0){
+                displayCloudStudents(anchorPane,cloudTile);
+                makeDraggableCloud(anchorPane);
+            }
+            else{
+                anchorPane.setOpacity(0.5);
+                anchorPane.setDisable(true);
+            }
+            clouds.getChildren().add(anchorPane);
+        }
     }
 
     //Drag and Drop
@@ -780,19 +779,18 @@ public class BoardController extends Observable4View implements GuiGenericContro
     private void makeDraggableDining(Node node){
         node.setCursor(Cursor.HAND);
         node.setOnMousePressed( e->{
-            String idImageViewClicked=e.getPickResult().getIntersectedNode().getId();
-            PawnColor pawnColorChosen = studentsWaiting.get(idImageViewClicked);
+            String idNodeClicked=e.getPickResult().getIntersectedNode().getId();
+            PawnColor pawnColorChosen = studentsWaiting.get(idNodeClicked);
             new Thread(() -> notifyObserver(obs -> obs.sendStudentToDining(pawnColorChosen))).start();
         });
     }
 
     private void makeDraggableIsland(Node node){
-        System.out.println("ciao");
         node.setCursor(Cursor.HAND);
 
         node.setOnMousePressed(e->{
-            String idImageViewClicked=e.getPickResult().getIntersectedNode().getId();
-            int idIslandClicked = Integer.parseInt(idImageViewClicked);
+            String idNodeClicked=e.getPickResult().getIntersectedNode().getId();
+            int idIslandClicked = Integer.parseInt(idNodeClicked);
 
             int indexMotherNat=0;
             for(Island island : islandsMap.values()){
@@ -805,6 +803,17 @@ public class BoardController extends Observable4View implements GuiGenericContro
             int numIslands =islandsMap.values().size();
             int steps = ((idIslandClicked - finalIndexMotherNat)+numIslands) % numIslands;
             new Thread(()->notifyObserver(obs->obs.sendMoveMotherNature(steps))).start();
+        });
+    }
+
+    private void makeDraggableCloud(Node node){
+        node.setCursor(Cursor.HAND);
+
+        node.setOnMousePressed(e->{
+            String idNodeClicked=e.getPickResult().getIntersectedNode().getId();
+            int idCloudClicked = Integer.parseInt(idNodeClicked);
+
+            new Thread(()->notifyObserver(obs->obs.sendCloudTile(idCloudClicked))).start();
         });
     }
 

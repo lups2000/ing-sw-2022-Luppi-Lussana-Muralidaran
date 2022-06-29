@@ -48,7 +48,14 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void askChooseCloudTile(List<CloudTile> cloudTiles) {
-
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Platform.runLater(()->{
+            this.boardController.chooseCloudTile(cloudTiles);
+        });
     }
 
     @Override
@@ -66,7 +73,7 @@ public class Gui extends Observable4View implements View {
     @Override
     public void askMoveStud() {
         try {
-            Thread.sleep(5000);
+            Thread.sleep(4000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -77,7 +84,7 @@ public class Gui extends Observable4View implements View {
     public void showSchoolBoardPlayers(List<Player> players) {
 
         try {
-            Thread.sleep(2500);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -166,8 +173,7 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void showMatchInfo(ArrayList<Player> players, boolean experts, int numPlayers) {
-        InfoMatch infoMatch = new InfoMatch(players, experts, numPlayers);
-        //da finire
+
     }
 
     @Override
@@ -183,6 +189,7 @@ public class Gui extends Observable4View implements View {
             e.printStackTrace();
         }
         Platform.runLater(()->{
+            showGenericMessage("Click on your students to move them!");
             this.boardController.moveStudToDining(player);
         });
     }

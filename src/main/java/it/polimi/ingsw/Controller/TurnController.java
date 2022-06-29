@@ -786,6 +786,7 @@ public class TurnController implements Serializable {
         if(turnPhase == TurnPhase.ACTION2 && player.getStatus()==PlayerStatus.PLAYING_ACTION){
             //we ask the player which CloudTile he wants to pick
             VirtualView virtualViewPlayer=virtualViewMap.get(player.getNickname());
+            virtualViewPlayer.showGenericMessage("\nIt's time to pick a cloudTile!");
             virtualViewPlayer.askChooseCloudTile(model.getCloudTiles());
 
             waitAnswer();
