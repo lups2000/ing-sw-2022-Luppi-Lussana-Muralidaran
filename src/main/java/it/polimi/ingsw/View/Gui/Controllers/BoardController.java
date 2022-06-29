@@ -1,19 +1,24 @@
 package it.polimi.ingsw.View.Gui.Controllers;
 
+import com.sun.jdi.connect.Connector;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 import it.polimi.ingsw.observer.Observable4View;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+
+import javax.sound.midi.Soundbank;
 import java.util.*;
 import java.util.List;
 
@@ -29,6 +34,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
     private boolean expertVariant;
     private Map<String,PawnColor> studentsWaiting = new HashMap<>();
     private Map<String,Island> islandsMap = new HashMap<>();
+    private String idNodeStart;
 
     public BoardController(){
 
@@ -235,7 +241,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
             schoolBoard.setLayoutX(layoutsX.get(pos));
             schoolBoard.setLayoutY(layoutsY.get(pos));
 
-            displayStudentWaitingPlayer(schoolBoard,player,false);
+            displayStudentWaitingPlayer(schoolBoard,player,false,false);
             displayStudentDiningPlayer(schoolBoard,player);
             displayProfessorsOnSchoolBoard(schoolBoard,player);
             displayTowersPlayer(schoolBoard,player);
@@ -287,11 +293,8 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
     public void displayIslands(List<Island> islands){
 
-        List<Integer> layoutsX=Arrays.asList(810,810,658,481,301,135,10,10,135,301,481,658);
-        List<Integer> layoutsY=Arrays.asList(80,208,275,275,275,275,208,80,4,4,4,4);
         Hbox1Islands.getChildren().clear();
         Hbox2Islands.getChildren().clear();
-        int pos=0;
         int i=0;
         for(Island island : islands){
             AnchorPane islandAnchor = new AnchorPane();
@@ -467,7 +470,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
         }
     }
 
-    private void displayStudentWaitingPlayer(AnchorPane anchorPane,Player player,boolean draggable){
+    private void displayStudentWaitingPlayer(AnchorPane anchorPane,Player player,boolean draggable,boolean toIsland){
         List<Integer> layoutsX=Arrays.asList(14,37);
         List<Integer> layoutsY=Arrays.asList(16,39,62,84,108);
         List<ImageView> imageViewList = new ArrayList<>();
@@ -510,7 +513,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
             }
         }
         if(draggable){
-           anchorPane.getChildren().forEach(this::makeDraggableDining);
+           anchorPane.getChildren().forEach(n->makeDraggableDining(n,toIsland));
         }
     }
 
@@ -601,7 +604,6 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
     public void moveStudToDining(Player currentPlayer){
 
-
         List<Integer> layoutsX;
         List<Integer> layoutsY;
         List<Integer> labelLayoutX;
@@ -640,7 +642,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
             schoolBoard.setLayoutX(layoutsX.get(pos));
             schoolBoard.setLayoutY(layoutsY.get(pos));
 
-            displayStudentWaitingPlayer(schoolBoard,player, player.getId() == currentPlayer.getId());
+            displayStudentWaitingPlayer(schoolBoard,player, player.getId() == currentPlayer.getId(),false);
             displayStudentDiningPlayer(schoolBoard,player);
             displayProfessorsOnSchoolBoard(schoolBoard,player);
             displayTowersPlayer(schoolBoard,player);
@@ -709,7 +711,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
             islandAnchor.setId(Integer.toString(island.getIndex()));
             islandsMap.put(islandAnchor.getId(),island);
             displayIsland(islandAnchor,island);
-            makeDraggableIsland(islandAnchor);
+            makeDraggableIsland(islandAnchor,false);
             islandAnchorPanes.add(islandAnchor);
         }
         int tmp=0;
@@ -774,46 +776,198 @@ public class BoardController extends Observable4View implements GuiGenericContro
         }
     }
 
-    //Drag and Drop
+    public void moveStudToIsland(Player currentPlayer,List<Island> islands){
 
-    private void makeDraggableDining(Node node){
-        node.setCursor(Cursor.HAND);
-        node.setOnMousePressed( e->{
-            String idNodeClicked=e.getPickResult().getIntersectedNode().getId();
-            PawnColor pawnColorChosen = studentsWaiting.get(idNodeClicked);
-            new Thread(() -> notifyObserver(obs -> obs.sendStudentToDining(pawnColorChosen))).start();
-        });
+        List<Integer> layoutsX;
+        List<Integer> layoutsY;
+        List<Integer> labelLayoutX;
+        List<Integer> labelLayoutY;
+        List<Integer> labelCoinLayoutX;
+        List<Integer> labelCoinLayoutY;
+        List<Integer> imageCoinLayoutX;
+        List<Integer> imageCoinLayoutY;
+        if(players.size()==2){
+            layoutsX=Arrays.asList(447,447);
+            layoutsY=Arrays.asList(584,30);
+            labelLayoutX=Arrays.asList(625,625);
+            labelLayoutY=Arrays.asList(550,0);
+            imageCoinLayoutX=Arrays.asList(395,395);
+            imageCoinLayoutY=Arrays.asList(600,48);
+            labelCoinLayoutX=Arrays.asList(421,421);
+            labelCoinLayoutY=Arrays.asList(644,93);
+        }
+        else{
+            layoutsX=Arrays.asList(447,210,665);
+            layoutsY=Arrays.asList(584,30,30);
+            labelLayoutX=Arrays.asList(625,388,843);
+            labelLayoutY=Arrays.asList(550,0,0);
+            imageCoinLayoutX=Arrays.asList(395,156,1067);
+            imageCoinLayoutY=Arrays.asList(600,48,48);
+            labelCoinLayoutX=Arrays.asList(421,182,1093);
+            labelCoinLayoutY=Arrays.asList(644,93,93);
+        }
+        int pos=0;
+        for(Player player : players){
+            AnchorPane schoolBoard = new AnchorPane();
+            schoolBoard.setPrefWidth(400);
+            schoolBoard.setPrefHeight(140);
+            schoolBoard.setId(Integer.toString(player.getId()));
+            schoolBoard.getStyleClass().add("schoolboardBG");
+            schoolBoard.setLayoutX(layoutsX.get(pos));
+            schoolBoard.setLayoutY(layoutsY.get(pos));
+
+            displayStudentWaitingPlayer(schoolBoard,player, player.getId() == currentPlayer.getId(),true);
+            displayStudentDiningPlayer(schoolBoard,player);
+            displayProfessorsOnSchoolBoard(schoolBoard,player);
+            displayTowersPlayer(schoolBoard,player);
+
+            Label nickName=new Label();
+            nickName.setText(player.getNickname());
+            nickName.setFont(new Font("Matura MT Script Capitals",16));
+            nickName.setTextFill(Color.rgb(0,118,255));
+            nickName.setLayoutX(labelLayoutX.get(pos));
+            nickName.setLayoutY(labelLayoutY.get(pos));
+
+            ImageView coin=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/Coin.png"))));
+            coin.setFitWidth(60);
+            coin.setFitHeight(60);
+            coin.setLayoutX(imageCoinLayoutX.get(pos));
+            coin.setLayoutY(imageCoinLayoutY.get(pos));
+
+            Label numCoins = new Label();
+            numCoins.setText(Integer.toString(player.getSchoolBoard().getNumCoins()));
+            numCoins.setFont(new Font("Matura MT",14));
+            numCoins.setStyle("-fx-font-weight: bold");
+            numCoins.setTextFill(Color.rgb(100,5,13));
+            numCoins.setLayoutX(labelCoinLayoutX.get(pos));
+            numCoins.setLayoutY(labelCoinLayoutY.get(pos));
+            pos++;
+
+            if(expertVariant){
+                externalAnchorPane.getChildren().addAll(nickName,schoolBoard,coin,numCoins);
+            }
+            else {
+                externalAnchorPane.getChildren().addAll(nickName,schoolBoard);
+            }
+        }
+
+        Hbox1Islands.getChildren().clear();
+        Hbox2Islands.getChildren().clear();
+
+        int i=0;
+        for(Island island : islands){
+            AnchorPane islandAnchor = new AnchorPane();
+            islandAnchor.setPrefWidth(120);
+            islandAnchor.setPrefHeight(100);
+            islandAnchor.setId(Integer.toString(island.getIndex()));
+            islandAnchor.getStyleClass().add("islandBG");
+            displayIsland(islandAnchor,island);
+
+            makeDraggableIsland(islandAnchor,true);
+
+            if(i<islands.size()/2){
+                Hbox1Islands.getChildren().add(islandAnchor);
+            }
+            else{
+                Hbox2Islands.getChildren().add(islandAnchor);
+            }
+            i++;
+        }
+
     }
 
-    private void makeDraggableIsland(Node node){
+
+    //Click / Drag and Drop
+
+    private void makeDraggableDining(Node node,boolean toIsland){
+        node.setCursor(Cursor.HAND);
+        if(!toIsland){ //means that the student must be moved to the dining
+            node.setOnMousePressed( e->{
+                idNodeStart=e.getPickResult().getIntersectedNode().getId();
+                PawnColor pawnColorChosen = studentsWaiting.get(idNodeStart);
+                new Thread(() -> notifyObserver(obs -> obs.sendStudentToDining(pawnColorChosen))).start();
+            });
+        }
+        else{ //means that the player wants to move a student to an Island
+            node.setOnDragDetected(e -> {
+                Dragboard db = node.startDragAndDrop(TransferMode.ANY);
+
+                idNodeStart=e.getPickResult().getIntersectedNode().getId();
+
+                ClipboardContent content = new ClipboardContent();
+                content.putString(idNodeStart);
+                db.setContent(content);
+
+                e.consume();
+            });
+        }
+
+    }
+
+    private void makeDraggableIsland(Node node,boolean withDrop){
         node.setCursor(Cursor.HAND);
 
-        node.setOnMousePressed(e->{
-            String idNodeClicked=e.getPickResult().getIntersectedNode().getId();
-            int idIslandClicked = Integer.parseInt(idNodeClicked);
+        if(!withDrop){
+            node.setOnMousePressed(e->{
+                idNodeStart=e.getPickResult().getIntersectedNode().getId();
+                int idIslandClicked = Integer.parseInt(idNodeStart);
 
-            int indexMotherNat=0;
-            for(Island island : islandsMap.values()){
-                if(island.isMotherNature()){
-                    indexMotherNat=island.getIndex();
+                int indexMotherNat=0;
+                for(Island island : islandsMap.values()){
+                    if(island.isMotherNature()){
+                        indexMotherNat=island.getIndex();
+                    }
                 }
-            }
+                int finalIndexMotherNat = indexMotherNat;
+                int numIslands =islandsMap.values().size();
+                int steps = ((idIslandClicked - finalIndexMotherNat)+numIslands) % numIslands;
+                new Thread(()->notifyObserver(obs->obs.sendMoveMotherNature(steps))).start();
+            });
+        }
+        else{
+            node.setOnDragOver(e->{
+                if(e.getGestureSource() != node && e.getDragboard().hasString()){
+                    e.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                    node.setOpacity(0.5);
+                }
+                e.consume();
+            });
+            node.setOnDragExited(e->{
+                node.setOpacity(1);
+                e.consume();
+            });
+            node.setOnDragDropped(e->{
+                PawnColor pawnColorChosen;
+                Dragboard db = e.getDragboard();
+                boolean success =false;
+                pawnColorChosen = studentsWaiting.get(idNodeStart);
+                if(db.hasString()){
+                    if(pawnColorChosen != null){
+                        success=true;
+                    }
+                }
+                e.setDropCompleted(success);
+                e.consume();
 
-            int finalIndexMotherNat = indexMotherNat;
-            int numIslands =islandsMap.values().size();
-            int steps = ((idIslandClicked - finalIndexMotherNat)+numIslands) % numIslands;
-            new Thread(()->notifyObserver(obs->obs.sendMoveMotherNature(steps))).start();
-        });
+                new Thread(()->notifyObserver(obs->obs.sendStudentToIsland(pawnColorChosen,Integer.parseInt(node.getId())))).start();
+            });
+        }
     }
 
     private void makeDraggableCloud(Node node){
         node.setCursor(Cursor.HAND);
 
         node.setOnMousePressed(e->{
-            String idNodeClicked=e.getPickResult().getIntersectedNode().getId();
-            int idCloudClicked = Integer.parseInt(idNodeClicked);
-
-            new Thread(()->notifyObserver(obs->obs.sendCloudTile(idCloudClicked))).start();
+            int idCloudClicked;
+            idNodeStart=e.getPickResult().getIntersectedNode().getId();
+            if(idNodeStart==null){
+                idCloudClicked = -1;
+            }
+            else{
+                idCloudClicked = Integer.parseInt(idNodeStart);
+            }
+            int finalIdCloudClicked = idCloudClicked;
+            new Thread(()->notifyObserver(obs->obs.sendCloudTile(finalIdCloudClicked))).start();
         });
     }
 

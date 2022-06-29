@@ -750,7 +750,7 @@ public class TurnController implements Serializable {
                 }
                 else if(currentMessageMoveStud.equalsIgnoreCase("i")){
                     //we ask the player where he wants to move the student
-                    virtualViewCurrentPlayer.askMoveStudToIsland(player.getSchoolBoard().getStudentsWaiting(),model.getIslands());
+                    virtualViewCurrentPlayer.askMoveStudToIsland(player,model.getIslands());
 
                     waitAnswer();
 
@@ -760,8 +760,10 @@ public class TurnController implements Serializable {
                         e.printStackTrace();
                     }
                     notifyOtherPlayers("\n<  "+player.getNickname() + " put a " + currentStudent+ " student on the island with index " + currentIslandIndex+"  >\n",player);
+                    ReducedGame reducedGame1 = new ReducedGame(model);
                     for(VirtualView virtualView : virtualViewMap.values()){
-                        virtualView.showIslands(model.getIslands());
+                        //virtualView.showIslands(model.getIslands());
+                        virtualView.showGameBoard(reducedGame);
                     }
                 }
                 else{ //non ci vado mai teoricamente

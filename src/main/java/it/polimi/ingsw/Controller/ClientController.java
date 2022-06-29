@@ -141,7 +141,7 @@ public class ClientController implements Observer4View, Observer {
 
             case REQUEST_MOVE_STUD_ISLAND -> {
                 StudentToIslandRequest studentToIslandRequest = (StudentToIslandRequest) message;
-                executorService.execute(() -> view.askMoveStudToIsland(studentToIslandRequest.getStudentsWaiting(),studentToIslandRequest.getIslands()));
+                executorService.execute(() -> view.askMoveStudToIsland(studentToIslandRequest.getPlayer(),studentToIslandRequest.getIslands()));
             }
 
             case INFO_MATCH -> {

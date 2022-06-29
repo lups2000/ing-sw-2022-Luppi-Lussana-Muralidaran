@@ -233,9 +233,8 @@ public class MessageController implements Serializable {
      */
     public boolean checkCloudTile(Message message){
         CloudTileReply cloudTileReply=(CloudTileReply) message;
-        CloudTile cloudTile=model.getCloudTiles().get(cloudTileReply.getIdCloudTile());
 
-        if(cloudTile.getId()>=0 && cloudTile.getId()<model.getCloudTiles().size() && cloudTile.getNumStudents() > 0){
+        if(cloudTileReply.getIdCloudTile()>=0 && cloudTileReply.getIdCloudTile()<model.getCloudTiles().size() && cloudTileReply.getIdCloudTile() > 0){
             return true;
         }
         else{
@@ -299,7 +298,7 @@ public class MessageController implements Serializable {
 
         VirtualView virtualView=virtualViewsMap.get(message.getNickName());
         virtualView.showGenericMessage("You didn't provide a valid Island!");
-        virtualView.askMoveStudToIsland(player.getSchoolBoard().getStudentsWaiting(),model.getIslands());
+        virtualView.askMoveStudToIsland(player,model.getIslands());
         return false;
     }
 }

@@ -114,8 +114,8 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void askMoveStudToIsland(Map<PawnColor,Integer> studentsWaiting,List<Island> islands) {
-        clientConnection.sendMessageToClient(new StudentToIslandRequest(studentsWaiting,islands));
+    public void askMoveStudToIsland(Player player,List<Island> islands) {
+        clientConnection.sendMessageToClient(new StudentToIslandRequest(player,islands));
     }
 
 

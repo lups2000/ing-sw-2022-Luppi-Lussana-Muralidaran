@@ -609,11 +609,10 @@ public class Cli extends Observable4View implements View {
     /**
      * method to ask the user which student he wants to move from his entrance to an island
      *
-     * @param studentsWaiting the player's students in his waiting room
      * @param islands the islands of the game that can be chosen
      */
     @Override
-    public void askMoveStudToIsland(Map<PawnColor,Integer> studentsWaiting,List<Island> islands) {
+    public void askMoveStudToIsland(Player player,List<Island> islands) {
         boolean validInput=false;
         boolean validIndex=false;
         int indexIsland=-1;
@@ -622,9 +621,9 @@ public class Cli extends Observable4View implements View {
         do{
             out.print(Colors.RESET);
             out.println("Students in the Entrance... ");
-            for(PawnColor pawnColor : studentsWaiting.keySet()){
+            for(PawnColor pawnColor : player.getSchoolBoard().getStudentsWaiting().keySet()){
                 out.print(pawnColor.getVisualColor()+pawnColor+Colors.RESET+" students: ");
-                for(int i=0;i<studentsWaiting.get(pawnColor);i++){
+                for(int i=0;i<player.getSchoolBoard().getStudentsWaiting().get(pawnColor);i++){
                     out.print(pawnColor.getVisualColor()+" X "+Colors.RESET);
                 }
                 out.println("");
@@ -652,7 +651,7 @@ public class Cli extends Observable4View implements View {
                     pawnColorChosen=PawnColor.GREEN;
                 }
 
-                if(studentsWaiting.get(pawnColorChosen)<=0){
+                if(player.getSchoolBoard().getStudentsWaiting().get(pawnColorChosen)<=0){
                     out.println(INVALID_INPUT);
                     clearCli();
                 }

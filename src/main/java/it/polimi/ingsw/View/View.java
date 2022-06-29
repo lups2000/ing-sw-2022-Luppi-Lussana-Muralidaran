@@ -57,7 +57,7 @@ public interface View {
 
     void showMatchInfo(ArrayList<Player> players,boolean experts,int numPlayers);
 
-    void askMoveStudToIsland(Map<PawnColor,Integer> studentsWaiting,List<Island> islands);
+    void askMoveStudToIsland(Player player,List<Island> islands);
 
     void askMoveStudToDining(Player player);
 

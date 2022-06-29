@@ -73,7 +73,7 @@ public class Gui extends Observable4View implements View {
     @Override
     public void askMoveStud() {
         try {
-            Thread.sleep(4000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -177,8 +177,16 @@ public class Gui extends Observable4View implements View {
     }
 
     @Override
-    public void askMoveStudToIsland(Map<PawnColor, Integer> studentsWaiting, List<Island> islands) {
-
+    public void askMoveStudToIsland(Player player, List<Island> islands) {
+        try {
+            Thread.sleep(2500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Platform.runLater(()->{
+            showGenericMessage("Drag your student to an Island!");
+            this.boardController.moveStudToIsland(player,islands);
+        });
     }
 
     @Override
