@@ -36,7 +36,7 @@ public class ClientController implements Observer4View, Observer {
     }
 
     /**
-     * it forwards to the client the messages received from the server
+     * This method receives the message from the server, identifies the type of message and then forwards it to client
      *
      * @param message is the message received from the server
      */
@@ -166,7 +166,7 @@ public class ClientController implements Observer4View, Observer {
     }
 
     /**
-     * Method to create a connection with the ip address and the port number communicated by the client
+     * Method that creates a connection with the IP Address and the port number given by the client
      *
      * @param serverAddressAndPort map address-port
      */
@@ -184,11 +184,11 @@ public class ClientController implements Observer4View, Observer {
     }
 
     /**
-     * Method to check that the ip address inserted by the client is valid
-     * In order to be valid the ip needs to be composed by 4 numbers between 0 and 255, each separated by a dot
+     * Method which checks if the given IP Address is valid
+     * The IP Address is something like X.X.X.X, where every X is a number between 0 and 255
      *
      * @param ip the ip inserted by the client
-     * @return true if the IP address is legit, false if not
+     * @return true if the IP address is valid, false if it's not
      */
     public static boolean okIpAddress(String ip){
         String[] subStrings=ip.split("\\.");
@@ -207,11 +207,11 @@ public class ClientController implements Observer4View, Observer {
     }
 
     /**
-     * Method to check that the port number inserted by the client is valid
-     * In order to be valid the port number must be a number between 1 and 65535
+     * Method which checks if the given port number is valid
+     * The port number has to be a number between 1 and 65535
      *
      * @param port the port number inserted by the client
-     * @return true if th port number is legit, false if not
+     * @return true if the port number is valid, false if it's not
      */
     public static boolean okPortNumber(String port){
         try {
@@ -256,7 +256,7 @@ public class ClientController implements Observer4View, Observer {
     }
 
     /**
-     * The first client sends to the server the chosen number of players
+     * The first player who accesses the match has to select the number of players
      *
      * @param numPlayers the number of players
      */
@@ -265,7 +265,7 @@ public class ClientController implements Observer4View, Observer {
     }
 
     /**
-     * This method sends a message to the server to communicate which assistant card he chose
+     * This method sends a message to the server to communicate which assistant card the player has chosen
      *
      * @param chosenCard the assistant card chosen
      */
@@ -274,20 +274,30 @@ public class ClientController implements Observer4View, Observer {
         client.sendMessage(new AssistantCardReply(this.nickname,chosenCard));
     }
 
+    /**
+     * This method sends a message to the server to communicate which character card the player has chosen
+     *
+     * @param idCharacterCard the chosen assistant card
+     */
     @Override
     public void sendCharacterCard(Integer idCharacterCard) {
         client.sendMessage(new CharacterCardReply(this.nickname,idCharacterCard));
     }
 
+    /**
+     * This method sends a generic message to the server in order to communicate with it
+     *
+     * @param message the chosen assistant card
+     */
     @Override
     public void sendGenericMessage(String message) {
         client.sendMessage(new Generic(this.nickname,message));
     }
 
     /**
-     * This method sends a message to the server to communicate which assistant seed he chose
+     * This method sends a message to the server to communicate which assistant seed the player has chosen
      *
-     * @param chosenSeed the assistant seed chosen
+     * @param chosenSeed the chosen assistant seed
      */
     @Override
     public void sendAssistantSeed(AssistantSeed chosenSeed) {
@@ -297,7 +307,7 @@ public class ClientController implements Observer4View, Observer {
     /**
      * This method sends a message to the server to communicate which cloud tile he chose
      *
-     //* @param chosenCloud the cloud tile chosen
+     * @param idCloudTile the chosen cloud tile
      */
     @Override
     public void sendCloudTile(int idCloudTile) {
@@ -305,7 +315,7 @@ public class ClientController implements Observer4View, Observer {
     }
 
     /**
-     * This method sends a message to the server to communicate if the first player wants to activate or less the experts variant
+     * This method sends a message to the server to communicate if the first player wants to activate or not the experts variant
      *
      * @param experts true if the first player he wants to activate the experts variant, false if not
      */
@@ -313,7 +323,6 @@ public class ClientController implements Observer4View, Observer {
     public void sendExpertVariant(boolean experts) {
         client.sendMessage(new ExpertVariantReply(this.nickname,experts));
     }
-
 
     /**
      * This method sends a message to the server to communicate on which island the client wants mother nature to stop
@@ -339,7 +348,7 @@ public class ClientController implements Observer4View, Observer {
      * This method sends a message to the server to communicate which student the client wants to move from his entrance room to an island
      *
      * @param chosenColor the color of the student to move
-     //* @param chosenIsland the island on which move the chosen student
+     * @param islandIndex index of the island on which move the chosen student
      */
     @Override
     public void sendStudentToIsland(PawnColor chosenColor,int islandIndex) {

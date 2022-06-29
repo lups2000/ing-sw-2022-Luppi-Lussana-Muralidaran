@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Controller;
 
 /**
+ * List of the various phases of a single turn
+ *
  * @author Matteo Luppi
  */
 public enum TurnPhase {

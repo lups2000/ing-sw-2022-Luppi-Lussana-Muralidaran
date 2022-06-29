@@ -58,9 +58,25 @@ public class TurnController implements Serializable {
         this.mainController=mainController;
     }
 
+    /**
+     * sets the view of the map
+     *
+     * @param virtualViewMap becomes the current map view
+     */
     public void setVirtualViewMap(Map<String, VirtualView> virtualViewMap) {this.virtualViewMap = virtualViewMap;}
+
+    /**
+     * sets the game model
+     *
+     * @param model becomes the model of the game
+     */
     public void setModel(Game model) {this.model = model;}
 
+    /**
+     * manages all the messages from the main controller in the various situations
+     *
+     * @param message is analyzed in various cases on the type of message
+     */
     public void messageFromMainController(Message message){
 
         switch (message.getMessageType()) {
@@ -328,6 +344,13 @@ public class TurnController implements Serializable {
         return true;
     }
 
+    /**
+     * Checks if the player's coins number is enough to play a character card chosen by him
+     *
+     * @param characterCard is the character card the player wants to play
+     * @param player who wants to play the character card
+     * @return
+     */
     private boolean checkCharacterCard(CharacterCard characterCard,Player player){
         return player.getSchoolBoard().getNumCoins() >= characterCard.getCost();
     }
@@ -805,8 +828,12 @@ public class TurnController implements Serializable {
         }
     }
 
+    /**
+     * Checks if there is a winner at the end of the action phase 2
+     *
+     * @return true if there is a winner, false if not
+     */
     private boolean checkWinner(){
-        //we check if there is a winner at the end of the action phase 2
         for(Player player : model.getPlayers()){
             if(player.getStatus()==PlayerStatus.WINNER){
                 return true;
@@ -815,8 +842,10 @@ public class TurnController implements Serializable {
         return false;
     }
 
+    /**
+     * Shows to the players the result of the match
+     */
     private void endGame(){
-        //show to the players the result of the match
         Player winner=null;
         for(Player player : model.getPlayers()){
             if(player.getStatus()==PlayerStatus.WINNER){

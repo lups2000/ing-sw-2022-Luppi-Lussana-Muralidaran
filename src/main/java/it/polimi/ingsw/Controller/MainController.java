@@ -212,15 +212,14 @@ public class MainController implements Serializable {
 
 
     /**
-     * Method to handle the login to the game of a new client
-     * We create his virtual view, we register the player into the model game??? non qui in realta
-     * If it is the first player we also have to ask him the number of players and if he wants to play with the experts variant
-     * To all the players we anyway also ask his chosen assistant seed
+     * Method invoked by the server to handle the login to the game when a new player enters the game (when the numPlayers is not exceeded)
+     * If it's the first player we also have to ask him the number of players and if he wants to play with the experts variant
+     * The choice of the seed of the assistant cards is asked to every player
      *
      * @param nickname the client's nickname
      * @param virtualView the virtual view associated to the client
      */
-    public void loginToTheGame(String nickname, VirtualView virtualView) {   //viene invocato dalla classe Server quando si aggiunge un nuovo client, solo se non si è già raggiunto il num di players
+    public void loginToTheGame(String nickname, VirtualView virtualView) {
 
         if(virtualViewsMap.size() == 0){    //it means it is the first player ever to connect
 
@@ -261,7 +260,7 @@ public class MainController implements Serializable {
     }
 
     /**
-     * when all is ready we can start the game, initializing the model with all the previously asked initial settings
+     * Initializes the game model with all the previously asked initial settings
      *
      * @param maxNumPlayers the chosen number of players
      * @param experts a boolean corresponding to the choice about activating or less the experts variant
@@ -281,7 +280,7 @@ public class MainController implements Serializable {
 
 
     /**
-     * to send a textual generic message to all the clients connected to the server
+     * To send a textual generic message to all the clients connected to the server
      *
      * @param message the message to be sent to everybody
      */
@@ -291,12 +290,23 @@ public class MainController implements Serializable {
         }
     }
 
+    /**
+     * Disconnects the players connected to the server from the match
+     *
+     * @param nickName player's name in the match
+     * @param message the message of disconnection
+     */
     public void broadcastingDisconnection(String nickName,String message){
         for(VirtualView virtualView : virtualViewsMap.values()){
             virtualView.showDisconnection(nickName,message);
         }
     }
 
+    /**
+     * When you have to check if the game has already started
+     *
+     * @return true if the game is ongoing, false if not
+     */
     public boolean isGameStarted(){
         return game.getStatus()!=GameState.LOGGING;
     }
@@ -312,6 +322,9 @@ public class MainController implements Serializable {
         this.virtualViewsMap.remove(nickname);
     }
 
+    /**
+     * deletes the current game if ended
+     */
     public void endedGame(){
 
         StoreGame storeGame=new StoreGame(this);
@@ -319,6 +332,11 @@ public class MainController implements Serializable {
 
     }
 
+    /**
+     * replaces all the parameters of the previous match's controller
+     *
+     * @param mainControllerPreviousMatch
+     */
     public void replaceMainController(MainController mainControllerPreviousMatch){
 
         List<Player> players =mainControllerPreviousMatch.getGame().getPlayers();

@@ -154,6 +154,12 @@ public class MessageController implements Serializable {
         return false;
     }
 
+    /**
+     * Checks if the given character card is valid to use or not
+     *
+     * @param message is "yes" if the player decides to use a character card
+     * @return true if you provide a valid character card, false if not
+     */
     public boolean checkCharacterCard(Message message){ //da invocare solo se la risposta è yes
         CharacterCardReply characterCardReply=(CharacterCardReply) message;
         if(characterCardReply.getIdCharacterCard()==-1){ //no character card
