@@ -2,6 +2,7 @@ package it.polimi.ingsw.View.Gui.Controllers;
 
 import it.polimi.ingsw.Model.PawnColor;
 import it.polimi.ingsw.observer.Observable4View;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -100,6 +101,7 @@ public class AskColorController extends Observable4View implements  GuiGenericCo
         for(PawnColor pawnColor : availableStudents.keySet()){
             int temp=0;
             String color=null;
+            ObservableList<String> list = choiceBox.getItems();
             while (temp<availableStudents.get(pawnColor)){
                 switch (pawnColor){
                     case RED -> color="red";
@@ -108,7 +110,7 @@ public class AskColorController extends Observable4View implements  GuiGenericCo
                     case YELLOW -> color="yellow";
                     case PINK -> color="pink";
                 }
-                choiceBox.getItems().add(color);
+                list.add(color);
                 temp++;
             }
         }
