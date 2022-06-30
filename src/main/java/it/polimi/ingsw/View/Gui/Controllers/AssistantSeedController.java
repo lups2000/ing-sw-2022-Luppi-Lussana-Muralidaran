@@ -24,11 +24,13 @@ public class AssistantSeedController extends Observable4View implements GuiGener
     @FXML
     private Button samurai;
 
-
     public AssistantSeedController(){
         this.assistantSeedsAvailable=new ArrayList<>();
     }
 
+    /**
+     * Initializes the event handler
+     */
     @FXML
     public void initialize(){
 
@@ -45,6 +47,11 @@ public class AssistantSeedController extends Observable4View implements GuiGener
 
     }
 
+    /**
+     * Disables the select seed for other players
+     *
+     * @param assistantSeed is the selected assistant seed
+     */
     private void onAssistantSeedClick(AssistantSeed assistantSeed) {
 
         king.setDisable(true);
@@ -55,6 +62,11 @@ public class AssistantSeedController extends Observable4View implements GuiGener
         new Thread(() -> notifyObserver(obs -> obs.sendAssistantSeed(assistantSeed))).start();
     }
 
+    /**
+     * Refreshes the list of available seeds
+     *
+     * @param assistantSeedsAvailable list of available seeds
+     */
     public void setAssistantSeedsAvailable(List<AssistantSeed> assistantSeedsAvailable) {
         this.assistantSeedsAvailable = assistantSeedsAvailable;
     }

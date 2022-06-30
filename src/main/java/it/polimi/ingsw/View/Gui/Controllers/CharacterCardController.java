@@ -33,6 +33,9 @@ public class CharacterCardController extends Observable4View implements GuiGener
         this.characterCards=characterCards;
     }
 
+    /**
+     * Initializes the event handler
+     */
     @FXML
     public void initialize(){
 
@@ -45,6 +48,11 @@ public class CharacterCardController extends Observable4View implements GuiGener
 
     }
 
+    /**
+     * Disables the selected character card
+     *
+     * @param id selected character card id
+     */
     private void onCharacterCardClick(int id){
         character1.setDisable(true);
         character2.setDisable(true);
@@ -55,6 +63,9 @@ public class CharacterCardController extends Observable4View implements GuiGener
     }
 
 
+    /**
+     * Initializes the display
+     */
     private void initialDisplay(){
 
         ImageView character=null;

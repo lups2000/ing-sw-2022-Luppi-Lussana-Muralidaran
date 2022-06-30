@@ -46,6 +46,9 @@ public class AssistantCardController extends Observable4View implements GuiGener
         this.assistantCardsAvailable = new ArrayList<>();
     }
 
+    /**
+     * Initializes the event handler for the selection of the assistant card
+     */
     @FXML
     public void initialize(){
 
@@ -74,6 +77,13 @@ public class AssistantCardController extends Observable4View implements GuiGener
 
     }
 
+    /**
+     * Checks the value of the selected card
+     *
+     * @param value number of the card
+     * @param maxSteps number of the maximum steps that Mother Nature can take
+     * @return true if the check is ok, false if not
+     */
     private boolean checkCard(int value,int maxSteps){
         for (AssistantCard assistantCard : assistantCardsAvailable){
             if(assistantCard.getValue()==value && assistantCard.getMaxStepsMotherNature()==maxSteps){ //card present
@@ -83,6 +93,11 @@ public class AssistantCardController extends Observable4View implements GuiGener
         return false;
     }
 
+    /**
+     * Disable the selected assistant card for the next turns
+     *
+     * @param assistantCard is the selected assistant card
+     */
     private void onAssistantCardClicked(AssistantCard assistantCard){
 
         assistant1.setDisable(true);
@@ -99,6 +114,11 @@ public class AssistantCardController extends Observable4View implements GuiGener
         new Thread(()->notifyObserver(obs->obs.sendAssistantCard(assistantCard))).start();
     }
 
+    /**
+     * Refreshes the list of the available assistant cards
+     *
+     * @param assistantCardsAvailable list of the assistant cards that are available
+     */
     public void setAssistantCardsAvailable(List<AssistantCard> assistantCardsAvailable) {
         this.assistantCardsAvailable = assistantCardsAvailable;
     }

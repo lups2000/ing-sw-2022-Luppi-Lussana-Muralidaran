@@ -13,6 +13,12 @@ import javafx.geometry.*;
 
 public class ErrorAlert {
 
+    /**
+     * This method creates a universal alert message for any case
+     *
+     * @param title sets the title of the alert message
+     * @param message sets the text of the alert message
+     */
     public static void display(String title, String message){
         Stage window = new Stage();
 
