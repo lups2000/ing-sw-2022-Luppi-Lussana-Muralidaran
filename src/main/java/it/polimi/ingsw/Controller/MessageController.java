@@ -233,8 +233,14 @@ public class MessageController implements Serializable {
      */
     public boolean checkCloudTile(Message message){
         CloudTileReply cloudTileReply=(CloudTileReply) message;
+        CloudTile cloudTile;
+        try{
+            cloudTile=model.getCloudTiles().get(cloudTileReply.getIdCloudTile());
+        }catch (Exception e){
+            return false;
+        }
 
-        if(cloudTileReply.getIdCloudTile()>=0 && cloudTileReply.getIdCloudTile()<model.getCloudTiles().size() && cloudTileReply.getIdCloudTile() > 0){
+        if(cloudTile.getId()>=0 && cloudTile.getId()<model.getCloudTiles().size() && cloudTile.getNumStudents() > 0){
             return true;
         }
         else{

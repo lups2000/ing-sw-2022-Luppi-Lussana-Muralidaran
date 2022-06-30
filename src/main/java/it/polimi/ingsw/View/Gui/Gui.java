@@ -178,11 +178,12 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void askMoveStudToIsland(Player player, List<Island> islands) {
+        /*
         try {
             Thread.sleep(2500);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
         Platform.runLater(()->{
             showGenericMessage("Drag your student to an Island!");
             this.boardController.moveStudToIsland(player,islands);
@@ -191,11 +192,12 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void askMoveStudToDining(Player player) {
+        /*
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
         Platform.runLater(()->{
             showGenericMessage("Click on your students to move them!");
             this.boardController.moveStudToDining(player);
@@ -218,7 +220,7 @@ public class Gui extends Observable4View implements View {
     public void showIslands(List<Island> islands) {
 
         try {
-            Thread.sleep(3000);
+            Thread.sleep(3500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

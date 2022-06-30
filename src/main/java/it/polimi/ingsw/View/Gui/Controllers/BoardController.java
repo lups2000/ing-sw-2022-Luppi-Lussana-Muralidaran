@@ -1,10 +1,8 @@
 package it.polimi.ingsw.View.Gui.Controllers;
 
-import com.sun.jdi.connect.Connector;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 import it.polimi.ingsw.observer.Observable4View;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -18,7 +16,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-import javax.sound.midi.Soundbank;
 import java.util.*;
 import java.util.List;
 
@@ -30,7 +27,6 @@ public class BoardController extends Observable4View implements GuiGenericContro
     private List<Player> players;
     private List<Island> islands;
     private List<CloudTile> cloudTiles;
-    private Game game;
     private boolean expertVariant;
     private Map<String,PawnColor> studentsWaiting = new HashMap<>();
     private Map<String,Island> islandsMap = new HashMap<>();
@@ -76,6 +72,13 @@ public class BoardController extends Observable4View implements GuiGenericContro
     @FXML
     private Label numNoEntryTiles;
 
+    //coin Labels
+    @FXML
+    private Label numCoinsLabel1;
+    @FXML
+    private Label numCoinsLabel2;
+    @FXML
+    private Label numCoinsLabel3;
 
     @FXML
     public void initialize(){
@@ -85,6 +88,10 @@ public class BoardController extends Observable4View implements GuiGenericContro
         character1.setVisible(false);
         character2.setVisible(false);
         character3.setVisible(false);
+        numCoinsLabel1.setText("");
+        numCoinsLabel2.setText("");
+        numCoinsLabel3.setText("");
+
 
     }
     public void setCharacterCards(List<CharacterCard> characterCards) {this.characterCards = characterCards;}
@@ -142,6 +149,10 @@ public class BoardController extends Observable4View implements GuiGenericContro
         displayProfessorsMainScreen();
         displayIslands(reducedGame.getIslands());
         displayAssistantCards();
+
+        //numNoEntryTiles
+        numNoEntryTiles.setText(Integer.toString(reducedGame.getNoEntryTilesCounter()));
+        numNoEntryTiles.setVisible(true);
     }
 
     private void displayProfessorsMainScreen(){
@@ -202,13 +213,14 @@ public class BoardController extends Observable4View implements GuiGenericContro
     public void displayEntireSchoolBoards(List<Player> players){
 
         studentsWaiting.clear();
+        numCoinsLabel1.setText("");
+        numCoinsLabel2.setText("");
+        numCoinsLabel3.setText("");
 
         List<Integer> layoutsX;
         List<Integer> layoutsY;
         List<Integer> labelLayoutX;
         List<Integer> labelLayoutY;
-        List<Integer> labelCoinLayoutX;
-        List<Integer> labelCoinLayoutY;
         List<Integer> imageCoinLayoutX;
         List<Integer> imageCoinLayoutY;
         if(players.size()==2){
@@ -218,8 +230,10 @@ public class BoardController extends Observable4View implements GuiGenericContro
             labelLayoutY=Arrays.asList(550,0);
             imageCoinLayoutX=Arrays.asList(395,395);
             imageCoinLayoutY=Arrays.asList(600,48);
-            labelCoinLayoutX=Arrays.asList(421,421);
-            labelCoinLayoutY=Arrays.asList(644,93);
+
+            numCoinsLabel1.setText(Integer.toString(players.get(0).getSchoolBoard().getNumCoins()));
+            numCoinsLabel2.setText(Integer.toString(players.get(1).getSchoolBoard().getNumCoins()));
+            numCoinsLabel3.setText("");
         }
         else{
             layoutsX=Arrays.asList(447,210,665);
@@ -228,8 +242,11 @@ public class BoardController extends Observable4View implements GuiGenericContro
             labelLayoutY=Arrays.asList(550,0,0);
             imageCoinLayoutX=Arrays.asList(395,156,1067);
             imageCoinLayoutY=Arrays.asList(600,48,48);
-            labelCoinLayoutX=Arrays.asList(421,182,1093);
-            labelCoinLayoutY=Arrays.asList(644,93,93);
+
+            numCoinsLabel2.setLayoutX(182);
+            numCoinsLabel1.setText(Integer.toString(players.get(0).getSchoolBoard().getNumCoins()));
+            numCoinsLabel2.setText(Integer.toString(players.get(1).getSchoolBoard().getNumCoins()));
+            numCoinsLabel3.setText(Integer.toString(players.get(2).getSchoolBoard().getNumCoins()));
         }
         int pos=0;
         for(Player player : players){
@@ -259,17 +276,10 @@ public class BoardController extends Observable4View implements GuiGenericContro
             coin.setLayoutX(imageCoinLayoutX.get(pos));
             coin.setLayoutY(imageCoinLayoutY.get(pos));
 
-            Label numCoins = new Label();
-            numCoins.setText(Integer.toString(player.getSchoolBoard().getNumCoins()));
-            numCoins.setFont(new Font("Matura MT",14));
-            numCoins.setStyle("-fx-font-weight: bold");
-            numCoins.setTextFill(Color.rgb(100,5,13));
-            numCoins.setLayoutX(labelCoinLayoutX.get(pos));
-            numCoins.setLayoutY(labelCoinLayoutY.get(pos));
             pos++;
 
             if(expertVariant){
-                externalAnchorPane.getChildren().addAll(nickName,schoolBoard,coin,numCoins);
+                externalAnchorPane.getChildren().addAll(nickName,schoolBoard,coin);
             }
             else {
                 externalAnchorPane.getChildren().addAll(nickName,schoolBoard);
@@ -379,6 +389,20 @@ public class BoardController extends Observable4View implements GuiGenericContro
             cnt.setLayoutX(43);
             cnt.setLayoutY(3);
             anchorPane.getChildren().add(cnt);
+        }
+        if(island.getNoEntryTiles()>0){
+            ImageView noEntryImage = new ImageView(new Image("/Images/WoodenPieces/deny_island_icon.png"));
+            noEntryImage.setFitWidth(30);
+            noEntryImage.setFitHeight(30);
+            noEntryImage.setLayoutX(31);
+            noEntryImage.setLayoutY(64);
+            Label noEntryCounter = new Label();
+            noEntryCounter.setStyle("-fx-font-weight: bold");
+            noEntryCounter.setStyle("-fx-font-size: 14");
+            noEntryCounter.setTextFill(Color.rgb(255,0,0));
+            noEntryCounter.setText(Integer.toString(island.getNoEntryTiles()));
+
+            anchorPane.getChildren().addAll(noEntryImage,noEntryCounter);
         }
 
     }
@@ -496,24 +520,29 @@ public class BoardController extends Observable4View implements GuiGenericContro
             }
         }
         ImageView imageView=null;
+        AnchorPane anchorPaneStudent=null;
         int tmp=0;
         for(int j=0;j<5;j++){
             for(int i=0;i<2;i++){
                 if(i!=0 || j!=0){
                     if(tmp<player.getSchoolBoard().getNumStudentsWaiting()){
+                        anchorPaneStudent = new AnchorPane();
+                        anchorPaneStudent.setPrefWidth(16);
+                        anchorPaneStudent.setPrefHeight(16);
+                        anchorPaneStudent.setLayoutX(layoutsX.get(i));
+                        anchorPaneStudent.setLayoutY(layoutsY.get(j));
                         imageView=imageViewList.get(tmp);
-                        imageView.setLayoutX(layoutsX.get(i));
-                        imageView.setLayoutY(layoutsY.get(j));
-                        imageView.setId(player.getId()+"-"+tmp);
-                        studentsWaiting.put(imageView.getId(),pawnColors.get(tmp));
-                        anchorPane.getChildren().add(imageView);
+                        anchorPaneStudent.setId(player.getId()+"-"+tmp);
+                        anchorPaneStudent.getChildren().add(imageView);
+                        studentsWaiting.put(anchorPaneStudent.getId(),pawnColors.get(tmp));
+                        if(draggable){
+                            makeDraggableDining(anchorPaneStudent,toIsland);
+                        }
+                        anchorPane.getChildren().add(anchorPaneStudent);
                         tmp++;
                     }
                 }
             }
-        }
-        if(draggable){
-           anchorPane.getChildren().forEach(n->makeDraggableDining(n,toIsland));
         }
     }
 
@@ -604,12 +633,14 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
     public void moveStudToDining(Player currentPlayer){
 
+        numCoinsLabel1.setText("");
+        numCoinsLabel2.setText("");
+        numCoinsLabel3.setText("");
+
         List<Integer> layoutsX;
         List<Integer> layoutsY;
         List<Integer> labelLayoutX;
         List<Integer> labelLayoutY;
-        List<Integer> labelCoinLayoutX;
-        List<Integer> labelCoinLayoutY;
         List<Integer> imageCoinLayoutX;
         List<Integer> imageCoinLayoutY;
         if(players.size()==2){
@@ -619,8 +650,10 @@ public class BoardController extends Observable4View implements GuiGenericContro
             labelLayoutY=Arrays.asList(550,0);
             imageCoinLayoutX=Arrays.asList(395,395);
             imageCoinLayoutY=Arrays.asList(600,48);
-            labelCoinLayoutX=Arrays.asList(421,421);
-            labelCoinLayoutY=Arrays.asList(644,93);
+
+            numCoinsLabel1.setText(Integer.toString(players.get(0).getSchoolBoard().getNumCoins()));
+            numCoinsLabel2.setText(Integer.toString(players.get(1).getSchoolBoard().getNumCoins()));
+            numCoinsLabel3.setText("");
         }
         else{
             layoutsX=Arrays.asList(447,210,665);
@@ -629,8 +662,11 @@ public class BoardController extends Observable4View implements GuiGenericContro
             labelLayoutY=Arrays.asList(550,0,0);
             imageCoinLayoutX=Arrays.asList(395,156,1067);
             imageCoinLayoutY=Arrays.asList(600,48,48);
-            labelCoinLayoutX=Arrays.asList(421,182,1093);
-            labelCoinLayoutY=Arrays.asList(644,93,93);
+
+            numCoinsLabel2.setLayoutX(182);
+            numCoinsLabel1.setText(Integer.toString(players.get(0).getSchoolBoard().getNumCoins()));
+            numCoinsLabel2.setText(Integer.toString(players.get(1).getSchoolBoard().getNumCoins()));
+            numCoinsLabel3.setText(Integer.toString(players.get(2).getSchoolBoard().getNumCoins()));
         }
         int pos=0;
         for(Player player : players){
@@ -660,17 +696,10 @@ public class BoardController extends Observable4View implements GuiGenericContro
             coin.setLayoutX(imageCoinLayoutX.get(pos));
             coin.setLayoutY(imageCoinLayoutY.get(pos));
 
-            Label numCoins = new Label();
-            numCoins.setText(Integer.toString(player.getSchoolBoard().getNumCoins()));
-            numCoins.setFont(new Font("Matura MT",14));
-            numCoins.setStyle("-fx-font-weight: bold");
-            numCoins.setTextFill(Color.rgb(100,5,13));
-            numCoins.setLayoutX(labelCoinLayoutX.get(pos));
-            numCoins.setLayoutY(labelCoinLayoutY.get(pos));
             pos++;
 
             if(expertVariant){
-                externalAnchorPane.getChildren().addAll(nickName,schoolBoard,coin,numCoins);
+                externalAnchorPane.getChildren().addAll(nickName,schoolBoard,coin);
             }
             else {
                 externalAnchorPane.getChildren().addAll(nickName,schoolBoard);
@@ -680,12 +709,9 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
     public void moveMotherNature(List<Island> islands,int steps){
 
-        List<Integer> layoutsX=Arrays.asList(810,810,658,481,301,135,10,10,135,301,481,658);
-        List<Integer> layoutsY=Arrays.asList(80,208,275,275,275,275,208,80,4,4,4,4);
         Hbox1Islands.getChildren().clear();
         Hbox2Islands.getChildren().clear();
         List<AnchorPane> islandAnchorPanes = new ArrayList<>();
-        int pos=0;
         int i=0;
         int indexMother=0;
 
@@ -744,7 +770,6 @@ public class BoardController extends Observable4View implements GuiGenericContro
                 return -1;
             }
         });
-        i=0;
         for(AnchorPane anchorPane : islandAnchorPanes){
             if(i<islandAnchorPanes.size()/2){
                 Hbox1Islands.getChildren().add(anchorPane);
@@ -758,6 +783,8 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
     public void chooseCloudTile(List<CloudTile> cloudTiles){
         clouds.getChildren().clear();
+
+
         for(CloudTile cloudTile : cloudTiles){
             AnchorPane anchorPane = new AnchorPane();
             anchorPane.setPrefWidth(100);
@@ -771,6 +798,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
             else{
                 anchorPane.setOpacity(0.5);
                 anchorPane.setDisable(true);
+                anchorPane.setCursor(Cursor.DEFAULT);
             }
             clouds.getChildren().add(anchorPane);
         }
@@ -778,12 +806,14 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
     public void moveStudToIsland(Player currentPlayer,List<Island> islands){
 
+        numCoinsLabel1.setText("");
+        numCoinsLabel2.setText("");
+        numCoinsLabel3.setText("");
+
         List<Integer> layoutsX;
         List<Integer> layoutsY;
         List<Integer> labelLayoutX;
         List<Integer> labelLayoutY;
-        List<Integer> labelCoinLayoutX;
-        List<Integer> labelCoinLayoutY;
         List<Integer> imageCoinLayoutX;
         List<Integer> imageCoinLayoutY;
         if(players.size()==2){
@@ -793,8 +823,10 @@ public class BoardController extends Observable4View implements GuiGenericContro
             labelLayoutY=Arrays.asList(550,0);
             imageCoinLayoutX=Arrays.asList(395,395);
             imageCoinLayoutY=Arrays.asList(600,48);
-            labelCoinLayoutX=Arrays.asList(421,421);
-            labelCoinLayoutY=Arrays.asList(644,93);
+
+            numCoinsLabel1.setText(Integer.toString(players.get(0).getSchoolBoard().getNumCoins()));
+            numCoinsLabel2.setText(Integer.toString(players.get(1).getSchoolBoard().getNumCoins()));
+            numCoinsLabel3.setText("");
         }
         else{
             layoutsX=Arrays.asList(447,210,665);
@@ -803,8 +835,11 @@ public class BoardController extends Observable4View implements GuiGenericContro
             labelLayoutY=Arrays.asList(550,0,0);
             imageCoinLayoutX=Arrays.asList(395,156,1067);
             imageCoinLayoutY=Arrays.asList(600,48,48);
-            labelCoinLayoutX=Arrays.asList(421,182,1093);
-            labelCoinLayoutY=Arrays.asList(644,93,93);
+
+            numCoinsLabel2.setLayoutX(182);
+            numCoinsLabel1.setText(Integer.toString(players.get(0).getSchoolBoard().getNumCoins()));
+            numCoinsLabel2.setText(Integer.toString(players.get(1).getSchoolBoard().getNumCoins()));
+            numCoinsLabel3.setText(Integer.toString(players.get(2).getSchoolBoard().getNumCoins()));
         }
         int pos=0;
         for(Player player : players){
@@ -834,17 +869,10 @@ public class BoardController extends Observable4View implements GuiGenericContro
             coin.setLayoutX(imageCoinLayoutX.get(pos));
             coin.setLayoutY(imageCoinLayoutY.get(pos));
 
-            Label numCoins = new Label();
-            numCoins.setText(Integer.toString(player.getSchoolBoard().getNumCoins()));
-            numCoins.setFont(new Font("Matura MT",14));
-            numCoins.setStyle("-fx-font-weight: bold");
-            numCoins.setTextFill(Color.rgb(100,5,13));
-            numCoins.setLayoutX(labelCoinLayoutX.get(pos));
-            numCoins.setLayoutY(labelCoinLayoutY.get(pos));
             pos++;
 
             if(expertVariant){
-                externalAnchorPane.getChildren().addAll(nickName,schoolBoard,coin,numCoins);
+                externalAnchorPane.getChildren().addAll(nickName,schoolBoard,coin);
             }
             else {
                 externalAnchorPane.getChildren().addAll(nickName,schoolBoard);
@@ -891,8 +919,8 @@ public class BoardController extends Observable4View implements GuiGenericContro
         else{ //means that the player wants to move a student to an Island
             node.setOnDragDetected(e -> {
                 Dragboard db = node.startDragAndDrop(TransferMode.ANY);
-
                 idNodeStart=e.getPickResult().getIntersectedNode().getId();
+                System.out.println("in Dragged:  "+idNodeStart);
 
                 ClipboardContent content = new ClipboardContent();
                 content.putString(idNodeStart);
@@ -957,7 +985,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
     private void makeDraggableCloud(Node node){
         node.setCursor(Cursor.HAND);
 
-        node.setOnMousePressed(e->{
+        node.setOnMouseClicked(e->{
             int idCloudClicked;
             idNodeStart=e.getPickResult().getIntersectedNode().getId();
             if(idNodeStart==null){

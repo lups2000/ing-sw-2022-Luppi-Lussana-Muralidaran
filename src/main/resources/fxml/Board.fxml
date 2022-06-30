@@ -34,7 +34,7 @@
             <Image url="@../Images/WoodenPieces/deny_island_icon.png" />
          </image>
       </ImageView>
-      <Label fx:id="numNoEntryTiles" layoutX="579.0" layoutY="513.0" text="4" textFill="RED">
+      <Label fx:id="numNoEntryTiles" layoutX="579.0" layoutY="513.0" textFill="RED">
          <font>
             <Font name="Matura MT Script Capitals" size="18.0" />
          </font>
@@ -43,6 +43,21 @@
       <HBox fx:id="Hbox2Islands" alignment="CENTER" layoutX="153.0" layoutY="303.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="100.0" prefWidth="940.0" spacing="10.0" />
       <HBox fx:id="professors" layoutX="269.0" layoutY="470.0" prefHeight="61.0" prefWidth="300.0" spacing="10.0" />
       <HBox fx:id="clouds" layoutX="663.0" layoutY="431.0" prefHeight="100.0" prefWidth="425.0" spacing="10.0" />
+      <Label fx:id="numCoinsLabel1" layoutX="421.0" layoutY="648.0" textFill="RED">
+         <font>
+            <Font name="Comic Sans MS Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="numCoinsLabel2" layoutX="421.0" layoutY="96.0" textFill="RED">
+         <font>
+            <Font name="Comic Sans MS Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="numCoinsLabel3" layoutX="1093.0" layoutY="96.0" textFill="RED">
+         <font>
+            <Font name="Comic Sans MS Bold" size="14.0" />
+         </font>
+      </Label>
    </children>
    <stylesheets>
       <URL value="@../Images/CSS/MainScreen.css" />
