@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"it.polimi.ingsw.Model"},{"l":"it.polimi.ingsw.Model.CharacterCards"},{"l":"it.polimi.ingsw.Model.Exceptions"}];updateSearchResults();
