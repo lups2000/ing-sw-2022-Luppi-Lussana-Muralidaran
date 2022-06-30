@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -520,25 +521,22 @@ public class BoardController extends Observable4View implements GuiGenericContro
             }
         }
         ImageView imageView=null;
-        AnchorPane anchorPaneStudent=null;
         int tmp=0;
         for(int j=0;j<5;j++){
             for(int i=0;i<2;i++){
                 if(i!=0 || j!=0){
                     if(tmp<player.getSchoolBoard().getNumStudentsWaiting()){
-                        anchorPaneStudent = new AnchorPane();
-                        anchorPaneStudent.setPrefWidth(16);
-                        anchorPaneStudent.setPrefHeight(16);
-                        anchorPaneStudent.setLayoutX(layoutsX.get(i));
-                        anchorPaneStudent.setLayoutY(layoutsY.get(j));
                         imageView=imageViewList.get(tmp);
-                        anchorPaneStudent.setId(player.getId()+"-"+tmp);
-                        anchorPaneStudent.getChildren().add(imageView);
-                        studentsWaiting.put(anchorPaneStudent.getId(),pawnColors.get(tmp));
+                        imageView.setFitWidth(16);
+                        imageView.setFitHeight(16);
+                        imageView.setLayoutX(layoutsX.get(i));
+                        imageView.setLayoutY(layoutsY.get(j));
+                        imageView.setId(player.getId()+"-"+tmp);
+                        studentsWaiting.put(imageView.getId(),pawnColors.get(tmp));
                         if(draggable){
-                            makeDraggableDining(anchorPaneStudent,toIsland);
+                            makeDraggableDining(imageView,toIsland);
                         }
-                        anchorPane.getChildren().add(anchorPaneStudent);
+                        anchorPane.getChildren().add(imageView);
                         tmp++;
                     }
                 }
@@ -636,6 +634,9 @@ public class BoardController extends Observable4View implements GuiGenericContro
         numCoinsLabel1.setText("");
         numCoinsLabel2.setText("");
         numCoinsLabel3.setText("");
+
+        System.out.println(studentsWaiting);
+        studentsWaiting.clear();
 
         List<Integer> layoutsX;
         List<Integer> layoutsY;
@@ -934,7 +935,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
     private void makeDraggableDining(Node node,boolean toIsland){
         node.setCursor(Cursor.HAND);
         if(!toIsland){ //means that the student must be moved to the dining
-            node.setOnMousePressed( e->{
+            node.setOnMouseClicked( e->{
                 idNodeStart=e.getPickResult().getIntersectedNode().getId();
                 PawnColor pawnColorChosen = studentsWaiting.get(idNodeStart);
                 new Thread(() -> notifyObserver(obs -> obs.sendStudentToDining(pawnColorChosen))).start();
@@ -944,7 +945,6 @@ public class BoardController extends Observable4View implements GuiGenericContro
             node.setOnDragDetected(e -> {
                 Dragboard db = node.startDragAndDrop(TransferMode.ANY);
                 idNodeStart=e.getPickResult().getIntersectedNode().getId();
-                System.out.println("in Dragged:  "+idNodeStart);
 
                 ClipboardContent content = new ClipboardContent();
                 content.putString(idNodeStart);
@@ -960,7 +960,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
         node.setCursor(Cursor.HAND);
 
         if(!withDrop){
-            node.setOnMousePressed(e->{
+            node.setOnMouseClicked(e->{
                 idNodeStart=e.getPickResult().getIntersectedNode().getId();
                 int idIslandClicked = Integer.parseInt(idNodeStart);
 
