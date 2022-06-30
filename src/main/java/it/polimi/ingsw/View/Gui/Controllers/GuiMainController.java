@@ -1,5 +1,6 @@
 package it.polimi.ingsw.View.Gui.Controllers;
 
+import it.polimi.ingsw.Model.PawnColor;
 import it.polimi.ingsw.View.Gui.Scenes.ErrorAlert;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.observer.Observable4View;
@@ -14,6 +15,7 @@ import javafx.scene.control.Alert;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * GUI main controller, mostly used to switch from one scene to another
@@ -116,5 +118,23 @@ public class GuiMainController extends Observable4View {
         Scene scene = new Scene(parent);
         askMoveStudController.setScene(scene);
         askMoveStudController.display();
+    }
+
+    public static void askColor(List<Observer4View> observerList, Map<PawnColor, Integer> availableStudents){
+        FXMLLoader loader = new FXMLLoader(GuiMainController.class.getResource("/fxml/AskColor.fxml"));
+
+        Parent parent;
+        try {
+            parent = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        AskColorController askColorController = loader.getController();
+        askColorController.addAllObservers(observerList);
+        askColorController.setAvailableStudents(availableStudents);
+        Scene scene = new Scene(parent);
+        askColorController.setScene(scene);
+        askColorController.display();
     }
 }

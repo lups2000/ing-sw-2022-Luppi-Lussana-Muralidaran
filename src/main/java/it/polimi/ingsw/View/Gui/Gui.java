@@ -249,12 +249,24 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void askIsland(List<Island> islands) {
-
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Platform.runLater(()->{
+            this.boardController.askIsland(islands);
+        });
     }
 
     @Override
     public void askColor(Map<PawnColor, Integer> availableStudents) {
-
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Platform.runLater(()->GuiMainController.askColor(observers,availableStudents));
     }
 
     @Override

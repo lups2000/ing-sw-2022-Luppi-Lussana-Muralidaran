@@ -901,7 +901,31 @@ public class BoardController extends Observable4View implements GuiGenericContro
             }
             i++;
         }
+    }
 
+    public void askIsland(List<Island> islands){
+
+        Hbox1Islands.getChildren().clear();
+        Hbox2Islands.getChildren().clear();
+        int i=0;
+        for(Island island : islands){
+            AnchorPane islandAnchor = new AnchorPane();
+            islandAnchor.setPrefWidth(120);
+            islandAnchor.setPrefHeight(100);
+            islandAnchor.setId(Integer.toString(island.getIndex()));
+            islandAnchor.getStyleClass().add("islandBG");
+            displayIsland(islandAnchor,island);
+
+            makeDraggableIslandForCharacter(islandAnchor);
+
+            if(i<islands.size()/2){
+                Hbox1Islands.getChildren().add(islandAnchor);
+            }
+            else{
+                Hbox2Islands.getChildren().add(islandAnchor);
+            }
+            i++;
+        }
     }
 
 
@@ -996,6 +1020,23 @@ public class BoardController extends Observable4View implements GuiGenericContro
             }
             int finalIdCloudClicked = idCloudClicked;
             new Thread(()->notifyObserver(obs->obs.sendCloudTile(finalIdCloudClicked))).start();
+        });
+    }
+
+    private void makeDraggableIslandForCharacter(Node node){
+        node.setCursor(Cursor.HAND);
+
+        node.setOnMouseClicked(e->{
+            int idIslandClicked;
+            idNodeStart=e.getPickResult().getIntersectedNode().getId();
+            if(idNodeStart==null){
+                idIslandClicked = -1;
+            }
+            else{
+                idIslandClicked = Integer.parseInt(idNodeStart);
+            }
+            int finalIdCloudClicked = idIslandClicked;
+            new Thread(()->notifyObserver(obs->obs.sendChosenIsland(finalIdCloudClicked))).start();
         });
     }
 

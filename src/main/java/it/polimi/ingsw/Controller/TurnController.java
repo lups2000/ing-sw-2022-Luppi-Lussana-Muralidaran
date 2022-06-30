@@ -386,7 +386,7 @@ public class TurnController implements Serializable {
      */
     private void playCharacterCard(VirtualView currentView,Player player) throws NoPawnPresentException, TooManyPawnsPresent {
         switch (currentCharacterCard.getType()) {
-            //for these character cards no choice from the user is required
+
             case TWO_ADDITIONAL_POINTS -> { //OK
                 TwoAdditionalPoints twoAdditionalPoints=(TwoAdditionalPoints) currentCharacterCard;
                 player.getSchoolBoard().decreaseNumCoins(twoAdditionalPoints.getCost());
@@ -405,7 +405,7 @@ public class TurnController implements Serializable {
                 controlOnProfessor.effect();
             }
 
-            case NO_COUNT_TOWER -> { //Sembra OK,da vedere meglio
+            case NO_COUNT_TOWER -> { //OK
                 NoCountTower noCountTower =(NoCountTower) currentCharacterCard;
                 player.getSchoolBoard().decreaseNumCoins(noCountTower.getCost());
                 noCountTower.effect();
@@ -413,12 +413,14 @@ public class TurnController implements Serializable {
 
             //the user chooses the island
             case CHOOSE_ISLAND -> { //OK
+                ReducedGame reducedGame = new ReducedGame(model);
                 ChooseIsland chooseIsland = (ChooseIsland) currentCharacterCard;
-                //currentView.showSchoolBoardPlayers(model.getPlayers());
-                //currentView.showIslands(model.getIslands());
-                currentView.showGenericMessage("You have chosen to compute the influence on an Island...");
+                currentView.showGameBoard(reducedGame);
+                currentView.showGenericMessage("You have chosen to compute the influence on an Island...choose it!");
                 currentView.askIsland(model.getIslands());
+
                 waitAnswer();
+
                 Island chosenIsland = model.getIslands().get(currentIslandIndex);
                 player.getSchoolBoard().decreaseNumCoins(chooseIsland.getCost());
                 try {
@@ -435,12 +437,13 @@ public class TurnController implements Serializable {
 
             //the user chooses an island
             case PUT_NO_ENTRY_TILES -> { //OK
+                ReducedGame reducedGame = new ReducedGame(model);
                 PutNoEntryTiles putNoEntryTiles = (PutNoEntryTiles) currentCharacterCard;
-                //currentView.showSchoolBoardPlayers(model.getPlayers());
-                //currentView.showIslands(model.getIslands());
-                currentView.showGenericMessage("You have chosen to put a NoEntryTile on an Island...");
+                currentView.showGameBoard(reducedGame);
+                currentView.showGenericMessage("You have chosen to put a NoEntryTile on an Island...choose it!");
                 currentView.askIsland(model.getIslands());
                 waitAnswer();
+
                 Island chosenIsland = model.getIslands().get(currentIslandIndex);
                 player.getSchoolBoard().decreaseNumCoins(putNoEntryTiles.getCost());
                 try {
@@ -457,14 +460,16 @@ public class TurnController implements Serializable {
 
             //the user chooses a color
             case COLOR_TO_STUDENT_BAG -> { //OK
+                ReducedGame reducedGame = new ReducedGame(model);
                 ColorToStudentBag colorToStudentBag = (ColorToStudentBag) currentCharacterCard;
-                currentView.showSchoolBoardPlayers(model.getPlayers());
+                currentView.showGameBoard(reducedGame);
                 Map<PawnColor,Integer> availableStudents = new HashMap<>();
                 availableStudents.put(PawnColor.RED,1);
                 availableStudents.put(PawnColor.BLUE,1);
                 availableStudents.put(PawnColor.YELLOW,1);
                 availableStudents.put(PawnColor.PINK,1);
                 availableStudents.put(PawnColor.GREEN,1);
+
                 currentView.askColor(availableStudents);
                 waitAnswer();
 
@@ -477,8 +482,9 @@ public class TurnController implements Serializable {
 
             //the user chooses a color
             case COLOR_NO_INFLUENCE -> { //OK
+                ReducedGame reducedGame = new ReducedGame(model);
                 ColorNoInfluence colorNoInfluence = (ColorNoInfluence) currentCharacterCard;
-                currentView.showSchoolBoardPlayers(model.getPlayers());
+                currentView.showGameBoard(reducedGame);
                 Map<PawnColor,Integer> availableStudents = new HashMap<>();
                 availableStudents.put(PawnColor.RED,1);
                 availableStudents.put(PawnColor.BLUE,1);
@@ -486,6 +492,7 @@ public class TurnController implements Serializable {
                 availableStudents.put(PawnColor.PINK,1);
                 availableStudents.put(PawnColor.GREEN,1);
                 currentView.askColor(availableStudents);
+
                 waitAnswer();
 
                 player.getSchoolBoard().decreaseNumCoins(colorNoInfluence.getCost());
@@ -498,9 +505,10 @@ public class TurnController implements Serializable {
 
             //the user chooses a color
             case STUDENT_TO_DINING -> { //OK
+                ReducedGame reducedGame = new ReducedGame(model);
                 StudentToDining studentToDining = (StudentToDining) currentCharacterCard;
-                //currentView.showStudents(studentToDining.getStudents());
-                currentView.showSchoolBoardPlayers(model.getPlayers());
+                currentView.showGameBoard(reducedGame);
+
                 currentView.askColor(studentToDining.getStudents());
                 waitAnswer();
 
