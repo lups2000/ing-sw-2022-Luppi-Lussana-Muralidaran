@@ -4,13 +4,15 @@ import it.polimi.ingsw.Model.AssistantSeed;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.MessageType;
 
+import java.io.Serial;
 import java.util.List;
 
 /**
- * This message is used by the server and it's sent to the client
+ * This message is sent to the client by the server to ask him to pick an assistant seed
  */
 public class AssistantSeedRequest extends Message {
 
+    @Serial
     private static final long serialVersionUID = 2984763953492935947L;
     private final List<AssistantSeed> assistantSeedAvailable;
 

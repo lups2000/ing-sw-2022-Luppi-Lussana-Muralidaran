@@ -4,11 +4,14 @@ import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.MessageType;
 import it.polimi.ingsw.Model.AssistantSeed;
 
+import java.io.Serial;
+
 /**
- * This message is used by the client and it' sent to the server
+ * This message is sent to the server by the client to communicate the chosen assistant seed
  */
 public class AssistantSeedReply extends Message {
 
+    @Serial
     private static final long serialVersionUID = 2906646364797413651L;
     private AssistantSeed assistantSeed;
 

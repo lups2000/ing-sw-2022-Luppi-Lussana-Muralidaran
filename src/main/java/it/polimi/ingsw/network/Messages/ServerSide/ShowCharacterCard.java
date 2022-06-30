@@ -7,6 +7,9 @@ import it.polimi.ingsw.network.Messages.MessageType;
 import java.io.Serial;
 import java.util.Map;
 
+/**
+ * This message is sent to the client by the server to show him the students on a character card (only for some character cards)
+ */
 public class ShowCharacterCard extends Message {
     @Serial
     private static final long serialVersionUID = 2967263627191938646L;

@@ -7,6 +7,9 @@ import it.polimi.ingsw.network.Messages.MessageType;
 
 import java.io.Serial;
 
+/**
+ * This message is sent to the client by the server to ask him to pick a student to move to his dining room
+ */
 public class StudentToDiningRequest extends Message {
 
     @Serial

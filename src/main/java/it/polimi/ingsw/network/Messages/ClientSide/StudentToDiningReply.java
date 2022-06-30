@@ -4,9 +4,14 @@ import it.polimi.ingsw.Model.PawnColor;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.MessageType;
 
+import java.io.Serial;
 
+/**
+ * This message is sent to the server by the client to communicate the chosen student to move to the dining room
+ */
 public class StudentToDiningReply extends Message {
 
+    @Serial
     private static final long serialVersionUID = 2906348941393891381L;
     private PawnColor pawnColor;
 

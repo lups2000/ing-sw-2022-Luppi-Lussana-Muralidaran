@@ -4,11 +4,14 @@ import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.MessageType;
 import it.polimi.ingsw.Model.AssistantCard;
 
+import java.io.Serial;
+
 /**
- * This message is used by the client and it's sent to the server
+ * This message is sent to the server by the client to communicate the chosen assistant card
  */
 public class AssistantCardReply extends Message {
 
+    @Serial
     private static final long serialVersionUID = 4633218024793891381L;
     private AssistantCard assistantCard;
 

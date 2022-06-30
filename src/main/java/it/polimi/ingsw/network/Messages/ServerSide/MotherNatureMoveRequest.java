@@ -4,13 +4,15 @@ import it.polimi.ingsw.Model.Island;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.MessageType;
 
+import java.io.Serial;
 import java.util.List;
 
 /**
- * This message is used by the server and it's sent to the client
+ * This message is sent to the client by the server to ask him to choose the number of steps that mother nature will take
  */
 public class MotherNatureMoveRequest extends Message {
 
+    @Serial
     private static final long serialVersionUID = 2904834863264243863L;
     private final List<Island> islands;
     private final int maxSteps;

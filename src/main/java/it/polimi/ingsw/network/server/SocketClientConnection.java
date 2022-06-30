@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
- * Implementation ClientConnection Interface
+ * Implementation of the ClientConnection Interface
  */
 public class SocketClientConnection implements ClientConnection, Runnable {
 
@@ -56,7 +56,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     /**
      * Handles the connection of a new client and keep listening to the socket for new messages
      *
-     * @throws IOException any of the usual Input/Output related exceptions.
+     * @throws IOException any of the usual Input/Output related exceptions
      */
     private void handleClientConnection() throws IOException {
 
@@ -92,11 +92,6 @@ public class SocketClientConnection implements ClientConnection, Runnable {
             Server.LOGGER.severe("Invalid stream from client");
         }
         clientSocket.close(); //when the thread is interrupted
-    }
-
-    @Override
-    public boolean isConnected() {
-        return isConnected;
     }
 
     /**

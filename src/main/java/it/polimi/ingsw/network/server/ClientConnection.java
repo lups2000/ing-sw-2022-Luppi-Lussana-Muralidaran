@@ -16,13 +16,6 @@ public interface ClientConnection {
     void sendMessageToClient(Message message);
 
     /**
-     * Method to verify if a client is currently connected or not
-     *
-     * @return true or false
-     */
-    boolean isConnected();
-
-    /**
      * Method to disconnect the client
      */
     void disconnect();

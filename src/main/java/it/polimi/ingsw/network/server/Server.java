@@ -45,10 +45,6 @@ public class Server {
                 clientsConnected.put(nickname, clientConnection);
                 mainController.loginToTheGame(nickname,virtualView);
             }
-            /*
-            else{
-                virtualView.askNickName();
-            }*/
         }
     }
 
@@ -108,17 +104,10 @@ public class Server {
 
                 unregisterClientFromServer(nickname);
 
-                /*
-                if(mainController.getTurnController() != null &&
-                        !mainController.getTurnController().getNicknameQueue().contains(nickname)) {
-                    return;
-                }*/
-
                 // Resets server status only if the game was already started.
                 // Otherwise the server will wait for a new player to connect.
                 if (mainController.isGameStarted()) {
                     mainController.broadcastingDisconnection(nickname, " disconnected from the server. GAME ENDED.");
-                    //mainController.endedGame(); TODO
                     clientsConnected.clear();
                 }
             }

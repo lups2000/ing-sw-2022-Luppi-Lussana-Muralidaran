@@ -8,7 +8,7 @@ import java.net.Socket;
 
 
 /**
- * This class handles the connection with the new client
+ * This class handles the connection with a new client
  */
 public class SocketServer implements Runnable {
 

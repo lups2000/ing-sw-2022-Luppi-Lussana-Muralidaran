@@ -5,6 +5,9 @@ import it.polimi.ingsw.network.Messages.MessageType;
 
 import java.io.Serial;
 
+/**
+ * This message is sent to the server by the client to communicate the chosen island
+ */
 public class IslandReply extends Message {
 
     @Serial
