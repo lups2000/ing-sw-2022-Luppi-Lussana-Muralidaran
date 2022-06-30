@@ -4,11 +4,14 @@ import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.MessageType;
 import it.polimi.ingsw.Model.Player;
 
+import java.io.Serial;
+
 /**
- * This message is used by the server and it's sent to the client
+ * This message is sent to the client by the server to show him he has lost and which other player instead won the game
  */
 public class Lose extends Message {
 
+    @Serial
     private static final long serialVersionUID = 2906646473674636412L;
     private Player winner;
 

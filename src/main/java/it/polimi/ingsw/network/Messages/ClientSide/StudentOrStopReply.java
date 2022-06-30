@@ -6,6 +6,9 @@ import it.polimi.ingsw.network.Messages.MessageType;
 
 import java.io.Serial;
 
+/**
+ * This message is sent to the server by the client to communicate if he wants to move another student or stop
+ */
 public class StudentOrStopReply extends Message {
 
     @Serial

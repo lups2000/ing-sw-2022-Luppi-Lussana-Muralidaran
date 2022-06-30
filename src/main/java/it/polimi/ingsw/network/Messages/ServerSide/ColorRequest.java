@@ -8,7 +8,7 @@ import java.io.Serial;
 import java.util.Map;
 
 /**
- * This message is used by the server and it's sent to the client
+ * This message is sent to the client by the server to ask him to pick a pawn color
  */
 public class ColorRequest extends Message {
 

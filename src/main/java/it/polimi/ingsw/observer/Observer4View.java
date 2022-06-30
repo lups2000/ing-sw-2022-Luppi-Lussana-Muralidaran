@@ -117,9 +117,5 @@ public interface Observer4View {
      * @param stop a boolean to indicate if the user wants to stop switching students
      */
     void sendChosenColorOrStop(PawnColor chosenColor,boolean stop);
-    /*
-     * Handles a disconnection wanted by the user.
-     * (e.g. a click on the back button into the GUI).
-     *
-    void onDisconnection();*/
+
 }

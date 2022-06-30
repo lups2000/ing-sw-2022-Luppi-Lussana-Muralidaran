@@ -3,10 +3,15 @@ package it.polimi.ingsw.network.Messages.ServerSide;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.MessageType;
 
+import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * This message is sent to the client by the server to show him a disconnection message
+ */
 public class Disconnection extends Message implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 2276472674627641171L;
     private final String nickName;
     private final String message;

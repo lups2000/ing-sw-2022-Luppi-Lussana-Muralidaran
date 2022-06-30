@@ -4,13 +4,15 @@ import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.MessageType;
 import it.polimi.ingsw.Model.Player;
 
+import java.io.Serial;
 import java.util.List;
 
 /**
- * This message is used by the server and it's sent to the client
+ * This message is sent to the client by the server to show him all the players currently in the lobby
  */
 public class Lobby extends Message {
 
+    @Serial
     private static final long serialVersionUID = 2746726411493891381L;
     private List<Player> playersLobby; //current players in the Lobby
     private int numMaxPlayersLobby; //max size Lobby

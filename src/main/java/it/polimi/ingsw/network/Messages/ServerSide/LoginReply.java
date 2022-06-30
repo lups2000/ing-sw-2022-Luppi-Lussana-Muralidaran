@@ -3,12 +3,15 @@ package it.polimi.ingsw.network.Messages.ServerSide;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.MessageType;
 
+import java.io.Serial;
+
 /**
- * This message is used by the server and it is sent to the client
+ * This message is sent to the client by the server to show him if the login procedure went ok or less
  */
 public class LoginReply extends Message {
 
-    private static final long serialVersionUID = 2908646346376476371L; //da cambiare
+    @Serial
+    private static final long serialVersionUID = 2908646346376476371L;
     private boolean isNickAccepted;
     private boolean isConnAccepted;
 

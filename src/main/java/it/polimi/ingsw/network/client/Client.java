@@ -43,7 +43,7 @@ public class Client extends Observable {
     }
 
     /**
-     * Asynchronously reads a message from the server via socket and notifies the ClientController.
+     * Reads a message from the server via socket and notifies the ClientController.
      */
     public void readMessage() {
         readExecutionQueue.execute(() -> {
@@ -52,7 +52,6 @@ public class Client extends Observable {
                 Message message;
                 try {
                     message = (Message) inputStm.readObject();
-                    //Client.LOGGER.info("Received: " + message); logger messages
                 } catch (IOException | ClassNotFoundException e) {
                     message = new Error( "Connection lost with the server.");
                     disconnect();

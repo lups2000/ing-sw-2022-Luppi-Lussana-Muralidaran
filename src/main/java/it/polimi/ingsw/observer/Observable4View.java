@@ -26,24 +26,6 @@ public abstract class Observable4View {
     }
 
     /**
-     * Removes an observer.
-     *
-     * @param obs the observer to be removed.
-     */
-    public void removeObserver(Observer4View obs) {
-        observers.remove(obs);
-    }
-
-    /**
-     * Removes a list of observers.
-     *
-     * @param observerList the list of observers to be removed.
-     */
-    public void removeAllObservers(List<Observer4View> observerList) {
-        observers.removeAll(observerList);
-    }
-
-    /**
      * Notifies all the current observers through the lambda argument.
      *
      * @param lambda the lambda to be called on the observers.

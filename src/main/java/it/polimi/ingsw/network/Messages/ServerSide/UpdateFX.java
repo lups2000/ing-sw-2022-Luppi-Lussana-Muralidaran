@@ -4,10 +4,14 @@ import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.network.Messages.Message;
 import it.polimi.ingsw.network.Messages.MessageType;
 
-import java.util.List;
+import java.io.Serial;
 
+/**
+ * This message is sent to the client by the server to send him a reduced version of the model
+ */
 public class UpdateFX extends Message {
 
+    @Serial
     private static final long serialVersionUID = 2813744867719462728L;
     private ReducedGame reducedGame;
 
