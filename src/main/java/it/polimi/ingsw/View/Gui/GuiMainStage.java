@@ -30,12 +30,12 @@ public class GuiMainStage extends Application {
 
         Scene scene = new Scene(baseLayout);
         stage.setScene(scene);
-        stage.setHeight(1280d);
-        stage.setWidth(700d);
+        stage.setWidth(1300d);
+        stage.setHeight(760d);
         stage.setResizable(false);
-        stage.setMaximized(true);
+        //stage.setMaximized(true);
         stage.getIcons().add(new Image("/Images/logocranio.png"));// All Stages have this icon
-        stage.setFullScreenExitHint("");
+        //stage.setFullScreenExitHint("");
         stage.setTitle("Eriantys");
         stage.show();
     }
