@@ -178,9 +178,9 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void askMoveStudToIsland(Player player, List<Island> islands) {
-        /*
-        try {
-            Thread.sleep(2500);
+
+        /*try {
+            Thread.sleep(1500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/
@@ -192,9 +192,9 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void askMoveStudToDining(Player player) {
-        /*
-        try {
-            Thread.sleep(2000);
+
+        /*try {
+            Thread.sleep(1500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/
