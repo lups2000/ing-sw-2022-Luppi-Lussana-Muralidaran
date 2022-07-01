@@ -47,6 +47,9 @@ public class Cli extends Observable4View implements View {
         connectToServer();
     }
 
+    /**
+     * Used to clear the terminal
+     */
     public void clearCli(){
         System.out.print("\033[H\033[2J");
         out.flush();
@@ -118,6 +121,9 @@ public class Cli extends Observable4View implements View {
     }
 
 
+    /**
+     * Asks to the player to enter his in-game nickname
+     */
     @Override
     public void askNickName() {
         boolean validInput;
@@ -898,6 +904,11 @@ public class Cli extends Observable4View implements View {
     }
 
 
+    /**
+     * Shows current game situation
+     *
+     * @param reducedGame has the information about the current situation
+     */
     @Override
     public void showGameBoard(ReducedGame reducedGame) {
         this.clearCli();
@@ -1013,6 +1024,11 @@ public class Cli extends Observable4View implements View {
         notifyObserver(obs->obs.sendChosenColorOrStop(finalPawnColorChosen, finalStop));
     }
 
+    /**
+     * Updates FX
+     *
+     * @param reducedGame has the information about the current situation
+     */
     @Override
     public void updateFX(ReducedGame reducedGame) {
 

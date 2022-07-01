@@ -41,6 +41,9 @@ public class AskMoveStudController extends Observable4View implements GuiGeneric
         yOffset = 0;
     }
 
+    /**
+     * It initializes the display and starts adds the event handler for mouse click and drag
+     */
     @FXML
     public void initialize() {
 
@@ -50,20 +53,38 @@ public class AskMoveStudController extends Observable4View implements GuiGeneric
         confirmButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmButtonClick);
     }
 
+    /**
+     * Shows the stage and waits
+     */
     public void display() {
         stage.showAndWait();
     }
 
+    /**
+     * Gets coordinates when mouse clicked
+     *
+     * @param event where the coordinates are get
+     */
     private void onRootPaneMousePressed(MouseEvent event) {
         xOffset = stage.getX() - event.getScreenX();
         yOffset = stage.getY() - event.getScreenY();
     }
 
+    /**
+     * Gets coordinates when mouse dragged
+     *
+     * @param event where the coordinates are get
+     */
     private void onRootPaneMouseDragged(MouseEvent event) {
         stage.setX(event.getScreenX() + xOffset);
         stage.setY(event.getScreenY() + yOffset);
     }
 
+    /**
+     * Controls which pawn color has been selected
+     *
+     * @param event which triggers this method
+     */
     private void onConfirmButtonClick(Event event){
         String choice = choiceBox.getValue().toString();
 
@@ -80,6 +101,11 @@ public class AskMoveStudController extends Observable4View implements GuiGeneric
         stage.close();
     }
 
+    /**
+     * Sets the scene on screen
+     *
+     * @param scene contains the elements to display on screen
+     */
     public void setScene(Scene scene) {
         stage.setScene(scene);
     }

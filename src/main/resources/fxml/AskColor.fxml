@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="278.0" prefWidth="540.0" styleClass="rootPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.View.Gui.Controllers.AskMoveStudController">
+<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="278.0" prefWidth="540.0" styleClass="rootPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.View.Gui.Controllers.AskColorController">
     <top>
         <AnchorPane prefHeight="250.0" prefWidth="545.0">
             <children>
@@ -23,7 +23,9 @@
                     </cursor>
                 </Button>
                 <ChoiceBox fx:id="choiceBox" layoutX="194.0" layoutY="79.0" prefWidth="150.0">
+                    <items>
 
+                    </items>
                 </ChoiceBox>
             </children>
         </AnchorPane>

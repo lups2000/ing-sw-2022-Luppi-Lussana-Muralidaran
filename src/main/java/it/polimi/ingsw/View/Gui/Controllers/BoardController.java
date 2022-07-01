@@ -400,6 +400,8 @@ public class BoardController extends Observable4View implements GuiGenericContro
             Label noEntryCounter = new Label();
             noEntryCounter.setStyle("-fx-font-weight: bold");
             noEntryCounter.setStyle("-fx-font-size: 14");
+            noEntryCounter.setLayoutX(60);
+            noEntryCounter.setLayoutY(78);
             noEntryCounter.setTextFill(Color.rgb(255,0,0));
             noEntryCounter.setText(Integer.toString(island.getNoEntryTiles()));
 
@@ -635,7 +637,6 @@ public class BoardController extends Observable4View implements GuiGenericContro
         numCoinsLabel2.setText("");
         numCoinsLabel3.setText("");
 
-        System.out.println(studentsWaiting);
         studentsWaiting.clear();
 
         List<Integer> layoutsX;

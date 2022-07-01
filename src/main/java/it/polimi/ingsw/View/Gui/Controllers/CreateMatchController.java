@@ -20,11 +20,19 @@ public class CreateMatchController extends Observable4View implements GuiGeneric
     @FXML
     private Button confirmButton;
 
+    /**
+     * Initializes the event handler
+     */
     @FXML
     public void initialize(){
         confirmButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmButtonClick);
     }
 
+    /**
+     * Sends the number of players and the choice about the experts variant
+     *
+     * @param event triggers the method
+     */
     private void onConfirmButtonClick(Event event){
         int numMaxPlayers=Integer.parseInt(choiceBox.getValue());
         boolean expertVariant=checkBox.isSelected();

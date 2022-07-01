@@ -23,30 +23,37 @@
       <version>5.8.2</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- JavaFX -->
+
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-graphics</artifactId>
-      <version>RELEASE</version>
+      <version>18</version>
       <classifier>win</classifier>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-graphics</artifactId>
-      <version>RELEASE</version>
+      <version>18</version>
       <classifier>linux</classifier>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-graphics</artifactId>
-      <version>RELEASE</version>
+      <version>18</version>
       <classifier>mac</classifier>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
-      <version>RELEASE</version>
+      <version>18</version>
     </dependency>
-
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>18</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -74,13 +81,15 @@
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.2.4</version>
         <executions>
+
           <execution>
-            <id>${project.name}-server</id>
+            <id>Server</id>
             <phase>package</phase>
             <goals>
               <goal>shade</goal>
             </goals>
             <configuration>
+              <outputFile>deliverables/JAR/${project.artifactId}-Server.jar</outputFile>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <mainClass>it.polimi.ingsw.ServerApp</mainClass>
@@ -90,12 +99,13 @@
           </execution>
 
           <execution>
-            <id>${project.name}-client</id>
+            <id>Client</id>
             <phase>package</phase>
             <goals>
               <goal>shade</goal>
             </goals>
             <configuration>
+              <outputFile>deliverables/JAR/${project.artifactId}-Client.jar</outputFile>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <mainClass>it.polimi.ingsw.ClientApp</mainClass>

@@ -2,6 +2,7 @@ package it.polimi.ingsw.View.Gui.Controllers;
 
 import it.polimi.ingsw.Model.PawnColor;
 import it.polimi.ingsw.observer.Observable4View;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -45,10 +46,18 @@ public class AskColorController extends Observable4View implements  GuiGenericCo
         availableStudents=new HashMap<>();
     }
 
+    /**
+     * Sets the number of available students
+     *
+     * @param availableStudents is the new number of available students
+     */
     public void setAvailableStudents(Map<PawnColor, Integer> availableStudents) {
         this.availableStudents = availableStudents;
     }
 
+    /**
+     * It initializes the display and starts adds the event handler for mouse click and drag
+     */
     @FXML
     public void initialize() {
 
@@ -60,20 +69,38 @@ public class AskColorController extends Observable4View implements  GuiGenericCo
         confirmButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmButtonClick);
     }
 
+    /**
+     * Shows the stage and waits
+     */
     public void display() {
         stage.showAndWait();
     }
 
+    /**
+     * Gets coordinates when mouse clicked
+     *
+     * @param event where the coordinates are get
+     */
     private void onRootPaneMousePressed(MouseEvent event) {
         xOffset = stage.getX() - event.getScreenX();
         yOffset = stage.getY() - event.getScreenY();
     }
 
+    /**
+     * Gets coordinates when mouse dragged
+     *
+     * @param event where the coordinates are get
+     */
     private void onRootPaneMouseDragged(MouseEvent event) {
         stage.setX(event.getScreenX() + xOffset);
         stage.setY(event.getScreenY() + yOffset);
     }
 
+    /**
+     * Controls which pawn color has been selected
+     *
+     * @param event which triggers this method
+     */
     private void onConfirmButtonClick(Event event){
         String choice = choiceBox.getValue().toString();
         PawnColor pawnColor = null;
@@ -91,15 +118,24 @@ public class AskColorController extends Observable4View implements  GuiGenericCo
         stage.close();
     }
 
+    /**
+     * Sets the scene on screen
+     *
+     * @param scene contains the elements to display on screen
+     */
     public void setScene(Scene scene) {
         stage.setScene(scene);
     }
 
+    /**
+     * Displays the scene
+     */
     private void initialDisplay(){
 
         for(PawnColor pawnColor : availableStudents.keySet()){
             int temp=0;
             String color=null;
+            ObservableList<String> list = choiceBox.getItems();
             while (temp<availableStudents.get(pawnColor)){
                 switch (pawnColor){
                     case RED -> color="red";
@@ -108,7 +144,7 @@ public class AskColorController extends Observable4View implements  GuiGenericCo
                     case YELLOW -> color="yellow";
                     case PINK -> color="pink";
                 }
-                choiceBox.getItems().add(color);
+                list.add(color);
                 temp++;
             }
         }
