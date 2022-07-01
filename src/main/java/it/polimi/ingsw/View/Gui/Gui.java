@@ -1,11 +1,9 @@
 package it.polimi.ingsw.View.Gui;
 
-import com.sun.source.tree.IfTree;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 import it.polimi.ingsw.View.Gui.Controllers.*;
 import it.polimi.ingsw.View.View;
-import it.polimi.ingsw.network.Messages.ServerSide.InfoMatch;
 import it.polimi.ingsw.observer.Observable4View;
 import javafx.application.Platform;
 import java.util.ArrayList;
@@ -17,7 +15,6 @@ import java.util.Map;
  */
 public class Gui extends Observable4View implements View {
 
-    private Game game;
     private BoardController boardController;
 
     @Override
@@ -116,21 +113,23 @@ public class Gui extends Observable4View implements View {
     @Override
     public void showWinMessage(Player winner) {
         Platform.runLater(()-> {
-            GuiMainController.showAlert("End of the match!", "Congratulations, you're the winner!");
+            GuiMainController.showAlert("End of the match!", "Congratulations"+winner.getNickname()+", you have won the game!\nGame Finished!");
+            GuiMainController.nextPane(observers, "InitialScreen.fxml");
         });
     }
 
     @Override
     public void showLoseMessage(Player winner) {
         Platform.runLater(()-> {
-            GuiMainController.showAlert("End of the match!", "Unfortunately you lost the match...");
+            GuiMainController.showAlert("End of the match!", "Sorry but you have lost! The winner is"+ winner.getNickname()+"!\nGame Finished!");
+            GuiMainController.nextPane(observers, "InitialScreen.fxml");
         });
     }
 
     @Override
     public void showDisconnection(String nickName, String message) {
         Platform.runLater(()-> {
-            GuiMainController.showAlert("Disconnection","You have been disconnected from the match");
+            GuiMainController.showAlert("Disconnection",nickName+message);
             GuiMainController.nextPane(observers,"InitialScreen.fxml");
         });
     }
@@ -178,12 +177,6 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void askMoveStudToIsland(Player player, List<Island> islands) {
-
-        /*try {
-            Thread.sleep(1500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
         Platform.runLater(()->{
             showGenericMessage("Drag your student to an Island!");
             this.boardController.moveStudToIsland(player,islands);
@@ -192,12 +185,6 @@ public class Gui extends Observable4View implements View {
 
     @Override
     public void askMoveStudToDining(Player player) {
-
-        /*try {
-            Thread.sleep(1500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
         Platform.runLater(()->{
             showGenericMessage("Click on your students to move them!");
             this.boardController.moveStudToDining(player);
