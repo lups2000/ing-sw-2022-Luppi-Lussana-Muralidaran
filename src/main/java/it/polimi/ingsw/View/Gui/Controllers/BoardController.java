@@ -33,9 +33,6 @@ public class BoardController extends Observable4View implements GuiGenericContro
     private Map<String,Island> islandsMap = new HashMap<>();
     private String idNodeStart;
 
-    public BoardController(){
-
-    }
 
     //externalAnchorPane
     @FXML
@@ -87,6 +84,9 @@ public class BoardController extends Observable4View implements GuiGenericContro
     @FXML
     private Label numCoinsLabel3;
 
+    /**
+     * Initialize the event handler
+     */
     @FXML
     public void initialize(){
 
@@ -102,11 +102,13 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
     }
     public void setCharacterCards(List<CharacterCard> characterCards) {this.characterCards = characterCards;}
-    public void setCurrentHand(Map<Player, AssistantCard> currentHand) {this.currentHand = currentHand;}
     public void setPlayers(List<Player> players) {this.players = players;}
     public void setIslands(List<Island> islands) {this.islands = islands;}
 
-
+    /**
+     * Method to display the element in the scene initially.
+     * @param reducedGame
+     */
     public void initialDisplay(ReducedGame reducedGame){
 
         expertVariant=reducedGame.isExpertVariant();
@@ -162,6 +164,9 @@ public class BoardController extends Observable4View implements GuiGenericContro
         numNoEntryTiles.setVisible(true);
     }
 
+    /**
+     * Method to display the professors in the main screen.
+     */
     private void displayProfessorsMainScreen(){
         boolean flag;
         Map<PawnColor,Image> pawnColorImageMap = new HashMap<>();
@@ -190,6 +195,11 @@ public class BoardController extends Observable4View implements GuiGenericContro
         }
     }
 
+    /**
+     * Method to display the professors on the player's schoolboards
+     * @param anchorPane
+     * @param player
+     */
     private void displayProfessorsOnSchoolBoard(AnchorPane anchorPane,Player player){
         ImageView profSchoolBoard=null;
         Map<PawnColor,Image> pawnColorImageMap = new HashMap<>();
@@ -217,6 +227,10 @@ public class BoardController extends Observable4View implements GuiGenericContro
         }
     }
 
+    /**
+     * Method to display the schoolboards of the players.
+     * @param players
+     */
     public void displayEntireSchoolBoards(List<Player> players){
 
         studentsWaiting.clear();
@@ -295,6 +309,10 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
     }
 
+    /**
+     * Method to display the cloudTiles og the game.
+     * @param cloudTiles
+     */
     public void displayCloudTiles(List<CloudTile> cloudTiles){
         clouds.getChildren().clear();
         for(CloudTile cloudTile : cloudTiles){
@@ -308,6 +326,10 @@ public class BoardController extends Observable4View implements GuiGenericContro
         }
     }
 
+    /**
+     * Method to display the islands.
+     * @param islands
+     */
     public void displayIslands(List<Island> islands){
 
         Hbox1Islands.getChildren().clear();
@@ -330,6 +352,11 @@ public class BoardController extends Observable4View implements GuiGenericContro
         }
     }
 
+    /**
+     * Method to display the single island with all its characteristics.
+     * @param anchorPane
+     * @param island
+     */
     private void displayIsland(AnchorPane anchorPane,Island island){
         List<Integer> layoutsX=Arrays.asList(27,19,45,63,72); //order: B,G,R,P,Y
         List<Integer> layoutsY=Arrays.asList(26,46,41,56,35); //order: B,G,R,P,Y
@@ -416,6 +443,11 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
     }
 
+    /**
+     * Method to display the students on the single island.
+     * @param cloud
+     * @param cloudTile
+     */
     private void displayCloudStudents(AnchorPane cloud,CloudTile cloudTile){
         List<Integer> layoutsX=Arrays.asList(21,55,45,40);
         List<Integer> layoutsY=Arrays.asList(45,41,16,63);
@@ -459,7 +491,11 @@ public class BoardController extends Observable4View implements GuiGenericContro
         }
     }
 
-
+    /**
+     * Method to display the students in the dining of the player's schoolboard
+     * @param anchorPane
+     * @param player
+     */
     private void displayStudentDiningPlayer(AnchorPane anchorPane,Player player){
         List<Integer> layoutsX=Arrays.asList(75,95,114,133,152,171,190,209,228,247);
         int layoutY=0;
@@ -503,6 +539,13 @@ public class BoardController extends Observable4View implements GuiGenericContro
         }
     }
 
+    /**
+     * Method to display the students in the entrance/waiting of the player's schoolboard.
+     * @param anchorPane
+     * @param player
+     * @param draggable boolean to indicate that the students could be dragged.
+     * @param toIsland boolean to indicate that the students could be dragged to an island.
+     */
     private void displayStudentWaitingPlayer(AnchorPane anchorPane,Player player,boolean draggable,boolean toIsland){
         List<Integer> layoutsX=Arrays.asList(14,37);
         List<Integer> layoutsY=Arrays.asList(16,39,62,84,108);
@@ -552,6 +595,11 @@ public class BoardController extends Observable4View implements GuiGenericContro
         }
     }
 
+    /**
+     * Method to display the towers on the player's schoolboard.
+     * @param anchorPane
+     * @param player
+     */
     private void displayTowersPlayer(AnchorPane anchorPane,Player player){
         List<Integer> layoutsX=Arrays.asList(311,341);
         List<Integer> layoutsY=Arrays.asList(-4,19,43,66);
@@ -580,7 +628,9 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
     }
 
-    //method to display the character cards
+    /**
+     * Method to display the Character Cards on the main Screen.
+     */
     private void displayCharacterCards(){
         Image character=null;
         List<Image> tempCharacters=new ArrayList<>();
@@ -627,6 +677,9 @@ public class BoardController extends Observable4View implements GuiGenericContro
 
     }
 
+    /**
+     * Method to display the Assistant Cards on the main Screen.
+     */
     private void displayAssistantCards(){
         assistantCards.getChildren().clear();
 
@@ -648,6 +701,10 @@ public class BoardController extends Observable4View implements GuiGenericContro
         }
     }
 
+    /**
+     * Method invoked when a student must be moved from the entrance to the dining.
+     * @param currentPlayer
+     */
     public void moveStudToDining(Player currentPlayer){
 
         numCoinsLabel1.setText("");
@@ -726,6 +783,11 @@ public class BoardController extends Observable4View implements GuiGenericContro
         }
     }
 
+    /**
+     * Method invoked when Mother Nature must be moved.
+     * @param islands
+     * @param steps
+     */
     public void moveMotherNature(List<Island> islands,int steps){
 
         Hbox1Islands.getChildren().clear();
@@ -800,6 +862,10 @@ public class BoardController extends Observable4View implements GuiGenericContro
         }
     }
 
+    /**
+     * Method invoked when a cloud tile must be chosen by a player.
+     * @param cloudTiles
+     */
     public void chooseCloudTile(List<CloudTile> cloudTiles){
         clouds.getChildren().clear();
 
@@ -823,6 +889,11 @@ public class BoardController extends Observable4View implements GuiGenericContro
         }
     }
 
+    /**
+     * Method invoked when a student must be moved from the entrance to an Island.
+     * @param currentPlayer
+     * @param islands
+     */
     public void moveStudToIsland(Player currentPlayer,List<Island> islands){
 
         numCoinsLabel1.setText("");
@@ -922,6 +993,10 @@ public class BoardController extends Observable4View implements GuiGenericContro
         }
     }
 
+    /**
+     * Method invoked by certain character cards to simply choose an Island.
+     * @param islands
+     */
     public void askIsland(List<Island> islands){
 
         Hbox1Islands.getChildren().clear();

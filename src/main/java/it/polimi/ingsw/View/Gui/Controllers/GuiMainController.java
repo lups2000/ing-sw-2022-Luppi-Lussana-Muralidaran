@@ -1,7 +1,6 @@
 package it.polimi.ingsw.View.Gui.Controllers;
 
 import it.polimi.ingsw.Model.PawnColor;
-import it.polimi.ingsw.View.Gui.Scenes.ErrorAlert;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.observer.Observable4View;
 import it.polimi.ingsw.observer.Observer4View;

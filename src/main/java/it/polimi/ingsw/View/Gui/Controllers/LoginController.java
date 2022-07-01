@@ -1,7 +1,6 @@
 package it.polimi.ingsw.View.Gui.Controllers;
 
 import it.polimi.ingsw.Controller.ClientController;
-import it.polimi.ingsw.View.Gui.Scenes.ErrorAlert;
 import it.polimi.ingsw.observer.Observable4View;
 import javafx.event.Event;
 import javafx.fxml.FXML;
