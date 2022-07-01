@@ -46,7 +46,7 @@ On the other hand the controller was difficult to test because of the network me
 
 
 ### Jars
-We generated two pre-compiled jar file, one for the server and one for the client and they can be downloaded at the following link: [Jars](https://github.com/lups2000/ing-sw-2022-Luppi-Lussana-Muralidaran/tree/main/deliverables/jar).
+We generated two pre-compiled jar file, one for the server and one for the client and they can be downloaded at the following link: [Jars directory](https://github.com/lups2000/ing-sw-2022-Luppi-Lussana-Muralidaran/tree/main/deliverables/jar).
 
 
 ## Execution
