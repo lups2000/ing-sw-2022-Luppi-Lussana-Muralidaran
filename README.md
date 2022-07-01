@@ -53,7 +53,7 @@ We generated two pre-compiled jar file, one for the server and one for the clien
 
 ## Execution
 In order to execute this project correctly a Java version 17 (or followings) is required.
-
+To execute the jars files is required to be placed in the deliverables/jar directory of this repository.
 
 ### Server
 In order to launch the server you have to digit in your command prompt the following command: 
