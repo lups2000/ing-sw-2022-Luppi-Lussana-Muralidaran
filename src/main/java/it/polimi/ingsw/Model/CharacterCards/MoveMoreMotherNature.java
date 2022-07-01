@@ -8,10 +8,6 @@ import it.polimi.ingsw.Model.PlayerStatus;
 import java.io.Serial;
 import java.io.Serializable;
 
-/**
- * @author Pradeeban Muralidaran
- */
-
 /*
 EFFECT: you may move mother nature up to 2 additional islands than is indicated by the assistant card you've played
  */

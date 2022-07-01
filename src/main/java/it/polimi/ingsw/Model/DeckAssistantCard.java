@@ -7,7 +7,6 @@ import java.util.List;
 
 /**
  * This class represents the deck of Assistant Cards.
- * @author Matteo Luppi
  */
 public class DeckAssistantCard implements Serializable {
 

@@ -7,6 +7,10 @@ import javafx.application.Application;
 
 import java.util.Scanner;
 
+/**
+ * Application to launch the client app, the user can choose if he wants to launch the GUI or the CLI app
+ * by writing a 'g' or a 'c'
+ */
 public class ClientApp {
 
     public static void main(String[] args) {

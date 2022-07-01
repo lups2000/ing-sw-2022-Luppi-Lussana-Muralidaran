@@ -23,9 +23,6 @@ public class VirtualView implements View, Observer {
         this.clientConnection=clientConnection;
     }
 
-    public ClientConnection getClientConnection() {
-        return clientConnection;
-    }
 
     @Override
     public void askNickName() {
@@ -159,8 +156,8 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void askStudOrStop(Map<PawnColor,Integer> students){
-        clientConnection.sendMessageToClient(new StudentOrStopRequest(students));
+    public void askStudOrStop(Map<PawnColor,Integer> availableStudents){
+        clientConnection.sendMessageToClient(new StudentOrStopRequest(availableStudents));
     }
 
     @Override

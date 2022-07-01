@@ -2,7 +2,6 @@ package it.polimi.ingsw.Model;
 
 /**
  * This class defines some colors used in the CLI.
- * @author Pradeeban Muralidaran
  */
 
 public class Colors {

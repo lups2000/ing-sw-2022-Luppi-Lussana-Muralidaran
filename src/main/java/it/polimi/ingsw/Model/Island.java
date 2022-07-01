@@ -10,7 +10,6 @@ import java.util.Map;
 
 /**
  * This class represent an Island.
- * @author Paolo Lussana,Matteo Luppi, Pradeeban Muralidaran
  */
 
 public class Island implements Serializable {

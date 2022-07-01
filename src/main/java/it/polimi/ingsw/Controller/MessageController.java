@@ -13,7 +13,6 @@ import java.util.Map;
 
 /**
  * The task of this class is to verify that the format of the messages sent by the client is valid
- * @author Matteo Luppi
  */
 public class MessageController implements Serializable {
 

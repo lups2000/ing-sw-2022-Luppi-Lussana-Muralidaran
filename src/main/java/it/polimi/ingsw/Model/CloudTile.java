@@ -9,7 +9,6 @@ import java.util.Map;
 
 /**
  * This class represents a Cloud Tile.
- * @author Paolo Lussana
  */
 public class CloudTile implements Serializable {
     @Serial

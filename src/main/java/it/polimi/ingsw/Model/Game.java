@@ -11,7 +11,6 @@ import java.util.*;
 
 /**
  * This class represents the Game
- * @author Paolo Lussana,Matteo Luppi,Pradeeban Muralidaran
  */
 
 public class Game extends Observable implements Serializable {

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * Abstract class used for the observers of the view
+ */
 public abstract class Observable4View {
     protected final List<Observer4View> observers = new ArrayList<>();
 

@@ -7,15 +7,11 @@ import it.polimi.ingsw.Model.Exceptions.TooManyTowersException;
 import java.io.Serial;
 import java.io.Serializable;
 
-/**
- * @author Pradeeban Muralidaran
- */
 
 /*
 EFFECT: choose an island and resolve the island as if mother nature had ended her movement there.
 Mother nature will still move and the island where she ends her movement will also be resolved
  */
-
 public class ChooseIsland extends CharacterCard implements Serializable {
 
     @Serial

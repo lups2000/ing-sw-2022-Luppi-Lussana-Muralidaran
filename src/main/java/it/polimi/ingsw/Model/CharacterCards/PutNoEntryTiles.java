@@ -7,10 +7,6 @@ import it.polimi.ingsw.Model.Exceptions.NoNoEntryTilesException;
 import java.io.Serial;
 import java.io.Serializable;
 
-/**
- * @author Pradeeban Muralidaran
- */
-
 /*
 BEFORE THE MATCH STARTS: In setup phase, put the 4 no entry tiles on this card.
 EFFECT: place a no entry tile on an island of your choice.

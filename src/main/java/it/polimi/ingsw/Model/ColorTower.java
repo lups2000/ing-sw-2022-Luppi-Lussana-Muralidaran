@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Model;
 /**
  * This enum class represents the color of the towers.
- * @author Matteo Luppi, Pradeeban Muralidaran
  */
 public enum ColorTower {
     WHITE(Colors.WHITE_TOWER,"white"),GRAY(Colors.GRAY_TOWER,"gray"),BLACK(Colors.BLACK_TOWER,"black");

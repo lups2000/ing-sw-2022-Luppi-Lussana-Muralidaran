@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Model.Exceptions;
 
 /**
- * This metod sends a warning message when the NoEntryTiles are finished
+ * This method sends a warning message when the NoEntryTiles are finished
   */
 
 

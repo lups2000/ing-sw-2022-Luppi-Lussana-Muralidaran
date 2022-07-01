@@ -14,7 +14,6 @@ import java.util.Map;
 
 /**
  * This class represents the SchoolBoard.
- * @author Matteo Luppi,Paolo Lussana
  */
 public class SchoolBoard implements Serializable {
     @Serial

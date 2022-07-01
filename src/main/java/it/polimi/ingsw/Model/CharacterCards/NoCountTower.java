@@ -4,10 +4,6 @@ import it.polimi.ingsw.Model.*;
 import java.io.Serial;
 import java.io.Serializable;
 
-/**
- * @author Pradeeban Muralidaran
- */
-
 /*
 EFFECT: when resolving a conquering on an island, towers do not count towards influence
 */

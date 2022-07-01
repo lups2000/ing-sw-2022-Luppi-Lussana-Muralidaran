@@ -10,7 +10,6 @@ import java.lang.Math;
 
 /**
  * This class represents the Student Bag.
- * @author Paolo Lussana
  */
 public class StudentBag implements Serializable {
     @Serial

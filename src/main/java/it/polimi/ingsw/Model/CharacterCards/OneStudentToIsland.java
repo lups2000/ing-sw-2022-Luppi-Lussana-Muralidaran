@@ -10,10 +10,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author Matteo Luppi
- */
-
 //In setup, draw 4 students and place them on this card.
 //EFFECT: take 1 student from this card and place it on an island of your choice.
     //Then, draw a new student from the bag and place it on this card

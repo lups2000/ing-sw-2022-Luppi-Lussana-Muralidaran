@@ -7,13 +7,14 @@ import it.polimi.ingsw.Model.CharacterCards.CharacterCard;
 import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.observer.Observable4View;
 
-import java.awt.*;
 import java.io.PrintStream;
 import java.util.*;
 import java.util.List;
 
 
-
+/**
+ * Main class for the Command Line Interface
+ */
 public class Cli extends Observable4View implements View {
     private final PrintStream out;
     private static final String INVALID_INPUT = Colors.RED_PAWN+"The entered input is not valid!"+"\033[38;2;255;255;0m";
@@ -26,7 +27,9 @@ public class Cli extends Observable4View implements View {
 
     public Scanner readLine = new Scanner(System.in);
 
-    //Starts the interface
+    /**
+     * Method to start the Command Line Interface with the colored welcome and to ask the ip address and port number of the server
+     */
     public void matchStart(){
         out.println("""
 
@@ -54,8 +57,8 @@ public class Cli extends Observable4View implements View {
     }
 
     /**
-     * Method to ask the ip and port number to the client and try to estabilish a connection to the server,
-     * after having checked that the client's input are valid with the CilentController's methods okIpAddress and okPortNumber
+     * Method to ask the ip and port number to the client and try to establish a connection to the server,
+     * after having checked that the client's input are valid with the ClientController's methods okIpAddress and okPortNumber
      */
     public void connectToServer(){
         final String correctIp;
@@ -119,9 +122,6 @@ public class Cli extends Observable4View implements View {
     }
 
 
-    /**
-     * Asks to the player to enter his in-game nickname
-     */
     @Override
     public void askNickName() {
         boolean validInput;
@@ -145,9 +145,7 @@ public class Cli extends Observable4View implements View {
         notifyObserver(obs -> obs.sendNickname(finalNickName));
     }
 
-    /**
-     * method to ask the first player the number of players
-     */
+
     @Override
     public void askNumPlayers() {
         boolean validInput = false;
@@ -173,11 +171,7 @@ public class Cli extends Observable4View implements View {
         } while (!validInput);
     }
 
-    /**
-     * method to ask a player which assistant seed he wants to pick
-     *
-     * @param assistantSeedAvailable all the available assistant seeds
-     */
+
     @Override
     public void askAssistantSeed(List<AssistantSeed> assistantSeedAvailable) {
         AssistantSeed assistantSeedChosen = null;
@@ -220,11 +214,7 @@ public class Cli extends Observable4View implements View {
         }
     }
 
-    /**
-     * method to ask a player which of his assistant cards he wants to play
-     *
-     * @param assistantCards all the available assistant cards of the player
-     */
+
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards) {
         AssistantCard assistantCardChosen;
@@ -269,12 +259,7 @@ public class Cli extends Observable4View implements View {
         }
     }
 
-    /**
-     * method to ask a player where he wants to move mother nature
-     *
-     * @param islands the islands of the game
-     * @param maxSteps the maximum amount of steps that mother nature can do, according to the assistant card played
-     */
+
     @Override
     public void askMoveMotherNature(List<Island> islands, int maxSteps) {
         boolean validInput = false;
@@ -301,11 +286,7 @@ public class Cli extends Observable4View implements View {
         } while (!validInput);
     }
 
-    /**
-     * method to ask a player which cloud tile he wants to pick
-     *
-     * @param cloudTiles the cloud tiles of the game
-     */
+
     @Override
     public void askChooseCloudTile(List<CloudTile> cloudTiles) {
 
@@ -343,9 +324,7 @@ public class Cli extends Observable4View implements View {
         }
     }
 
-    /**
-     * method to ask the first player if he wants to activate the experts variant or not
-     */
+
     @Override
     public void askExpertVariant() {
         boolean validInput;
@@ -369,16 +348,11 @@ public class Cli extends Observable4View implements View {
         notifyObserver(obs->obs.sendExpertVariant(finalExpertVariant));
     }
 
-    /**
-     * method to ask a player to activate a character card
-     *
-     * @param characterCards the character cards of the game
-     */
+
     @Override
     public void askPlayCharacterCard(List<CharacterCard> characterCards) {
         boolean validInput;
         int idCharacterCard=-1;
-        CharacterCard characterCardChosen = null;
 
         do {
             out.print("Do you want to play a Character Card? Y/N ");
@@ -422,9 +396,7 @@ public class Cli extends Observable4View implements View {
         notifyObserver(obs->obs.sendCharacterCard(finalIdCharacterCard));
     }
 
-    /**
-     * method to ask a user to move a student from his entrance, the user can choose between moving it to his dining room or to an island
-     */
+
     @Override
     public void askMoveStud() {
         boolean validInput=false;
@@ -446,15 +418,11 @@ public class Cli extends Observable4View implements View {
         notifyObserver(obs->obs.sendGenericMessage(finalAnswer));
     }
 
-    /**
-     * method to show the school board of some (or all) players
-     *
-     * @param players the players whose school board will be shown
-     */
+
     @Override
     public void showSchoolBoardPlayers(List<Player> players){
         out.print(Colors.RESET);
-        out.println("\nSCHOOLBOARDS:\n");
+        out.println("\nSCHOOL BOARDS:\n");
         for(Player player : players){
             out.println("\033[38;2;255;255;0m"+player.getNickname()+"'s school board:"+Colors.RESET);
             out.println("Dining Room:");
@@ -480,34 +448,20 @@ public class Cli extends Observable4View implements View {
         out.print("\033[38;2;255;255;0m");
     }
 
-    /**
-     * method to show a generic textual message
-     *
-     * @param genericMessage a generic textual message
-     */
+
     @Override
     public void showGenericMessage(String genericMessage) {
         out.println(Colors.RESET+genericMessage+"\033[38;2;255;255;0m");
     }
 
-    /**
-     * method to show an error message
-     *
-     * @param error the textual message of the error
-     */
+
     @Override
     public void showError(String error) {
         out.println(Colors.RED_PAWN+error+"\n"+"EXIT...\033[38;2;255;255;0m");
         System.exit(1);
     }
 
-    /**
-     * method to show which and how many students are actually connected to the lobby
-     * it is shown in the login phase while waiting that all the required players log in
-     *
-     * @param players the players actually connected
-     * @param numPlayers the required number of players
-     */
+
     @Override
     public void showLobby(List<Player> players, int numPlayers) {
         out.println("Lobby: "+players.size()+" / "+numPlayers);
@@ -521,47 +475,28 @@ public class Cli extends Observable4View implements View {
         out.println(" )");
     }
 
-    /**
-     * method to show at the end of the match to the player who won
-     *
-     * @param winner the winning player of the match
-     */
+
     @Override
     public void showWinMessage(Player winner) {
         out.println("\n\nCongratulations "+winner.getNickname()+" you have won the game!Game finished.");
         System.exit(0);
     }
 
-    /**
-     * method to show at the end of the match to all the players who lost
-     *
-     * @param winner the winning player of the match
-     */
+
     @Override
     public void showLoseMessage(Player winner) {
         out.println("\n\nSorry but you have lost! The winner is " + winner.getNickname() + "!Game finished.");
         System.exit(0);
     }
 
-    /**
-     * method to show a message of disconnection to the disconnected player
-     *
-     * @param nickName the player's nickname
-     * @param message the textual message to be shown
-     */
+
     @Override
     public void showDisconnection(String nickName, String message) {
         out.println("\n"+Colors.RED_PAWN+nickName+message+"\033[38;2;255;255;0m");
         System.exit(1);
     }
 
-    /**
-     * method to show a welcome message to a player who just logged in
-     *
-     * @param nickName the player's nickname
-     * @param nickNameOk if the chosen nickname is allowed or not
-     * @param connectionOk if the connection was successful or not
-     */
+
     @Override
     public void showLoginInfo(String nickName, boolean nickNameOk, boolean connectionOk) {
         clearCli();
@@ -588,13 +523,7 @@ public class Cli extends Observable4View implements View {
 
     }
 
-    /**
-     * method to show the initial info of the game, as soon as it starts
-     *
-     * @param players all the players connected
-     * @param experts a boolean that indicates if the experts variant has been activated or not
-     * @param numPlayers the number of players of the game
-     */
+
     @Override
     public void showMatchInfo(ArrayList<Player> players, boolean experts, int numPlayers) {
 
@@ -610,11 +539,7 @@ public class Cli extends Observable4View implements View {
         out.println("#Expert Variant: "+experts);
     }
 
-    /**
-     * method to ask the user which student he wants to move from his entrance to an island
-     *
-     * @param islands the islands of the game that can be chosen
-     */
+
     @Override
     public void askMoveStudToIsland(Player player,List<Island> islands) {
         boolean validInput=false;
@@ -677,7 +602,7 @@ public class Cli extends Observable4View implements View {
                         indexIsland=-1;
                         clearCli();
                     }
-                    if(indexIsland>=0 && indexIsland<islands.size()){ //da controllare bene qua
+                    if(indexIsland>=0 && indexIsland<islands.size()){
                         validIndex=true;
                     }
                     else{
@@ -694,11 +619,7 @@ public class Cli extends Observable4View implements View {
 
     }
 
-    /**
-     * method to ask a player to choose an island
-     *
-     * @param islands the islands that can be chosen
-     */
+
     @Override
     public void askIsland(List<Island> islands){
         int indexIsland=-1;
@@ -713,7 +634,7 @@ public class Cli extends Observable4View implements View {
                 indexIsland=-1;
                 clearCli();
             }
-            if(indexIsland>=0 && indexIsland<islands.size()){ //da controllare bene qua
+            if(indexIsland>=0 && indexIsland<islands.size()){
                 validIndex=true;
             }
             else{
@@ -726,11 +647,7 @@ public class Cli extends Observable4View implements View {
         notifyObserver(obs->obs.sendChosenIsland(finalIndexIsland));
     }
 
-    /**
-     * method to ask a player to choose a student
-     *
-     * @param availableStudents the available students that can be chosen
-     */
+
     @Override
     public void askColor(Map<PawnColor,Integer> availableStudents){
         boolean validInput=false;
@@ -780,11 +697,7 @@ public class Cli extends Observable4View implements View {
         notifyObserver(obs->obs.sendChosenColor(finalPawnColorChosen));
     }
 
-    /**
-     * method to ask the user which student he wants to move from his entrance to his dining room
-     *
-     * @param player the player
-     */
+
     @Override
     public void askMoveStudToDining(Player player) {
         boolean validInput=false;
@@ -793,7 +706,7 @@ public class Cli extends Observable4View implements View {
 
         do{
             out.print(Colors.RESET);
-            out.println("YOUR SCHOOLBOARD:\n");
+            out.println("YOUR SCHOOL BOARD:\n");
             out.println("Students in your Waiting Room/Entrance... ");
             for(PawnColor pawnColor : player.getSchoolBoard().getStudentsWaiting().keySet()){
                 out.print(pawnColor.getVisualColor()+pawnColor+Colors.RESET+" students: ");
@@ -855,11 +768,7 @@ public class Cli extends Observable4View implements View {
 
     }
 
-    /**
-     * method to show all the islands of the game
-     *
-     * @param islands the islands to be shown
-     */
+
     @Override
     public void showIslands(List<Island> islands) {
 
@@ -902,11 +811,6 @@ public class Cli extends Observable4View implements View {
     }
 
 
-    /**
-     * Shows current game situation
-     *
-     * @param reducedGame has the information about the current situation
-     */
     @Override
     public void showGameBoard(ReducedGame reducedGame) {
         this.clearCli();
@@ -920,11 +824,7 @@ public class Cli extends Observable4View implements View {
         out.println("\033[38;2;255;255;0m");
     }
 
-    /**
-     * method to show the cloud tiles of the game
-     *
-     * @param cloudTiles the cloud tiles to be shown
-     */
+
     @Override
     public void showCloudTiles(List<CloudTile> cloudTiles) {
         out.print(Colors.RESET);
@@ -944,11 +844,7 @@ public class Cli extends Observable4View implements View {
         out.print("\033[38;2;255;255;0m");
     }
 
-    /**
-     * method to show all the students passed as a parameter
-     *
-     * @param students all the students to show
-     */
+
     @Override
     public void showStudents(Map<PawnColor,Integer> students){
         out.print(Colors.RESET);
@@ -961,12 +857,7 @@ public class Cli extends Observable4View implements View {
         out.print("\033[38;2;255;255;0m");
     }
 
-    /**
-     * method to ask a student, with the possibility to answer stop
-     * it is used for some of the character cards
-     *
-     * @param availableStudents all the available students that can be chosen
-     */
+
     @Override
     public void askStudOrStop(Map<PawnColor,Integer> availableStudents){
         boolean validInput=false;
@@ -974,9 +865,7 @@ public class Cli extends Observable4View implements View {
         String answerColor;
         boolean stop = false;
         do{
-            //out.print(Colors.RESET);
             this.showStudents(availableStudents);
-            //out.print("\033[38;2;255;255;0m");
             out.print("\nSelect one color(ex. red,blue...) or press 'x' to stop: ");
             answerColor= readLine.nextLine();
 
@@ -1022,11 +911,7 @@ public class Cli extends Observable4View implements View {
         notifyObserver(obs->obs.sendChosenColorOrStop(finalPawnColorChosen, finalStop));
     }
 
-    /**
-     * Updates FX
-     *
-     * @param reducedGame has the information about the current situation
-     */
+
     @Override
     public void updateFX(ReducedGame reducedGame) {
 

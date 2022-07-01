@@ -8,7 +8,6 @@ import java.util.Map;
 
 /**
  * This class represents the player.
- * @author Matteo Luppi, Paolo Lussana, Pradeeban Muralidaran
  */
 public class Player implements Serializable {
     @Serial

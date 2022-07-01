@@ -22,7 +22,6 @@ import java.io.Serializable;
 import java.util.*;
 
 /** This class represents the Turn manager
- * @author Matteo Luppi
  */
 public class TurnController implements Serializable {
 
