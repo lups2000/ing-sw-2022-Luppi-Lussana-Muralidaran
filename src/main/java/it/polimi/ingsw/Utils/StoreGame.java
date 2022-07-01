@@ -77,5 +77,4 @@ public class StoreGame implements Serializable {
             Server.LOGGER.info("File deleted!");
         }
     }
-
 }

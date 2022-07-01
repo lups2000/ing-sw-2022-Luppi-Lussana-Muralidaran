@@ -13,9 +13,7 @@ import java.util.*;
 import java.util.List;
 
 
-/**
- * @author Pradeeban Muralidaran,Matteo Luppi
- */
+
 public class Cli extends Observable4View implements View {
     private final PrintStream out;
     private static final String INVALID_INPUT = Colors.RED_PAWN+"The entered input is not valid!"+"\033[38;2;255;255;0m";
