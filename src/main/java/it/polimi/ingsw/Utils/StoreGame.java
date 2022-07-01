@@ -31,8 +31,6 @@ public class StoreGame implements Serializable {
      */
     public void saveMatch(MainController mainController){
 
-        String jarPath = getJarDirectory();
-
         this.mainController=mainController;
         try(FileOutputStream fileOutputStream = new FileOutputStream("savedGame.bin")){
 
@@ -51,8 +49,6 @@ public class StoreGame implements Serializable {
      * @return the main controller of the previous saved match
      */
     public MainController getPreviousMatch(){
-
-        String jarPath = getJarDirectory();
 
         try(FileInputStream fileInputStream =new FileInputStream("savedGame.bin")){
 
@@ -73,8 +69,6 @@ public class StoreGame implements Serializable {
      */
     public void deleteGame(){
 
-        String jarPath = getJarDirectory();
-
         File fileToDelete=new File("savedGame.bin");
         try{
             Files.deleteIfExists(fileToDelete.toPath());
@@ -82,17 +76,6 @@ public class StoreGame implements Serializable {
             e.printStackTrace();
             Server.LOGGER.info("File deleted!");
         }
-    }
-
-
-    /**
-     * Method to return the file path of the .jar file
-     *
-     * @return the file path of the jar
-     */
-    private String getJarDirectory(){
-        File pathJar= new File(Server.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-        return pathJar.getParentFile().getAbsolutePath();
     }
 
 }
