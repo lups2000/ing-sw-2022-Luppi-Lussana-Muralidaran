@@ -133,6 +133,7 @@ public class GuiMainController extends Observable4View {
         AskColorController askColorController = loader.getController();
         askColorController.addAllObservers(observerList);
         askColorController.setAvailableStudents(availableStudents);
+        askColorController.initialDisplay();
         Scene scene = new Scene(parent);
         askColorController.setScene(scene);
         askColorController.display();

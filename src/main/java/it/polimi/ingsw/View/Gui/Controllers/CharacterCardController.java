@@ -27,6 +27,15 @@ public class CharacterCardController extends Observable4View implements GuiGener
     private Button character3;
 
     @FXML
+    private ImageView additionalCoinCharacter1;
+
+    @FXML
+    private ImageView additionalCoinCharacter2;
+
+    @FXML
+    private ImageView additionalCoinCharacter3;
+
+    @FXML
     private Button skipButton;
 
     public CharacterCardController(List<CharacterCard> characterCards){
@@ -70,6 +79,7 @@ public class CharacterCardController extends Observable4View implements GuiGener
 
         ImageView character=null;
         List<ImageView> tempCharacters=new ArrayList<>();
+        List<Boolean> tempUsed = new ArrayList<>();
         for (CharacterCard characterCard : characterCards) {
             int temp = -1;
             switch (characterCard.getType()) {
@@ -90,10 +100,20 @@ public class CharacterCardController extends Observable4View implements GuiGener
             character.setFitWidth(200);
             character.setFitHeight(300);
             tempCharacters.add(character);
+            tempUsed.add(characterCard.isUsed());
         }
         character1.setGraphic(tempCharacters.get(0));
         character2.setGraphic(tempCharacters.get(1));
         character3.setGraphic(tempCharacters.get(2));
+        if(tempUsed.get(0)){
+            additionalCoinCharacter1.setVisible(true);
+        }
+        if(tempUsed.get(1)){
+            additionalCoinCharacter2.setVisible(true);
+        }
+        if(tempUsed.get(2)){
+            additionalCoinCharacter3.setVisible(true);
+        }
     }
 
 

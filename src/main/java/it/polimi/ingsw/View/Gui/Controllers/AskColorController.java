@@ -61,8 +61,6 @@ public class AskColorController extends Observable4View implements  GuiGenericCo
     @FXML
     public void initialize() {
 
-        initialDisplay();
-
         rootPane.addEventHandler(MouseEvent.MOUSE_PRESSED, this::onRootPaneMousePressed);
         rootPane.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::onRootPaneMouseDragged);
 
@@ -130,7 +128,7 @@ public class AskColorController extends Observable4View implements  GuiGenericCo
     /**
      * Displays the scene
      */
-    private void initialDisplay(){
+    public void initialDisplay(){
 
         for(PawnColor pawnColor : availableStudents.keySet()){
             int temp=0;

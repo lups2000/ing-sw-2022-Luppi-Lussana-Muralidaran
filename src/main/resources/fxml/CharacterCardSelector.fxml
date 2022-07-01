@@ -4,6 +4,8 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -56,6 +58,21 @@
               <Cursor fx:constant="HAND" />
           </cursor>
       </Button>
+      <ImageView fx:id="additionalCoinCharacter1" fitHeight="60.0" fitWidth="60.0" layoutX="253.0" layoutY="287.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Images/Coin.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="additionalCoinCharacter2" fitHeight="60.0" fitWidth="60.0" layoutX="552.0" layoutY="287.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Images/Coin.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="additionalCoinCharacter3" fitHeight="60.0" fitWidth="60.0" layoutX="853.0" layoutY="287.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Images/Coin.png" />
+         </image>
+      </ImageView>
     </children>
     <stylesheets>
         <URL value="@../Images/CSS/LoadingScreenBG.css" />

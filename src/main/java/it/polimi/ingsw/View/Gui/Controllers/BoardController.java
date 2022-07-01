@@ -68,6 +68,12 @@ public class BoardController extends Observable4View implements GuiGenericContro
     private ImageView character3;
     @FXML
     private Label labelCharacterCards;
+    @FXML
+    private ImageView additionalCoinCharacter1;
+    @FXML
+    private ImageView additionalCoinCharacter2;
+    @FXML
+    private ImageView additionalCoinCharacter3;
 
     //noEntryTiles
     @FXML
@@ -578,6 +584,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
     private void displayCharacterCards(){
         Image character=null;
         List<Image> tempCharacters=new ArrayList<>();
+        List<Boolean> tempUsed = new ArrayList<>();
         for (CharacterCard characterCard : characterCards) {
             int temp = -1;
             switch (characterCard.getType()) {
@@ -596,6 +603,7 @@ public class BoardController extends Observable4View implements GuiGenericContro
             }
             character = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/CharacterCards/CarteTOT_front" + temp + ".jpg")));
             tempCharacters.add(character);
+            tempUsed.add(characterCard.isUsed());
         }
         character1.setImage(tempCharacters.get(0));
         character2.setImage(tempCharacters.get(1));
@@ -607,6 +615,15 @@ public class BoardController extends Observable4View implements GuiGenericContro
         character1.setDisable(true);
         character2.setDisable(true);
         character3.setDisable(true);
+        if(tempUsed.get(0)){
+            additionalCoinCharacter1.setVisible(true);
+        }
+        if(tempUsed.get(1)){
+            additionalCoinCharacter2.setVisible(true);
+        }
+        if(tempUsed.get(2)){
+            additionalCoinCharacter3.setVisible(true);
+        }
 
     }
 

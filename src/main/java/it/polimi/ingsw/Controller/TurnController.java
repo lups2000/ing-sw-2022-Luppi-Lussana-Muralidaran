@@ -517,13 +517,6 @@ public class TurnController implements Serializable {
 
                 studentToDining.effect(currentStudent);
                 model.allocateProfessors();
-
-                List<Player> players = new ArrayList<>();
-                players.add(0,player);
-
-                for(VirtualView virtualView : virtualViewMap.values()){
-                    virtualView.showSchoolBoardPlayers(players);
-                }
             }
 
             //the user chooses an island and a color

@@ -58,6 +58,21 @@
             <Font name="Comic Sans MS Bold" size="14.0" />
          </font>
       </Label>
+      <ImageView fx:id="additionalCoinCharacter1" fitHeight="40.0" fitWidth="40.0" layoutX="1150.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Images/Coin.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="additionalCoinCharacter2" fitHeight="40.0" fitWidth="40.0" layoutX="1150.0" layoutY="322.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Images/Coin.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="additionalCoinCharacter3" fitHeight="40.0" fitWidth="40.0" layoutX="1150.0" layoutY="522.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Images/Coin.png" />
+         </image>
+      </ImageView>
    </children>
    <stylesheets>
       <URL value="@../Images/CSS/MainScreen.css" />
