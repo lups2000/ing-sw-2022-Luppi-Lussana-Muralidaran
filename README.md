@@ -34,10 +34,6 @@ It is possible to choose between CLI (Command Line Interface) and GUI (Graphical
 In the [UML directory](https://github.com/lups2000/ing-sw-2022-Luppi-Lussana-Muralidaran/tree/main/deliverables/UML) can be found all our UML diagrams including: 
 - the initial UML class diagram of the whole project
 - the initial sequence diagram with the network protocol documentation
-- the final UML class diagram only of the model (generated with the help of Intellij)
-- the final UML class diagram only of the controller (generated with the help of Intellij)
-- the final UML class diagram only of the view (generated with the help of Intellij)
-- the final UML class diagram only of the network (generated with the help of Intellij)
 - the final UML class diagram of the whole project (generated with the help of Intellij)
 
 
