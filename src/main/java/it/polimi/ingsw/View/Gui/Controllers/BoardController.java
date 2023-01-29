@@ -1038,12 +1038,12 @@ public class BoardController extends Observable4View implements GuiGenericContro
             node.setOnDragDetected(e -> {
                 Dragboard db = node.startDragAndDrop(TransferMode.ANY);
                 idNodeStart=e.getPickResult().getIntersectedNode().getId();
-
                 ClipboardContent content = new ClipboardContent();
                 content.putString(idNodeStart);
                 db.setContent(content);
-
-                e.consume();
+            });
+            node.setOnMouseDragged(e->{
+                e.setDragDetect(true);
             });
         }
 
